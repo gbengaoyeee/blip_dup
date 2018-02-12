@@ -12,7 +12,6 @@
 		3B14B536202ED43800B1C015 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B14B535202ED43800B1C015 /* MapKit.framework */; };
 		3B14B538202ED67500B1C015 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B14B537202ED67400B1C015 /* SystemConfiguration.framework */; };
 		3B14B53C202F459900B1C015 /* EndJob.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B14B53B202F459600B1C015 /* EndJob.swift */; };
-		3B14B53E202F45BF00B1C015 /* JobOwnerStartJob.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B14B53D202F45BF00B1C015 /* JobOwnerStartJob.swift */; };
 		3B14B542202F5EA100B1C015 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B14B540202F5EA000B1C015 /* AVKit.framework */; };
 		3B14B543202F5EA100B1C015 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B14B541202F5EA100B1C015 /* AVFoundation.framework */; };
 		3B14B545202F5EC300B1C015 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B14B544202F5EC300B1C015 /* CoreLocation.framework */; };
@@ -80,14 +79,7 @@
 		3B5373A0202EC2210020F3B1 /* PopUpJobView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B537393202EC2210020F3B1 /* PopUpJobView.xib */; };
 		3B5373A1202EC2210020F3B1 /* CustomUIBorderControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537394202EC2210020F3B1 /* CustomUIBorderControls.swift */; };
 		3B5373A2202EC2210020F3B1 /* ShadowsToButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537395202EC2210020F3B1 /* ShadowsToButtons.swift */; };
-		3B5373AE202EC2E40020F3B1 /* MGLMapView+CustomAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B5373A5202EC2E20020F3B1 /* MGLMapView+CustomAdditions.m */; };
-		3B5373AF202EC2E40020F3B1 /* TBTNavigationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5373A6202EC2E20020F3B1 /* TBTNavigationVC.swift */; };
-		3B5373B0202EC2E40020F3B1 /* TestVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5373A7202EC2E20020F3B1 /* TestVC.swift */; };
-		3B5373B1202EC2E40020F3B1 /* WaypointConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5373A8202EC2E30020F3B1 /* WaypointConfirmationViewController.swift */; };
-		3B5373B2202EC2E40020F3B1 /* StartJobNavigationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5373AA202EC2E30020F3B1 /* StartJobNavigationVC.swift */; };
-		3B5373B3202EC2E40020F3B1 /* TestMGLNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5373AB202EC2E30020F3B1 /* TestMGLNav.swift */; };
-		3B5373B4202EC2E40020F3B1 /* TestNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5373AC202EC2E30020F3B1 /* TestNavigationViewController.swift */; };
-		3B5373B5202EC2E40020F3B1 /* endJobNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5373AD202EC2E40020F3B1 /* endJobNavigation.swift */; };
+		3B5373B5202EC2E40020F3B1 /* StartJob.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5373AD202EC2E40020F3B1 /* StartJob.swift */; };
 		E44A286AF55A28A06A305841 /* Pods_BlipTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F498B34F0F7DEA567870388 /* Pods_BlipTests.framework */; };
 		F3F5081E2031F77E00252E65 /* Century Gothic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B537340202EBD4C0020F3B1 /* Century Gothic.ttf */; };
 		F3F5081F2031F78300252E65 /* CenturyGothicBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B53733F202EBD4C0020F3B1 /* CenturyGothicBold.ttf */; };
@@ -123,7 +115,6 @@
 		3B14B537202ED67400B1C015 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		3B14B53A202ED68200B1C015 /* AWSCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AWSCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B14B53B202F459600B1C015 /* EndJob.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndJob.swift; sourceTree = "<group>"; };
-		3B14B53D202F45BF00B1C015 /* JobOwnerStartJob.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobOwnerStartJob.swift; sourceTree = "<group>"; };
 		3B14B53F202F55E100B1C015 /* lgsu.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = lgsu.mp4; path = Assets.xcassets/lgsu.mp4; sourceTree = "<group>"; };
 		3B14B540202F5EA000B1C015 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		3B14B541202F5EA100B1C015 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -202,21 +193,13 @@
 		3B537393202EC2210020F3B1 /* PopUpJobView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PopUpJobView.xib; sourceTree = "<group>"; };
 		3B537394202EC2210020F3B1 /* CustomUIBorderControls.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomUIBorderControls.swift; sourceTree = "<group>"; };
 		3B537395202EC2210020F3B1 /* ShadowsToButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShadowsToButtons.swift; sourceTree = "<group>"; };
-		3B5373A4202EC2E10020F3B1 /* Blip-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Blip-Bridging-Header.h"; sourceTree = "<group>"; };
-		3B5373A5202EC2E20020F3B1 /* MGLMapView+CustomAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MGLMapView+CustomAdditions.m"; sourceTree = "<group>"; };
-		3B5373A6202EC2E20020F3B1 /* TBTNavigationVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TBTNavigationVC.swift; sourceTree = "<group>"; };
-		3B5373A7202EC2E20020F3B1 /* TestVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestVC.swift; sourceTree = "<group>"; };
-		3B5373A8202EC2E30020F3B1 /* WaypointConfirmationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaypointConfirmationViewController.swift; sourceTree = "<group>"; };
-		3B5373A9202EC2E30020F3B1 /* MGLMapView+CustomAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MGLMapView+CustomAdditions.h"; sourceTree = "<group>"; };
-		3B5373AA202EC2E30020F3B1 /* StartJobNavigationVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartJobNavigationVC.swift; sourceTree = "<group>"; };
-		3B5373AB202EC2E30020F3B1 /* TestMGLNav.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestMGLNav.swift; sourceTree = "<group>"; };
-		3B5373AC202EC2E30020F3B1 /* TestNavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestNavigationViewController.swift; sourceTree = "<group>"; };
-		3B5373AD202EC2E40020F3B1 /* endJobNavigation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = endJobNavigation.swift; sourceTree = "<group>"; };
+		3B5373AD202EC2E40020F3B1 /* StartJob.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartJob.swift; sourceTree = "<group>"; };
 		52A65DC4170733BA25C15CE1 /* Pods-Blip.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Blip.release.xcconfig"; path = "Pods/Target Support Files/Pods-Blip/Pods-Blip.release.xcconfig"; sourceTree = "<group>"; };
 		97BB13E391BCE3E8ED7A9756 /* Pods-BlipUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlipUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BlipUITests/Pods-BlipUITests.release.xcconfig"; sourceTree = "<group>"; };
 		CC3B578818C69E894B2F65CD /* Pods_BlipUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BlipUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA08477A131A88FA8EB584E0 /* Pods-BlipTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlipTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BlipTests/Pods-BlipTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E8545681CCD5C87C2E3C5E6F /* Pods-BlipUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlipUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BlipUITests/Pods-BlipUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		F3F508212032085600252E65 /* Blip-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Blip-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -290,6 +273,7 @@
 		3B5372F6202EB4320020F3B1 /* Blip */ = {
 			isa = PBXGroup;
 			children = (
+				F3F508212032085600252E65 /* Blip-Bridging-Header.h */,
 				3B14B534202ED43000B1C015 /* Blip.entitlements */,
 				3B537337202EBB850020F3B1 /* Connectivity */,
 				3B537338202EBB980020F3B1 /* Fonts */,
@@ -390,7 +374,6 @@
 		3B53733A202EBBDC0020F3B1 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				3B5373A3202EC24C0020F3B1 /* StartJob */,
 				3B537366202EC0D90020F3B1 /* AddNameVC.swift */,
 				3B53736D202EC0DB0020F3B1 /* AnnotationViewVC.swift */,
 				3B53736C202EC0DB0020F3B1 /* AppFABMenuController.swift */,
@@ -399,13 +382,13 @@
 				3B537360202EC0D80020F3B1 /* ConfirmProfilePageVC.swift */,
 				3B53735F202EC0D80020F3B1 /* CustomAPIAdapter.swift */,
 				3B53735C202EC0D80020F3B1 /* EmailVerifyVC.swift */,
+				3B5373AD202EC2E40020F3B1 /* StartJob.swift */,
 				3B537363202EC0D90020F3B1 /* endSignUpVC.swift */,
 				3B537371202EC0DC0020F3B1 /* Lgsupage.swift */,
 				3B537365202EC0D90020F3B1 /* LoginVC.swift */,
 				3B537367202EC0D90020F3B1 /* MyAPIClient.swift */,
 				3B14B53B202F459600B1C015 /* EndJob.swift */,
 				3B53735D202EC0D80020F3B1 /* navigationBarViewController.swift */,
-				3B14B53D202F45BF00B1C015 /* JobOwnerStartJob.swift */,
 				3B537364202EC0D90020F3B1 /* OnboardingVCViewController.swift */,
 				3B53735E202EC0D80020F3B1 /* PasswordReset.swift */,
 				3B537368202EC0D90020F3B1 /* PaymentContextFooterView.swift */,
@@ -438,23 +421,6 @@
 				3B53738F202EC2200020F3B1 /* UIWindowTransitions.swift */,
 			);
 			path = CustomViewControllers;
-			sourceTree = "<group>";
-		};
-		3B5373A3202EC24C0020F3B1 /* StartJob */ = {
-			isa = PBXGroup;
-			children = (
-				3B5373AD202EC2E40020F3B1 /* endJobNavigation.swift */,
-				3B5373A9202EC2E30020F3B1 /* MGLMapView+CustomAdditions.h */,
-				3B5373A5202EC2E20020F3B1 /* MGLMapView+CustomAdditions.m */,
-				3B5373AA202EC2E30020F3B1 /* StartJobNavigationVC.swift */,
-				3B5373A6202EC2E20020F3B1 /* TBTNavigationVC.swift */,
-				3B5373AB202EC2E30020F3B1 /* TestMGLNav.swift */,
-				3B5373AC202EC2E30020F3B1 /* TestNavigationViewController.swift */,
-				3B5373A7202EC2E20020F3B1 /* TestVC.swift */,
-				3B5373A8202EC2E30020F3B1 /* WaypointConfirmationViewController.swift */,
-				3B5373A4202EC2E10020F3B1 /* Blip-Bridging-Header.h */,
-			);
-			path = StartJob;
 			sourceTree = "<group>";
 		};
 		6A6A8212A5CC9F08761256A7 /* Frameworks */ = {
@@ -857,7 +823,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B53739C202EC2210020F3B1 /* UIWindowTransitions.swift in Sources */,
-				3B5373AF202EC2E40020F3B1 /* TBTNavigationVC.swift in Sources */,
 				3B53739A202EC2210020F3B1 /* GradientView.swift in Sources */,
 				3B537378202EC0DC0020F3B1 /* AppTabsController.swift in Sources */,
 				3B537332202EBA6B0020F3B1 /* Skill.swift in Sources */,
@@ -869,14 +834,9 @@
 				3B5373A2202EC2210020F3B1 /* ShadowsToButtons.swift in Sources */,
 				3B53739E202EC2210020F3B1 /* CustomUIButton.swift in Sources */,
 				3B537376202EC0DC0020F3B1 /* CustomAPIAdapter.swift in Sources */,
-				3B5373AE202EC2E40020F3B1 /* MGLMapView+CustomAdditions.m in Sources */,
-				3B5373B2202EC2E40020F3B1 /* StartJobNavigationVC.swift in Sources */,
-				3B14B53E202F45BF00B1C015 /* JobOwnerStartJob.swift in Sources */,
 				3B537380202EC0DC0020F3B1 /* PopUpJobViewVC.swift in Sources */,
 				3B53739D202EC2210020F3B1 /* CustomMGLAnnotation.swift in Sources */,
 				3B537372202EC0DC0020F3B1 /* AppSnackbarController.swift in Sources */,
-				3B5373B1202EC2E40020F3B1 /* WaypointConfirmationViewController.swift in Sources */,
-				3B5373B0202EC2E40020F3B1 /* TestVC.swift in Sources */,
 				3B53733D202EBD0F0020F3B1 /* Connectivity.swift in Sources */,
 				3B537382202EC0DC0020F3B1 /* SellVC+.swift in Sources */,
 				3B537373202EC0DC0020F3B1 /* EmailVerifyVC.swift in Sources */,
@@ -890,7 +850,6 @@
 				3B537396202EC2210020F3B1 /* customShadowView.swift in Sources */,
 				3B537383202EC0DC0020F3B1 /* AppFABMenuController.swift in Sources */,
 				3B537377202EC0DC0020F3B1 /* ConfirmProfilePageVC.swift in Sources */,
-				3B5373B4202EC2E40020F3B1 /* TestNavigationViewController.swift in Sources */,
 				3B53737B202EC0DC0020F3B1 /* OnboardingVCViewController.swift in Sources */,
 				3B53732E202EBA6B0020F3B1 /* ServiceCalls.swift in Sources */,
 				3B53732F202EBA6B0020F3B1 /* Job.swift in Sources */,
@@ -898,7 +857,6 @@
 				3B537385202EC0DC0020F3B1 /* SettingsViewController.swift in Sources */,
 				3B537386202EC0DC0020F3B1 /* UnconfirmedVC.swift in Sources */,
 				3B537374202EC0DC0020F3B1 /* navigationBarViewController.swift in Sources */,
-				3B5373B3202EC2E40020F3B1 /* TestMGLNav.swift in Sources */,
 				3B537331202EBA6B0020F3B1 /* HelperFunctions.swift in Sources */,
 				3B537379202EC0DC0020F3B1 /* SellVC.swift in Sources */,
 				3B53739F202EC2210020F3B1 /* Constrainable.swift in Sources */,
@@ -906,7 +864,7 @@
 				3B537388202EC0DC0020F3B1 /* Lgsupage.swift in Sources */,
 				3B5373A1202EC2210020F3B1 /* CustomUIBorderControls.swift in Sources */,
 				3B53739B202EC2210020F3B1 /* CustomAnnotationView.swift in Sources */,
-				3B5373B5202EC2E40020F3B1 /* endJobNavigation.swift in Sources */,
+				3B5373B5202EC2E40020F3B1 /* StartJob.swift in Sources */,
 				3B537399202EC2210020F3B1 /* TapScreenToCloseKeyboardViewController.swift in Sources */,
 				3B53737F202EC0DC0020F3B1 /* PaymentContextFooterView.swift in Sources */,
 				3B53737A202EC0DC0020F3B1 /* endSignUpVC.swift in Sources */,
@@ -1085,7 +1043,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.blip.Blip;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "Blip/Controllers/ViewControllers/StartJob/Blip-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Blip/Blip-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1105,7 +1063,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.blip.Blip;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "Blip/Controllers/ViewControllers/StartJob/Blip-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Blip/Blip-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

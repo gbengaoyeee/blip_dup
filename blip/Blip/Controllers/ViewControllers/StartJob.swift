@@ -14,7 +14,7 @@ import Material
 import PopupDialog
 import Alamofire
 
-class endJobNavigation: UIViewController {
+class StartJob: UIViewController {
 
     var job: Job!
     

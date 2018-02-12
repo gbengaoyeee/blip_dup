@@ -15,6 +15,7 @@ import Pastel
 import Kingfisher
 import Alamofire
 import Cosmos
+import Material
 
 class ConfirmProfilePageVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -25,11 +26,12 @@ class ConfirmProfilePageVC: UIViewController, UIImagePickerControllerDelegate, U
     var userRef:DatabaseReference!
     @IBOutlet weak var gradientView: PastelView!
     @IBOutlet weak var scrollForReviews: UIScrollView!
-    @IBOutlet weak var ratingAnimationView: UIView!
+    @IBOutlet weak var ratingAnimationView: CosmosView!
     @IBOutlet weak var totalTime: UILabel!
     @IBOutlet weak var totalJobs: UILabel!
     @IBOutlet weak var profilePic: UIImageView!
     @IBOutlet weak var fullNameLabel: UILabel!
+    @IBOutlet weak var closeButton: RaisedButton!
     
     @IBOutlet weak var hireButton: UIButton!
     let ratingAnimation = LOTAnimationView(name: "5_stars")
@@ -38,6 +40,7 @@ class ConfirmProfilePageVC: UIViewController, UIImagePickerControllerDelegate, U
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.closeButton.image = Icon.cm.close
         self.navigationController?.navigationBar.isHidden = false
         prepareInformation()
         self.gradientView.animationDuration = 3.0
@@ -109,10 +112,10 @@ class ConfirmProfilePageVC: UIViewController, UIImagePickerControllerDelegate, U
     func prepareInformation() {
         if let jobAccepter = self.jobAccepter{
             self.fullNameLabel.text = jobAccepter.name
-            self.ratingAnimationView..rating = Double(jobAccepter.rating)
+            self.ratingAnimationView.rating = Double(jobAccepter.rating!)
         }else{
             self.fullNameLabel.text = currUser!.name
-            self.ratingAnimationView.rating = Double(currUser?.rating!)
+            self.ratingAnimationView.rating = Double((currUser?.rating)!)
         }
         
     }

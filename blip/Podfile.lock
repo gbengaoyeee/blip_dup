@@ -1,8 +1,5 @@
 PODS:
   - Alamofire (4.6.0)
-  - AWSCore (2.6.11)
-  - AWSPolly (2.6.11):
-    - AWSCore (= 2.6.11)
   - Bolts (1.9.0):
     - Bolts/AppLinks (= 1.9.0)
     - Bolts/Tasks (= 1.9.0)
@@ -10,6 +7,7 @@ PODS:
     - Bolts/Tasks
   - Bolts/Tasks (1.9.0)
   - CHIPageControl/Fresno (0.1.5)
+  - Cosmos (14.0.0)
   - DynamicBlurView (2.0.2)
   - FBSDKCoreKit (4.30.0):
     - Bolts (~> 1.7)
@@ -77,28 +75,14 @@ PODS:
   - leveldb-library (1.20)
   - lottie-ios (2.5.0)
   - Mapbox-iOS-SDK (3.7.3)
-  - MapboxCoreNavigation (0.13.1):
-    - MapboxDirections.swift (~> 0.16.0)
-    - MapboxMobileEvents (~> 0.2)
-    - Turf (~> 0.0.4)
-  - MapboxDirections.swift (0.16.0):
-    - Polyline (~> 4.2)
-  - MapboxMobileEvents (0.2.10)
-  - MapboxNavigation (0.13.1):
-    - AWSPolly (~> 2.6)
-    - Mapbox-iOS-SDK (~> 3.6)
-    - MapboxCoreNavigation (= 0.13.1)
-    - SDWebImage (~> 4.1)
-    - Solar (~> 2.1)
-    - Turf (~> 0.0.4)
   - MarqueeLabel/Swift (3.1.4)
-  - Material (2.13.5):
-    - Material/Core (= 2.13.5)
-  - Material/Core (2.13.5):
+  - Material (2.13.6):
+    - Material/Core (= 2.13.6)
+  - Material/Core (2.13.6):
     - Motion (~> 1.3.0)
-  - Motion (1.3.4):
-    - Motion/Core (= 1.3.4)
-  - Motion/Core (1.3.4)
+  - Motion (1.3.5):
+    - Motion/Core (= 1.3.5)
+  - Motion/Core (1.3.5)
   - nanopb (0.3.8):
     - nanopb/decode (= 0.3.8)
     - nanopb/encode (= 0.3.8)
@@ -108,24 +92,19 @@ PODS:
     - MarqueeLabel/Swift
     - SnapKit (~> 4.0)
   - Pastel (0.3.0)
-  - Polyline (4.2.0)
   - PopupDialog (0.7.0):
     - DynamicBlurView (~> 2.0)
   - Protobuf (3.5.0)
   - Pulsator (0.4.1)
   - RevealingSplashView (0.4.0)
-  - SDWebImage (4.3.0):
-    - SDWebImage/Core (= 4.3.0)
-  - SDWebImage/Core (4.3.0)
   - SHSearchBar (1.4.0)
   - SnapKit (4.0.0)
-  - Solar (2.1.0)
   - Stripe (12.1.0)
-  - Turf (0.0.4)
 
 DEPENDENCIES:
   - Alamofire
   - CHIPageControl/Fresno
+  - Cosmos
   - FBSDKCoreKit
   - FBSDKLoginKit
   - FBSDKShareKit
@@ -138,7 +117,6 @@ DEPENDENCIES:
   - Kingfisher (~> 4.0)
   - lottie-ios
   - Mapbox-iOS-SDK (~> 3.7)
-  - MapboxNavigation
   - Material (~> 2.0)
   - NotificationBannerSwift
   - Pastel
@@ -150,10 +128,9 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   Alamofire: f41a599bd63041760b26d393ec1069d9d7b917f4
-  AWSCore: a461695bf302a32a366768bf36056be3a2c87d8d
-  AWSPolly: fa1600710f3eb20624caeb1d0566d77a44ae4902
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
   CHIPageControl: 79d19a8ee2e35fa3c1da6533adb5364c77b5cfea
+  Cosmos: 6dd44b65d587033e690ae1c350c875d262a23fda
   DynamicBlurView: aa6db4defc6e537eb86fc5e58dd3991666178399
   FBSDKCoreKit: 7c4bba2877781a131ab5d54c0a78c405d4307b62
   FBSDKLoginKit: fe7a7e82373dc5daad92e1623219e86224ab1fb1
@@ -173,28 +150,20 @@ SPEC CHECKSUMS:
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   lottie-ios: d699fdee68d7b63e721d949388b015fef1aaa4ac
   Mapbox-iOS-SDK: 5304bd9605babe6da9050ea4cb23c1671420b737
-  MapboxCoreNavigation: c89faebae9137b90d7e82b32c86dba8b226c3005
-  MapboxDirections.swift: 168cc83745b188d792c5482bfb0653c233d1455c
-  MapboxMobileEvents: 9e48b59d0eed04508595dcb04a77b7632e1c3054
-  MapboxNavigation: 62e8b4b71208a1dacbd30f2abdd2e68ebbc7ec94
   MarqueeLabel: bf768455fe88d427f71476ebb23f9092b660f40b
-  Material: ced3fd11882147b135f897ca20227174bb104ad0
-  Motion: 85b8777db2e68801c03a5c629e918c35dd184c8d
+  Material: ef704dcc1bced32ab7c91ece2ba734da557e3f36
+  Motion: 9f74d115d7f72bb5380a8e3cde2f8a1fc898ac36
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   NotificationBannerSwift: 1fc2955381e6eb26d958ba32160fc41721b9b689
   Pastel: 738740c84f2b15bbcd96ebe99c4e6c2f5dd42262
-  Polyline: 3d69f75bb136357e27291d439d0436c6ebda57a4
   PopupDialog: 4abc6db5b22b7c8029e2162bde8891ee6aa4b6c8
   Protobuf: 8a9838fba8dae3389230e1b7f8c104aa32389c03
   Pulsator: 89a18d0e0ee2f642bb83cb9dfb6b7eebc1dc6241
   RevealingSplashView: 72be158ad5e1bc72713e8f78383dc3e1803ce4d1
-  SDWebImage: 6da6c8bca115addc4de8613362e1b15f66333825
   SHSearchBar: d59fb32d1e26b46bc036b8d551d30683f2479c31
   SnapKit: a42d492c16e80209130a3379f73596c3454b7694
-  Solar: 2dc6e7cc39186cb0c8228fa08df76fb50c7d8f24
   Stripe: de8bffa8e6813f678d526c52f416fe224141fa09
-  Turf: 6c169618fa671e3f8a7b764b5b3332053ad6110e
 
-PODFILE CHECKSUM: e5fe94ea02a5c5e4311017c956b31756705c69ff
+PODFILE CHECKSUM: 6915c5530f00927f757e1e4c25dd7b479a13aaf8
 
-COCOAPODS: 1.3.1
+COCOAPODS: 1.4.0

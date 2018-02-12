@@ -150,8 +150,9 @@ class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, 
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
         if segue.identifier == "startJobFromSellVC"{
-            if let dest = segue.destination as? StartJobNavigation{
+            if let dest = segue.destination as? StartJob{
                 dest.job = self.acceptedJob
             }
         }
@@ -163,19 +164,6 @@ class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, 
             }
         }
         
-        if segue.identifier == "startJobFromSellVC"{
-            if let dest = segue.destination as? endJobNavigation{
-                dest.job = self.acceptedJob
-            }
-        }
-        
-        if segue.identifier == "goToJobOwnerStartJob"{
-            if let dest = segue.destination as? JobOwnerStartJob{
-                service.getJobPostedByCurrentUser(completion: { (job) in
-                    dest.job = job
-                })
-            }
-        }
     }
 
     //Sets the camera for the mapview and sets current location to users current locations

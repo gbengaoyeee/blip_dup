@@ -48,7 +48,7 @@ open class NavigationController: UINavigationController {
      An initializer that initializes the object with a NSCoder object.
      - Parameter aDecoder: A NSCoder instance.
      */
-    public required init?(coder aDecoder: NSCoder) {
+	public required init?(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
 	}
 	
@@ -57,7 +57,7 @@ open class NavigationController: UINavigationController {
      - Parameter nibNameOrNil: An Optional String for the nib.
      - Parameter bundle: An Optional NSBundle where the nib is located.
      */
-    public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+	public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
 		super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
 	}
 	
@@ -65,7 +65,7 @@ open class NavigationController: UINavigationController {
      An initializer that initializes the object with a rootViewController.
      - Parameter rootViewController: A UIViewController for the rootViewController.
      */
-    public override init(rootViewController: UIViewController) {
+	public override init(rootViewController: UIViewController) {
 		super.init(navigationBarClass: NavigationBar.self, toolbarClass: nil)
 		setViewControllers([rootViewController], animated: false)
 	}

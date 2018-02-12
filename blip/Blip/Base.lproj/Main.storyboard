@@ -622,8 +622,14 @@
                                                     <constraint firstAttribute="height" constant="100" id="ySv-8D-M7v"/>
                                                 </constraints>
                                             </imageView>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4XP-oO-cMV" userLabel="Rating">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4XP-oO-cMV" userLabel="Rating" customClass="CosmosView" customModule="Cosmos">
                                                 <rect key="frame" x="137.5" y="170" width="100" height="31"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="filledColor">
+                                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rating" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3jP-ja-e69">
                                                 <rect key="frame" x="158" y="208" width="59" height="21"/>
@@ -635,7 +641,7 @@
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Spent" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tFl-G1-K5C">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Earned" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tFl-G1-K5C">
                                                 <rect key="frame" x="300" y="208" width="50" height="21"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="50" id="9k4-ZZ-ywc"/>
@@ -655,7 +661,7 @@
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="15000 hr" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jar-gI-5mh" userLabel="TotalTime">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jar-gI-5mh" userLabel="TotalTime">
                                                 <rect key="frame" x="300" y="153" width="50" height="50"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="50" id="alA-aM-jEG"/>
@@ -675,10 +681,27 @@
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wc8-H1-2mJ">
-                                                <rect key="frame" x="8" y="28" width="57" height="30"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <state key="normal" title="Back"/>
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wc8-H1-2mJ" userLabel="Close Button" customClass="RaisedButton" customModule="Material">
+                                                <rect key="frame" x="25" y="45" width="24" height="24"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="4up-rZ-hWS"/>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="N6d-sa-Enx"/>
+                                                    <constraint firstAttribute="height" constant="40" id="ZiB-PC-FT8"/>
+                                                    <constraint firstAttribute="width" constant="40" id="gEz-TX-GfP"/>
+                                                </constraints>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="pulseColor">
+                                                        <color key="value" red="1" green="0.50962010619999998" blue="0.44240797749999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
+                                                        <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
+                                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="dismissButton:" destination="AQG-cB-ulg" eventType="touchUpInside" id="Uzv-Y2-2Yh"/>
                                                 </connections>
@@ -687,22 +710,21 @@
                                         <color key="backgroundColor" red="0.87196621190000001" green="0.44680542820000002" blue="0.38951410959999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="tFl-G1-K5C" secondAttribute="trailing" constant="25" id="03m-DK-FlY"/>
-                                            <constraint firstItem="4XP-oO-cMV" firstAttribute="width" secondItem="vdd-wD-gUK" secondAttribute="width" multiplier="100/375" id="2GZ-8Q-3to"/>
                                             <constraint firstItem="3jP-ja-e69" firstAttribute="centerX" secondItem="4XP-oO-cMV" secondAttribute="centerX" id="ARx-PR-1oA"/>
                                             <constraint firstItem="4XP-oO-cMV" firstAttribute="centerX" secondItem="vdd-wD-gUK" secondAttribute="centerX" id="DaA-x2-Mxb"/>
                                             <constraint firstItem="B4m-US-Lb2" firstAttribute="centerX" secondItem="vdd-wD-gUK" secondAttribute="centerX" id="Erd-6b-fp0"/>
                                             <constraint firstItem="Jar-gI-5mh" firstAttribute="centerX" secondItem="tFl-G1-K5C" secondAttribute="centerX" id="SdP-Ko-xVE"/>
                                             <constraint firstItem="Kdp-ql-a69" firstAttribute="centerX" secondItem="EDT-hv-GJ8" secondAttribute="centerX" id="Vyg-qv-jwY"/>
-                                            <constraint firstItem="4XP-oO-cMV" firstAttribute="top" secondItem="B4m-US-Lb2" secondAttribute="bottom" constant="10" id="avz-2g-ADS"/>
+                                            <constraint firstItem="4XP-oO-cMV" firstAttribute="top" secondItem="B4m-US-Lb2" secondAttribute="bottom" constant="13" id="avz-2g-ADS"/>
                                             <constraint firstItem="Jar-gI-5mh" firstAttribute="centerY" secondItem="Kdp-ql-a69" secondAttribute="centerY" id="dkq-44-FxI"/>
                                             <constraint firstItem="EDT-hv-GJ8" firstAttribute="leading" secondItem="vdd-wD-gUK" secondAttribute="leading" constant="25" id="eOA-yh-qwz"/>
                                             <constraint firstItem="B4m-US-Lb2" firstAttribute="top" secondItem="vdd-wD-gUK" secondAttribute="top" constant="60" id="ghS-hW-64v"/>
                                             <constraint firstItem="tFl-G1-K5C" firstAttribute="centerY" secondItem="3jP-ja-e69" secondAttribute="centerY" id="nDv-sz-Dsk"/>
                                             <constraint firstAttribute="height" constant="245" id="pLp-Tu-iD1"/>
                                             <constraint firstItem="EDT-hv-GJ8" firstAttribute="centerY" secondItem="3jP-ja-e69" secondAttribute="centerY" id="pUP-gE-x7e"/>
-                                            <constraint firstItem="3jP-ja-e69" firstAttribute="top" secondItem="4XP-oO-cMV" secondAttribute="bottom" constant="7" id="s5w-Vx-SQX"/>
-                                            <constraint firstItem="4XP-oO-cMV" firstAttribute="height" secondItem="vdd-wD-gUK" secondAttribute="height" multiplier="30/235" id="wKG-7X-ULf"/>
+                                            <constraint firstItem="3jP-ja-e69" firstAttribute="top" secondItem="4XP-oO-cMV" secondAttribute="bottom" constant="4" id="s5w-Vx-SQX"/>
                                             <constraint firstItem="tFl-G1-K5C" firstAttribute="top" secondItem="Jar-gI-5mh" secondAttribute="bottom" constant="5" id="xeB-ne-Kar"/>
+                                            <constraint firstItem="Wc8-H1-2mJ" firstAttribute="leading" secondItem="vdd-wD-gUK" secondAttribute="leading" constant="8" id="yQs-38-yey"/>
                                         </constraints>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L5w-uL-Vhk" customClass="RaisedButton" customModule="Material">
@@ -777,6 +799,7 @@
                             <constraint firstItem="vdd-wD-gUK" firstAttribute="width" secondItem="1XP-bO-CVs" secondAttribute="width" id="Irt-KZ-gOK"/>
                             <constraint firstItem="h0K-Eh-Gxr" firstAttribute="width" secondItem="1XP-bO-CVs" secondAttribute="width" id="ODd-pI-bfj"/>
                             <constraint firstItem="X89-wv-z2H" firstAttribute="width" secondItem="1XP-bO-CVs" secondAttribute="width" id="Ofy-og-mng"/>
+                            <constraint firstItem="93w-Dn-7Dp" firstAttribute="top" secondItem="Wc8-H1-2mJ" secondAttribute="top" constant="10" id="Yu4-JA-XXi"/>
                             <constraint firstItem="h0K-Eh-Gxr" firstAttribute="centerY" secondItem="1XP-bO-CVs" secondAttribute="centerY" id="ceK-cE-BAh"/>
                             <constraint firstItem="X89-wv-z2H" firstAttribute="centerX" secondItem="1XP-bO-CVs" secondAttribute="centerX" id="hPN-3t-YI1"/>
                             <constraint firstItem="L5w-uL-Vhk" firstAttribute="centerX" secondItem="1XP-bO-CVs" secondAttribute="centerX" id="i1d-O5-FKI"/>
@@ -788,6 +811,7 @@
                     <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="closeButton" destination="Wc8-H1-2mJ" id="poK-zA-eJI"/>
                         <outlet property="fullNameLabel" destination="C3O-Gj-0YA" id="9tO-qX-dh9"/>
                         <outlet property="gradientView" destination="h0K-Eh-Gxr" id="7f8-oK-f5i"/>
                         <outlet property="hireButton" destination="L5w-uL-Vhk" id="dIO-cz-tfG"/>
@@ -800,7 +824,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iQR-ZC-Ehv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-690" y="600"/>
+            <point key="canvasLocation" x="-690.39999999999998" y="599.55022488755628"/>
         </scene>
         <!--rootAfterLogin-->
         <scene sceneID="7YW-k3-JPG">
@@ -1173,9 +1197,6 @@
                         <outlet property="rootView" destination="OyW-R3-gLA" id="HGf-cT-Tdd"/>
                         <outlet property="scheduleJob" destination="oGm-cb-oQ3" id="YkY-u1-lCz"/>
                         <outlet property="submitJobButton" destination="jX5-Cm-qNt" id="bRM-7p-lPT"/>
-                        <segue destination="J0O-VT-eAy" kind="show" identifier="goToJobOwnerStartJob" id="rdU-Bj-zog">
-                            <nil key="action"/>
-                        </segue>
                         <segue destination="BjN-Qk-ddr" kind="show" identifier="endJobFromSellVC" id="dN8-sI-vgH">
                             <nil key="action"/>
                         </segue>
@@ -1695,71 +1716,10 @@
             </objects>
             <point key="canvasLocation" x="-3930.4000000000001" y="-101.19940029985008"/>
         </scene>
-        <!--Job Owner Start Job-->
-        <scene sceneID="vEu-1G-3HY">
-            <objects>
-                <viewController id="J0O-VT-eAy" customClass="JobOwnerStartJob" customModule="Blip" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="FS7-JN-scI"/>
-                        <viewControllerLayoutGuide type="bottom" id="6VY-vo-YTC"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="rfA-ol-P6O" customClass="PastelView" customModule="Pastel">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ov2-0C-Yb6" customClass="RaisedButton" customModule="Material">
-                                <rect key="frame" x="65.5" y="284" width="244" height="40"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
-                                <state key="normal" title="Start Job">
-                                    <color key="titleColor" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="title" value="Start Job"/>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
-                                        <color key="value" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
-                                        <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="pulseColor">
-                                        <color key="value" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="StartJobPressed:" destination="J0O-VT-eAy" eventType="touchUpInside" id="pnX-KP-Zow"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Press start to begin the job" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vrq-0i-4wk">
-                                <rect key="frame" x="65" y="104" width="250" height="76"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="22"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" red="0.47450980539999998" green="0.8392156959" blue="0.97647058959999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="ov2-0C-Yb6" firstAttribute="height" secondItem="rfA-ol-P6O" secondAttribute="height" multiplier="0.06" id="Ule-qP-k2P"/>
-                            <constraint firstItem="6VY-vo-YTC" firstAttribute="top" secondItem="ov2-0C-Yb6" secondAttribute="bottom" constant="343" id="ZkI-8Q-ikQ"/>
-                            <constraint firstItem="ov2-0C-Yb6" firstAttribute="width" secondItem="rfA-ol-P6O" secondAttribute="width" multiplier="0.65" id="oH8-PD-fRh"/>
-                            <constraint firstItem="ov2-0C-Yb6" firstAttribute="centerX" secondItem="rfA-ol-P6O" secondAttribute="centerX" id="t7a-q0-UVW"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="EZ7-1N-rw9"/>
-                    </view>
-                    <connections>
-                        <outlet property="StartJob" destination="ov2-0C-Yb6" id="Vv9-6r-OHc"/>
-                        <outlet property="gradientView" destination="rfA-ol-P6O" id="1dy-aE-uKO"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="kXJ-6G-Pdi" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1474.4000000000001" y="-980.05997001499259"/>
-        </scene>
         <!--startJob-->
         <scene sceneID="S1K-Sq-4Wc">
             <objects>
-                <viewController storyboardIdentifier="endJobNavigation" title="startJob" useStoryboardIdentifierAsRestorationIdentifier="YES" id="4Vg-fc-iNc" customClass="endJobNavigation" customModule="Blip" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="endJobNavigation" title="startJob" useStoryboardIdentifierAsRestorationIdentifier="YES" id="4Vg-fc-iNc" customClass="StartJob" customModule="Blip" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="5Tb-aw-Lzz"/>
                         <viewControllerLayoutGuide type="bottom" id="wfq-D0-qlh"/>
@@ -1850,7 +1810,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Iq3-4q-DQe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="218" y="-450"/>
+            <point key="canvasLocation" x="-761" y="-471"/>
         </scene>
         <!--feedbackController-->
         <scene sceneID="5Sg-Uy-Eog">
