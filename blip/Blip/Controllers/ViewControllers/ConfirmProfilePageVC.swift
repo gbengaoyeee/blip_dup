@@ -14,6 +14,7 @@ import Lottie
 import Pastel
 import Kingfisher
 import Alamofire
+import Cosmos
 
 class ConfirmProfilePageVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -108,12 +109,10 @@ class ConfirmProfilePageVC: UIViewController, UIImagePickerControllerDelegate, U
     func prepareInformation() {
         if let jobAccepter = self.jobAccepter{
             self.fullNameLabel.text = jobAccepter.name
-            self.ratingAnimationView.handledAnimation(Animation: ratingAnimation)
-            ratingAnimation.play(toProgress: (jobAccepter.rating)!, withCompletion: nil)
+            self.ratingAnimationView..rating = Double(jobAccepter.rating)
         }else{
             self.fullNameLabel.text = currUser!.name
-            self.ratingAnimationView.handledAnimation(Animation: ratingAnimation)
-            ratingAnimation.play(toProgress: (currUser?.rating)!, withCompletion: nil)
+            self.ratingAnimationView.rating = Double(currUser?.rating!)
         }
         
     }

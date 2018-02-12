@@ -26,9 +26,9 @@ target 'Blip' do
   pod 'RevealingSplashView'
   pod 'Firebase/Storage'
   pod 'CHIPageControl/Fresno'
-  pod 'MapboxNavigation'
   pod 'NotificationBannerSwift'
-  pod "Pulsator"
+  pod 'Pulsator'
+  pod 'Cosmos'
 
   target 'BlipTests' do
     inherit! :search_paths

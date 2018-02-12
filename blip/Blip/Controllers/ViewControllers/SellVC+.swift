@@ -111,7 +111,7 @@ extension SellVC: Constrainable{
                 
                 self.service.getJobAcceptedByCurrentUser(completion: { (job) in
                     self.acceptedJob = job
-                    self.performSegue(withIdentifier: "goToStartJob", sender: self)
+                    self.performSegue(withIdentifier: "startJobFromSellVC", sender: self)
                 })
                 
             }

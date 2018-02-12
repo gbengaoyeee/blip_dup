@@ -131,7 +131,7 @@ class ServiceCalls{
         userRef.child(emailHash).observeSingleEvent(of: .value) { (hash) in
             
             if let acceptedHash = hash.value as? [String: AnyObject]{
-                
+                print(acceptedHash)
                 completion((acceptedHash["latestPostAccepted"] as? String)!)
             }
         }

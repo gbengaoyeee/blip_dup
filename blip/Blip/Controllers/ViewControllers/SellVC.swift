@@ -150,7 +150,7 @@ class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, 
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "goToStartJob"{
+        if segue.identifier == "startJobFromSellVC"{
             if let dest = segue.destination as? StartJobNavigation{
                 dest.job = self.acceptedJob
             }
@@ -560,7 +560,7 @@ extension SellVC {
                     if let err = response.error{
                         print(err.localizedDescription)
                     }else{
-                        self.performSegue(withIdentifier: "goToStartJob", sender: nil)
+                        self.performSegue(withIdentifier: "startJobFromSellVC", sender: nil)
                     }
 
                 })
