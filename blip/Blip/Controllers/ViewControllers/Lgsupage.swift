@@ -184,7 +184,7 @@ class Lgsupage: UIViewController {
         dbRef.child("Users").child(emailHash).child("Name").setValue("\(user.displayName!)")
         dbRef.child("Users").child(emailHash).child("Email").setValue(user.email)
         dbRef.child("Users").child(emailHash).child("Rating").setValue(rating)
-        dbRef.child("Users").child(emailHash).child("Ratings Sum").setValue(0)
+        dbRef.child("Users").child(emailHash).child("ratingSum").setValue(5.0)
         dbRef.child("Users").child(emailHash).updateChildValues(token)
     }
     

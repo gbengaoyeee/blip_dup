@@ -74,7 +74,7 @@ PODS:
   - Kingfisher (4.6.1)
   - leveldb-library (1.20)
   - lottie-ios (2.5.0)
-  - Mapbox-iOS-SDK (3.7.3)
+  - Mapbox-iOS-SDK (3.7.4)
   - MarqueeLabel/Swift (3.1.4)
   - Material (2.13.6):
     - Material/Core (= 2.13.6)
@@ -149,7 +149,7 @@ SPEC CHECKSUMS:
   Kingfisher: 1f9157d9c02b380cbd0b7cc890161195164eb634
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   lottie-ios: d699fdee68d7b63e721d949388b015fef1aaa4ac
-  Mapbox-iOS-SDK: 5304bd9605babe6da9050ea4cb23c1671420b737
+  Mapbox-iOS-SDK: fb994b9e46df7b909f58dd0c5df5a44f58cdab04
   MarqueeLabel: bf768455fe88d427f71476ebb23f9092b660f40b
   Material: ef704dcc1bced32ab7c91ece2ba734da557e3f36
   Motion: 9f74d115d7f72bb5380a8e3cde2f8a1fc898ac36
@@ -166,4 +166,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 6915c5530f00927f757e1e4c25dd7b479a13aaf8
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.3.1

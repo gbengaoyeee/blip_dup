@@ -80,6 +80,8 @@
 		3B5373A1202EC2210020F3B1 /* CustomUIBorderControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537394202EC2210020F3B1 /* CustomUIBorderControls.swift */; };
 		3B5373A2202EC2210020F3B1 /* ShadowsToButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537395202EC2210020F3B1 /* ShadowsToButtons.swift */; };
 		3B5373B5202EC2E40020F3B1 /* StartJob.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5373AD202EC2E40020F3B1 /* StartJob.swift */; };
+		5F33377820332B0B00B83E01 /* RatingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F33377720332B0B00B83E01 /* RatingViewController.xib */; };
+		5F33377A20332B4600B83E01 /* RatingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F33377920332B4600B83E01 /* RatingViewController.swift */; };
 		E44A286AF55A28A06A305841 /* Pods_BlipTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F498B34F0F7DEA567870388 /* Pods_BlipTests.framework */; };
 		F3F5081E2031F77E00252E65 /* Century Gothic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B537340202EBD4C0020F3B1 /* Century Gothic.ttf */; };
 		F3F5081F2031F78300252E65 /* CenturyGothicBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B53733F202EBD4C0020F3B1 /* CenturyGothicBold.ttf */; };
@@ -195,6 +197,8 @@
 		3B537395202EC2210020F3B1 /* ShadowsToButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShadowsToButtons.swift; sourceTree = "<group>"; };
 		3B5373AD202EC2E40020F3B1 /* StartJob.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartJob.swift; sourceTree = "<group>"; };
 		52A65DC4170733BA25C15CE1 /* Pods-Blip.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Blip.release.xcconfig"; path = "Pods/Target Support Files/Pods-Blip/Pods-Blip.release.xcconfig"; sourceTree = "<group>"; };
+		5F33377720332B0B00B83E01 /* RatingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RatingViewController.xib; sourceTree = "<group>"; };
+		5F33377920332B4600B83E01 /* RatingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingViewController.swift; sourceTree = "<group>"; };
 		97BB13E391BCE3E8ED7A9756 /* Pods-BlipUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlipUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BlipUITests/Pods-BlipUITests.release.xcconfig"; sourceTree = "<group>"; };
 		CC3B578818C69E894B2F65CD /* Pods_BlipUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BlipUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA08477A131A88FA8EB584E0 /* Pods-BlipTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlipTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BlipTests/Pods-BlipTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -414,6 +418,8 @@
 				3B537394202EC2210020F3B1 /* CustomUIBorderControls.swift */,
 				3B537391202EC2200020F3B1 /* CustomUIButton.swift */,
 				3B53738D202EC2200020F3B1 /* GradientView.swift */,
+				5F33377920332B4600B83E01 /* RatingViewController.swift */,
+				5F33377720332B0B00B83E01 /* RatingViewController.xib */,
 				3B537393202EC2210020F3B1 /* PopUpJobView.xib */,
 				3B53738B202EC2200020F3B1 /* RatingAnimationExtension.swift */,
 				3B537395202EC2210020F3B1 /* ShadowsToButtons.swift */,
@@ -572,6 +578,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F3F5081E2031F77E00252E65 /* Century Gothic.ttf in Resources */,
+				5F33377820332B0B00B83E01 /* RatingViewController.xib in Resources */,
 				F3F508202031F78C00252E65 /* lgsu.mp4 in Resources */,
 				3B53735A202EBE310020F3B1 /* check.json in Resources */,
 				F3F5081F2031F78300252E65 /* CenturyGothicBold.ttf in Resources */,
@@ -831,6 +838,7 @@
 				3B537398202EC2210020F3B1 /* RatingAnimationExtension.swift in Sources */,
 				3B53737D202EC0DC0020F3B1 /* AddNameVC.swift in Sources */,
 				3B537335202EBA6B0020F3B1 /* LocationManager.swift in Sources */,
+				5F33377A20332B4600B83E01 /* RatingViewController.swift in Sources */,
 				3B5373A2202EC2210020F3B1 /* ShadowsToButtons.swift in Sources */,
 				3B53739E202EC2210020F3B1 /* CustomUIButton.swift in Sources */,
 				3B537376202EC0DC0020F3B1 /* CustomAPIAdapter.swift in Sources */,

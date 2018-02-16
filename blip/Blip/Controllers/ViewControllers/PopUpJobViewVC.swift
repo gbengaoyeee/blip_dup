@@ -14,7 +14,7 @@ import Alamofire
 import Material
 import Kingfisher
 
-class PopUpJobViewVC: UIView, CLLocationManagerDelegate {
+class PopUpJobViewVC: UIViewController {
     
 
     @IBOutlet weak var jobDescription: UILabel!
@@ -26,27 +26,20 @@ class PopUpJobViewVC: UIView, CLLocationManagerDelegate {
     var job: Job!
     private let service: ServiceCalls = ServiceCalls()
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.prepareNib()
     }
     
-    func setJob(job: Job){
-        self.job = job
-        self.fullNameLabel.text = job.jobOwnerFullName
-    }
-    
-    func getProfilePicture(job: Job){
+    func prepareNib(){
         
+        self.jobTitle.text = job.title
+        self.jobDescription.text = job.description
+        self.fullNameLabel.text = job.jobOwnerFullName
         service.getUserInfo(hash: job.jobOwnerEmailHash) { (user) in
             self.profilePicture.cornerRadius = self.profilePicture.frame.size.height/2
             self.profilePicture.kf.setImage(with: user?.photoURL)
         }
-    }
-    
-    func setupScrollView(job: Job){
-        
-        self.jobTitle.text = job.title
-        self.jobDescription.text = job.description
     }
 
 }

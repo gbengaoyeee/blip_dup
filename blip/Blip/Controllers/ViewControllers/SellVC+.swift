@@ -24,6 +24,7 @@ import NotificationBannerSwift
 extension SellVC: Constrainable{
     
     ///////////////////////// Functions that enable stripe payments go here /////////////////////////////
+
     func paymentContext(_ paymentContext: STPPaymentContext, didFailToLoadWithError error: Error) {
         print(error)
         
@@ -80,68 +81,20 @@ extension SellVC: Constrainable{
     //Prepares the map by adding annotations for jobs from firebase, and setting the mapview.
     @objc func prepareMap(){
         
-        
-        
-        service.checkUserStatus { (code) in
-            if code == 0{
-                
-                self.service.getJobsFromFirebase(MapView: self.MapView) { annotationDict  in
-                    self.allAnnotations = annotationDict
-                }
-            }
-            else if code == 6{
-                
-                self.service.getJobAcceptedByCurrentUser(completion: { (job) in
-                    self.acceptedJob = job
-                    self.performSegue(withIdentifier: "endJobFromSellVC", sender: self)
-                })
-                
-            }
-
-            else if code == 7{
-                
-                self.service.getJobAcceptedByCurrentUser(completion: { (job) in
-                    self.acceptedJob = job
-                    self.performSegue(withIdentifier: "startJobFromSellVC", sender: self)
-                })
-                
-            }
-                
-            else if code == 8{
-                
-                self.service.getJobAcceptedByCurrentUser(completion: { (job) in
-                    self.acceptedJob = job
-                    self.performSegue(withIdentifier: "startJobFromSellVC", sender: self)
-                })
-                
-            }
-            
-            else if code == 2{
-                
-                self.setStateOnJobStart()
-            }
-            
-            else if code == 3{
-                
-                self.setStateWhenAccepterIsReady()
-            }
-            
-            else if code == 4{
-                
-                self.setStateForJobWasAccepted()
-            }
-            
-            else if code == 1{
-                
-                self.setStateOnJobEnd()
-            }
-        }
-        
         service.setAppState { (code, jobObject) in
+            
             
             if let stateCode = code{
                 
-                if stateCode == 1{
+                if stateCode == 0{
+                    
+                    self.service.getJobsFromFirebase(MapView: self.MapView) { annotationDict  in
+                        self.allAnnotations = annotationDict
+                    }
+                }
+                
+                
+                else if stateCode == 1{
                     
                     self.setStateOnJobStart()
                 }
@@ -159,6 +112,50 @@ extension SellVC: Constrainable{
                 else if stateCode == 3{
                     
                     self.setStateForJobWasAccepted()
+                }
+                
+                else if stateCode == 6{
+                    
+                    //CURRENT USER CANCELLED HIS POST
+                }
+                
+                else if stateCode == 7{
+                    
+                    // when accepter completed the job
+                }
+                
+                else if stateCode == 8{
+                    
+                    self.service.getJobAcceptedByCurrentUser(completion: { (job) in
+                        self.acceptedJob = job
+                        print("came in here")
+                        self.removedBlurredLoader()
+                        self.performSegue(withIdentifier: "endJobFromSellVC", sender: self)
+                    })
+                }
+                
+                else if stateCode == 9{
+                    
+                    self.service.getJobAcceptedByCurrentUser(completion: { (job) in
+                        self.acceptedJob = job
+                        
+                        if !self.isBlurredLoaderPresent(){
+                            self.prepareAndAddBlurredLoader()
+                        }
+                    })
+                }
+                
+                else if stateCode == 10{
+                    
+                    self.service.getJobAcceptedByCurrentUser(completion: { (job) in
+                        self.acceptedJob = job
+                        self.preparePopupForJobAccepting(job: self.acceptedJob)
+                    })
+                }
+                
+                else if stateCode == 11{
+                    
+                    // accepter cancelled the job
                 }
             }
             
@@ -199,6 +196,42 @@ extension SellVC: Constrainable{
                 }
             })
         }
+    }
+    
+    func preparePopupForJobAccepting(job: Job){
+        
+        let acceptPopup = PopUpJobViewVC(nibName: "PopUpJobView", bundle: nil)
+        
+        acceptPopup.job = job
+        let popup = PopupDialog(viewController: acceptPopup, buttonAlignment: .horizontal, transitionStyle: .bounceDown, gestureDismissal: false)
+        
+        let startButton = DefaultButton(title: "Start Job") {
+            popup.dismiss()
+            self.prepareAndAddBlurredLoader()
+            self.service.accepterReady(job: job, completion: { (ownerDeviceToken) in
+                //Send notification to owner
+                let title = "Blip"
+                let displayName = (Auth.auth().currentUser?.displayName)!
+                let body = "\(displayName) is ready to begin your task"
+                let device = ownerDeviceToken!
+                var headers: HTTPHeaders = HTTPHeaders()
+                headers = ["Content-Type":"application/json", "Authorization":"key=\(AppDelegate.SERVERKEY)"]
+                
+                let notification = ["to":"\(device)", "notification":["body":body, "title":title, "badge":1, "sound":"default"]] as [String : Any]
+                
+                Alamofire.request(AppDelegate.NOTIFICATION_URL as URLConvertible, method: .post as HTTPMethod, parameters: notification, encoding: JSONEncoding.default, headers: headers).responseJSON(completionHandler: { (response) in
+                    
+                    if let err = response.error{
+                        print(err.localizedDescription)
+                    }
+                })
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "accepterReadyNotification"), object: nil)
+            })
+        }
+        
+        popup.addButton(startButton)
+        
+        self.present(popup, animated: true, completion: nil)
     }
     
     func setStateWhenAccepterIsReady(){
@@ -318,6 +351,7 @@ extension SellVC: Constrainable{
                             }
                         })
                         
+                        self.showRatingPopup()
                         
                     }
                     else{
@@ -328,6 +362,39 @@ extension SellVC: Constrainable{
                 })
             })
         }
+    }
+    
+    func showRatingPopup(animated: Bool = true) {
+        
+        // Create a custom view controller
+        let ratingVC = RatingViewController(nibName: "RatingViewController", bundle: nil)
+        // Create the dialog
+        let popup = PopupDialog(viewController: ratingVC, buttonAlignment: .horizontal, transitionStyle: .bounceDown, gestureDismissal: true)
+        
+        // Create first button
+        let buttonOne = CancelButton(title: "Cancel", height: 60) {
+            popup.dismiss()
+        }
+        
+        // Create second button
+        let buttonTwo = DefaultButton(title: "Rate", height: 60) {
+            let cosmosRating = ratingVC.cosmosStarRating.rating
+            if let review = ratingVC.commentTextField.text{
+                self.service.setRatingAndReview(rating: cosmosRating, review: review, hash: self.accepterHash!)
+                popup.dismiss()
+            }
+            else{
+                self.service.setRatingAndReview(rating: cosmosRating, review: "", hash: self.accepterHash!)
+                popup.dismiss()
+            }
+            
+        }
+        
+        // Add buttons to dialog
+        popup.addButtons([buttonOne, buttonTwo])
+        
+        // Present dialog
+        present(popup, animated: animated, completion: nil)
     }
     
     @objc func updateAccepterLocations(){

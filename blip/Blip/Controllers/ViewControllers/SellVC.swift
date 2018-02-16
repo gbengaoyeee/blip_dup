@@ -135,7 +135,7 @@ class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, 
         if (connectivity.connection == .wifi || connectivity.connection == .cellular){
             self.internet = true
             DispatchQueue.main.async {
-                self.prepareMap()   // When it regains connection try to prepare map on main thread
+//                self.prepareMap()   // When it regains connection try to prepare map on main thread
                 print("REGAINED CONNECTION")
             }
             
@@ -496,6 +496,16 @@ extension SellVC {
         }
     }
     
+    func isBlurredLoaderPresent() -> Bool{
+        
+        if let loadingViewAfterStripe = self.view.viewWithTag(100){
+            return true
+        }
+        else{
+            return false
+        }
+    }
+    
     func prepareAndAddBlurredLoader(){
         
         let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
@@ -548,7 +558,7 @@ extension SellVC {
                     if let err = response.error{
                         print(err.localizedDescription)
                     }else{
-                        self.performSegue(withIdentifier: "startJobFromSellVC", sender: nil)
+                        self.preparePopupForJobAccepting(job: job)
                     }
 
                 })
@@ -562,6 +572,7 @@ extension SellVC {
         popup.addButtons([buttonTwo, buttonOne])
         return popup
     }
+
     
     //Resets text fields on job form after it is no longer needed.
     func resetTextFields(){
