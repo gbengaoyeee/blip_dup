@@ -541,7 +541,9 @@ extension SellVC {
         }
         
         
-        let buttonTwo = DefaultButton(title: "Accept job", dismissOnTap: true) {
+        let buttonTwo = DefaultButton(title: "Accept job") {
+            
+            popup.dismiss()
             self.service.acceptPressed(job: job, user: Auth.auth().currentUser!) { (deviceToken) in
                 let title = "Blip"
                 let displayName = (Auth.auth().currentUser?.displayName)!

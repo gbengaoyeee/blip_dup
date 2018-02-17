@@ -206,6 +206,7 @@ extension SellVC: Constrainable{
         let popup = PopupDialog(viewController: acceptPopup, buttonAlignment: .horizontal, transitionStyle: .bounceDown, gestureDismissal: false)
         
         let startButton = DefaultButton(title: "Start Job") {
+            
             popup.dismiss()
             self.prepareAndAddBlurredLoader()
             self.service.accepterReady(job: job, completion: { (ownerDeviceToken) in
