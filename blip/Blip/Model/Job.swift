@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import CoreLocation
 import Firebase
+import MapKit
 
 
 class Job{
@@ -30,6 +31,10 @@ class Job{
     var latitude: Double!
     var longitude: Double!
 
+    
+    var placemark: CLPlacemark?
+    var address: String!
+    var addressDict:[String:String] = [:]
 
     init?(snapshot: DataSnapshot) {
         guard !snapshot.key.isEmpty,
@@ -59,9 +64,53 @@ class Job{
         self.maxTime = Double(maxTime)!
         self.location = CLLocation(latitude: latitude, longitude: longitude)
 
+        let geocoder = CLGeocoder()
+        geocoder.reverseGeocodeLocation(self.location, completionHandler: { (placemarks, error) in
+            if(error == nil){
+                let placeMark = placemarks?[0]
+                self.placemark = placeMark
+                self.address = self.parseAddress(placemark: self.placemark!)
+                print("ADDRESS: ", self.address)
+            }
+        })
     }
     
-    
+
+    func parseAddress(placemark: CLPlacemark)->String{
+        
+        // put a space between "4" and "Melrose Place"
+        let firstSpace = (placemark.subThoroughfare != nil && placemark.thoroughfare != nil) ? " " : ""
+        
+        // put a comma between street and city/state
+        let comma = (placemark.subThoroughfare != nil || placemark.thoroughfare != nil) && (placemark.subAdministrativeArea != nil || placemark.administrativeArea != nil) ? ", " : ""
+        
+        // put a space between "Washington" and "DC"
+        let secondSpace = (placemark.subAdministrativeArea != nil && placemark.administrativeArea != nil) ? " " : ""
+        let thirdspace = (placemark.postalCode != nil) ? " " : ""
+        
+        
+        let addressLine = String(
+            format:"%@%@%@%@%@%@%@%@%@",
+            // street number
+            placemark.subThoroughfare ?? "",
+            firstSpace,
+            // street name
+            placemark.thoroughfare ?? "",
+            comma,
+            // city
+            placemark.locality ?? "",
+            secondSpace,
+            // state
+            placemark.administrativeArea ?? "",
+            thirdspace,
+            //postalcode
+            placemark.postalCode ?? ""
+        )
+        
+        self.addressDict["address"] = addressLine
+        print(self.addressDict)
+        return addressLine
+    }
 
 }
 

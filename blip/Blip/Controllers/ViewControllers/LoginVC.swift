@@ -30,6 +30,10 @@ class LoginVC: UIViewController {
     let animationView = LOTAnimationView(name: "outline_user")
     let animationViewTwo = LOTAnimationView(name: "simple_outline_lock_")
     
+    let userDefault = UserDefaults.standard
+    var userCredArray:[String]!
+    let loginCredentials = "loginCredentials"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         prepareTitleTextField()
@@ -51,6 +55,14 @@ class LoginVC: UIViewController {
         self.loginButtonView.makeButtonAppear()
         self.forgetPassword.makeButtonAppear()
         gradientViewLogin.startAnimation()
+        
+        if let userCred = userDefault.value(forKey: self.loginCredentials) as? [String]{
+            if userCred.count == 2{
+                self.emailTF.text = userCred[0]
+                self.passwordTF.text = userCred[1]
+                print(userCred)
+            }
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -132,6 +144,11 @@ class LoginVC: UIViewController {
                     let token = ["currentDevice": AppDelegate.DEVICEID]
                     ref.updateChildValues(token)
                     self.loginCredentialsCorrectAnimation()
+                    // save user credentials into UserDefaults
+                    self.userCredArray = []
+                    self.userCredArray.append(self.emailTF.text!)
+                    self.userCredArray.append(self.passwordTF.text!)
+                    self.userDefault.setValue(self.userCredArray, forKey: self.loginCredentials)
                 }
             })
         }
@@ -179,6 +196,11 @@ class LoginVC: UIViewController {
                     let token = ["currentDevice": AppDelegate.DEVICEID]
                     ref.updateChildValues(token)
                     self.loginCredentialsCorrectAnimation()
+                    // save user credentials into UserDefaults
+                    self.userCredArray = []
+                    self.userCredArray.append(self.emailTF.text!)
+                    self.userCredArray.append(self.passwordTF.text!)
+                    self.userDefault.setValue(self.userCredArray, forKey: self.loginCredentials)
                 }
             })
         }
