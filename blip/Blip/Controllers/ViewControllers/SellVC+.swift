@@ -19,7 +19,7 @@ import Stripe
 import SHSearchBar
 import Kingfisher
 import NotificationBannerSwift
-
+import AZDialogView
 
 extension SellVC: Constrainable{
     
@@ -81,16 +81,14 @@ extension SellVC: Constrainable{
     //Prepares the map by adding annotations for jobs from firebase, and setting the mapview.
     @objc func prepareMap(){
         
-        service.setAppState { (code, jobObject) in
+        service.setAppState(MapView: self.MapView) { (code, jobObject, annotations) in
             
             
             if let stateCode = code{
                 
                 if stateCode == 0{
-                    
-                    self.service.getJobsFromFirebase(MapView: self.MapView) { annotationDict  in
-                        self.allAnnotations = annotationDict
-                    }
+                    print("added annotation")
+                    self.allAnnotations = annotations
                 }
                 
                 
@@ -200,16 +198,32 @@ extension SellVC: Constrainable{
     
     func preparePopupForJobAccepting(job: Job){
         
-        let acceptPopup = PopUpJobViewVC(nibName: "PopUpJobView", bundle: nil)
+        let dialogController = AZDialogViewController(title: job.title,
+                                                      message: job.description)
         
-        acceptPopup.job = job
-        let popup = PopupDialog(viewController: acceptPopup, buttonAlignment: .horizontal, transitionStyle: .bounceDown, gestureDismissal: false)
+        dialogController.showSeparator = true
         
-        let startButton = DefaultButton(title: "Start Job") {
+        dialogController.dismissDirection = .bottom
+        
+        dialogController.imageHandler = { (imageView) in
             
-            popup.dismiss()
-            self.prepareAndAddBlurredLoader()
-            self.service.accepterReady(job: job, completion: { (ownerDeviceToken) in
+            self.service.getUserInfo(hash: job.jobOwnerEmailHash, completion: { (user) in
+                
+                if let blipUser = user{
+                    imageView.kf.setImage(with: blipUser.photoURL)
+                    imageView.contentMode = .scaleAspectFill
+                }
+            })
+            
+            
+            return true
+        }
+        
+        dialogController.addAction(AZDialogAction(title: "Start Job", handler: { [weak self] (dialog) -> (Void) in
+            
+            dialogController.dismiss()
+            self?.prepareAndAddBlurredLoader()
+            self?.service.accepterReady(job: job, completion: { (ownerDeviceToken) in
                 //Send notification to owner
                 let title = "Blip"
                 let displayName = (Auth.auth().currentUser?.displayName)!
@@ -228,11 +242,26 @@ extension SellVC: Constrainable{
                 })
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "accepterReadyNotification"), object: nil)
             })
+            
+        }))
+        
+        dialogController.buttonStyle = { (button,height,position) in
+            
+            button.backgroundColor = #colorLiteral(red: 0.9372549057, green: 0.3490196168, blue: 0.1921568662, alpha: 1)
+            button.setTitleColor(UIColor.white, for: [])
+            button.layer.masksToBounds = true
+            button.tintColor = .white
         }
         
-        popup.addButton(startButton)
+        dialogController.blurBackground = true
+        dialogController.blurEffectStyle = .dark
         
-        self.present(popup, animated: true, completion: nil)
+        
+        
+        dialogController.dismissWithOutsideTouch = false
+        
+        dialogController.show(in: self)
+        
     }
     
     func setStateWhenAccepterIsReady(){

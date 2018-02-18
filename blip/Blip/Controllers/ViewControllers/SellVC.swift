@@ -559,10 +559,10 @@ extension SellVC {
                     
                     if let err = response.error{
                         print(err.localizedDescription)
-                    }else{
+                    }
+                    else{
                         self.preparePopupForJobAccepting(job: job)
                     }
-
                 })
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "acceptedNotification"), object: nil)
                 
