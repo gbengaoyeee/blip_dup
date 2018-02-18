@@ -29,6 +29,7 @@ target 'Blip' do
   pod 'NotificationBannerSwift'
   pod 'Pulsator'
   pod 'Cosmos'
+  pod 'AZDialogView'
 
   target 'BlipTests' do
     inherit! :search_paths
