@@ -50,7 +50,6 @@ class AppFABMenuController: FABMenuController, STPPaymentContextDelegate{
         prepareProfilePageFabMenuItem()
         preparePaymentMethodsItem()
         prepareFABMenu()
-        print("WOOOOOO")
         
     }
 }
@@ -151,12 +150,12 @@ extension AppFABMenuController {
     @objc
     open func fabMenuWillOpen(fabMenu: FABMenu) {
         fabMenu.fabButton?.animate(.rotate(0))
-        service.getUserInfo(hash: service.emailHash) { (currUser) in
-            self.currUser = currUser!
-            print("USER",currUser)
-            print("fabMenuWillOpen")
-        }
-        
+//        service.getUserInfo(hash: service.emailHash) { (currUser) in
+//            self.currUser = currUser!
+//            print("USER",currUser)
+//            
+//        }
+        print("fabMenuWillOpen")
     }
     
     @objc

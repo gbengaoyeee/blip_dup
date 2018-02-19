@@ -9,7 +9,8 @@
 import UIKit
 import Firebase
 
-class BlipUser {
+class BlipUser{
+    
     var userEmailHash:String?
     var email:String?
     var name: String?
@@ -49,5 +50,7 @@ class BlipUser {
             self.completedJobs = userval["CompletedJobs"] as? [String:AnyObject]
         }
     }
+
+    
 }
 

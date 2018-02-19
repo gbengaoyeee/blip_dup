@@ -13,6 +13,7 @@ import Kingfisher
 import Material
 import PopupDialog
 import Alamofire
+import MapKit
 
 class StartJob: UIViewController {
 
@@ -87,6 +88,13 @@ class StartJob: UIViewController {
 //        })
 //    }
     
-    
+    func getDirections(job: Job){
+        let pm = MKPlacemark(coordinate: job.location.coordinate)
+        let mapItem = MKMapItem(placemark: pm)
+        mapItem.name = job.address
+        let launchOptions = [MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving]
+        mapItem.openInMaps(launchOptions: launchOptions)
+        
+    }
     
 }
