@@ -41,6 +41,7 @@ class ServiceCalls{
             print("A child was added", data.key)
             var dataDict = data.value as? [String: Any]
             
+            
             data.ref.observe(.childAdded, with: { (addedKey) in
                 
                 let job = Job(snapshot: data)
@@ -72,7 +73,7 @@ class ServiceCalls{
                     }
                 }
                     
-                else if data.hasChild("isTakenBy") && dataDict!["isTakenBy"] as? String == self.emailHash{
+                else if dataDict!["isTakenBy"] as? String == self.emailHash{
                     
                     print(addedKey.key, "This is the added key for current user accepted this post", addedKey.value as? String)
                     
@@ -100,29 +101,35 @@ class ServiceCalls{
                 
                 else{
                     
-                    print("This is the added job when user hasnt posted nor accepted.", addedKey.key)
-                    
-                    var annotationDict: [String:CustomMGLAnnotation] = [:]
-                    let job = Job(snapshot: data)
-                    // check if the curr job snap is not curr user's and also if the job is not accepted
-                    if (job?.jobOwnerEmailHash != self.emailHash && !(data.hasChild("isTakenBy"))){
+                    if let completed = dataDict!["completed"] as? Bool{
                         
-                        let jobPosterRef = self.userRef.child((job?.jobOwnerEmailHash)!)
-                        jobPosterRef.observeSingleEvent(of: .value, with: { (snapshot2) in
-                            let userVal = snapshot2.value as? [String:AnyObject]
-                            job?.jobOwnerRating = userVal!["Rating"] as? Float
-                            job?.jobOwnerPhotoURL = URL(string: (userVal!["photoURL"] as? String)!)
+                        if !completed{
                             
-                            let point = CustomMGLAnnotation()
-                            point.job = job
-                            point.coordinate = (job?.location.coordinate)!
-                            point.title = job?.title
-                            point.subtitle = ("$"+"\((job?.wage_per_hour)!)"+"/Hour")
-                            point.photoURL = job?.jobOwnerPhotoURL
-                            MapView.addAnnotation(point)
-                            annotationDict[(job?.jobID)!] = point
-                            completion(0, nil, annotationDict)
-                        })
+                            print("This is the added job when user hasnt posted nor accepted.", addedKey.key)
+                            
+                            var annotationDict: [String:CustomMGLAnnotation] = [:]
+                            let job = Job(snapshot: data)
+                            // check if the curr job snap is not curr user's and also if the job is not accepted
+                            if (job?.jobOwnerEmailHash != self.emailHash && !(data.hasChild("isTakenBy"))){
+                                
+                                let jobPosterRef = self.userRef.child((job?.jobOwnerEmailHash)!)
+                                jobPosterRef.observeSingleEvent(of: .value, with: { (snapshot2) in
+                                    let userVal = snapshot2.value as? [String:AnyObject]
+                                    job?.jobOwnerRating = userVal!["Rating"] as? Float
+                                    job?.jobOwnerPhotoURL = URL(string: (userVal!["photoURL"] as? String)!)
+                                    
+                                    let point = CustomMGLAnnotation()
+                                    point.job = job
+                                    point.coordinate = (job?.location.coordinate)!
+                                    point.title = job?.title
+                                    point.subtitle = ("$"+"\((job?.wage_per_hour)!)"+"/Hour")
+                                    point.photoURL = job?.jobOwnerPhotoURL
+                                    MapView.addAnnotation(point)
+                                    annotationDict[(job?.jobID)!] = point
+                                    completion(0, nil, annotationDict)
+                                })
+                            }
+                        }
                     }
                 }
             })
@@ -187,6 +194,14 @@ class ServiceCalls{
         userRef.child(hash).observeSingleEvent(of: .value) { (userSnap) in
             
             if let user = BlipUser(snapshot: userSnap){
+                
+                if userSnap.hasChild("reviews"){
+                    
+                    let dataDict = userSnap.value as? [String: AnyObject]
+                    
+                    user.reviews = dataDict!["reviews"] as? [String: Double]
+                }
+                
                 completion(user)
             }
             else{
