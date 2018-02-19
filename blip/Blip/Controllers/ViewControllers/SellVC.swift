@@ -78,6 +78,8 @@ class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, 
     var connectivity = Connectivity()
     var internet:Bool!
     
+    let userDefault = UserDefaults.standard
+    
     ////////////////////////Functions associated with the controller go here//////////////////////////
     
     override func viewDidLoad() {
@@ -101,6 +103,7 @@ class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, 
             DispatchQueue.main.async {
                 self.view.isUserInteractionEnabled = true
                 self.prepareMap()   // Prepare map thing on the main thread if there is internet on first run
+                self.saveUserInfoInUserDefault()    //This is to access user info to use to setup profile page
             }
         }
         connectivity?.whenUnreachable = {_ in   // No internet on start up
@@ -113,7 +116,7 @@ class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, 
             print("Could not start the notifier")
         }
         
-        
+        self.saveUserInfoInUserDefault()    //This is to access user info to use to setup profile page
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -127,6 +130,23 @@ class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, 
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+    }
+    
+    func saveUserInfoInUserDefault(){
+        service.getUserInfo(hash: service.emailHash) { (currUser) in
+            var dataDict:[String:AnyObject] = [:]
+//            dataArr.append(currUser?.name)
+            dataDict["name"] = currUser?.name as AnyObject
+//            dataArr.append(currUser?.rating)
+            dataDict["rating"] = currUser?.rating as AnyObject
+//            dataArr.append((currUser?.photoURL)!.absoluteString)
+            dataDict["photoUrl"] = currUser?.photoURL?.absoluteString as AnyObject
+            if let completedJobs = currUser?.completedJobs{
+//                dataArr.append(completedJobs.count)
+                dataDict["num_completed_jobs"] = completedJobs.count as AnyObject
+            }
+            self.userDefault.setValue(dataDict, forKey: "userProfileInfo")
+        }
     }
     
     //Internet Notification for when internet is lost or came back
@@ -498,7 +518,7 @@ extension SellVC {
     
     func isBlurredLoaderPresent() -> Bool{
         
-        if let loadingViewAfterStripe = self.view.viewWithTag(100){
+        if self.view.viewWithTag(100) != nil{
             return true
         }
         else{

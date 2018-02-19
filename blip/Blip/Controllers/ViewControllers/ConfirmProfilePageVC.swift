@@ -36,6 +36,7 @@ class ConfirmProfilePageVC: UIViewController, UIImagePickerControllerDelegate, U
     @IBOutlet weak var hireButton: UIButton!
     let ratingAnimation = LOTAnimationView(name: "5_stars")
     var picURL: URL?
+    let userDefault = UserDefaults.standard
 //    var job: Job!
     
     override func viewDidLoad() {
@@ -47,16 +48,26 @@ class ConfirmProfilePageVC: UIViewController, UIImagePickerControllerDelegate, U
         gradientView.setColors([#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1),#colorLiteral(red: 0.7605337501, green: 0.7767006755, blue: 0.7612826824, alpha: 1)])
         profilePic.isUserInteractionEnabled = true
         profilePic.cornerRadius = profilePic.frame.height/2
-        if let completedJobs = currUser?.completedJobs{
-            totalJobs.text = "\(completedJobs.count)"
-        }
-        if let jobAccepter = self.jobAccepter{
-            picURL = jobAccepter.photoURL
+//        if let completedJobs = currUser?.completedJobs{
+//            totalJobs.text = "\(completedJobs.count)"
+//        }
+//        if let jobAccepter = self.jobAccepter{
+//            picURL = jobAccepter.photoURL
+//            profilePic.kf.setImage(with: picURL!)
+//        }else{
+//            hireButton.isHidden = true
+//            picURL = currUser!.photoURL
+//            profilePic.kf.setImage(with: picURL!)
+//        }
+        hireButton.isHidden = true
+
+        if let userProfileInfo = userDefault.value(forKey: "userProfileInfo") as? [String:AnyObject]{
+            picURL = URL(string: userProfileInfo["photoUrl"] as! String)
             profilePic.kf.setImage(with: picURL!)
-        }else{
-            hireButton.isHidden = true
-            picURL = currUser!.photoURL
-            profilePic.kf.setImage(with: picURL!)
+            if let num_of_completedJobs = userProfileInfo["num_completed_jobs"] as? Int{
+                totalJobs.text = "\(num_of_completedJobs)"
+            }
+
         }
     }
     
@@ -114,15 +125,16 @@ class ConfirmProfilePageVC: UIViewController, UIImagePickerControllerDelegate, U
             self.fullNameLabel.text = jobAccepter.name
             self.ratingAnimationView.rating = Double(jobAccepter.rating!)
         }else{
-            self.fullNameLabel.text = currUser!.name
-            self.ratingAnimationView.rating = Double((currUser?.rating)!)
+            if let userProfileInfo = userDefault.value(forKey: "userProfileInfo") as? [String:AnyObject]{
+                self.fullNameLabel.text = (userProfileInfo["name"] as? String)!
+                self.ratingAnimationView.rating = Double((userProfileInfo["rating"] as? CGFloat)!)
+            }
         }
         
     }
     
     @IBAction func confirmclicked(_ sender: UIButton) {
         let title = "Blip"
-//        let body = "Your Job Has Been Accepted By \(Auth.auth().currentUser?.displayName ?? "someone")"
         let body = "You have been awarded the task"
         let device = (jobAccepter?.currentDevice)!
         var headers: HTTPHeaders = HTTPHeaders()
@@ -159,6 +171,7 @@ class ConfirmProfilePageVC: UIViewController, UIImagePickerControllerDelegate, U
                     let imgValues:[String:String] = ["photoURL":profileImgURL!]
                     self.userRef.updateChildValues(imgValues)
                     self.dismiss(animated: true, completion: nil)
+                    
                 })
                 
             })
