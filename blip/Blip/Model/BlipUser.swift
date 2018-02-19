@@ -19,6 +19,7 @@ class BlipUser {
     var photoURL: URL?
     var uid: String?
     var completedJobs: [String:AnyObject]?
+    var reviews: [String: Double]?
     
     var ref:DatabaseReference!
     
