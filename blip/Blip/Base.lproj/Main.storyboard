@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -1865,8 +1866,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5vE-V1-4z8" customClass="RaisedButton" customModule="Material">
-                                <rect key="frame" x="65" y="266" width="244" height="40"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5vE-V1-4z8" customClass="RaisedButton" customModule="Material">
+                                <rect key="frame" x="65" y="313.5" width="244" height="40"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
                                 <color key="tintColor" red="0.47450980539999998" green="0.8392156959" blue="0.97647058959999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1889,9 +1890,8 @@
                                     <action selector="endJobPressed" destination="BjN-Qk-ddr" eventType="touchUpInside" id="DWc-Wq-pHU"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DIQ-zb-SOi" customClass="RaisedButton" customModule="Material">
-                                <rect key="frame" x="65" y="342" width="244" height="40"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DIQ-zb-SOi" customClass="RaisedButton" customModule="Material">
+                                <rect key="frame" x="65" y="389.5" width="244" height="40"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
                                 <color key="tintColor" red="0.47450980539999998" green="0.8392156959" blue="0.97647058959999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1911,16 +1911,17 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="On job" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="16" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YW2-bd-Df1">
-                                <rect key="frame" x="47" y="80" width="281" height="33.5"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="On job" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="16" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YW2-bd-Df1">
+                                <rect key="frame" x="117.5" y="85" width="140" height="94.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="140" id="ZCk-8h-f85"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="CenturyGothic-Bold" family="Century Gothic" pointSize="32"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F2I-Tf-gSX" customClass="RaisedButton" customModule="Material">
-                                <rect key="frame" x="65" y="192" width="244" height="40"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F2I-Tf-gSX" customClass="RaisedButton" customModule="Material">
+                                <rect key="frame" x="65" y="239.5" width="244" height="40"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
                                 <color key="tintColor" red="0.47450980539999998" green="0.8392156959" blue="0.97647058959999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1940,9 +1941,8 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cw1-rJ-Lae" customClass="RaisedButton" customModule="Material">
-                                <rect key="frame" x="65" y="412" width="244" height="40"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cw1-rJ-Lae" customClass="RaisedButton" customModule="Material">
+                                <rect key="frame" x="65" y="459.5" width="244" height="40"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
                                 <color key="tintColor" red="0.47450980539999998" green="0.8392156959" blue="0.97647058959999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1966,9 +1966,25 @@
                         <color key="backgroundColor" red="0.47450980539999998" green="0.8392156959" blue="0.97647058959999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="5vE-V1-4z8" firstAttribute="centerX" secondItem="uxy-Ua-ZLN" secondAttribute="centerX" id="3Ei-hH-qFb"/>
+                            <constraint firstItem="DIQ-zb-SOi" firstAttribute="top" secondItem="5vE-V1-4z8" secondAttribute="bottom" constant="36" id="AMc-rn-ORg"/>
                             <constraint firstItem="5vE-V1-4z8" firstAttribute="centerY" secondItem="uxy-Ua-ZLN" secondAttribute="centerY" id="Bi3-oF-Lz7"/>
+                            <constraint firstItem="F2I-Tf-gSX" firstAttribute="top" secondItem="YW2-bd-Df1" secondAttribute="bottom" constant="60" id="Ek0-by-tB8"/>
+                            <constraint firstItem="cw1-rJ-Lae" firstAttribute="height" secondItem="uxy-Ua-ZLN" secondAttribute="height" multiplier="0.06" id="L0f-qD-wG5"/>
                             <constraint firstItem="5vE-V1-4z8" firstAttribute="width" secondItem="uxy-Ua-ZLN" secondAttribute="width" multiplier="0.65" id="NC3-7H-TmF"/>
+                            <constraint firstItem="YW2-bd-Df1" firstAttribute="centerX" secondItem="dqb-iB-l8s" secondAttribute="centerX" id="Og9-va-LKy"/>
+                            <constraint firstItem="DIQ-zb-SOi" firstAttribute="height" secondItem="uxy-Ua-ZLN" secondAttribute="height" multiplier="0.06" id="QWv-4w-SuI"/>
+                            <constraint firstItem="cw1-rJ-Lae" firstAttribute="top" secondItem="DIQ-zb-SOi" secondAttribute="bottom" constant="30" id="TGV-OZ-VbT"/>
+                            <constraint firstItem="5vE-V1-4z8" firstAttribute="centerX" secondItem="dqb-iB-l8s" secondAttribute="centerX" id="ZNG-bA-rB8"/>
+                            <constraint firstItem="F2I-Tf-gSX" firstAttribute="centerX" secondItem="dqb-iB-l8s" secondAttribute="centerX" id="c66-dF-x2e"/>
                             <constraint firstItem="5vE-V1-4z8" firstAttribute="height" secondItem="uxy-Ua-ZLN" secondAttribute="height" multiplier="0.06" id="cDR-mW-bz6"/>
+                            <constraint firstItem="DIQ-zb-SOi" firstAttribute="centerX" secondItem="dqb-iB-l8s" secondAttribute="centerX" id="cRr-0A-w1f"/>
+                            <constraint firstItem="F2I-Tf-gSX" firstAttribute="width" secondItem="uxy-Ua-ZLN" secondAttribute="width" multiplier="0.65" id="cfA-Cx-diM"/>
+                            <constraint firstItem="cw1-rJ-Lae" firstAttribute="width" secondItem="uxy-Ua-ZLN" secondAttribute="width" multiplier="0.65" id="eR8-WD-7M4"/>
+                            <constraint firstItem="cw1-rJ-Lae" firstAttribute="centerX" secondItem="dqb-iB-l8s" secondAttribute="centerX" id="gNT-Pv-iju"/>
+                            <constraint firstItem="5vE-V1-4z8" firstAttribute="top" secondItem="F2I-Tf-gSX" secondAttribute="bottom" constant="34" id="jg9-YW-pko"/>
+                            <constraint firstItem="DIQ-zb-SOi" firstAttribute="width" secondItem="uxy-Ua-ZLN" secondAttribute="width" multiplier="0.65" id="jgw-ht-uls"/>
+                            <constraint firstItem="F2I-Tf-gSX" firstAttribute="height" secondItem="uxy-Ua-ZLN" secondAttribute="height" multiplier="0.06" id="kGc-EW-9PK"/>
+                            <constraint firstItem="YW2-bd-Df1" firstAttribute="top" secondItem="uxy-Ua-ZLN" secondAttribute="topMargin" constant="65" id="oya-5d-dua"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="dqb-iB-l8s"/>
                     </view>
