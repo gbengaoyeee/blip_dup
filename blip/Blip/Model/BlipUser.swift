@@ -48,9 +48,9 @@ class BlipUser{
         
         if let userval = snapshot.value as? [String:AnyObject]{
             self.completedJobs = userval["CompletedJobs"] as? [String:AnyObject]
+            self.reviews = userval["reviews"] as? [String:Double]
         }
-    }
 
-    
+    }
 }
 

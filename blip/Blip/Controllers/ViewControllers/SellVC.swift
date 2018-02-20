@@ -135,15 +135,14 @@ class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, 
     func saveUserInfoInUserDefault(){
         service.getUserInfo(hash: service.emailHash) { (currUser) in
             var dataDict:[String:AnyObject] = [:]
-//            dataArr.append(currUser?.name)
             dataDict["name"] = currUser?.name as AnyObject
-//            dataArr.append(currUser?.rating)
             dataDict["rating"] = currUser?.rating as AnyObject
-//            dataArr.append((currUser?.photoURL)!.absoluteString)
             dataDict["photoUrl"] = currUser?.photoURL?.absoluteString as AnyObject
             if let completedJobs = currUser?.completedJobs{
-//                dataArr.append(completedJobs.count)
                 dataDict["num_completed_jobs"] = completedJobs.count as AnyObject
+            }
+            if let reviews = currUser?.reviews{
+                dataDict["reviews"] = reviews as AnyObject
             }
             self.userDefault.setValue(dataDict, forKey: "userProfileInfo")
         }

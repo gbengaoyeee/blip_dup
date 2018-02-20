@@ -17,7 +17,8 @@ import Alamofire
 import Cosmos
 import Material
 
-class ConfirmProfilePageVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class ConfirmProfilePageVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource {
+
     
 //    var applicantInfo: [String:AnyObject]!
     var currUser: BlipUser?
@@ -25,18 +26,19 @@ class ConfirmProfilePageVC: UIViewController, UIImagePickerControllerDelegate, U
     var userChangedProfilePic = false
     var userRef:DatabaseReference!
     @IBOutlet weak var gradientView: PastelView!
-    @IBOutlet weak var scrollForReviews: UIScrollView!
     @IBOutlet weak var ratingAnimationView: CosmosView!
     @IBOutlet weak var totalTime: UILabel!
     @IBOutlet weak var totalJobs: UILabel!
     @IBOutlet weak var profilePic: UIImageView!
     @IBOutlet weak var fullNameLabel: UILabel!
     @IBOutlet weak var closeButton: RaisedButton!
-    
+
+    @IBOutlet weak var ratingsTableView: UITableView!
     @IBOutlet weak var hireButton: UIButton!
     let ratingAnimation = LOTAnimationView(name: "5_stars")
     var picURL: URL?
     let userDefault = UserDefaults.standard
+    var userReviews : [String:Double]!
 //    var job: Job!
     
     override func viewDidLoad() {
@@ -48,27 +50,34 @@ class ConfirmProfilePageVC: UIViewController, UIImagePickerControllerDelegate, U
         gradientView.setColors([#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1),#colorLiteral(red: 0.7605337501, green: 0.7767006755, blue: 0.7612826824, alpha: 1)])
         profilePic.isUserInteractionEnabled = true
         profilePic.cornerRadius = profilePic.frame.height/2
+        self.ratingsTableView.delegate = self
+        self.ratingsTableView.dataSource = self
 //        if let completedJobs = currUser?.completedJobs{
 //            totalJobs.text = "\(completedJobs.count)"
 //        }
-//        if let jobAccepter = self.jobAccepter{
-//            picURL = jobAccepter.photoURL
-//            profilePic.kf.setImage(with: picURL!)
-//        }else{
-//            hireButton.isHidden = true
-//            picURL = currUser!.photoURL
-//            profilePic.kf.setImage(with: picURL!)
-//        }
-        hireButton.isHidden = true
-
-        if let userProfileInfo = userDefault.value(forKey: "userProfileInfo") as? [String:AnyObject]{
-            picURL = URL(string: userProfileInfo["photoUrl"] as! String)
+        if let jobAccepter = self.jobAccepter{
+            picURL = jobAccepter.photoURL
             profilePic.kf.setImage(with: picURL!)
-            if let num_of_completedJobs = userProfileInfo["num_completed_jobs"] as? Int{
-                totalJobs.text = "\(num_of_completedJobs)"
+            if let completedJobs = jobAccepter.completedJobs{
+                totalJobs.text = "\(completedJobs.count)"
             }
-
+            if let reviews = jobAccepter.reviews{
+                self.userReviews = reviews
+            }
+        }else{
+            hireButton.isHidden = true
+            if let userProfileInfo = userDefault.value(forKey: "userProfileInfo") as? [String:AnyObject]{
+                picURL = URL(string: userProfileInfo["photoUrl"] as! String)
+                profilePic.kf.setImage(with: picURL!)
+                if let num_of_completedJobs = userProfileInfo["num_completed_jobs"] as? Int{
+                    totalJobs.text = "\(num_of_completedJobs)"
+                }
+                if let reviews = userProfileInfo["reviews"] as? [String:Double]{
+                    self.userReviews = reviews
+                }
+            }
         }
+ 
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -181,7 +190,7 @@ class ConfirmProfilePageVC: UIViewController, UIImagePickerControllerDelegate, U
         }
     }
     
-    //Delegate Methods
+    //Delegate Methods for uiimagepicker
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         let image = info[UIImagePickerControllerOriginalImage] as! UIImage
         profilePic.image = image
@@ -191,5 +200,23 @@ class ConfirmProfilePageVC: UIViewController, UIImagePickerControllerDelegate, U
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
+    }
+    
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        var reviewArr: [String] = []
+        if self.userReviews != nil{
+            reviewArr = Array(self.userReviews.keys)
+        }
+        return reviewArr.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
+        if self.userReviews != nil{
+            let reviewArr = Array(self.userReviews.keys)
+            cell.textLabel?.text = reviewArr[indexPath.row]
+        }
+        return cell
     }
 }
