@@ -80,6 +80,8 @@
 		3B5373A1202EC2210020F3B1 /* CustomUIBorderControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537394202EC2210020F3B1 /* CustomUIBorderControls.swift */; };
 		3B5373A2202EC2210020F3B1 /* ShadowsToButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537395202EC2210020F3B1 /* ShadowsToButtons.swift */; };
 		3B5373B5202EC2E40020F3B1 /* StartJob.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5373AD202EC2E40020F3B1 /* StartJob.swift */; };
+		3BA1E06F203CBBA600AF89B8 /* CustomCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA1E06E203CBBA500AF89B8 /* CustomCollectionViewCell.swift */; };
+		3BA1E071203CBD1700AF89B8 /* DisputeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA1E070203CBD1700AF89B8 /* DisputeVC.swift */; };
 		5F33377820332B0B00B83E01 /* RatingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F33377720332B0B00B83E01 /* RatingViewController.xib */; };
 		5F33377A20332B4600B83E01 /* RatingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F33377920332B4600B83E01 /* RatingViewController.swift */; };
 		E44A286AF55A28A06A305841 /* Pods_BlipTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F498B34F0F7DEA567870388 /* Pods_BlipTests.framework */; };
@@ -196,6 +198,8 @@
 		3B537394202EC2210020F3B1 /* CustomUIBorderControls.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomUIBorderControls.swift; sourceTree = "<group>"; };
 		3B537395202EC2210020F3B1 /* ShadowsToButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShadowsToButtons.swift; sourceTree = "<group>"; };
 		3B5373AD202EC2E40020F3B1 /* StartJob.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartJob.swift; sourceTree = "<group>"; };
+		3BA1E06E203CBBA500AF89B8 /* CustomCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewCell.swift; sourceTree = "<group>"; };
+		3BA1E070203CBD1700AF89B8 /* DisputeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisputeVC.swift; sourceTree = "<group>"; };
 		52A65DC4170733BA25C15CE1 /* Pods-Blip.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Blip.release.xcconfig"; path = "Pods/Target Support Files/Pods-Blip/Pods-Blip.release.xcconfig"; sourceTree = "<group>"; };
 		5F33377720332B0B00B83E01 /* RatingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RatingViewController.xib; sourceTree = "<group>"; };
 		5F33377920332B4600B83E01 /* RatingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingViewController.swift; sourceTree = "<group>"; };
@@ -403,6 +407,7 @@
 				3B53736E202EC0DB0020F3B1 /* SettingsViewController.swift */,
 				3B537370202EC0DB0020F3B1 /* SplashViewController.swift */,
 				3B53736F202EC0DB0020F3B1 /* UnconfirmedVC.swift */,
+				3BA1E070203CBD1700AF89B8 /* DisputeVC.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -425,6 +430,7 @@
 				3B537395202EC2210020F3B1 /* ShadowsToButtons.swift */,
 				3B53738C202EC2200020F3B1 /* TapScreenToCloseKeyboardViewController.swift */,
 				3B53738F202EC2200020F3B1 /* UIWindowTransitions.swift */,
+				3BA1E06E203CBBA500AF89B8 /* CustomCollectionViewCell.swift */,
 			);
 			path = CustomViewControllers;
 			sourceTree = "<group>";
@@ -658,6 +664,8 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-Blip/Pods-Blip-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AZDialogView/AZDialogView.framework",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/BSGridCollectionViewLayout/BSGridCollectionViewLayout.framework",
+				"${BUILT_PRODUCTS_DIR}/BSImagePicker/BSImagePicker.framework",
 				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
 				"${BUILT_PRODUCTS_DIR}/CHIPageControl/CHIPageControl.framework",
 				"${BUILT_PRODUCTS_DIR}/Cosmos/Cosmos.framework",
@@ -683,6 +691,7 @@
 				"${BUILT_PRODUCTS_DIR}/SHSearchBar/SHSearchBar.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Stripe/Stripe.framework",
+				"${BUILT_PRODUCTS_DIR}/UIImageViewModeScaleAspect/UIImageViewModeScaleAspect.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
@@ -691,6 +700,8 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AZDialogView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BSGridCollectionViewLayout.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BSImagePicker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CHIPageControl.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Cosmos.framework",
@@ -716,6 +727,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SHSearchBar.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Stripe.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIImageViewModeScaleAspect.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Lottie.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
@@ -846,9 +858,11 @@
 				3B537376202EC0DC0020F3B1 /* CustomAPIAdapter.swift in Sources */,
 				3B537380202EC0DC0020F3B1 /* PopUpJobViewVC.swift in Sources */,
 				3B53739D202EC2210020F3B1 /* CustomMGLAnnotation.swift in Sources */,
+				3BA1E06F203CBBA600AF89B8 /* CustomCollectionViewCell.swift in Sources */,
 				3B537372202EC0DC0020F3B1 /* AppSnackbarController.swift in Sources */,
 				3B53733D202EBD0F0020F3B1 /* Connectivity.swift in Sources */,
 				3B537382202EC0DC0020F3B1 /* SellVC+.swift in Sources */,
+				3BA1E071203CBD1700AF89B8 /* DisputeVC.swift in Sources */,
 				3B537373202EC0DC0020F3B1 /* EmailVerifyVC.swift in Sources */,
 				3B5372F8202EB4320020F3B1 /* AppDelegate.swift in Sources */,
 				3B537384202EC0DC0020F3B1 /* AnnotationViewVC.swift in Sources */,

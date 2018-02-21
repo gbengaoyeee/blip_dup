@@ -9,6 +9,7 @@
 import UIKit
 import Pastel
 import Lottie
+import PopupDialog
 
 class EndJob: UIViewController {
     
@@ -43,5 +44,14 @@ class EndJob: UIViewController {
         service.endJobPressed(job: self.job)
         self.navigationController?.popToRootViewController(animated: true)
     }
+    
+    @IBAction func disputeButtonPressed(_ sender: UIButton) {
+        let sb = UIStoryboard.init(name: "Main", bundle: nil)
+        let disputeVc = sb.instantiateViewController(withIdentifier: "dispute") as! DisputeVC
+        disputeVc.job = self.job
+        self.present(disputeVc, animated: true, completion: nil)
+        
+    }
+    
 
 }
