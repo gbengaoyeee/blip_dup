@@ -389,9 +389,7 @@ extension SellVC: Constrainable{
                         UIView.animate(withDuration: 1, animations: {
                             
                             self.MapView.removeAnnotation(self.jobAccepterAnnotation)
-                            self.service.getJobsFromFirebase(MapView: self.MapView) { annotationDict  in
-                                self.allAnnotations = annotationDict
-                            }
+                            self.prepareMap()
                         })
                         
                         self.showRatingPopup()
