@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '2BB6614E45516E46DB89EEC4974B67B9'
+               BlueprintIdentifier = 'EFB12E99E9F85DFBCCD6664AFC289D69'
                BlueprintName = 'SHSearchBar-SHSearchBar'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'SHSearchBar.bundle'>

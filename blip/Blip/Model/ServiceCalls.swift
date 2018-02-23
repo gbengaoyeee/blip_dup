@@ -40,11 +40,11 @@ class ServiceCalls{
             
             print("A child was added", data.key)
             var dataDict = data.value as? [String: Any]
-            
+            let job = Job(snapshot: data)
             
             data.ref.observe(.childAdded, with: { (addedKey) in
                 
-                let job = Job(snapshot: data)
+                
                 dataDict![addedKey.key] = addedKey.value
                 
                 if job?.jobOwnerEmailHash == self.emailHash{
@@ -103,36 +103,19 @@ class ServiceCalls{
                     
                     if let completed = dataDict!["completed"] as? Bool{
                         
-                        print("This job was already completed")
-                    }
-                    
-                    else{
+
+                        print("this job has been completed")
                         
+                    }
+                    else{
+
                         print("This is the added job when user hasnt posted nor accepted.", addedKey.key)
                         
                         var annotationDict: [String:CustomMGLAnnotation] = [:]
                         let job = Job(snapshot: data)
                         // check if the curr job snap is not curr user's and also if the job is not accepted
-                        
-                        if dataDict!["isTakenBy"] != nil{
-                            
-                            let jobPosterRef = self.userRef.child((job?.jobOwnerEmailHash)!)
-                            jobPosterRef.observeSingleEvent(of: .value, with: { (snapshot2) in
-                                let userVal = snapshot2.value as? [String:AnyObject]
-                                job?.jobOwnerRating = userVal!["Rating"] as? Float
-                                job?.jobOwnerPhotoURL = URL(string: (userVal!["photoURL"] as? String)!)
-                                
-                                let point = CustomMGLAnnotation()
-                                point.job = job
-                                point.coordinate = (job?.location.coordinate)!
-                                point.title = job?.title
-                                point.subtitle = ("$"+"\((job?.wage_per_hour)!)"+"/Hour")
-                                point.photoURL = job?.jobOwnerPhotoURL
-                                MapView.removeAnnotation(point)
-                            })
-                        }
-                        
-                        else{
+
+                        if (job?.jobOwnerEmailHash != self.emailHash && !(data.hasChild("isTakenBy"))){
                             
                             let jobPosterRef = self.userRef.child((job?.jobOwnerEmailHash)!)
                             jobPosterRef.observeSingleEvent(of: .value, with: { (snapshot2) in

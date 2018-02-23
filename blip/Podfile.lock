@@ -7,6 +7,10 @@ PODS:
   - Bolts/AppLinks (1.9.0):
     - Bolts/Tasks
   - Bolts/Tasks (1.9.0)
+  - BSGridCollectionViewLayout (1.2.0)
+  - BSImagePicker (2.7.1):
+    - BSGridCollectionViewLayout (~> 1.2.0)
+    - UIImageViewModeScaleAspect (= 1.5)
   - CHIPageControl/Fresno (0.1.5)
   - Cosmos (15.0.0)
   - DynamicBlurView (2.0.2)
@@ -101,10 +105,12 @@ PODS:
   - SHSearchBar (1.4.1)
   - SnapKit (4.0.0)
   - Stripe (12.1.0)
+  - UIImageViewModeScaleAspect (1.5)
 
 DEPENDENCIES:
   - Alamofire
   - AZDialogView
+  - BSImagePicker (~> 2.4)
   - CHIPageControl/Fresno
   - Cosmos
   - FBSDKCoreKit
@@ -132,6 +138,8 @@ SPEC CHECKSUMS:
   Alamofire: f41a599bd63041760b26d393ec1069d9d7b917f4
   AZDialogView: 75a481ef11e78b047e9d7d212a83b76a8d91627f
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
+  BSGridCollectionViewLayout: 8f12c8e1e08c47057f5a39a6828f4395f043d78f
+  BSImagePicker: eb12948a6e71b9855c2c37723dfd989b9b4288bd
   CHIPageControl: 79d19a8ee2e35fa3c1da6533adb5364c77b5cfea
   Cosmos: a6dbd3d0baa0cc8f51f8598f7508d5a09d0a9ade
   DynamicBlurView: aa6db4defc6e537eb86fc5e58dd3991666178399
@@ -166,7 +174,8 @@ SPEC CHECKSUMS:
   SHSearchBar: 1e0cd12f142dc6b902c54fbd026c9a25945c3041
   SnapKit: a42d492c16e80209130a3379f73596c3454b7694
   Stripe: de8bffa8e6813f678d526c52f416fe224141fa09
+  UIImageViewModeScaleAspect: 11a790a0b9d248a13dc63e3a78991f1463b6d84e
 
-PODFILE CHECKSUM: e9f7fdb56faca0cd3e30efa18668753447caf71e
+PODFILE CHECKSUM: 3f4cb7bb8defde34f57841369ae5fcd10d88630e
 
 COCOAPODS: 1.3.1

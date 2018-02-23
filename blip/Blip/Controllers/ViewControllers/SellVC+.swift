@@ -379,7 +379,7 @@ extension SellVC: Constrainable{
                     
                     self.removedBlurredLoader()
                     if id != nil{
-                        self.service.confirmedJobEnd()
+                        self.service.confirmedJobEnd(job: job)
                         banner.dismiss()
                         UIView.animate(withDuration: 1.5, animations: {
                             

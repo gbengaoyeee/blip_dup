@@ -30,6 +30,7 @@ target 'Blip' do
   pod 'Pulsator'
   pod 'Cosmos'
   pod 'AZDialogView'
+  pod 'BSImagePicker', '~> 2.4'
 
   target 'BlipTests' do
     inherit! :search_paths
