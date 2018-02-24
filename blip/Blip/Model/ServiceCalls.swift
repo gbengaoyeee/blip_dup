@@ -103,15 +103,18 @@ class ServiceCalls{
                     
                     if let completed = dataDict!["completed"] as? Bool{
                         
+
                         print("this job has been completed")
                         
                     }
                     else{
+
                         print("This is the added job when user hasnt posted nor accepted.", addedKey.key)
                         
                         var annotationDict: [String:CustomMGLAnnotation] = [:]
                         let job = Job(snapshot: data)
                         // check if the curr job snap is not curr user's and also if the job is not accepted
+
                         if (job?.jobOwnerEmailHash != self.emailHash && !(data.hasChild("isTakenBy"))){
                             
                             let jobPosterRef = self.userRef.child((job?.jobOwnerEmailHash)!)
@@ -279,14 +282,45 @@ class ServiceCalls{
  */
     
     func getJobsFromFirebase(MapView:MGLMapView , completion: @escaping ([String:CustomMGLAnnotation])->()){
-
-//        var newJobs : [Job] = []
         
+        var annotationDict: [String:CustomMGLAnnotation] = [:]
         
-        jobsRefHandle = jobsRef.observe(.childAdded, with: { (snapshot) in
+        jobsRef.observe(.value) { (data) in
             
-        })
-
+            data.ref.observeSingleEvent(of: .value, with: { (data2) in
+                
+                
+                let job = Job(snapshot: data2)
+                print(data2.value)
+                // check if the curr job snap is not curr user's and also if the job is not accepted
+                let dict = data2.value as? [String: AnyObject]
+                print("HERE WE HAVE", job?.jobOwnerEmailHash)
+                if (job?.jobOwnerEmailHash != self.emailHash && dict!["isTakenBy"] == nil){
+                    
+                    let jobPosterRef = self.userRef.child((job?.jobOwnerEmailHash)!)
+                    jobPosterRef.observeSingleEvent(of: .value, with: { (snapshot2) in
+                        let userVal = snapshot2.value as? [String:AnyObject]
+                        job?.jobOwnerRating = userVal!["Rating"] as? Float
+                        job?.jobOwnerPhotoURL = URL(string: (userVal!["photoURL"] as? String)!)
+                        
+                        let point = CustomMGLAnnotation()
+                        point.job = job
+                        point.coordinate = (job?.location.coordinate)!
+                        point.title = job?.title
+                        point.subtitle = ("$"+"\((job?.wage_per_hour)!)"+"/Hour")
+                        point.photoURL = job?.jobOwnerPhotoURL
+                        MapView.addAnnotation(point)
+                        annotationDict[(job?.jobID)!] = point
+                        completion(annotationDict)
+                    })
+                }
+            })
+        }
+    }
+    
+    func cancelJobPost(job: Job){
+        
+        jobsRef.child(job.jobID).removeValue()
     }
     
     func startJobPressedByAccepter(job: Job, completion: @escaping(String) -> ()){
@@ -305,14 +339,15 @@ class ServiceCalls{
 */
     func acceptPressed(job: Job, user: User, completion: @escaping (String)->()){
         
-        self.userRef.child(job.jobOwnerEmailHash).child("latestPostAccepted").setValue(self.emailHash)
         
-        let userAcceptedRef = self.userRef.child(self.emailHash).child("AcceptedJobs")
-
+        
+        let userAcceptedRef = self.userRef.child(self.emailHash).child("acceptedJob")
+        let jobPosterRef = self.userRef.child(job.jobOwnerEmailHash).child("lastPostAccepted")
         
         let jobDict: [String:Any] = ["latitude":job.latitude, "longitude":job.longitude, "jobOwner":job.jobOwnerEmailHash, "jobTitle":job.title, "jobDescription":job.description, "price":"\(job.wage_per_hour)", "time":"\(job.maxTime)", "fullName":(job.jobOwnerFullName)!, "isTakenBy": self.emailHash]
 
         userAcceptedRef.child(job.jobID).updateChildValues(jobDict)
+        jobPosterRef.child(job.jobID).updateChildValues(jobDict)
 
         jobsRef.child(job.jobID).updateChildValues(jobDict)
         
@@ -322,8 +357,7 @@ class ServiceCalls{
             // add the job to job poster's "latestPostAccepted" reference in database
             
             //add to the "uAccepted" ref for current user
-            self.userRef.child(self.helper.MD5(string: user.email!)).child("didAccept").setValue(job.jobID)
-            self.userRef.child(self.helper.MD5(string: user.email!)).child("uAccepted").setValue(job.jobOwnerEmailHash)
+            self.userRef.child(self.helper.MD5(string: user.email!)).child(job.jobID).updateChildValues(["uAccepted":job.jobOwnerEmailHash])
             guard let deviceToken = userValues[job.jobOwnerEmailHash]!["currentDevice"]! as? String else{return}
             completion(deviceToken)
         })
@@ -342,71 +376,6 @@ class ServiceCalls{
             completion(customer)
             self.userRef.removeAllObservers()
         })
-    }
-    
-    func checkUserStatus(completion: @escaping(Int?) -> ()){
-        
-        userRef.child(emailHash).observeSingleEvent(of: .value) { (status) in
-            
-            if status.hasChild("latestPostAccepted"){
-                
-                let dict = status.value as? [String: AnyObject]
-                self.jobsRef.child((dict!["lastPost"] as? String)!).observeSingleEvent(of: .value, with: { (jobSnap) in
-                
-                    if jobSnap.hasChild("completed"){
-                        
-                        completion(1) // Job was completed but not confirmed payment
-                    }
-                    
-                    else if jobSnap.hasChild("hasStarted"){
-                        
-                        completion(2) // Job was hasStarted, both suer and accepter had pressed ready
-                    }
-                    
-                    else if jobSnap.hasChild("isAccepterReady"){
-                        
-                        completion(3) // job not confirmed started by the user
-                    }
-                    
-                    else if jobSnap.hasChild("isTakenBy"){
-                        
-                        completion(4) // Job accepter hasnt pressed start yet or isnt arrived yet
-                    }
-                })
-            }
-                
-                
-            else if (status.hasChild("didAccept")){
-                
-                let dict = status.value as? [String: AnyObject]
-                self.jobsRef.child((dict!["didAccept"] as? String)!).observeSingleEvent(of: .value, with: { (jobSnap) in
-                    
-                    if jobSnap.hasChild("completed"){
-                        
-                        completion(5) // Job was completed but not confirmed payment
-                    }
-                        
-                    else if jobSnap.hasChild("hasStarted"){
-                        
-                        completion(6) // Job was started, both user and accepter had pressed ready
-                    }
-                        
-                    else if jobSnap.hasChild("isAccepterReady"){
-                        
-                        completion(7) // job not confirmed started by the user
-                    }
-                        
-                    else if jobSnap.hasChild("isTakenBy"){
-                        
-                        completion(8) // Job accepter hasnt pressed start yet or isnt arrived yet
-                    }
-                })
-            }
-            else{
-                completion(0) // if the current user is just a user who didnt accept a job or hasnt has his job accepted
-            }
-        }
-        
     }
     
     
@@ -469,7 +438,13 @@ class ServiceCalls{
     
     //start job pressed by accepter
     func accepterReady(job:Job, completion: @escaping (String?)->()){
-        jobsRef.child(job.jobID).updateChildValues(["isAccepterReady":true])
+        
+        let userReady_JobRef = self.userRef.child(self.emailHash).child("acceptedJob").child(job.jobID)
+        userReady_JobRef.updateChildValues(["isAccepterReady": true])
+        
+        let jobOwnerLastPostJobRef = self.userRef.child(job.jobOwnerEmailHash).child("lastPostAccepted")
+        jobOwnerLastPostJobRef.updateChildValues(["isAccepterReady": true])
+//        jobsRef.child(job.jobID).updateChildValues(["isAccepterReady":true])
         userRef.child(job.jobOwnerEmailHash).observeSingleEvent(of: .value) { (snapshot) in
             if let user = snapshot.value as? [String: AnyObject]{
                 let currentDevice = user["currentDevice"] as? String
@@ -528,13 +503,14 @@ class ServiceCalls{
         
         userRef.child(emailHash).child("uAccepted").removeValue()
         userRef.child(emailHash).child("didAccept").removeValue()
-        jobsRef.child(job.jobID).child("completed").setValue(true)
+        jobsRef.child(job.jobID).child("completedByTaker").setValue(true)
     }
     
-    func confirmedJobEnd(){
+    func confirmedJobEnd(job: Job){
         
         userRef.child(emailHash).child("latestPostAccepted").removeValue()
         userRef.child(emailHash).child("lastPost").removeValue()
+        jobsRef.child("completed").setValue("true")
     }
     
     func checkIfAccepterReady(completion: @escaping(Int) -> ()){
@@ -551,73 +527,6 @@ class ServiceCalls{
                     completion(2) // Accepter isnt ready
                 }
             })
-        }
-    }
-    
-    func onAccepterPressedReady(completion: @escaping(Int) ->()){
-        
-        jobsRefHandle = jobsRef.observe(.childChanged, with: { (jobSnap) in
-            let jobChanged = Job(snapshot: jobSnap)
-            if jobChanged?.jobOwnerEmailHash == self.emailHash{
-                jobSnap.ref.observe(.childChanged, with: { (snapshot) in
-                    
-                    print(snapshot.key, "Here is the snapshot key")
-                    if snapshot.key == "isAccepterReady"{
-                        if (snapshot.value as? Bool)!{
-                            completion(0) // accepter Ready
-                        }
-                            
-                        else if !(snapshot.value as? Bool)!{
-                            completion(1) // accepter not ready
-                        }
-                    }
-                })
-            }
-        })
-    }
-    
-    func onJobBegun(completion: @escaping(Int) -> ()){
-        
-        jobsRefHandle = jobsRef.observe(.childChanged, with: { (jobSnap) in
-            let jobChanged = Job(snapshot: jobSnap)
-            let acceptedBy = jobSnap.value as? [String: AnyObject]
-            if (jobChanged?.jobOwnerEmailHash == self.emailHash) || (acceptedBy!["isTakenBy"] as? String == self.emailHash){
-                jobSnap.ref.observe(.childAdded, with: { (snapshot) in
-
-                    if snapshot.key == "hasStarted"{
-                        if (snapshot.value as? Bool)!{
-                            completion(0) // Job Started
-                        }
-                            
-                        else if !(snapshot.value as? Bool)!{
-                            completion(1) // Job not hasStarted yet
-                        }
-                    }
-                })
-            }
-        })
-    }
-    
-    func onJobEnd(completion: @escaping(Int) -> ()){
-        
-        jobsRef.observe(.childChanged) { (jobPost) in
-            
-            let job = Job(snapshot: jobPost)
-            if job?.jobOwnerEmailHash == self.emailHash{
-                
-                jobPost.ref.observe(.childChanged, with: { (snap) in
-                    
-                    if snap.key == "completed"{
-                        
-                        if (snap.value as? Bool)!{
-                            completion(0) // JOB COMPLETED
-                        }
-                        else{
-                            completion(1)
-                        }
-                    }
-                })
-            }
         }
     }
     

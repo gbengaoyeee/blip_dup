@@ -19,7 +19,7 @@ import Stripe
 import SHSearchBar
 import Kingfisher
 import NotificationBannerSwift
-
+import AZDialogView
 
 class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, STPPaymentContextDelegate, SHSearchBarDelegate {
 
@@ -499,7 +499,7 @@ extension SellVC {
     
     func prepareBannerForAccept(){
         
-        let banner = NotificationBanner(title: "Accepted", subtitle: "Awaiting confirmation from job owner", leftView: postedJobAnimation, style: .success)
+        let banner = NotificationBanner(title: "Success", subtitle: "Accepted Job", leftView: postedJobAnimation, style: .success)
         banner.show()
         check.play()
     }
@@ -594,6 +594,69 @@ extension SellVC {
         return popup
     }
 
+    func preparePopupForCurrentPost(job: Job){
+        
+        let dialogController = AZDialogViewController(title: job.title,
+                                                      message: job.description)
+        
+        dialogController.showSeparator = true
+        
+        dialogController.dismissDirection = .bottom
+        
+        dialogController.imageHandler = { (imageView) in
+            
+            self.service.getUserInfo(hash: job.jobOwnerEmailHash, completion: { (user) in
+                
+                if let blipUser = user{
+                    imageView.kf.setImage(with: blipUser.photoURL)
+                    imageView.contentMode = .scaleAspectFill
+                }
+            })
+            return true
+        }
+        
+        dialogController.addAction(AZDialogAction(title: "Cancel Post", handler: { [weak self] (dialog) -> (Void) in
+            
+            dialogController.dismiss()
+            self?.preparePopupForJobCancel()
+        }))
+        
+        dialogController.buttonStyle = { (button,height,position) in
+            
+            button.backgroundColor = #colorLiteral(red: 0.9357799888, green: 0.4159773588, blue: 0.3661105633, alpha: 1)
+            button.setTitleColor(UIColor.white, for: [])
+            button.layer.masksToBounds = true
+            button.tintColor = .white
+        }
+        
+        dialogController.blurBackground = true
+        dialogController.blurEffectStyle = .dark
+        
+        
+        
+        dialogController.dismissWithOutsideTouch = true
+        
+        dialogController.show(in: self)
+    }
+    
+    func preparePopupForJobCancel(){
+
+        let popup = PopupDialog(title: "Confirm", message: "Are you sure you want to cancel your job post?")
+        
+        let yes = DefaultButton(title: "Yes"){
+            popup.dismiss()
+            self.service.cancelJobPost(job: self.currentJobPost!)
+        }
+        
+        let no = CancelButton(title: "No"){
+            popup.dismiss()
+            self.preparePopupForCurrentPost(job: self.currentJobPost!)
+        }
+        
+        popup.addButtons([yes, no])
+        
+        self.present(popup, animated: true, completion: nil)
+    }
     
     //Resets text fields on job form after it is no longer needed.
     func resetTextFields(){

@@ -20,6 +20,7 @@ import SHSearchBar
 import Kingfisher
 import NotificationBannerSwift
 import AZDialogView
+import MapKit
 
 extension SellVC: Constrainable{
     
@@ -119,14 +120,13 @@ extension SellVC: Constrainable{
                 
                 else if stateCode == 7{
                     
-                    // when accepter completed the job
+                    // Job completed for accepter
                 }
                 
                 else if stateCode == 8{
                     
                     self.service.getJobAcceptedByCurrentUser(completion: { (job) in
                         self.acceptedJob = job
-                        print("came in here")
                         self.removedBlurredLoader()
                         self.performSegue(withIdentifier: "endJobFromSellVC", sender: self)
                     })
@@ -247,11 +247,12 @@ extension SellVC: Constrainable{
         
         dialogController.addAction(AZDialogAction(title: "Navigate to job", handler: { [weak self] (dialog) -> (Void) in
             
-            
+            self?.getDirections(job: job)
         }))
+        
         dialogController.buttonStyle = { (button,height,position) in
             
-            button.backgroundColor = #colorLiteral(red: 0.9372549057, green: 0.3490196168, blue: 0.1921568662, alpha: 1)
+            button.backgroundColor = #colorLiteral(red: 0.9357799888, green: 0.4159773588, blue: 0.3661105633, alpha: 1)
             button.setTitleColor(UIColor.white, for: [])
             button.layer.masksToBounds = true
             button.tintColor = .white
@@ -335,6 +336,14 @@ extension SellVC: Constrainable{
         }
     }
 
+    func getDirections(job: Job){
+        let pm = MKPlacemark(coordinate: job.location.coordinate)
+        let mapItem = MKMapItem(placemark: pm)
+        mapItem.name = job.address
+        let launchOptions = [MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving]
+        mapItem.openInMaps(launchOptions: launchOptions)
+        
+    }
 
     
     func setStateOnJobStart(){
@@ -370,7 +379,7 @@ extension SellVC: Constrainable{
                     
                     self.removedBlurredLoader()
                     if id != nil{
-                        self.service.confirmedJobEnd()
+                        self.service.confirmedJobEnd(job: job)
                         banner.dismiss()
                         UIView.animate(withDuration: 1.5, animations: {
                             
@@ -380,9 +389,7 @@ extension SellVC: Constrainable{
                         UIView.animate(withDuration: 1, animations: {
                             
                             self.MapView.removeAnnotation(self.jobAccepterAnnotation)
-                            self.service.getJobsFromFirebase(MapView: self.MapView) { annotationDict  in
-                                self.allAnnotations = annotationDict
-                            }
+                            self.prepareMap()
                         })
                         
                         self.showRatingPopup()
