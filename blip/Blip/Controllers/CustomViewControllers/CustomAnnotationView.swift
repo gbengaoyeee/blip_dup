@@ -10,7 +10,10 @@ import UIKit
 import Mapbox
 //
 // MGLAnnotationView subclass
+
+
 class CustomAnnotationView: MGLAnnotationView {
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         super.isEnabled = true

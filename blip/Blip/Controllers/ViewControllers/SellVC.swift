@@ -61,7 +61,7 @@ class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, 
     let stripePublishableKey = "pk_test_K45gbx2IXkVSg4pfmoq9SIa9"
     let appleMerchantID: String? = nil
     let companyName = "Blip"
-    var timer : Timer!
+    var timer = Timer()
     var searchBar: SHSearchBar!
     var latestAccepted:Job!
     let loadingAnimation = LOTAnimationView(name: "loading")
@@ -77,7 +77,6 @@ class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, 
     var accepterUserObject: BlipUser?
     var connectivity = Connectivity()
     var internet:Bool!
-    
     let userDefault = UserDefaults.standard
     
     ////////////////////////Functions associated with the controller go here//////////////////////////

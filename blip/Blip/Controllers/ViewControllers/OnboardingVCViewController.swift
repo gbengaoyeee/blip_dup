@@ -63,7 +63,7 @@ class OnboardingVCViewController: UIViewController, UIScrollViewDelegate {
         
         self.performSegue(withIdentifier: "goToLGSU", sender: self)
     }
-    
+
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
 

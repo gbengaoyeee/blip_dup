@@ -188,7 +188,7 @@ extension SellVC: Constrainable{
                             self.MapView.addAnnotation(self.jobAccepterAnnotation)
                             self.jobAccepterAnnotation.coordinate = loc
                             self.centerCameraOnJobAccepter(location: loc)
-                            Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.updateAccepterLocations), userInfo: nil, repeats: true)
+                            self.timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.updateAccepterLocations), userInfo: nil, repeats: true)
                         })
                     })
                 }
@@ -359,6 +359,7 @@ extension SellVC: Constrainable{
             self.searchBar.alpha = 0
             self.postJobButton.alpha = 0
         })
+        self.MapView.isScrollEnabled = false
     }
     
     func setStateOnJobEnd(){
@@ -390,6 +391,8 @@ extension SellVC: Constrainable{
                             
                             self.MapView.removeAnnotation(self.jobAccepterAnnotation)
                             self.prepareMap()
+                            self.timer.invalidate()
+                            self.MapView.isScrollEnabled = true
                         })
                         
                         self.showRatingPopup()
@@ -437,6 +440,7 @@ extension SellVC: Constrainable{
         // Present dialog
         present(popup, animated: animated, completion: nil)
     }
+    
     
     @objc func updateAccepterLocations(){
         
