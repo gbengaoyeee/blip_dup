@@ -82,7 +82,7 @@ extension SellVC: Constrainable{
     //Prepares the map by adding annotations for jobs from firebase, and setting the mapview.
     @objc func prepareMap(){
         
-        service.setAppState(MapView: self.MapView) { (code, jobObject, annotations) in
+            service.updateUI(map: self.MapView) { (code, jobObject, annotations) in
             
             
             if let stateCode = code{

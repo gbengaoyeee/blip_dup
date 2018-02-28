@@ -84,6 +84,8 @@
 		3BA1E071203CBD1700AF89B8 /* DisputeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA1E070203CBD1700AF89B8 /* DisputeVC.swift */; };
 		5F33377820332B0B00B83E01 /* RatingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F33377720332B0B00B83E01 /* RatingViewController.xib */; };
 		5F33377A20332B4600B83E01 /* RatingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F33377920332B4600B83E01 /* RatingViewController.swift */; };
+		5F889BA1204620A60054D2ED /* MainPageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F889BA0204620A60054D2ED /* MainPageVC.swift */; };
+		5F889BA3204621DE0054D2ED /* GradientViewBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F889BA2204621DE0054D2ED /* GradientViewBackground.swift */; };
 		E44A286AF55A28A06A305841 /* Pods_BlipTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F498B34F0F7DEA567870388 /* Pods_BlipTests.framework */; };
 		F3F5081E2031F77E00252E65 /* CenturyGothic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B537340202EBD4C0020F3B1 /* CenturyGothic.ttf */; };
 		F3F5081F2031F78300252E65 /* CenturyGothicBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B53733F202EBD4C0020F3B1 /* CenturyGothicBold.ttf */; };
@@ -203,6 +205,8 @@
 		52A65DC4170733BA25C15CE1 /* Pods-Blip.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Blip.release.xcconfig"; path = "Pods/Target Support Files/Pods-Blip/Pods-Blip.release.xcconfig"; sourceTree = "<group>"; };
 		5F33377720332B0B00B83E01 /* RatingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RatingViewController.xib; sourceTree = "<group>"; };
 		5F33377920332B4600B83E01 /* RatingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingViewController.swift; sourceTree = "<group>"; };
+		5F889BA0204620A60054D2ED /* MainPageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageVC.swift; sourceTree = "<group>"; };
+		5F889BA2204621DE0054D2ED /* GradientViewBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientViewBackground.swift; sourceTree = "<group>"; };
 		97BB13E391BCE3E8ED7A9756 /* Pods-BlipUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlipUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BlipUITests/Pods-BlipUITests.release.xcconfig"; sourceTree = "<group>"; };
 		CC3B578818C69E894B2F65CD /* Pods_BlipUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BlipUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA08477A131A88FA8EB584E0 /* Pods-BlipTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlipTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BlipTests/Pods-BlipTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -408,6 +412,7 @@
 				3B537370202EC0DB0020F3B1 /* SplashViewController.swift */,
 				3B53736F202EC0DB0020F3B1 /* UnconfirmedVC.swift */,
 				3BA1E070203CBD1700AF89B8 /* DisputeVC.swift */,
+				5F889BA0204620A60054D2ED /* MainPageVC.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -431,6 +436,7 @@
 				3B53738C202EC2200020F3B1 /* TapScreenToCloseKeyboardViewController.swift */,
 				3B53738F202EC2200020F3B1 /* UIWindowTransitions.swift */,
 				3BA1E06E203CBBA500AF89B8 /* CustomCollectionViewCell.swift */,
+				5F889BA2204621DE0054D2ED /* GradientViewBackground.swift */,
 			);
 			path = CustomViewControllers;
 			sourceTree = "<group>";
@@ -843,6 +849,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5F889BA3204621DE0054D2ED /* GradientViewBackground.swift in Sources */,
 				3B53739C202EC2210020F3B1 /* UIWindowTransitions.swift in Sources */,
 				3B53739A202EC2210020F3B1 /* GradientView.swift in Sources */,
 				3B537378202EC0DC0020F3B1 /* AppTabsController.swift in Sources */,
@@ -876,6 +883,7 @@
 				3B537377202EC0DC0020F3B1 /* ConfirmProfilePageVC.swift in Sources */,
 				3B53737B202EC0DC0020F3B1 /* OnboardingVCViewController.swift in Sources */,
 				3B53732E202EBA6B0020F3B1 /* ServiceCalls.swift in Sources */,
+				5F889BA1204620A60054D2ED /* MainPageVC.swift in Sources */,
 				3B53732F202EBA6B0020F3B1 /* Job.swift in Sources */,
 				3B53737E202EC0DC0020F3B1 /* MyAPIClient.swift in Sources */,
 				3B537385202EC0DC0020F3B1 /* SettingsViewController.swift in Sources */,
