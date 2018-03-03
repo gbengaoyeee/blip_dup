@@ -30,6 +30,7 @@ target 'Blip' do
   pod 'Pulsator'
   pod 'Cosmos'
   pod 'AZDialogView'
+  pod 'Mapbox-iOS-SDK'
   pod 'BSImagePicker', '~> 2.4'
   pod 'WalmartOpenApi'
 

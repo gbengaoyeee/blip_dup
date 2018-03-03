@@ -211,6 +211,7 @@
 		5F889BA2204621DE0054D2ED /* GradientViewBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientViewBackground.swift; sourceTree = "<group>"; };
 		5F889BA42047705D0054D2ED /* GroceryListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroceryListViewController.swift; sourceTree = "<group>"; };
 		5F889BA6204775F10054D2ED /* WalmartAPICaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalmartAPICaller.swift; sourceTree = "<group>"; };
+		5FA2FC09204B3B9F00C18F15 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		97BB13E391BCE3E8ED7A9756 /* Pods-BlipUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlipUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BlipUITests/Pods-BlipUITests.release.xcconfig"; sourceTree = "<group>"; };
 		CC3B578818C69E894B2F65CD /* Pods_BlipUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BlipUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA08477A131A88FA8EB584E0 /* Pods-BlipTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlipTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BlipTests/Pods-BlipTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -956,6 +957,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				3B5372FC202EB4320020F3B1 /* Base */,
+				5FA2FC09204B3B9F00C18F15 /* en */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
