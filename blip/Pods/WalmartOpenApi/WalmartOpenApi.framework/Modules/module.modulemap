@@ -1,0 +1,7 @@
+framework module WalmartOpenApi {
+  umbrella header "WalmartOpenApi.h"
+
+  export *
+  module * { export * }
+}
+

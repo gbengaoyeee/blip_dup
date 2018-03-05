@@ -26,10 +26,11 @@ class Job{
     var jobTakerID: String!
     var jobOwnerEmailHash: String!
     var jobOwnerFullName: String!
-    var jobOwnerRating: Float?
+    var jobOwnerRating: CGFloat?
     var ref: DatabaseReference!
     var latitude: Double!
     var longitude: Double!
+
 
     
     var placemark: CLPlacemark?
@@ -46,7 +47,9 @@ class Job{
             let jobOwnerEmailHash = jobValues["jobOwner"] as? String,
             let jobOwnerFullName = jobValues["fullName"] as? String,
             let wage_per_hour = jobValues["price"] as? String,
-            let maxTime = jobValues["time"] as? String
+            let maxTime = jobValues["time"] as? String,
+            let jobOwnerPhoto = jobValues["jobOwnerPhoto"] as? String,
+            let jobOwnerRating = jobValues["jobOwnerRating"] as? CGFloat
         else{return nil}
             
         
@@ -63,7 +66,10 @@ class Job{
         self.wage_per_hour = Double(wage_per_hour)!
         self.maxTime = Double(maxTime)!
         self.location = CLLocation(latitude: latitude, longitude: longitude)
-
+        self.jobOwnerPhotoURL = URL(string: jobOwnerPhoto)
+        self.jobOwnerRating = jobOwnerRating
+        
+        // Setting the address string of the job
         let geocoder = CLGeocoder()
         geocoder.reverseGeocodeLocation(self.location, completionHandler: { (placemarks, error) in
             if(error == nil){

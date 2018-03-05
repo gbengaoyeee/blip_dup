@@ -31,7 +31,7 @@ class LoginVC: UIViewController {
     let animationViewTwo = LOTAnimationView(name: "simple_outline_lock_")
     
     let userDefault = UserDefaults.standard
-    var userCredArray:[String]!
+    var userCredDict:[String:String]!
     let loginCredentials = "loginCredentials"
     
     override func viewDidLoad() {
@@ -56,12 +56,9 @@ class LoginVC: UIViewController {
         self.forgetPassword.makeButtonAppear()
         gradientViewLogin.startAnimation()
         
-        if let userCred = userDefault.value(forKey: self.loginCredentials) as? [String]{
-            if userCred.count == 2{
-                self.emailTF.text = userCred[0]
-                self.passwordTF.text = userCred[1]
-                print(userCred)
-            }
+        if let userCred = userDefault.value(forKey: self.loginCredentials) as? [String:String]{
+            self.emailTF.text = userCred["email"]
+            self.passwordTF.text = userCred["password"]
         }
     }
     
@@ -144,11 +141,24 @@ class LoginVC: UIViewController {
                     let token = ["currentDevice": AppDelegate.DEVICEID]
                     ref.updateChildValues(token)
                     self.loginCredentialsCorrectAnimation()
-                    // save user credentials into UserDefaults
-                    self.userCredArray = []
-                    self.userCredArray.append(self.emailTF.text!)
-                    self.userCredArray.append(self.passwordTF.text!)
-                    self.userDefault.setValue(self.userCredArray, forKey: self.loginCredentials)
+                    
+                    // If someone else logs in using this phone apart from the original user store their info
+                    if let prevCred = self.userDefault.value(forKey: "loginCredentials") as? [String:String]{
+                        if(prevCred["email"] == self.emailTF.text && prevCred["password"] == self.passwordTF.text){
+                            // save user credentials into UserDefaults
+                            self.userCredDict = [:]
+                            self.userCredDict["email"] = self.emailTF.text!
+                            self.userCredDict["password"] = self.passwordTF.text!
+                            self.userDefault.setValue(self.userCredDict, forKey: self.loginCredentials)
+                            return
+                        }
+                    }//end
+                    
+                    // save user credentials into UserDefaults for the first time
+                    self.userCredDict = [:]
+                    self.userCredDict["email"] = self.emailTF.text!
+                    self.userCredDict["password"] = self.passwordTF.text!
+                    self.userDefault.setValue(self.userCredDict, forKey: self.loginCredentials)
                 }
             })
         }
@@ -196,11 +206,24 @@ class LoginVC: UIViewController {
                     let token = ["currentDevice": AppDelegate.DEVICEID]
                     ref.updateChildValues(token)
                     self.loginCredentialsCorrectAnimation()
-                    // save user credentials into UserDefaults
-                    self.userCredArray = []
-                    self.userCredArray.append(self.emailTF.text!)
-                    self.userCredArray.append(self.passwordTF.text!)
-                    self.userDefault.setValue(self.userCredArray, forKey: self.loginCredentials)
+                   
+                    // If someone else logs in using this phone apart from the original user store their info
+                    if let prevCred = self.userDefault.value(forKey: "loginCredentials") as? [String:String]{
+                        if(prevCred["email"] == self.emailTF.text && prevCred["password"] == self.passwordTF.text){
+                            // save user credentials into UserDefaults
+                            self.userCredDict = [:]
+                            self.userCredDict["email"] = self.emailTF.text!
+                            self.userCredDict["password"] = self.passwordTF.text!
+                            self.userDefault.setValue(self.userCredDict, forKey: self.loginCredentials)
+                            return
+                        }
+                    }//end
+                    
+                    // save user credentials into UserDefaults for the first time
+                    self.userCredDict = [:]
+                    self.userCredDict["email"] = self.emailTF.text!
+                    self.userCredDict["password"] = self.passwordTF.text!
+                    self.userDefault.setValue(self.userCredDict, forKey: self.loginCredentials)
                 }
             })
         }

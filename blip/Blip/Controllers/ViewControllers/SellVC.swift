@@ -79,6 +79,10 @@ class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, 
     var internet:Bool!
     let userDefault = UserDefaults.standard
     
+    /*---Firebase Handles---*/
+    var lastPostAcceptedInAppHandle: UInt!
+    var acceptedJobInAppHandle: UInt!
+    
     ////////////////////////Functions associated with the controller go here//////////////////////////
     
     override func viewDidLoad() {
@@ -96,26 +100,14 @@ class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, 
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        
-        //checking for internet on first reach of the viewcontroller
-        connectivity?.whenReachable = {_ in
-            DispatchQueue.main.async {
-                self.view.isUserInteractionEnabled = true
-                self.prepareMap()   // Prepare map thing on the main thread if there is internet on first run
-                self.saveUserInfoInUserDefault()    //This is to access user info to use to setup profile page
-            }
-        }
-        connectivity?.whenUnreachable = {_ in   // No internet on start up
-            self.view.isUserInteractionEnabled = false
-        }
+        //Try to do all viewDidAppear stuff in connectivityChanged() function
         NotificationCenter.default.addObserver(self, selector: #selector(connectivityChanged), name: Notification.Name.reachabilityChanged, object: connectivity)
         do{
             try connectivity?.startNotifier()
         }catch{
             print("Could not start the notifier")
         }
-        
-        self.saveUserInfoInUserDefault()    //This is to access user info to use to setup profile page
+
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -129,6 +121,7 @@ class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, 
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        removeAvailableObservers()
     }
     
     func saveUserInfoInUserDefault(){
@@ -153,7 +146,14 @@ class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, 
         if (connectivity.connection == .wifi || connectivity.connection == .cellular){
             self.internet = true
             DispatchQueue.main.async {
-//                self.prepareMap()   // When it regains connection try to prepare map on main thread
+                self.view.isUserInteractionEnabled = true
+                self.observeLastEventBeforeTerminationInLastPostAccepted()
+                self.observeLastEventBeforeTerminationInAcceptedJob()
+                self.observeForNewEventsInLastPostAccepted()
+                self.observeForNewEventsInAcceptedJob()
+                self.prepareMap()   // Prepare map thing on the main thread if there is internet on first run
+                self.saveUserInfoInUserDefault()
+                
                 print("REGAINED CONNECTION")
             }
             
@@ -167,6 +167,153 @@ class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, 
         }
     }
     
+/*
+    This function is for the job Owner and should be transfered(this function) to the other grocery app
+    It should only check for when the courier has arrived to drop off goods
+*/
+    func observeForNewEventsInLastPostAccepted(){
+        lastPostAcceptedInAppHandle = service.userRef.child(service.emailHash).child("lastPostAccepted").observe(.childChanged) { (snap) in
+            if let jobValues = snap.value as? [String:AnyObject]{
+                /*
+                 precondition: childchanged works for both added and removed and of course changed
+                 
+                    This is a bottom up algorithm. Because the events come in the same order, therefore it checks for the last relevant event that
+                    happened. For example when isAccepterReady is set,
+                    it will only call the third else if statement
+                 
+                 */
+                if jobValues["completed"] != nil{
+                    // goods has been delivered
+                    print("D")
+                }
+                else if jobValues["hasStarted"] != nil{
+                    //supposed to be for when owner is ready
+                    print("C")
+                }
+                else if jobValues["isAccepterReady"] != nil{
+                    print("B")
+                    //supposed to be for when accepter presses start
+                }
+                else if jobValues["isTakenBy"] != nil{
+                    //when someone accepts your job
+                    print("A")
+                }
+            }
+        }
+    }
+    
+/*
+    This function is to get the last event that occured before the termination of the app
+    This function is only to be called once each time the app is opened after termination
+    Again this function is meant for the job poster/owner
+*/
+    func observeLastEventBeforeTerminationInLastPostAccepted(){
+        service.userRef.child(service.emailHash).child("lastPostAccepted").observeSingleEvent(of: .childAdded) { (snap) in
+            if let jobValues = snap.value as? [String:AnyObject]{
+                /*
+                 
+                 This is a bottom up algorithm. Because the events come in the same order, therefore it checks for the last relevant event that
+                 happened. For example when isAccepterReady is set,
+                 it will only call the third else if statement
+                 
+                 */
+                if jobValues["completed"] != nil{
+                    // goods has been delivered
+                    print("D")
+                }
+                else if jobValues["hasStarted"] != nil{
+                    //supposed to be for when owner is ready
+                    print("C")
+                }
+                else if jobValues["isAccepterReady"] != nil{
+                    print("B")
+                    //supposed to be for when accepter presses start
+                }
+                else if jobValues["isTakenBy"] != nil{
+                    //when someone accepts your job
+                    print("A")
+                }
+            }
+        }
+    }
+    
+/*
+    This function is used to observe the most recent job this user accepted
+*/
+    func observeForNewEventsInAcceptedJob(){
+        acceptedJobInAppHandle = service.userRef.child(service.emailHash).child("acceptedJob").observe(.childChanged) { (snap) in
+            if let jobValues = snap.value as? [String:AnyObject]{
+                /*
+                 precondition: childchanged works for both added and removed and of course changed
+                 
+                 This is a bottom up algorithm. Because the events come in the same order, therefore it checks for the last relevant event that
+                 happened. For example when isAccepterReady is set,
+                 it will only call the third else if statement
+                 
+                 */
+                if jobValues["completed"] != nil{
+                    // goods has been delivered
+                    print("H")
+                }
+                else if jobValues["hasStarted"] != nil{
+                    //supposed to be for when owner is ready
+                    print("G")
+                }
+                else if jobValues["isAccepterReady"] != nil{
+                    print("F")
+                    //supposed to be for when accepter presses start
+                }
+                else if jobValues["isTakenBy"] != nil{
+                    //when this user accepts a job
+                    print("E")
+                }
+            }
+        }
+    }
+    
+    func observeLastEventBeforeTerminationInAcceptedJob(){
+        service.userRef.child(service.emailHash).child("acceptedJob").observeSingleEvent(of: .childAdded) { (snap) in
+            if let jobValues = snap.value as? [String:AnyObject]{
+                /*
+                 precondition: childchanged works for both added and removed and of course changed
+                 
+                 This is a bottom up algorithm. Because the events come in the same order, therefore it checks for the last relevant event that
+                 happened. For example when isAccepterReady is set,
+                 it will only call the third else if statement
+                 
+                 */
+                if jobValues["completed"] != nil{
+                    // goods has been delivered
+                    print("H")
+                }
+                else if jobValues["hasStarted"] != nil{
+                    //supposed to be for when owner is ready
+                    print("G")
+                }
+                else if jobValues["isAccepterReady"] != nil{
+                    print("F")
+                    //supposed to be for when accepter presses start
+                }
+                else if jobValues["isTakenBy"] != nil{
+                    //when this user accepts a job
+                    print("E")
+                }
+            }
+        }
+    }
+    
+/*
+     removes all attached observers
+*/
+    func removeAvailableObservers(){
+           service.jobsRef.removeObserver(withHandle: service.jobsRefHandle)
+        service.userRef.child(service.emailHash).child("lastPostAccepted").removeAllObservers()
+            service.userRef.child(service.emailHash).child("acceptedJob").removeAllObservers()
+    }
+    
+/*
+     
+*/
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == "startJobFromSellVC"{
@@ -406,18 +553,14 @@ class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, 
         return picture
     }
     
-    
-
-
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    
+/*
+    Asks for Permission to use user's locations
+*/
     func useCurrentLocations(){
-        
         // Ask for Authorisation from the User.
         self.locationManager.requestAlwaysAuthorization()
         
@@ -444,48 +587,50 @@ class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, 
 extension SellVC {
     
     func preparePopupForJobPosting(wage: String, time: String) -> PopupDialog{
-        
+
         let price = (Double(wage )!)*(Double(time )!)
         let priceForStripe = Int(price*100)
         let title = "Confirm"
         let message = "We will authorize " + "$" + "\(price)" + " for your job. You can cancel your job at anytime before it has been confirmed and begun. If you cancel after it has been accepted, a small fee of $ 5.00 will be charged."
-        
+
         let popup = PopupDialog(title: title, message: message)
-        
+
         let continueButton = DefaultButton(title: "Continue", dismissOnTap: true) {
+
+            self.service.addJobToFirebase(jobTitle: self.jobTitleTF.text!, jobDetails: self.jobDetailsTF.text!, pricePerHour: self.pricePerHour.text!, numberOfHours: self.numberOfHoursTF.text!, locationCoord: self.currentLocation, chargeID: "charge_ID should be here")
             
-            
-            //Attempt to charge a payment
-            self.prepareAndAddBlurredLoader()
-            self.submitJobButton.isHidden = true
-            //LoadingAnimation initialize and play
-            MyAPIClient.sharedClient.authorizeCharge(amount: priceForStripe, completion: { charge_id in
-                //If no error when paying
-                
-                self.removedBlurredLoader()
-                if charge_id != nil{
-                    //
-                    self.service.addJobToFirebase(jobTitle: self.jobTitleTF.text!, jobDetails: self.jobDetailsTF.text!, pricePerHour: self.pricePerHour.text!, numberOfHours: self.numberOfHoursTF.text!, locationCoord: self.currentLocation, chargeID: charge_id!)
-                    
-                    self.jobPriceViewConstraint.constant = 1600
-                    UIView.animate(withDuration: 1, animations: {self.view.layoutIfNeeded()})
-                    self.postJobButton.isHidden = false
-                    self.resetTextFields()
-                    self.prepareBannerForPost()
-                    print("Sucessfully posted job")
-                    self.submitJobButton.isHidden = false
-                    
-                    return
-                }
-                //If error when paying
-                else{
-                    let errorPopup = PopupDialog(title: "Error processing payment.", message:"Your payment method has failed, or none has been added. Please check your payment methods by tapping on the menu, and selecting payment methods.")
-                    self.present(errorPopup, animated: true, completion: {
-                        self.submitJobButton.isHidden = false
-                    })
-                    return
-                }
-            })
+
+//            //Attempt to charge a payment
+//            self.prepareAndAddBlurredLoader()
+//            self.submitJobButton.isHidden = true
+//            //LoadingAnimation initialize and play
+//            MyAPIClient.sharedClient.authorizeCharge(amount: priceForStripe, completion: { charge_id in
+//                //If no error when paying
+//
+//                self.removedBlurredLoader()
+//                if charge_id != nil{
+//                    //
+//                    self.service.addJobToFirebase(jobTitle: self.jobTitleTF.text!, jobDetails: self.jobDetailsTF.text!, pricePerHour: self.pricePerHour.text!, numberOfHours: self.numberOfHoursTF.text!, locationCoord: self.currentLocation, chargeID: charge_id!)
+//
+//                    self.jobPriceViewConstraint.constant = 1600
+//                    UIView.animate(withDuration: 1, animations: {self.view.layoutIfNeeded()})
+//                    self.postJobButton.isHidden = false
+//                    self.resetTextFields()
+//                    self.prepareBannerForPost()
+//                    print("Sucessfully posted job")
+//                    self.submitJobButton.isHidden = false
+//
+//                    return
+//                }
+//                //If error when paying
+//                else{
+//                    let errorPopup = PopupDialog(title: "Error processing payment.", message:"Your payment method has failed, or none has been added. Please check your payment methods by tapping on the menu, and selecting payment methods.")
+//                    self.present(errorPopup, animated: true, completion: {
+//                        self.submitJobButton.isHidden = false
+//                    })
+//                    return
+//                }
+//            })
         }
 
         let cancelButton = CancelButton(title: "Cancel") {
@@ -497,7 +642,6 @@ extension SellVC {
     
     
     func prepareBannerForAccept(){
-        
         let banner = NotificationBanner(title: "Success", subtitle: "Accepted Job", leftView: postedJobAnimation, style: .success)
         banner.show()
         check.play()
@@ -579,7 +723,7 @@ extension SellVC {
                         print(err.localizedDescription)
                     }
                     else{
-                        self.preparePopupForJobAccepting(job: job)
+//                        self.preparePopupForJobAccepting(job: job)
                     }
                 })
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "acceptedNotification"), object: nil)

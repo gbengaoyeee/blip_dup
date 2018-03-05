@@ -21,6 +21,7 @@ class BlipUser{
     var uid: String?
     var completedJobs: [String:AnyObject]?
     var reviews: [String: Double]?
+    var currentJobPost:Job?
     
     var ref:DatabaseReference!
     
@@ -49,6 +50,7 @@ class BlipUser{
         if let userval = snapshot.value as? [String:AnyObject]{
             self.completedJobs = userval["CompletedJobs"] as? [String:AnyObject]
             self.reviews = userval["reviews"] as? [String:Double]
+            
         }
 
     }

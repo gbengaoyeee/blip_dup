@@ -79,94 +79,101 @@ extension SellVC: Constrainable{
         }
     }
     
-    //Prepares the map by adding annotations for jobs from firebase, and setting the mapview.
     @objc func prepareMap(){
-        
-            service.updateUI(map: self.MapView) { (code, jobObject, annotations) in
-            
-            
-            if let stateCode = code{
-                
-                if stateCode == 0{
-                    print("added annotation")
-                    self.allAnnotations = annotations
-                }
-                
-                
-                else if stateCode == 1{
-                    
-                    self.setStateOnJobStart()
-                }
-                
-                else if stateCode == 4{
-                    
-                    self.setStateWhenAccepterIsReady()
-                }
-                
-                else if stateCode == 5{
-                    
-                    self.setStateOnJobEnd()
-                }
-                
-                else if stateCode == 3{
-                    
-                    self.setStateForJobWasAccepted()
-                }
-                
-                else if stateCode == 6{
-                    
-                    //CURRENT USER CANCELLED HIS POST
-                }
-                
-                else if stateCode == 7{
-                    
-                    // Job completed for accepter
-                }
-                
-                else if stateCode == 8{
-                    
-                    self.service.getJobAcceptedByCurrentUser(completion: { (job) in
-                        self.acceptedJob = job
-                        self.removedBlurredLoader()
-                        self.performSegue(withIdentifier: "endJobFromSellVC", sender: self)
-                    })
-                }
-                
-                else if stateCode == 9{
-                    
-                    self.service.getJobAcceptedByCurrentUser(completion: { (job) in
-                        self.acceptedJob = job
-                        
-                        if !self.isBlurredLoaderPresent(){
-                            self.prepareAndAddBlurredLoader()
-                        }
-                    })
-                }
-                
-                else if stateCode == 10{
-                    
-                    self.service.getJobAcceptedByCurrentUser(completion: { (job) in
-                        self.acceptedJob = job
-                        self.preparePopupForJobAccepting(job: self.acceptedJob)
-                    })
-                }
-                
-                else if stateCode == 11{
-                    
-                    // accepter cancelled the job
-                }
-            }
-            
-            else{
-                
-                if let task = jobObject{
-                    if let anno = self.allAnnotations[task.jobID]{
-                        self.MapView.removeAnnotation(anno)
-                    }
-                }
-            }
+        service.getJobsFromFirebase(MapView: self.MapView) { (annotations) in
+            print("added annotation")
+            self.allAnnotations = annotations
         }
     }
+    
+    //Prepares the map by adding annotations for jobs from firebase, and setting the mapview.
+//    @objc func prepareMap(){
+//
+//            service.updateUI(map: self.MapView) { (code, jobObject, annotations) in
+//
+//
+//            if let stateCode = code{
+//
+//                if stateCode == 0{
+//                    print("added annotation")
+//                    self.allAnnotations = annotations
+//                }
+//
+//
+//                else if stateCode == 1{
+//
+//                    self.setStateOnJobStart()
+//                }
+//
+//                else if stateCode == 4{
+//
+//                    self.setStateWhenAccepterIsReady()
+//                }
+//
+//                else if stateCode == 5{
+//
+//                    self.setStateOnJobEnd()
+//                }
+//
+//                else if stateCode == 3{
+//
+//                    self.setStateForJobWasAccepted()
+//                }
+//
+//                else if stateCode == 6{
+//
+//                    //CURRENT USER CANCELLED HIS POST
+//                }
+//
+//                else if stateCode == 7{
+//
+//                    // Job completed for accepter
+//                }
+//
+//                else if stateCode == 8{
+//
+//                    self.service.getJobAcceptedByCurrentUser(completion: { (job) in
+//                        self.acceptedJob = job
+//                        self.removedBlurredLoader()
+//                        self.performSegue(withIdentifier: "endJobFromSellVC", sender: self)
+//                    })
+//                }
+//
+//                else if stateCode == 9{
+//
+//                    self.service.getJobAcceptedByCurrentUser(completion: { (job) in
+//                        self.acceptedJob = job
+//
+//                        if !self.isBlurredLoaderPresent(){
+//                            self.prepareAndAddBlurredLoader()
+//                        }
+//                    })
+//                }
+//
+//                else if stateCode == 10{
+//
+//                    self.service.getJobAcceptedByCurrentUser(completion: { (job) in
+//                        self.acceptedJob = job
+//                        self.preparePopupForJobAccepting(job: self.acceptedJob)
+//                    })
+//                }
+//
+//                else if stateCode == 11{
+//
+//                    // accepter cancelled the job
+//                }
+//            }
+//
+//            else{
+//
+//                if let task = jobObject{
+//                    if let anno = self.allAnnotations[task.jobID]{
+//                        self.MapView.removeAnnotation(anno)
+//                    }
+//                }
+//            }
+//        }
+//    }
     
     
     func setStateForJobWasAccepted(){
@@ -197,30 +204,21 @@ extension SellVC: Constrainable{
     }
     
     func preparePopupForJobAccepting(job: Job){
-        
         let dialogController = AZDialogViewController(title: job.title,
                                                       message: job.description)
-        
         dialogController.showSeparator = true
-        
         dialogController.dismissDirection = .bottom
-        
         dialogController.imageHandler = { (imageView) in
-            
             self.service.getUserInfo(hash: job.jobOwnerEmailHash, completion: { (user) in
-                
                 if let blipUser = user{
                     imageView.kf.setImage(with: blipUser.photoURL)
                     imageView.contentMode = .scaleAspectFill
                 }
             })
-            
-            
             return true
         }
         
         dialogController.addAction(AZDialogAction(title: "Start Job", handler: { [weak self] (dialog) -> (Void) in
-            
             dialogController.dismiss()
             self?.prepareAndAddBlurredLoader()
             self?.service.accepterReady(job: job, completion: { (ownerDeviceToken) in
@@ -246,12 +244,10 @@ extension SellVC: Constrainable{
         }))
         
         dialogController.addAction(AZDialogAction(title: "Navigate to job", handler: { [weak self] (dialog) -> (Void) in
-            
             self?.getDirections(job: job)
         }))
         
         dialogController.buttonStyle = { (button,height,position) in
-            
             button.backgroundColor = #colorLiteral(red: 0.9357799888, green: 0.4159773588, blue: 0.3661105633, alpha: 1)
             button.setTitleColor(UIColor.white, for: [])
             button.layer.masksToBounds = true
@@ -260,13 +256,8 @@ extension SellVC: Constrainable{
         
         dialogController.blurBackground = true
         dialogController.blurEffectStyle = .dark
-        
-        
-        
         dialogController.dismissWithOutsideTouch = false
-        
         dialogController.show(in: self)
-        
     }
     
     func setStateWhenAccepterIsReady(){

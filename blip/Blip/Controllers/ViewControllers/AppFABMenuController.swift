@@ -20,6 +20,7 @@ class AppFABMenuController: FABMenuController, STPPaymentContextDelegate{
     
     var currUser: BlipUser?
     let service = ServiceCalls()
+    let userDefaults = UserDefaults.standard
     
     
     func paymentContext(_ paymentContext: STPPaymentContext, didFailToLoadWithError error: Error) {
@@ -129,6 +130,8 @@ extension AppFABMenuController {
             self.navigationController?.popToRootViewController(animated: true)
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             appDelegate.setLogoutAsRoot()
+
+//            userDefaults.removeObject(forKey: "loginCredentials")
             
         } catch let signOutError as NSError {
             let signOutErrorPopup = PopupDialog(title: "Error", message: "Error signing you out, try again later" + signOutError.localizedDescription )

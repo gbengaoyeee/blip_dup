@@ -25,135 +25,140 @@ class ServiceCalls{
     var userRefHandle: DatabaseHandle!
     var newHandle: DatabaseHandle!
     var childHandle: DatabaseHandle!
-    static var counter = 0
+    var currentBlipUser: BlipUser?
     
     init() {
         fireBaseRef = Database.database().reference()
         jobsRef = fireBaseRef.child("AllJobs")
         userRef = fireBaseRef.child("Users")
+        //Trying to create a BlipUser Object to access user values
+        userRef.child(emailHash).observeSingleEvent(of: .value) { (snap) in
+            self.currentBlipUser = BlipUser(snapshot: snap)
+        }
+        
     }
     
-    func setAppState(MapView: MGLMapView, completion: @escaping(Int?, Job?, [String:CustomMGLAnnotation]?) -> ()){
-        
-        
-        jobsRef.observe(.childAdded) { (data) in
-            
-            print("A child was added", data.key)
-            var dataDict = data.value as? [String: Any]
-            let job = Job(snapshot: data)
-            
-            data.ref.observe(.childAdded, with: { (addedKey) in
-                
-                
-                dataDict![addedKey.key] = addedKey.value
-                
-                if job?.jobOwnerEmailHash == self.emailHash{
-                    
-                    print(addedKey.key, "This is the added key for current user job post", addedKey.value as? String)
-                    
-                    if (addedKey.key == "completed"){
-                        
-                        completion(5, nil, nil) // Current users post was completed
-                    }
-                        
-                    else if (addedKey.key == "hasStarted" && !(data.hasChild("completed"))){
-                        
-                        completion(1, nil, nil) // Code 1 implies that the job has started for poster
-                        
-                    }
-                        
-                    else if (addedKey.key == "isAccepterReady" && !(data.hasChild("hasStarted"))){
-                        
-                        completion(4, nil, nil) // Current users post has been accepted and the accepter is ready
-                    }
-                        
-                    else if (addedKey.key == "isTakenBy" && !(data.hasChild("isAccepterReady"))){
-                        
-                        completion(3, nil, nil) // Current users post got accepted
-                    }
-                }
-                    
-                else if dataDict!["isTakenBy"] as? String == self.emailHash{
-                    
-                    print(addedKey.key, "This is the added key for current user accepted this post", addedKey.value as? String)
-                    
-                    if (addedKey.key == "completed"){
-                        print(7)
-                        completion(7, nil, nil) // current user completed a post
-                    }
-                        
-                    else if (addedKey.key == "hasStarted" && !(data.hasChild("completed"))){
-                        print(8)
-                        completion(8, nil, nil) // Job hasStarted and current user is accepter
-                    }
-                        
-                        
-                    else if (addedKey.key == "isAccepterReady" && !(data.hasChild("hasStarted"))){
-                        print(9)
-                        completion(9, nil, nil) // Current users post has been accepted and the accepter is ready
-                    }
-                        
-                    else if (addedKey.key == "isTakenBy" && !(data.hasChild("isAccepterReady"))){
-                        print(10)
-                        completion(10, nil, nil) // Current users post got accepted
-                    }
-                }
-                
-                else{
-                    
-                    if let completed = dataDict!["completed"] as? Bool{
-                        
-
-                        print("this job has been completed")
-                        
-                    }
-                    else{
-
-                        print("This is the added job when user hasnt posted nor accepted.", addedKey.key)
-                        
-                        var annotationDict: [String:CustomMGLAnnotation] = [:]
-                        let job = Job(snapshot: data)
-                        // check if the curr job snap is not curr user's and also if the job is not accepted
-
-                        if (job?.jobOwnerEmailHash != self.emailHash && !(data.hasChild("isTakenBy"))){
-                            
-                            let jobPosterRef = self.userRef.child((job?.jobOwnerEmailHash)!)
-                            jobPosterRef.observeSingleEvent(of: .value, with: { (snapshot2) in
-                                let userVal = snapshot2.value as? [String:AnyObject]
-                                job?.jobOwnerRating = userVal!["Rating"] as? Float
-                                job?.jobOwnerPhotoURL = URL(string: (userVal!["photoURL"] as? String)!)
-                                
-                                let point = CustomMGLAnnotation()
-                                point.job = job
-                                point.coordinate = (job?.location.coordinate)!
-                                point.title = job?.title
-                                point.subtitle = ("$"+"\((job?.wage_per_hour)!)"+"/Hour")
-                                point.photoURL = job?.jobOwnerPhotoURL
-                                MapView.addAnnotation(point)
-                                annotationDict[(job?.jobID)!] = point
-                                completion(0, nil, annotationDict)
-                            })
-                        }
-                    }
-                }
-            })
-        }
-    }
+//    func setAppState(MapView: MGLMapView, completion: @escaping(Int?, Job?, [String:CustomMGLAnnotation]?) -> ()){
+//
+//
+//        jobsRef.observe(.childAdded) { (data) in
+//
+//            print("A child was added", data.key)
+//            var dataDict = data.value as? [String: Any]
+//            let job = Job(snapshot: data)
+//
+//            data.ref.observe(.childAdded, with: { (addedKey) in
+//
+//
+//                dataDict![addedKey.key] = addedKey.value
+//
+//                if job?.jobOwnerEmailHash == self.emailHash{
+//
+//                    print(addedKey.key, "This is the added key for current user job post", addedKey.value as? String)
+//
+//                    if (addedKey.key == "completed"){
+//
+//                        completion(5, nil, nil) // Current users post was completed
+//                    }
+//
+//                    else if (addedKey.key == "hasStarted" && !(data.hasChild("completed"))){
+//
+//                        completion(1, nil, nil) // Code 1 implies that the job has started for poster
+//
+//                    }
+//
+//                    else if (addedKey.key == "isAccepterReady" && !(data.hasChild("hasStarted"))){
+//
+//                        completion(4, nil, nil) // Current users post has been accepted and the accepter is ready
+//                    }
+//
+//                    else if (addedKey.key == "isTakenBy" && !(data.hasChild("isAccepterReady"))){
+//
+//                        completion(3, nil, nil) // Current users post got accepted
+//                    }
+//                }
+//
+//                else if dataDict!["isTakenBy"] as? String == self.emailHash{
+//
+//                    print(addedKey.key, "This is the added key for current user accepted this post", addedKey.value as? String)
+//
+//                    if (addedKey.key == "completed"){
+//                        print(7)
+//                        completion(7, nil, nil) // current user completed a post
+//                    }
+//
+//                    else if (addedKey.key == "hasStarted" && !(data.hasChild("completed"))){
+//                        print(8)
+//                        completion(8, nil, nil) // Job hasStarted and current user is accepter
+//                    }
+//
+//
+//                    else if (addedKey.key == "isAccepterReady" && !(data.hasChild("hasStarted"))){
+//                        print(9)
+//                        completion(9, nil, nil) // Current users post has been accepted and the accepter is ready
+//                    }
+//
+//                    else if (addedKey.key == "isTakenBy" && !(data.hasChild("isAccepterReady"))){
+//                        print(10)
+//                        completion(10, nil, nil) // Current users post got accepted
+//                    }
+//                }
+//
+//                else{
+//
+//                    if let completed = dataDict!["completed"] as? Bool{
+//
+//
+//                        print("this job has been completed")
+//
+//                    }
+//                    else{
+//
+//                        print("This is the added job when user hasnt posted nor accepted.", addedKey.key)
+//
+//                        var annotationDict: [String:CustomMGLAnnotation] = [:]
+//                        let job = Job(snapshot: data)
+//                        // check if the curr job snap is not curr user's and also if the job is not accepted
+//
+//                        if (job?.jobOwnerEmailHash != self.emailHash && !(data.hasChild("isTakenBy"))){
+//
+//                            let jobPosterRef = self.userRef.child((job?.jobOwnerEmailHash)!)
+//                            jobPosterRef.observeSingleEvent(of: .value, with: { (snapshot2) in
+//                                let userVal = snapshot2.value as? [String:AnyObject]
+//                                job?.jobOwnerRating = userVal!["Rating"] as? Float
+//                                job?.jobOwnerPhotoURL = URL(string: (userVal!["photoURL"] as? String)!)
+//
+//                                let point = CustomMGLAnnotation()
+//                                point.job = job
+//                                point.coordinate = (job?.location.coordinate)!
+//                                point.title = job?.title
+//                                point.subtitle = ("$"+"\((job?.wage_per_hour)!)"+"/Hour")
+//                                point.photoURL = job?.jobOwnerPhotoURL
+//                                MapView.addAnnotation(point)
+//                                annotationDict[(job?.jobID)!] = point
+//                                completion(0, nil, annotationDict)
+//                            })
+//                        }
+//                    }
+//                }
+//            })
+//        }
+//    }
     
 /**
      Add a job to Firebase Database
  */
     
     func addJobToFirebase(jobTitle: String, jobDetails: String, pricePerHour: String, numberOfHours: String, locationCoord: CLLocationCoordinate2D, chargeID: String){
-        
+
         let user = Auth.auth().currentUser
         let newJobID = self.jobsRef.childByAutoId().key
         let latitude = locationCoord.latitude
         let longitude = locationCoord.longitude
-        
+
         let date = Date()
         let calendar = Calendar.current
-        
+
         let day = calendar.component(.day, from: date)
         let month = calendar.component(.month, from: date)
         let year = calendar.component(.year, from: date)
@@ -161,16 +166,16 @@ class ServiceCalls{
         let minute = calendar.component(.minute, from: date)
         let second = calendar.component(.second, from: date)
         let fullDate = "\(day)-\(month)-\(year) \(hour):\(minute):\(second)"
-        
-        let jobDict: [String:Any] = ["latitude":latitude, "longitude":longitude, "jobOwner":self.emailHash, "jobTitle":jobTitle, "jobDescription":jobDetails, "price":pricePerHour, "time":numberOfHours, "fullName":(user?.displayName)!, "charge": chargeID]
-        
-        
+
+        let jobDict: [String:Any] = ["latitude":latitude, "longitude":longitude, "jobOwner":self.emailHash, "jobTitle":jobTitle, "jobDescription":jobDetails, "price":pricePerHour, "time":numberOfHours, "fullName":(user?.displayName)!, "charge": chargeID, "jobOwnerPhoto":(currentBlipUser?.photoURL?.absoluteString)!, "jobOwnerRating":(currentBlipUser?.rating)!]
+
+
         // adding job to the user who posted list of last post
         let lastPostedRef = self.userRef.child(self.emailHash).child("lastPost")
-        
+
         self.jobsRef.child(newJobID).updateChildValues(jobDict)
         lastPostedRef.setValue(newJobID)
-        
+
         //add charges to user reference
         let userChargesRef = self.userRef.child(self.emailHash).child("Charges")
         let keyByDate = chargeID
@@ -247,14 +252,14 @@ class ServiceCalls{
     }
     
 
-    func removedJobFromFirebase(completion: @escaping (Job?)->()){
-
-        jobsRefHandle = jobsRef.observe(.childRemoved, with: { (snapshot) in
-            let job = Job(snapshot: snapshot)
-            completion(job)
-        })
-
-    }
+//    func removedJobFromFirebase(completion: @escaping (Job?)->()){
+//
+//        jobsRefHandle = jobsRef.observe(.childRemoved, with: { (snapshot) in
+//            let job = Job(snapshot: snapshot)
+//            completion(job)
+//        })
+//
+//    }
     
     func getChargeIDFor(job: Job, completion: @escaping(String) ->()){
         
@@ -278,44 +283,61 @@ class ServiceCalls{
 //    }
     
 /**
-     doesn't load tasks whose occupied is true as part of completion dictionary
+     doesn't load tasks that are taken 
  */
     
-    func getJobsFromFirebase(MapView:MGLMapView , completion: @escaping ([String:CustomMGLAnnotation])->()){
+    func getJobsFromFirebase(MapView:MGLMapView , completion: @escaping ([String:CustomMGLAnnotation]?)->()){
         
         var annotationDict: [String:CustomMGLAnnotation] = [:]
         
-        jobsRef.observe(.value) { (data) in
+        jobsRefHandle = jobsRef.observe(.childAdded, with: { (snap) in
+            let job = Job(snapshot: snap)
+            if job?.jobOwnerEmailHash != self.emailHash{
+                let point = CustomMGLAnnotation()
+                point.job = job
+                point.coordinate = (job?.location.coordinate)!
+                point.title = job?.title
+                point.subtitle = ("$"+"\((job?.wage_per_hour)!)"+"/Hour")
+                point.photoURL = job?.jobOwnerPhotoURL
+                MapView.addAnnotation(point)
+                annotationDict[(job?.jobID)!] = point
+                completion(annotationDict)
+            }
             
-            data.ref.observeSingleEvent(of: .value, with: { (data2) in
-                
-                
-                let job = Job(snapshot: data2)
-                print(data2.value)
-                // check if the curr job snap is not curr user's and also if the job is not accepted
-                let dict = data2.value as? [String: AnyObject]
-                print("HERE WE HAVE", job?.jobOwnerEmailHash)
-                if (job?.jobOwnerEmailHash != self.emailHash && dict!["isTakenBy"] == nil){
-                    
-                    let jobPosterRef = self.userRef.child((job?.jobOwnerEmailHash)!)
-                    jobPosterRef.observeSingleEvent(of: .value, with: { (snapshot2) in
-                        let userVal = snapshot2.value as? [String:AnyObject]
-                        job?.jobOwnerRating = userVal!["Rating"] as? Float
-                        job?.jobOwnerPhotoURL = URL(string: (userVal!["photoURL"] as? String)!)
-                        
-                        let point = CustomMGLAnnotation()
-                        point.job = job
-                        point.coordinate = (job?.location.coordinate)!
-                        point.title = job?.title
-                        point.subtitle = ("$"+"\((job?.wage_per_hour)!)"+"/Hour")
-                        point.photoURL = job?.jobOwnerPhotoURL
-                        MapView.addAnnotation(point)
-                        annotationDict[(job?.jobID)!] = point
-                        completion(annotationDict)
-                    })
-                }
-            })
-        }
+
+        })
+        
+//        jobsRef.observe(.value) { (data) in
+//
+//            data.ref.observeSingleEvent(of: .value, with: { (data2) in
+//
+//
+//                let job = Job(snapshot: data2)
+//                print(data2.value)
+//                // check if the curr job snap is not curr user's and also if the job is not accepted
+//                let dict = data2.value as? [String: AnyObject]
+//                print("HERE WE HAVE", job?.jobOwnerEmailHash)
+//                if (job?.jobOwnerEmailHash != self.emailHash && dict!["isTakenBy"] == nil){
+//
+//                    let jobPosterRef = self.userRef.child((job?.jobOwnerEmailHash)!)
+//                    jobPosterRef.observeSingleEvent(of: .value, with: { (snapshot2) in
+//                        let userVal = snapshot2.value as? [String:AnyObject]
+//                        job?.jobOwnerRating = userVal!["Rating"] as? Float
+//                        job?.jobOwnerPhotoURL = URL(string: (userVal!["photoURL"] as? String)!)
+//
+//                        let point = CustomMGLAnnotation()
+//                        point.job = job
+//                        point.coordinate = (job?.location.coordinate)!
+//                        point.title = job?.title
+//                        point.subtitle = ("$"+"\((job?.wage_per_hour)!)"+"/Hour")
+//                        point.photoURL = job?.jobOwnerPhotoURL
+//                        MapView.addAnnotation(point)
+//                        annotationDict[(job?.jobID)!] = point
+//                        completion(annotationDict)
+//                    })
+//                }
+//            })
+//        }
     }
     
     func cancelJobPost(job: Job){
@@ -328,106 +350,106 @@ class ServiceCalls{
         jobsRef.child(job.jobID).updateChildValues(["accepterHasBegun": true, "jobHasBegun": false])
     }
     
-    func updateUI(map: MGLMapView, completion: @escaping(Int?, Job?, [String:CustomMGLAnnotation]?) -> ()){
-        
-        jobsRef.observe(.childAdded) { (addedJob) in
-            
-            let job = Job(snapshot: addedJob)
-            
-            if job?.jobOwnerEmailHash != self.emailHash{
-                
-                print("making annotation")
-                var annotationDict: [String:CustomMGLAnnotation] = [:]
-                let jobPosterRef = self.userRef.child((job?.jobOwnerEmailHash)!)
-                jobPosterRef.observeSingleEvent(of: .value, with: { (snapshot2) in
-                    let userVal = snapshot2.value as? [String:AnyObject]
-                    job?.jobOwnerRating = userVal!["Rating"] as? Float
-                    job?.jobOwnerPhotoURL = URL(string: (userVal!["photoURL"] as? String)!)
-                    let point = CustomMGLAnnotation()
-                    point.job = job
-                    point.coordinate = (job?.location.coordinate)!
-                    point.title = job?.title
-                    point.subtitle = ("$"+"\((job?.wage_per_hour)!)"+"/Hour")
-                    point.photoURL = job?.jobOwnerPhotoURL
-                    map.addAnnotation(point)
-                    annotationDict[(job?.jobID)!] = point
-                    print("Added annotation")
-                    completion(0, nil, annotationDict)
-                })
-            }
-        }
-        
-        var userValues: [String: Any] = ["Initialized key": "Initialized value"]
-        
-        userRef.child(emailHash).observe(.childAdded) { (userData) in
-            
-            userValues[userData.key] = userData.value
-            print("child Added to userref", userData.key)
-            
-            userData.ref.observe(.childAdded, with: { (jobID) in
-                
-                print(jobID.key)
-                jobID.ref.observe(.childAdded, with: { (jobData) in
-                    
-                    print(jobData.key)
-                    
-                    if userValues["acceptedJob"] != nil{
-                        
-                        print(jobData.key)
-                        if (jobData.key == "completed"){
-                            print(7)
-                            completion(7, nil, nil) // current user completed a post
-                        }
-                            
-                        else if (jobData.key == "completedByTaker"){
-                            print(11)
-                            completion(11, nil, nil) // current user completed a post
-                        }
-                            
-                        else if (jobData.key == "hasStarted"){
-                            print(8)
-                            completion(8, nil, nil) // Job hasStarted and current user is accepter
-                        }
-                            
-                        else if (jobData.key == "isAccepterReady"){
-                            print(9)
-                            completion(9, nil, nil) // Current users post has been accepted and the accepter is ready
-                        }
-                            
-                        else if (jobData.key == "isTakenBy"){
-                            print(10)
-                            completion(10, nil, nil) // Current users post got accepted
-                        }
-                    }
-                        
-                    else if userValues["lastPostAccepted"] != nil{
-                        
-                        print(jobData.key)
-                        if (jobData.key == "completed"){
-                            
-                            completion(5, nil, nil) // Current users post was completed
-                        }
-                            
-                        else if (jobData.key == "hasStarted"){
-                            
-                            completion(1, nil, nil) // Code 1 implies that the job has started for poster
-                            
-                        }
-                            
-                        else if (jobData.key == "isAccepterReady"){
-                            
-                            completion(4, nil, nil) // Current users post has been accepted and the accepter is ready
-                        }
-                            
-                        else if (jobData.key == "isTakenBy"){
-                            
-                            completion(3, nil, nil) // Current users post got accepted
-                        }
-                    }
-                })
-            })
-        }
-    }
+//    func updateUI(map: MGLMapView, completion: @escaping(Int?, Job?, [String:CustomMGLAnnotation]?) -> ()){
+//
+//        jobsRef.observe(.childAdded) { (addedJob) in
+//
+//            let job = Job(snapshot: addedJob)
+//
+//            if job?.jobOwnerEmailHash != self.emailHash{
+//
+//                print("making annotation")
+//                var annotationDict: [String:CustomMGLAnnotation] = [:]
+//                let jobPosterRef = self.userRef.child((job?.jobOwnerEmailHash)!)
+//                jobPosterRef.observeSingleEvent(of: .value, with: { (snapshot2) in
+//                    let userVal = snapshot2.value as? [String:AnyObject]
+//                    job?.jobOwnerRating = userVal!["Rating"] as? Float
+//                    job?.jobOwnerPhotoURL = URL(string: (userVal!["photoURL"] as? String)!)
+//                    let point = CustomMGLAnnotation()
+//                    point.job = job
+//                    point.coordinate = (job?.location.coordinate)!
+//                    point.title = job?.title
+//                    point.subtitle = ("$"+"\((job?.wage_per_hour)!)"+"/Hour")
+//                    point.photoURL = job?.jobOwnerPhotoURL
+//                    map.addAnnotation(point)
+//                    annotationDict[(job?.jobID)!] = point
+//                    print("Added annotation")
+//                    completion(0, nil, annotationDict)
+//                })
+//            }
+//        }
+//
+//        var userValues: [String: Any] = ["Initialized key": "Initialized value"]
+//
+//        userRef.child(emailHash).observe(.childAdded) { (userData) in
+//
+//            userValues[userData.key] = userData.value
+//            print("child Added to userref", userData.key)
+//
+//            userData.ref.observe(.childAdded, with: { (jobID) in
+//
+//                print(jobID.key)
+//                jobID.ref.observe(.childAdded, with: { (jobData) in
+//
+//                    print(jobData.key)
+//
+//                    if userValues["acceptedJob"] != nil{
+//
+//                        print(jobData.key)
+//                        if (jobData.key == "completed"){
+//                            print(7)
+//                            completion(7, nil, nil) // current user completed a post
+//                        }
+//
+//                        else if (jobData.key == "completedByTaker"){
+//                            print(11)
+//                            completion(11, nil, nil) // current user completed a post
+//                        }
+//
+//                        else if (jobData.key == "hasStarted"){
+//                            print(8)
+//                            completion(8, nil, nil) // Job hasStarted and current user is accepter
+//                        }
+//
+//                        else if (jobData.key == "isAccepterReady"){
+//                            print(9)
+//                            completion(9, nil, nil) // Current users post has been accepted and the accepter is ready
+//                        }
+//
+//                        else if (jobData.key == "isTakenBy"){
+//                            print(10)
+//                            completion(10, nil, nil) // Current users post got accepted
+//                        }
+//                    }
+//
+//                    else if userValues["lastPostAccepted"] != nil{
+//
+//                        print(jobData.key)
+//                        if (jobData.key == "completed"){
+//
+//                            completion(5, nil, nil) // Current users post was completed
+//                        }
+//
+//                        else if (jobData.key == "hasStarted"){
+//
+//                            completion(1, nil, nil) // Code 1 implies that the job has started for poster
+//
+//                        }
+//
+//                        else if (jobData.key == "isAccepterReady"){
+//
+//                            completion(4, nil, nil) // Current users post has been accepted and the accepter is ready
+//                        }
+//
+//                        else if (jobData.key == "isTakenBy"){
+//
+//                            completion(3, nil, nil) // Current users post got accepted
+//                        }
+//                    }
+//                })
+//            })
+//        }
+//    }
 
     
 /**

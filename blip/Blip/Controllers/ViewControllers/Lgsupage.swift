@@ -29,7 +29,7 @@ class Lgsupage: UIViewController {
 
     var dbRef: DatabaseReference!
     let logoAnimation = LOTAnimationView(name: "clock")
-    
+    let userDefaults = UserDefaults.standard
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = true
@@ -100,6 +100,7 @@ class Lgsupage: UIViewController {
                 if(fbloginresult.grantedPermissions.contains("email"))
                 {
                     self.getFBUserData()
+                    self.userDefaults.removeObject(forKey: "loginCredentials")
                 }
             }
         }
