@@ -15,68 +15,54 @@ import MapKit
 
 class Job{
     
-    var jobOwnerPhotoURL: URL?
-    let description: String
+    var orderer: BlipUser!
     var title: String
-    var wage_per_hour: Double
-    var maxTime: Double
+    var deliveryLocationCoordinates: CLLocationCoordinate2D
+    var pickupLocationCoordinates: CLLocationCoordinate2D
+    var earnings: Double
+    var estimatedTime: Double
     var jobID: String!
-    var location: CLLocation!
-//    static var jobIDarray = [String]()
-    var jobTakerID: String!
-    var jobOwnerEmailHash: String!
-    var jobOwnerFullName: String!
-    var jobOwnerRating: CGFloat?
     var ref: DatabaseReference!
-    var latitude: Double!
-    var longitude: Double!
+    var deliveryPlacemark: CLPlacemark?
+    var pickupPlacemark: CLPlacemark?
+    var deliveryAddress: String!
+    var pickupAddress: String!
 
+    init(snapshot: DataSnapshot) {
+        
+        let jobValues = snapshot.value as! [String:AnyObject]
+        let deliveryLocation = CLLocationCoordinate2D(latitude: (jobValues["deliveryLocationLat"] as? Double)!, longitude: (jobValues["deliveryLocationLong"] as? Double)!)
+        let pickupLocation = CLLocationCoordinate2D(latitude: (jobValues["pickupLocationLat"] as? Double)!, longitude: (jobValues["pickupLocationLong"] as? Double)!)
+        let title = jobValues["jobTitle"] as? String
+        let orderer = BlipUser(snapshot: snapshot.childSnapshot(forPath: "orderer"))
+        let earnings = jobValues["earnings"] as? Double
+        let estimatedTime = jobValues["estimatedTime"] as? Double
 
-    
-    var placemark: CLPlacemark?
-    var address: String!
-    var addressDict:[String:String] = [:]
-
-    init?(snapshot: DataSnapshot) {
-        guard !snapshot.key.isEmpty,
-            let jobValues = snapshot.value as? [String:AnyObject],
-            let latitude = jobValues["latitude"] as? Double,
-            let longitude = jobValues["longitude"] as? Double,
-            let title = jobValues["jobTitle"] as? String,
-            let description = jobValues["jobDescription"] as? String,
-            let jobOwnerEmailHash = jobValues["jobOwner"] as? String,
-            let jobOwnerFullName = jobValues["fullName"] as? String,
-            let wage_per_hour = jobValues["price"] as? String,
-            let maxTime = jobValues["time"] as? String,
-            let jobOwnerPhoto = jobValues["jobOwnerPhoto"] as? String,
-            let jobOwnerRating = jobValues["jobOwnerRating"] as? CGFloat
-        else{return nil}
-            
-        
-        
-        
         self.ref = snapshot.ref
         self.jobID = snapshot.key
-        self.latitude = latitude
-        self.longitude = longitude
-        self.title = title
-        self.description = description
-        self.jobOwnerEmailHash = jobOwnerEmailHash
-        self.jobOwnerFullName = jobOwnerFullName
-        self.wage_per_hour = Double(wage_per_hour)!
-        self.maxTime = Double(maxTime)!
-        self.location = CLLocation(latitude: latitude, longitude: longitude)
-        self.jobOwnerPhotoURL = URL(string: jobOwnerPhoto)
-        self.jobOwnerRating = jobOwnerRating
+        self.deliveryLocationCoordinates = deliveryLocation
+        self.title = title!
+        self.orderer = orderer
+        self.pickupLocationCoordinates = pickupLocation
+        self.earnings = earnings!
+        self.estimatedTime = estimatedTime!
         
         // Setting the address string of the job
         let geocoder = CLGeocoder()
-        geocoder.reverseGeocodeLocation(self.location, completionHandler: { (placemarks, error) in
+        geocoder.reverseGeocodeLocation(CLLocation(latitude: self.pickupLocationCoordinates.latitude, longitude: self.pickupLocationCoordinates.longitude), completionHandler: { (placemarks, error) in
             if(error == nil){
                 let placeMark = placemarks?[0]
-                self.placemark = placeMark
-                self.address = self.parseAddress(placemark: self.placemark!)
-                print("ADDRESS: ", self.address)
+                self.pickupPlacemark = placeMark
+                self.pickupAddress = self.parseAddress(placemark: self.pickupPlacemark!)
+                print("ADDRESS: ", self.pickupAddress)
+            }
+        })
+        geocoder.reverseGeocodeLocation(CLLocation(latitude: self.deliveryLocationCoordinates.latitude, longitude: self.deliveryLocationCoordinates.longitude), completionHandler: { (placemarks, error) in
+            if(error == nil){
+                let placeMark = placemarks?[0]
+                self.deliveryPlacemark = placeMark
+                self.deliveryAddress = self.parseAddress(placemark: self.deliveryPlacemark!)
+                print("ADDRESS: ", self.deliveryAddress)
             }
         })
     }
@@ -112,8 +98,7 @@ class Job{
             //postalcode
             placemark.postalCode ?? ""
         )
-        
-        self.addressDict["address"] = addressLine
+
         return addressLine
     }
 

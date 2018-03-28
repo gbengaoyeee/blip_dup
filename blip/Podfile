@@ -13,26 +13,26 @@ target 'Blip' do
   pod 'Firebase/Messaging'
   pod 'Pastel'
   pod ‘IBAnimatable’
-  pod 'Material', '~> 2.0'
+  pod 'Material'
   pod 'Alamofire'
   pod 'FBSDKCoreKit'
   pod 'FBSDKLoginKit'
   pod 'FBSDKShareKit'
   pod 'Mapbox-iOS-SDK', '~> 3.7'
-  pod 'PopupDialog', '~> 0.6'
+  pod 'PopupDialog'
   pod 'Stripe'
   pod 'SHSearchBar'
-  pod 'Kingfisher', '~> 4.0'
+  pod 'Kingfisher'
   pod 'RevealingSplashView'
   pod 'Firebase/Storage'
   pod 'CHIPageControl/Fresno'
   pod 'NotificationBannerSwift'
-  pod 'Pulsator'
   pod 'Cosmos'
   pod 'AZDialogView'
   pod 'Mapbox-iOS-SDK'
-  pod 'BSImagePicker', '~> 2.4'
-  pod 'WalmartOpenApi'
+  pod 'BSImagePicker'
+  pod 'SwiftIcons'
+  pod "Hero"
 
   target 'BlipTests' do
     inherit! :search_paths

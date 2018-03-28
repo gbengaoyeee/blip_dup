@@ -17,7 +17,7 @@ import Alamofire
 import Cosmos
 import Material
 
-class ConfirmProfilePageVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource {
+class ProfilePage: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource {
 
     
 //    var applicantInfo: [String:AnyObject]!

@@ -12,7 +12,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="911Fonts.com_CenturyGothicRegular__-_911fonts.com_fonts_mhpY.ttf">
+        <array key="CenturyGothic.ttf">
             <string>CenturyGothic</string>
         </array>
         <array key="CenturyGothicBold.ttf">
@@ -240,121 +240,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4wO-eV-Xrx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-3052" y="-844"/>
-        </scene>
-        <!--Grocery List View Controller-->
-        <scene sceneID="YIJ-sg-gtf">
-            <objects>
-                <viewController id="aVn-KR-rCj" customClass="GroceryListViewController" customModule="Blip" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="WTf-e8-IgE" customClass="PastelView">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Step 1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="16" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uhS-1E-Dt5">
-                                <rect key="frame" x="47" y="65" width="281" height="33.5"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="33.5" id="S1m-vL-far"/>
-                                    <constraint firstAttribute="width" constant="281" id="nX6-vb-nI5"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="CenturyGothic-Bold" family="Century Gothic" pointSize="32"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter a list of items you need, seperated by a comma" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HAU-Kz-PFE">
-                                <rect key="frame" x="31" y="106" width="312" height="105"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="105" id="Ejq-fT-gHR"/>
-                                    <constraint firstAttribute="width" constant="312" id="Top-3A-TaV"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="24"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="eg. eggs, bread, milk, cheese" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AkJ-av-Bff">
-                                <rect key="frame" x="37" y="211" width="300" height="40"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="300" id="8RF-aV-Hgg"/>
-                                    <constraint firstAttribute="height" constant="40" id="dhj-3R-F7K"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="rAc-XU-CIg" customClass="TextView" customModule="Material">
-                                <rect key="frame" x="67" y="281" width="240" height="100"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="100" id="aE0-nS-pQN"/>
-                                    <constraint firstAttribute="width" constant="240" id="zJS-xd-7WH"/>
-                                </constraints>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Enter items here"/>
-                                </userDefinedRuntimeAttributes>
-                            </textView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pq1-lF-b0v" customClass="RaisedButton" customModule="Material">
-                                <rect key="frame" x="67" y="545" width="240" height="55"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="240" id="40h-Qq-t2U"/>
-                                    <constraint firstAttribute="height" constant="55" id="TYt-Pb-KBo"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
-                                <state key="normal" title="Continue">
-                                    <color key="titleColor" red="0.46666666870000001" green="0.76470589639999997" blue="0.26666668059999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="pulseColor">
-                                        <color key="value" red="0.46666666870000001" green="0.76470589639999997" blue="0.26666668059999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
-                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="title" value="Continue"/>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
-                                        <color key="value" red="0.46666666870000001" green="0.76470589639999997" blue="0.26666668059999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dont worry about an item brand, you'll be able to select that on the next page" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ju9-w3-kyO">
-                                <rect key="frame" x="67" y="414" width="240" height="80"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="240" id="O9w-Nj-Sap"/>
-                                    <constraint firstAttribute="height" constant="80" id="tlQ-ae-nUs"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" red="0.46666666870000001" green="0.76470589639999997" blue="0.26666668059999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="rAc-XU-CIg" firstAttribute="centerX" secondItem="yIY-Ro-gB9" secondAttribute="centerX" id="3BB-ZZ-6aL"/>
-                            <constraint firstItem="AkJ-av-Bff" firstAttribute="centerX" secondItem="yIY-Ro-gB9" secondAttribute="centerX" id="3dp-fX-v68"/>
-                            <constraint firstItem="uhS-1E-Dt5" firstAttribute="top" secondItem="yIY-Ro-gB9" secondAttribute="top" constant="45" id="4oX-1v-w9H"/>
-                            <constraint firstItem="rAc-XU-CIg" firstAttribute="top" secondItem="AkJ-av-Bff" secondAttribute="bottom" constant="30" id="Ccz-BI-qvs"/>
-                            <constraint firstItem="ju9-w3-kyO" firstAttribute="top" secondItem="rAc-XU-CIg" secondAttribute="bottom" constant="33" id="GbU-hx-f2w"/>
-                            <constraint firstItem="HAU-Kz-PFE" firstAttribute="centerX" secondItem="yIY-Ro-gB9" secondAttribute="centerX" id="Znf-WR-8PM"/>
-                            <constraint firstItem="pq1-lF-b0v" firstAttribute="centerX" secondItem="yIY-Ro-gB9" secondAttribute="centerX" id="fey-cD-V9A"/>
-                            <constraint firstItem="HAU-Kz-PFE" firstAttribute="top" secondItem="uhS-1E-Dt5" secondAttribute="bottom" constant="7.5" id="jCw-e7-r1h"/>
-                            <constraint firstItem="ju9-w3-kyO" firstAttribute="centerX" secondItem="yIY-Ro-gB9" secondAttribute="centerX" id="nnZ-HA-RIw"/>
-                            <constraint firstItem="yIY-Ro-gB9" firstAttribute="bottom" secondItem="pq1-lF-b0v" secondAttribute="bottom" constant="67" id="q5c-lf-YaK"/>
-                            <constraint firstItem="AkJ-av-Bff" firstAttribute="top" secondItem="HAU-Kz-PFE" secondAttribute="bottom" id="t2L-2L-Nc6"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="yIY-Ro-gB9"/>
-                    </view>
-                    <connections>
-                        <outlet property="continueButton" destination="pq1-lF-b0v" id="S9w-vk-HqY"/>
-                        <outlet property="continuePressed" destination="pq1-lF-b0v" id="Y2z-12-RHb"/>
-                        <outlet property="gradientView" destination="WTf-e8-IgE" id="ZQq-6H-brW"/>
-                        <outlet property="groceryList" destination="rAc-XU-CIg" id="Pte-n6-eA0"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="yuD-VO-MO4" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1999.2" y="-1125.7871064467768"/>
         </scene>
         <!--Email VerifyVC-->
         <scene sceneID="7VE-dP-y98">

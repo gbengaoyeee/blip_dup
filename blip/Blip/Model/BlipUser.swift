@@ -28,11 +28,11 @@ class BlipUser{
     init?(snapshot: DataSnapshot){
         guard !snapshot.key.isEmpty,
             let userValues = snapshot.value as? [String:AnyObject],
-            let email = userValues["Email"] as? String,
-            let name = userValues["Name"] as? String,
-            let rating = userValues["Rating"] as? CGFloat,
+            let email = userValues["email"] as? String,
+            let name = userValues["name"] as? String,
+            let rating = userValues["rating"] as? CGFloat,
             let currentDevice = userValues["currentDevice"] as? String,
-            let customerID = userValues["customer_id"] as? String,
+            let customerID = userValues["customerID"] as? String,
             let photoURL = userValues["photoURL"] as? String,
             let uid = userValues["uid"] as? String
             else{return nil}
