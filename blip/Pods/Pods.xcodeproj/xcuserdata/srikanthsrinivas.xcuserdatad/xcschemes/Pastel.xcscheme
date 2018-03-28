@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '8E1D092BF86FB8C0ABE055E421219B71'
+               BlueprintIdentifier = '409E92BC21862F90CD05B14498505381'
                BlueprintName = 'Pastel'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'Pastel.framework'>
