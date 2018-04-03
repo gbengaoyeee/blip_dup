@@ -14,7 +14,7 @@ class BlipUser{
     var userEmailHash:String?
     var email:String?
     var name: String?
-    var rating: CGFloat?
+    var rating: Double?
     var currentDevice: String?
     var customerID: String?
     var photoURL: URL?
@@ -28,9 +28,9 @@ class BlipUser{
     init?(snapshot: DataSnapshot){
         guard !snapshot.key.isEmpty,
             let userValues = snapshot.value as? [String:AnyObject],
-            let email = userValues["Email"] as? String,
-            let name = userValues["Name"] as? String,
-            let rating = userValues["Rating"] as? CGFloat,
+            let email = userValues["email"] as? String,
+            let name = userValues["name"] as? String,
+            let rating = userValues["rating"] as? Double,
             let currentDevice = userValues["currentDevice"] as? String,
             let customerID = userValues["customer_id"] as? String,
             let photoURL = userValues["photoURL"] as? String,

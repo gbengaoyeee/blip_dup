@@ -25,17 +25,12 @@
 		3B53732F202EBA6B0020F3B1 /* Job.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537327202EBA6A0020F3B1 /* Job.swift */; };
 		3B537330202EBA6B0020F3B1 /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537328202EBA6A0020F3B1 /* AppError.swift */; };
 		3B537331202EBA6B0020F3B1 /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537329202EBA6A0020F3B1 /* HelperFunctions.swift */; };
-		3B537332202EBA6B0020F3B1 /* Skill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53732A202EBA6A0020F3B1 /* Skill.swift */; };
-		3B537333202EBA6B0020F3B1 /* AllJobs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53732B202EBA6A0020F3B1 /* AllJobs.swift */; };
 		3B537334202EBA6B0020F3B1 /* BlipUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53732C202EBA6A0020F3B1 /* BlipUser.swift */; };
 		3B537335202EBA6B0020F3B1 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53732D202EBA6B0020F3B1 /* LocationManager.swift */; };
 		3B53733D202EBD0F0020F3B1 /* Connectivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53733C202EBD0F0020F3B1 /* Connectivity.swift */; };
-		3B53734E202EBE310020F3B1 /* bouncy_mapmaker.json in Resources */ = {isa = PBXBuildFile; fileRef = 3B537341202EBE2D0020F3B1 /* bouncy_mapmaker.json */; };
-		3B53734F202EBE310020F3B1 /* servishero_loading.json in Resources */ = {isa = PBXBuildFile; fileRef = 3B537342202EBE2D0020F3B1 /* servishero_loading.json */; };
 		3B537350202EBE310020F3B1 /* simple_outline_lock_.json in Resources */ = {isa = PBXBuildFile; fileRef = 3B537343202EBE2D0020F3B1 /* simple_outline_lock_.json */; };
 		3B537351202EBE310020F3B1 /* onboarding.json in Resources */ = {isa = PBXBuildFile; fileRef = 3B537344202EBE2D0020F3B1 /* onboarding.json */; };
 		3B537352202EBE310020F3B1 /* clock.json in Resources */ = {isa = PBXBuildFile; fileRef = 3B537345202EBE2E0020F3B1 /* clock.json */; };
-		3B537353202EBE310020F3B1 /* Check2.json in Resources */ = {isa = PBXBuildFile; fileRef = 3B537346202EBE2F0020F3B1 /* Check2.json */; };
 		3B537354202EBE310020F3B1 /* 5_stars.json in Resources */ = {isa = PBXBuildFile; fileRef = 3B537347202EBE2F0020F3B1 /* 5_stars.json */; };
 		3B537355202EBE310020F3B1 /* loading.json in Resources */ = {isa = PBXBuildFile; fileRef = 3B537348202EBE2F0020F3B1 /* loading.json */; };
 		3B537356202EBE310020F3B1 /* error.json in Resources */ = {isa = PBXBuildFile; fileRef = 3B537349202EBE2F0020F3B1 /* error.json */; };
@@ -43,51 +38,28 @@
 		3B537358202EBE310020F3B1 /* outline_user.json in Resources */ = {isa = PBXBuildFile; fileRef = 3B53734B202EBE300020F3B1 /* outline_user.json */; };
 		3B537359202EBE310020F3B1 /* location.json in Resources */ = {isa = PBXBuildFile; fileRef = 3B53734C202EBE310020F3B1 /* location.json */; };
 		3B53735A202EBE310020F3B1 /* check.json in Resources */ = {isa = PBXBuildFile; fileRef = 3B53734D202EBE310020F3B1 /* check.json */; };
-		3B537372202EC0DC0020F3B1 /* AppSnackbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53735B202EC0D70020F3B1 /* AppSnackbarController.swift */; };
 		3B537373202EC0DC0020F3B1 /* EmailVerifyVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53735C202EC0D80020F3B1 /* EmailVerifyVC.swift */; };
-		3B537374202EC0DC0020F3B1 /* navigationBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53735D202EC0D80020F3B1 /* navigationBarViewController.swift */; };
+		3B537374202EC0DC0020F3B1 /* NavigationBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53735D202EC0D80020F3B1 /* NavigationBarViewController.swift */; };
 		3B537375202EC0DC0020F3B1 /* PasswordReset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53735E202EC0D80020F3B1 /* PasswordReset.swift */; };
 		3B537376202EC0DC0020F3B1 /* CustomAPIAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53735F202EC0D80020F3B1 /* CustomAPIAdapter.swift */; };
-		3B537377202EC0DC0020F3B1 /* ConfirmProfilePageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537360202EC0D80020F3B1 /* ConfirmProfilePageVC.swift */; };
-		3B537378202EC0DC0020F3B1 /* AppTabsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537361202EC0D80020F3B1 /* AppTabsController.swift */; };
+		3B537377202EC0DC0020F3B1 /* ProfilePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537360202EC0D80020F3B1 /* ProfilePage.swift */; };
 		3B537379202EC0DC0020F3B1 /* SellVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537362202EC0D90020F3B1 /* SellVC.swift */; };
-		3B53737A202EC0DC0020F3B1 /* endSignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537363202EC0D90020F3B1 /* endSignUpVC.swift */; };
-		3B53737B202EC0DC0020F3B1 /* OnboardingVCViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537364202EC0D90020F3B1 /* OnboardingVCViewController.swift */; };
+		3B53737A202EC0DC0020F3B1 /* EndSignUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537363202EC0D90020F3B1 /* EndSignUp.swift */; };
+		3B53737B202EC0DC0020F3B1 /* OnboardingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537364202EC0D90020F3B1 /* OnboardingVC.swift */; };
 		3B53737C202EC0DC0020F3B1 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537365202EC0D90020F3B1 /* LoginVC.swift */; };
 		3B53737D202EC0DC0020F3B1 /* AddNameVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537366202EC0D90020F3B1 /* AddNameVC.swift */; };
 		3B53737E202EC0DC0020F3B1 /* MyAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537367202EC0D90020F3B1 /* MyAPIClient.swift */; };
-		3B53737F202EC0DC0020F3B1 /* PaymentContextFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537368202EC0D90020F3B1 /* PaymentContextFooterView.swift */; };
-		3B537380202EC0DC0020F3B1 /* PopUpJobViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537369202EC0DA0020F3B1 /* PopUpJobViewVC.swift */; };
 		3B537381202EC0DC0020F3B1 /* ProfilePicture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53736A202EC0DA0020F3B1 /* ProfilePicture.swift */; };
 		3B537382202EC0DC0020F3B1 /* SellVC+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53736B202EC0DA0020F3B1 /* SellVC+.swift */; };
 		3B537383202EC0DC0020F3B1 /* AppFABMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53736C202EC0DB0020F3B1 /* AppFABMenuController.swift */; };
-		3B537384202EC0DC0020F3B1 /* AnnotationViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53736D202EC0DB0020F3B1 /* AnnotationViewVC.swift */; };
-		3B537385202EC0DC0020F3B1 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53736E202EC0DB0020F3B1 /* SettingsViewController.swift */; };
-		3B537386202EC0DC0020F3B1 /* UnconfirmedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53736F202EC0DB0020F3B1 /* UnconfirmedVC.swift */; };
 		3B537387202EC0DC0020F3B1 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537370202EC0DB0020F3B1 /* SplashViewController.swift */; };
 		3B537388202EC0DC0020F3B1 /* Lgsupage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537371202EC0DC0020F3B1 /* Lgsupage.swift */; };
-		3B537396202EC2210020F3B1 /* customShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537389202EC21F0020F3B1 /* customShadowView.swift */; };
-		3B537397202EC2210020F3B1 /* CustomAnimationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53738A202EC2200020F3B1 /* CustomAnimationHandler.swift */; };
-		3B537398202EC2210020F3B1 /* RatingAnimationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53738B202EC2200020F3B1 /* RatingAnimationExtension.swift */; };
-		3B537399202EC2210020F3B1 /* TapScreenToCloseKeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53738C202EC2200020F3B1 /* TapScreenToCloseKeyboardViewController.swift */; };
-		3B53739A202EC2210020F3B1 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53738D202EC2200020F3B1 /* GradientView.swift */; };
+		3B537397202EC2210020F3B1 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53738A202EC2200020F3B1 /* Extensions.swift */; };
 		3B53739B202EC2210020F3B1 /* CustomAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53738E202EC2200020F3B1 /* CustomAnnotationView.swift */; };
-		3B53739C202EC2210020F3B1 /* UIWindowTransitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53738F202EC2200020F3B1 /* UIWindowTransitions.swift */; };
 		3B53739D202EC2210020F3B1 /* CustomMGLAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537390202EC2200020F3B1 /* CustomMGLAnnotation.swift */; };
-		3B53739E202EC2210020F3B1 /* CustomUIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537391202EC2200020F3B1 /* CustomUIButton.swift */; };
-		3B53739F202EC2210020F3B1 /* Constrainable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537392202EC2200020F3B1 /* Constrainable.swift */; };
-		3B5373A0202EC2210020F3B1 /* PopUpJobView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B537393202EC2210020F3B1 /* PopUpJobView.xib */; };
-		3B5373A1202EC2210020F3B1 /* CustomUIBorderControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537394202EC2210020F3B1 /* CustomUIBorderControls.swift */; };
-		3B5373A2202EC2210020F3B1 /* ShadowsToButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537395202EC2210020F3B1 /* ShadowsToButtons.swift */; };
-		3B5373B5202EC2E40020F3B1 /* StartJob.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5373AD202EC2E40020F3B1 /* StartJob.swift */; };
-		3BA1E06F203CBBA600AF89B8 /* CustomCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA1E06E203CBBA500AF89B8 /* CustomCollectionViewCell.swift */; };
-		3BA1E071203CBD1700AF89B8 /* DisputeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA1E070203CBD1700AF89B8 /* DisputeVC.swift */; };
 		5F33377820332B0B00B83E01 /* RatingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F33377720332B0B00B83E01 /* RatingViewController.xib */; };
 		5F33377A20332B4600B83E01 /* RatingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F33377920332B4600B83E01 /* RatingViewController.swift */; };
-		5F889BA1204620A60054D2ED /* MainPageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F889BA0204620A60054D2ED /* MainPageVC.swift */; };
-		5F889BA3204621DE0054D2ED /* GradientViewBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F889BA2204621DE0054D2ED /* GradientViewBackground.swift */; };
-		5F889BA52047705D0054D2ED /* GroceryListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F889BA42047705D0054D2ED /* GroceryListViewController.swift */; };
-		5F889BA7204775F10054D2ED /* WalmartAPICaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F889BA6204775F10054D2ED /* WalmartAPICaller.swift */; };
+		5FDEF87F206B56DC00F33733 /* ViewMapOfJobsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FDEF87E206B56DC00F33733 /* ViewMapOfJobsVC.swift */; };
 		E44A286AF55A28A06A305841 /* Pods_BlipTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F498B34F0F7DEA567870388 /* Pods_BlipTests.framework */; };
 		F3F5081E2031F77E00252E65 /* CenturyGothic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B537340202EBD4C0020F3B1 /* CenturyGothic.ttf */; };
 		F3F5081F2031F78300252E65 /* CenturyGothicBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B53733F202EBD4C0020F3B1 /* CenturyGothicBold.ttf */; };
@@ -144,20 +116,14 @@
 		3B537327202EBA6A0020F3B1 /* Job.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Job.swift; sourceTree = "<group>"; };
 		3B537328202EBA6A0020F3B1 /* AppError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppError.swift; sourceTree = "<group>"; };
 		3B537329202EBA6A0020F3B1 /* HelperFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelperFunctions.swift; sourceTree = "<group>"; };
-		3B53732A202EBA6A0020F3B1 /* Skill.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Skill.swift; sourceTree = "<group>"; };
-		3B53732B202EBA6A0020F3B1 /* AllJobs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllJobs.swift; sourceTree = "<group>"; };
 		3B53732C202EBA6A0020F3B1 /* BlipUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlipUser.swift; sourceTree = "<group>"; };
 		3B53732D202EBA6B0020F3B1 /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		3B53733C202EBD0F0020F3B1 /* Connectivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Connectivity.swift; sourceTree = "<group>"; };
-		3B53733E202EBD4B0020F3B1 /* 911Fonts.com_CenturyGothicRegular__-_911fonts.com_fonts_mhpY.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "911Fonts.com_CenturyGothicRegular__-_911fonts.com_fonts_mhpY.ttf"; sourceTree = "<group>"; };
 		3B53733F202EBD4C0020F3B1 /* CenturyGothicBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = CenturyGothicBold.ttf; sourceTree = "<group>"; };
 		3B537340202EBD4C0020F3B1 /* CenturyGothic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = CenturyGothic.ttf; sourceTree = "<group>"; };
-		3B537341202EBE2D0020F3B1 /* bouncy_mapmaker.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = bouncy_mapmaker.json; sourceTree = "<group>"; };
-		3B537342202EBE2D0020F3B1 /* servishero_loading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = servishero_loading.json; sourceTree = "<group>"; };
 		3B537343202EBE2D0020F3B1 /* simple_outline_lock_.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = simple_outline_lock_.json; sourceTree = "<group>"; };
 		3B537344202EBE2D0020F3B1 /* onboarding.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = onboarding.json; sourceTree = "<group>"; };
 		3B537345202EBE2E0020F3B1 /* clock.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = clock.json; sourceTree = "<group>"; };
-		3B537346202EBE2F0020F3B1 /* Check2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Check2.json; sourceTree = "<group>"; };
 		3B537347202EBE2F0020F3B1 /* 5_stars.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 5_stars.json; sourceTree = "<group>"; };
 		3B537348202EBE2F0020F3B1 /* loading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = loading.json; sourceTree = "<group>"; };
 		3B537349202EBE2F0020F3B1 /* error.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = error.json; sourceTree = "<group>"; };
@@ -165,52 +131,29 @@
 		3B53734B202EBE300020F3B1 /* outline_user.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = outline_user.json; sourceTree = "<group>"; };
 		3B53734C202EBE310020F3B1 /* location.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = location.json; sourceTree = "<group>"; };
 		3B53734D202EBE310020F3B1 /* check.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = check.json; sourceTree = "<group>"; };
-		3B53735B202EC0D70020F3B1 /* AppSnackbarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSnackbarController.swift; sourceTree = "<group>"; };
 		3B53735C202EC0D80020F3B1 /* EmailVerifyVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailVerifyVC.swift; sourceTree = "<group>"; };
-		3B53735D202EC0D80020F3B1 /* navigationBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = navigationBarViewController.swift; sourceTree = "<group>"; };
+		3B53735D202EC0D80020F3B1 /* NavigationBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationBarViewController.swift; sourceTree = "<group>"; };
 		3B53735E202EC0D80020F3B1 /* PasswordReset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordReset.swift; sourceTree = "<group>"; };
 		3B53735F202EC0D80020F3B1 /* CustomAPIAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAPIAdapter.swift; sourceTree = "<group>"; };
-		3B537360202EC0D80020F3B1 /* ConfirmProfilePageVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmProfilePageVC.swift; sourceTree = "<group>"; };
-		3B537361202EC0D80020F3B1 /* AppTabsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppTabsController.swift; sourceTree = "<group>"; };
+		3B537360202EC0D80020F3B1 /* ProfilePage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePage.swift; sourceTree = "<group>"; };
 		3B537362202EC0D90020F3B1 /* SellVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SellVC.swift; sourceTree = "<group>"; };
-		3B537363202EC0D90020F3B1 /* endSignUpVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = endSignUpVC.swift; sourceTree = "<group>"; };
-		3B537364202EC0D90020F3B1 /* OnboardingVCViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingVCViewController.swift; sourceTree = "<group>"; };
+		3B537363202EC0D90020F3B1 /* EndSignUp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndSignUp.swift; sourceTree = "<group>"; };
+		3B537364202EC0D90020F3B1 /* OnboardingVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingVC.swift; sourceTree = "<group>"; };
 		3B537365202EC0D90020F3B1 /* LoginVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		3B537366202EC0D90020F3B1 /* AddNameVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddNameVC.swift; sourceTree = "<group>"; };
 		3B537367202EC0D90020F3B1 /* MyAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyAPIClient.swift; sourceTree = "<group>"; };
-		3B537368202EC0D90020F3B1 /* PaymentContextFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentContextFooterView.swift; sourceTree = "<group>"; };
-		3B537369202EC0DA0020F3B1 /* PopUpJobViewVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopUpJobViewVC.swift; sourceTree = "<group>"; };
 		3B53736A202EC0DA0020F3B1 /* ProfilePicture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePicture.swift; sourceTree = "<group>"; };
 		3B53736B202EC0DA0020F3B1 /* SellVC+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SellVC+.swift"; sourceTree = "<group>"; };
 		3B53736C202EC0DB0020F3B1 /* AppFABMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppFABMenuController.swift; sourceTree = "<group>"; };
-		3B53736D202EC0DB0020F3B1 /* AnnotationViewVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnnotationViewVC.swift; sourceTree = "<group>"; };
-		3B53736E202EC0DB0020F3B1 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
-		3B53736F202EC0DB0020F3B1 /* UnconfirmedVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnconfirmedVC.swift; sourceTree = "<group>"; };
 		3B537370202EC0DB0020F3B1 /* SplashViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		3B537371202EC0DC0020F3B1 /* Lgsupage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lgsupage.swift; sourceTree = "<group>"; };
-		3B537389202EC21F0020F3B1 /* customShadowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = customShadowView.swift; sourceTree = "<group>"; };
-		3B53738A202EC2200020F3B1 /* CustomAnimationHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAnimationHandler.swift; sourceTree = "<group>"; };
-		3B53738B202EC2200020F3B1 /* RatingAnimationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingAnimationExtension.swift; sourceTree = "<group>"; };
-		3B53738C202EC2200020F3B1 /* TapScreenToCloseKeyboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TapScreenToCloseKeyboardViewController.swift; sourceTree = "<group>"; };
-		3B53738D202EC2200020F3B1 /* GradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
+		3B53738A202EC2200020F3B1 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		3B53738E202EC2200020F3B1 /* CustomAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAnnotationView.swift; sourceTree = "<group>"; };
-		3B53738F202EC2200020F3B1 /* UIWindowTransitions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIWindowTransitions.swift; sourceTree = "<group>"; };
 		3B537390202EC2200020F3B1 /* CustomMGLAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomMGLAnnotation.swift; sourceTree = "<group>"; };
-		3B537391202EC2200020F3B1 /* CustomUIButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomUIButton.swift; sourceTree = "<group>"; };
-		3B537392202EC2200020F3B1 /* Constrainable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constrainable.swift; sourceTree = "<group>"; };
-		3B537393202EC2210020F3B1 /* PopUpJobView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PopUpJobView.xib; sourceTree = "<group>"; };
-		3B537394202EC2210020F3B1 /* CustomUIBorderControls.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomUIBorderControls.swift; sourceTree = "<group>"; };
-		3B537395202EC2210020F3B1 /* ShadowsToButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShadowsToButtons.swift; sourceTree = "<group>"; };
-		3B5373AD202EC2E40020F3B1 /* StartJob.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartJob.swift; sourceTree = "<group>"; };
-		3BA1E06E203CBBA500AF89B8 /* CustomCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewCell.swift; sourceTree = "<group>"; };
-		3BA1E070203CBD1700AF89B8 /* DisputeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisputeVC.swift; sourceTree = "<group>"; };
 		52A65DC4170733BA25C15CE1 /* Pods-Blip.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Blip.release.xcconfig"; path = "Pods/Target Support Files/Pods-Blip/Pods-Blip.release.xcconfig"; sourceTree = "<group>"; };
 		5F33377720332B0B00B83E01 /* RatingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RatingViewController.xib; sourceTree = "<group>"; };
 		5F33377920332B4600B83E01 /* RatingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingViewController.swift; sourceTree = "<group>"; };
-		5F889BA0204620A60054D2ED /* MainPageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageVC.swift; sourceTree = "<group>"; };
-		5F889BA2204621DE0054D2ED /* GradientViewBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientViewBackground.swift; sourceTree = "<group>"; };
-		5F889BA42047705D0054D2ED /* GroceryListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroceryListViewController.swift; sourceTree = "<group>"; };
-		5F889BA6204775F10054D2ED /* WalmartAPICaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalmartAPICaller.swift; sourceTree = "<group>"; };
+		5FDEF87E206B56DC00F33733 /* ViewMapOfJobsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMapOfJobsVC.swift; sourceTree = "<group>"; };
 		97BB13E391BCE3E8ED7A9756 /* Pods-BlipUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlipUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BlipUITests/Pods-BlipUITests.release.xcconfig"; sourceTree = "<group>"; };
 		CC3B578818C69E894B2F65CD /* Pods_BlipUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BlipUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA08477A131A88FA8EB584E0 /* Pods-BlipTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlipTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BlipTests/Pods-BlipTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -327,14 +270,12 @@
 		3B537325202EBA480020F3B1 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				3B53732B202EBA6A0020F3B1 /* AllJobs.swift */,
 				3B537328202EBA6A0020F3B1 /* AppError.swift */,
 				3B53732C202EBA6A0020F3B1 /* BlipUser.swift */,
 				3B537329202EBA6A0020F3B1 /* HelperFunctions.swift */,
 				3B537327202EBA6A0020F3B1 /* Job.swift */,
 				3B53732D202EBA6B0020F3B1 /* LocationManager.swift */,
 				3B537326202EBA690020F3B1 /* ServiceCalls.swift */,
-				3B53732A202EBA6A0020F3B1 /* Skill.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -344,7 +285,7 @@
 			children = (
 				3B537339202EBBBE0020F3B1 /* Animations */,
 				3B53733A202EBBDC0020F3B1 /* ViewControllers */,
-				3B53733B202EBBF10020F3B1 /* CustomViewControllers */,
+				3B53733B202EBBF10020F3B1 /* CustomFiles */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -360,7 +301,6 @@
 		3B537338202EBB980020F3B1 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				3B53733E202EBD4B0020F3B1 /* 911Fonts.com_CenturyGothicRegular__-_911fonts.com_fonts_mhpY.ttf */,
 				3B537340202EBD4C0020F3B1 /* CenturyGothic.ttf */,
 				3B53733F202EBD4C0020F3B1 /* CenturyGothicBold.ttf */,
 			);
@@ -371,9 +311,7 @@
 			isa = PBXGroup;
 			children = (
 				3B537347202EBE2F0020F3B1 /* 5_stars.json */,
-				3B537341202EBE2D0020F3B1 /* bouncy_mapmaker.json */,
 				3B53734D202EBE310020F3B1 /* check.json */,
-				3B537346202EBE2F0020F3B1 /* Check2.json */,
 				3B537345202EBE2E0020F3B1 /* clock.json */,
 				3B537349202EBE2F0020F3B1 /* error.json */,
 				3B537348202EBE2F0020F3B1 /* loading.json */,
@@ -381,7 +319,6 @@
 				3B53734A202EBE2F0020F3B1 /* menu.json */,
 				3B537344202EBE2D0020F3B1 /* onboarding.json */,
 				3B53734B202EBE300020F3B1 /* outline_user.json */,
-				3B537342202EBE2D0020F3B1 /* servishero_loading.json */,
 				3B537343202EBE2D0020F3B1 /* simple_outline_lock_.json */,
 			);
 			path = Animations;
@@ -391,60 +328,45 @@
 			isa = PBXGroup;
 			children = (
 				3B537366202EC0D90020F3B1 /* AddNameVC.swift */,
-				3B53736D202EC0DB0020F3B1 /* AnnotationViewVC.swift */,
 				3B53736C202EC0DB0020F3B1 /* AppFABMenuController.swift */,
-				3B53735B202EC0D70020F3B1 /* AppSnackbarController.swift */,
-				3B537361202EC0D80020F3B1 /* AppTabsController.swift */,
-				3B537360202EC0D80020F3B1 /* ConfirmProfilePageVC.swift */,
-				3B53735F202EC0D80020F3B1 /* CustomAPIAdapter.swift */,
+				3B537360202EC0D80020F3B1 /* ProfilePage.swift */,
 				3B53735C202EC0D80020F3B1 /* EmailVerifyVC.swift */,
-				3B5373AD202EC2E40020F3B1 /* StartJob.swift */,
-				3B537363202EC0D90020F3B1 /* endSignUpVC.swift */,
+				3B537363202EC0D90020F3B1 /* EndSignUp.swift */,
 				3B537371202EC0DC0020F3B1 /* Lgsupage.swift */,
 				3B537365202EC0D90020F3B1 /* LoginVC.swift */,
 				3B537367202EC0D90020F3B1 /* MyAPIClient.swift */,
 				3B14B53B202F459600B1C015 /* EndJob.swift */,
-				3B53735D202EC0D80020F3B1 /* navigationBarViewController.swift */,
-				3B537364202EC0D90020F3B1 /* OnboardingVCViewController.swift */,
+				3B53735D202EC0D80020F3B1 /* NavigationBarViewController.swift */,
+				3B537364202EC0D90020F3B1 /* OnboardingVC.swift */,
 				3B53735E202EC0D80020F3B1 /* PasswordReset.swift */,
-				3B537368202EC0D90020F3B1 /* PaymentContextFooterView.swift */,
-				3B537369202EC0DA0020F3B1 /* PopUpJobViewVC.swift */,
 				3B53736A202EC0DA0020F3B1 /* ProfilePicture.swift */,
 				3B537362202EC0D90020F3B1 /* SellVC.swift */,
 				3B53736B202EC0DA0020F3B1 /* SellVC+.swift */,
-				3B53736E202EC0DB0020F3B1 /* SettingsViewController.swift */,
 				3B537370202EC0DB0020F3B1 /* SplashViewController.swift */,
-				3B53736F202EC0DB0020F3B1 /* UnconfirmedVC.swift */,
-				3BA1E070203CBD1700AF89B8 /* DisputeVC.swift */,
-				5F889BA0204620A60054D2ED /* MainPageVC.swift */,
-				5F889BA42047705D0054D2ED /* GroceryListViewController.swift */,
+				5FDEF87E206B56DC00F33733 /* ViewMapOfJobsVC.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
 		};
-		3B53733B202EBBF10020F3B1 /* CustomViewControllers */ = {
+		3B53733B202EBBF10020F3B1 /* CustomFiles */ = {
 			isa = PBXGroup;
 			children = (
-				3B537392202EC2200020F3B1 /* Constrainable.swift */,
-				3B53738A202EC2200020F3B1 /* CustomAnimationHandler.swift */,
+				3B53735F202EC0D80020F3B1 /* CustomAPIAdapter.swift */,
+				3B53738A202EC2200020F3B1 /* Extensions.swift */,
 				3B53738E202EC2200020F3B1 /* CustomAnnotationView.swift */,
 				3B537390202EC2200020F3B1 /* CustomMGLAnnotation.swift */,
-				3B537389202EC21F0020F3B1 /* customShadowView.swift */,
-				3B537394202EC2210020F3B1 /* CustomUIBorderControls.swift */,
-				3B537391202EC2200020F3B1 /* CustomUIButton.swift */,
-				3B53738D202EC2200020F3B1 /* GradientView.swift */,
 				5F33377920332B4600B83E01 /* RatingViewController.swift */,
-				5F33377720332B0B00B83E01 /* RatingViewController.xib */,
-				3B537393202EC2210020F3B1 /* PopUpJobView.xib */,
-				3B53738B202EC2200020F3B1 /* RatingAnimationExtension.swift */,
-				3B537395202EC2210020F3B1 /* ShadowsToButtons.swift */,
-				3B53738C202EC2200020F3B1 /* TapScreenToCloseKeyboardViewController.swift */,
-				3B53738F202EC2200020F3B1 /* UIWindowTransitions.swift */,
-				3BA1E06E203CBBA500AF89B8 /* CustomCollectionViewCell.swift */,
-				5F889BA2204621DE0054D2ED /* GradientViewBackground.swift */,
-				5F889BA6204775F10054D2ED /* WalmartAPICaller.swift */,
+				5FDEF880206B5ED700F33733 /* CustomXIB */,
 			);
-			path = CustomViewControllers;
+			path = CustomFiles;
+			sourceTree = "<group>";
+		};
+		5FDEF880206B5ED700F33733 /* CustomXIB */ = {
+			isa = PBXGroup;
+			children = (
+				5F33377720332B0B00B83E01 /* RatingViewController.xib */,
+			);
+			path = CustomXIB;
 			sourceTree = "<group>";
 		};
 		6A6A8212A5CC9F08761256A7 /* Frameworks */ = {
@@ -602,9 +524,7 @@
 				F3F5081F2031F78300252E65 /* CenturyGothicBold.ttf in Resources */,
 				3B14B533202ED1EA00B1C015 /* GoogleService-Info.plist in Resources */,
 				3B537356202EBE310020F3B1 /* error.json in Resources */,
-				3B53734F202EBE310020F3B1 /* servishero_loading.json in Resources */,
 				3B537302202EB4320020F3B1 /* LaunchScreen.storyboard in Resources */,
-				3B53734E202EBE310020F3B1 /* bouncy_mapmaker.json in Resources */,
 				3B537354202EBE310020F3B1 /* 5_stars.json in Resources */,
 				3B537357202EBE310020F3B1 /* menu.json in Resources */,
 				3B537355202EBE310020F3B1 /* loading.json in Resources */,
@@ -614,9 +534,7 @@
 				3B537351202EBE310020F3B1 /* onboarding.json in Resources */,
 				3B537352202EBE310020F3B1 /* clock.json in Resources */,
 				3B537350202EBE310020F3B1 /* simple_outline_lock_.json in Resources */,
-				3B5373A0202EC2210020F3B1 /* PopUpJobView.xib in Resources */,
 				3B537359202EBE310020F3B1 /* location.json in Resources */,
-				3B537353202EBE310020F3B1 /* Check2.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -674,7 +592,6 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Blip/Pods-Blip-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
 				"${BUILT_PRODUCTS_DIR}/AZDialogView/AZDialogView.framework",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/BSGridCollectionViewLayout/BSGridCollectionViewLayout.framework",
@@ -688,9 +605,8 @@
 				"${BUILT_PRODUCTS_DIR}/FBSDKShareKit/FBSDKShareKit.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/Hero/Hero.framework",
 				"${BUILT_PRODUCTS_DIR}/IBAnimatable/IBAnimatable.framework",
-				"${BUILT_PRODUCTS_DIR}/ISO8601/ISO8601.framework",
-				"${BUILT_PRODUCTS_DIR}/JSONModel/JSONModel.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
 				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/Mapbox.framework",
 				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/Mapbox.framework.dSYM",
@@ -701,20 +617,17 @@
 				"${BUILT_PRODUCTS_DIR}/Pastel/Pastel.framework",
 				"${BUILT_PRODUCTS_DIR}/PopupDialog/PopupDialog.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
-				"${BUILT_PRODUCTS_DIR}/Pulsator/Pulsator.framework",
 				"${BUILT_PRODUCTS_DIR}/RevealingSplashView/RevealingSplashView.framework",
-				"${BUILT_PRODUCTS_DIR}/SHSearchBar/SHSearchBar.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Stripe/Stripe.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftIcons/SwiftIcons.framework",
 				"${BUILT_PRODUCTS_DIR}/UIImageViewModeScaleAspect/UIImageViewModeScaleAspect.framework",
-				"${PODS_ROOT}/WalmartOpenApi/WalmartOpenApi.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AZDialogView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BSGridCollectionViewLayout.framework",
@@ -728,9 +641,8 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKShareKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Hero.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IBAnimatable.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ISO8601.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JSONModel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mapbox.framework",
 				"${DWARF_DSYM_FOLDER_PATH}/Mapbox.framework.dSYM",
@@ -741,13 +653,11 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Pastel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PopupDialog.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Pulsator.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RevealingSplashView.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SHSearchBar.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Stripe.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftIcons.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIImageViewModeScaleAspect.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WalmartOpenApi.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Lottie.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
@@ -863,59 +773,35 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5F889BA3204621DE0054D2ED /* GradientViewBackground.swift in Sources */,
-				3B53739C202EC2210020F3B1 /* UIWindowTransitions.swift in Sources */,
-				3B53739A202EC2210020F3B1 /* GradientView.swift in Sources */,
-				3B537378202EC0DC0020F3B1 /* AppTabsController.swift in Sources */,
-				3B537332202EBA6B0020F3B1 /* Skill.swift in Sources */,
 				3B14B53C202F459900B1C015 /* EndJob.swift in Sources */,
 				3B53737C202EC0DC0020F3B1 /* LoginVC.swift in Sources */,
-				3B537398202EC2210020F3B1 /* RatingAnimationExtension.swift in Sources */,
-				5F889BA52047705D0054D2ED /* GroceryListViewController.swift in Sources */,
 				3B53737D202EC0DC0020F3B1 /* AddNameVC.swift in Sources */,
 				3B537335202EBA6B0020F3B1 /* LocationManager.swift in Sources */,
 				5F33377A20332B4600B83E01 /* RatingViewController.swift in Sources */,
-				3B5373A2202EC2210020F3B1 /* ShadowsToButtons.swift in Sources */,
-				3B53739E202EC2210020F3B1 /* CustomUIButton.swift in Sources */,
 				3B537376202EC0DC0020F3B1 /* CustomAPIAdapter.swift in Sources */,
-				3B537380202EC0DC0020F3B1 /* PopUpJobViewVC.swift in Sources */,
 				3B53739D202EC2210020F3B1 /* CustomMGLAnnotation.swift in Sources */,
-				3BA1E06F203CBBA600AF89B8 /* CustomCollectionViewCell.swift in Sources */,
-				3B537372202EC0DC0020F3B1 /* AppSnackbarController.swift in Sources */,
 				3B53733D202EBD0F0020F3B1 /* Connectivity.swift in Sources */,
 				3B537382202EC0DC0020F3B1 /* SellVC+.swift in Sources */,
-				3BA1E071203CBD1700AF89B8 /* DisputeVC.swift in Sources */,
 				3B537373202EC0DC0020F3B1 /* EmailVerifyVC.swift in Sources */,
 				3B5372F8202EB4320020F3B1 /* AppDelegate.swift in Sources */,
-				3B537384202EC0DC0020F3B1 /* AnnotationViewVC.swift in Sources */,
 				3B537330202EBA6B0020F3B1 /* AppError.swift in Sources */,
 				3B537381202EC0DC0020F3B1 /* ProfilePicture.swift in Sources */,
-				3B537397202EC2210020F3B1 /* CustomAnimationHandler.swift in Sources */,
+				3B537397202EC2210020F3B1 /* Extensions.swift in Sources */,
 				3B537334202EBA6B0020F3B1 /* BlipUser.swift in Sources */,
 				3B537375202EC0DC0020F3B1 /* PasswordReset.swift in Sources */,
-				3B537396202EC2210020F3B1 /* customShadowView.swift in Sources */,
 				3B537383202EC0DC0020F3B1 /* AppFABMenuController.swift in Sources */,
-				3B537377202EC0DC0020F3B1 /* ConfirmProfilePageVC.swift in Sources */,
-				3B53737B202EC0DC0020F3B1 /* OnboardingVCViewController.swift in Sources */,
+				3B537377202EC0DC0020F3B1 /* ProfilePage.swift in Sources */,
+				3B53737B202EC0DC0020F3B1 /* OnboardingVC.swift in Sources */,
 				3B53732E202EBA6B0020F3B1 /* ServiceCalls.swift in Sources */,
-				5F889BA1204620A60054D2ED /* MainPageVC.swift in Sources */,
 				3B53732F202EBA6B0020F3B1 /* Job.swift in Sources */,
 				3B53737E202EC0DC0020F3B1 /* MyAPIClient.swift in Sources */,
-				3B537385202EC0DC0020F3B1 /* SettingsViewController.swift in Sources */,
-				3B537386202EC0DC0020F3B1 /* UnconfirmedVC.swift in Sources */,
-				3B537374202EC0DC0020F3B1 /* navigationBarViewController.swift in Sources */,
+				5FDEF87F206B56DC00F33733 /* ViewMapOfJobsVC.swift in Sources */,
+				3B537374202EC0DC0020F3B1 /* NavigationBarViewController.swift in Sources */,
 				3B537331202EBA6B0020F3B1 /* HelperFunctions.swift in Sources */,
 				3B537379202EC0DC0020F3B1 /* SellVC.swift in Sources */,
-				5F889BA7204775F10054D2ED /* WalmartAPICaller.swift in Sources */,
-				3B53739F202EC2210020F3B1 /* Constrainable.swift in Sources */,
-				3B537333202EBA6B0020F3B1 /* AllJobs.swift in Sources */,
 				3B537388202EC0DC0020F3B1 /* Lgsupage.swift in Sources */,
-				3B5373A1202EC2210020F3B1 /* CustomUIBorderControls.swift in Sources */,
 				3B53739B202EC2210020F3B1 /* CustomAnnotationView.swift in Sources */,
-				3B5373B5202EC2E40020F3B1 /* StartJob.swift in Sources */,
-				3B537399202EC2210020F3B1 /* TapScreenToCloseKeyboardViewController.swift in Sources */,
-				3B53737F202EC0DC0020F3B1 /* PaymentContextFooterView.swift in Sources */,
-				3B53737A202EC0DC0020F3B1 /* endSignUpVC.swift in Sources */,
+				3B53737A202EC0DC0020F3B1 /* EndSignUp.swift in Sources */,
 				3B537387202EC0DC0020F3B1 /* SplashViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

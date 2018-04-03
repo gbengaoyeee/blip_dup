@@ -1,0 +1,366 @@
+//
+//  File.swift
+//  Blip
+//
+//  Created by Srikanth Srinivas on 8/6/17.
+//  Copyright © 2017 Gbenga Ayobami. All rights reserved.
+//
+
+import Foundation
+import Lottie
+import Pastel
+
+extension UIView{
+
+    func leftToRightAnimation(duration: TimeInterval = 0.5, completionDelegate: AnyObject? = nil) {
+        // Create a CATransition object
+        let leftToRightTransition = CATransition()
+            
+        // Set its callback delegate to the completionDelegate that was provided
+        if let delegate: AnyObject = completionDelegate {
+            leftToRightTransition.delegate = (delegate as! CAAnimationDelegate)
+        }
+        
+        
+        leftToRightTransition.type = kCATransitionPush
+        leftToRightTransition.subtype = kCATransitionFromRight
+        leftToRightTransition.duration = duration
+        leftToRightTransition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        leftToRightTransition.fillMode = kCAFillModeRemoved
+            
+        // Add the animation to the View's layer
+        self.layer.add(leftToRightTransition, forKey: "leftToRightTransition")
+    }
+    
+    func rightToLeftAnimation(duration: TimeInterval = 0.5, completionDelegate: AnyObject? = nil) {
+        // Create a CATransition object
+        let rightToLeftTransition = CATransition()
+        
+        // Set its callback delegate to the completionDelegate that was provided
+        if let delegate: AnyObject = completionDelegate {
+            rightToLeftTransition.delegate = (delegate as! CAAnimationDelegate)
+        }
+        
+        
+        rightToLeftTransition.type = kCATransitionPush
+        rightToLeftTransition.subtype = kCATransitionFromLeft
+        rightToLeftTransition.duration = duration
+        rightToLeftTransition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        rightToLeftTransition.fillMode = kCAFillModeRemoved
+        
+        // Add the animation to the View's layer
+        self.layer.add(rightToLeftTransition, forKey: "rightToLeftTransition")
+    }
+
+    
+    
+    func handledAnimation(Animation: LOTAnimationView){
+        
+        
+        self.addSubview(Animation)
+        let yCenterConstraint = NSLayoutConstraint(item: Animation, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 0)
+        let xCenterConstraint = NSLayoutConstraint(item: Animation, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0)
+        let widthConstraint = NSLayoutConstraint(item: Animation, attribute: .width, relatedBy: .equal, toItem: self, attribute: .width, multiplier: 1, constant: 0)
+        let heightConstraint = NSLayoutConstraint(item: Animation, attribute: .height, relatedBy: .equal, toItem: self, attribute: .height, multiplier: 1, constant: 0)
+        self.addConstraints([xCenterConstraint,yCenterConstraint,widthConstraint,heightConstraint])
+        Animation.translatesAutoresizingMaskIntoConstraints = false
+        Animation.contentMode = .scaleAspectFit
+        
+    }
+
+
+    func returnHandledAnimation(filename: String, subView: UIView, tagNum: Int) -> LOTAnimationView{
+    
+        let animationView = LOTAnimationView(name: filename)
+        subView.addSubview(animationView)
+        let yCenterConstraint = NSLayoutConstraint(item: animationView, attribute: .centerY, relatedBy: .equal, toItem: subView, attribute: .centerY, multiplier: 1, constant: 0)
+        let xCenterConstraint = NSLayoutConstraint(item: animationView, attribute: .centerX, relatedBy: .equal, toItem: subView, attribute: .centerX, multiplier: 1, constant: 0)
+        let widthConstraint = NSLayoutConstraint(item: animationView, attribute: .width, relatedBy: .equal, toItem: subView, attribute: .width, multiplier: 1, constant: 0)
+        let heightConstraint = NSLayoutConstraint(item: animationView, attribute: .height, relatedBy: .equal, toItem: subView, attribute: .height, multiplier: 1, constant: 0)
+        subView.addConstraints([xCenterConstraint,yCenterConstraint,widthConstraint,heightConstraint])
+        animationView.translatesAutoresizingMaskIntoConstraints = false
+        animationView.contentMode = .scaleAspectFit
+        animationView.tag = tagNum
+        return animationView
+        
+    }
+    
+    func returnHandledAnimationScaleToFill(filename: String, subView: UIView, tagNum: Int) -> LOTAnimationView{
+        
+        let animationView = LOTAnimationView(name: filename)
+        subView.addSubview(animationView)
+        let yCenterConstraint = NSLayoutConstraint(item: animationView, attribute: .centerY, relatedBy: .equal, toItem: subView, attribute: .centerY, multiplier: 1, constant: 0)
+        let xCenterConstraint = NSLayoutConstraint(item: animationView, attribute: .centerX, relatedBy: .equal, toItem: subView, attribute: .centerX, multiplier: 1, constant: 0)
+        let widthConstraint = NSLayoutConstraint(item: animationView, attribute: .width, relatedBy: .equal, toItem: subView, attribute: .width, multiplier: 1, constant: 0)
+        let heightConstraint = NSLayoutConstraint(item: animationView, attribute: .height, relatedBy: .equal, toItem: subView, attribute: .height, multiplier: 1, constant: 0)
+        subView.addConstraints([xCenterConstraint,yCenterConstraint,widthConstraint,heightConstraint])
+        animationView.translatesAutoresizingMaskIntoConstraints = false
+        animationView.contentMode = .scaleAspectFill
+        animationView.tag = tagNum
+        return animationView
+        
+    }
+    
+    func makeAnimationDissapear(tag: Int){
+        self.viewWithTag(tag)?.removeFromSuperview()
+    }
+    
+    func ApplyOuterShadowToView(){
+        self.layer.shadowOpacity = 0.5
+        self.layer.shadowColor = UIColor.black.cgColor
+        self.layer.shadowOffset = CGSize(width: 0, height: 2.5)
+        self.layer.masksToBounds = false
+        self.layer.shadowRadius = 3
+    }
+    
+    func ApplyCornerRadiusToView(){
+        self.layer.cornerRadius = 7
+        self.clipsToBounds = true
+    }
+    
+}
+
+extension UIViewController{
+    
+    func removedBlurredLoader(animation: LOTAnimationView){
+        
+        animation.stop()
+        if let loadingViewAfterStripe = self.view.viewWithTag(100){
+            loadingViewAfterStripe.removeFromSuperview()
+        }
+        if let blurredViewAfterStripe = self.view.viewWithTag(101){
+            blurredViewAfterStripe.removeFromSuperview()
+        }
+    }
+    
+    func prepareAndAddBlurredLoader(){
+        
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.frame = self.view.bounds
+        blurEffectView.tag = 101
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        self.view.addSubview(blurEffectView)
+        let loadingView = UIView()
+        loadingView.tag = 100
+        loadingView.frame.size = CGSize(width: 200, height: 200)
+        loadingView.frame.origin = self.view.bounds.origin
+        loadingView.center = self.view.convert(self.view.center, from: loadingView)
+        let loadingAnimation = LOTAnimationView(name: "loading")
+        loadingView.handledAnimation(Animation: loadingAnimation)
+        self.view.addSubview(loadingView)
+        loadingAnimation.play()
+        loadingAnimation.loopAnimation = true
+    }
+    
+    func hideKeyboardWhenTappedAround() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+}
+
+extension UIButton{
+    
+    func ApplyOuterShadowToButton(){
+        self.layer.shadowOpacity = 0.3
+        self.layer.shadowColor = UIColor.black.cgColor
+        self.layer.shadowOffset = CGSize(width: 0, height: 2.5)
+        self.layer.masksToBounds = false
+        self.layer.shadowRadius = 3
+    }
+    
+    func ApplyCornerRadius(){
+        self.layer.cornerRadius = 7
+        self.clipsToBounds = true
+    }
+    
+    func makeButtonDissapear(){
+        self.alpha = 0
+    }
+    
+    func makeButtonAppear(){
+        self.alpha = 1
+    }
+    
+}
+
+public extension UIWindow {
+    
+    /// Transition Options
+    public struct TransitionOptions {
+        
+        /// Curve of animation
+        ///
+        /// - linear: linear
+        /// - easeIn: ease in
+        /// - easeOut: ease out
+        /// - easeInOut: ease in - ease out
+        public enum Curve {
+            case linear
+            case easeIn
+            case easeOut
+            case easeInOut
+            
+            /// Return the media timing function associated with curve
+            internal var function: CAMediaTimingFunction {
+                let key: String!
+                switch self {
+                case .linear:        key = kCAMediaTimingFunctionLinear
+                case .easeIn:        key = kCAMediaTimingFunctionEaseIn
+                case .easeOut:        key = kCAMediaTimingFunctionEaseOut
+                case .easeInOut:    key = kCAMediaTimingFunctionEaseInEaseOut
+                }
+                return CAMediaTimingFunction(name: key)
+            }
+        }
+        
+        /// Direction of the animation
+        ///
+        /// - fade: fade to new controller
+        /// - toTop: slide from bottom to top
+        /// - toBottom: slide from top to bottom
+        /// - toLeft: pop to left
+        /// - toRight: push to right
+        public enum Direction {
+            case fade
+            case toTop
+            case toBottom
+            case toLeft
+            case toRight
+            
+            /// Return the associated transition
+            ///
+            /// - Returns: transition
+            internal func transition() -> CATransition {
+                let transition = CATransition()
+                transition.type = kCATransitionPush
+                switch self {
+                case .fade:
+                    transition.type = kCATransitionFade
+                    transition.subtype = nil
+                case .toLeft:
+                    transition.subtype = kCATransitionFromLeft
+                case .toRight:
+                    transition.subtype = kCATransitionFromRight
+                case .toTop:
+                    transition.subtype = kCATransitionFromTop
+                case .toBottom:
+                    transition.subtype = kCATransitionFromBottom
+                }
+                return transition
+            }
+        }
+        
+        /// Background of the transition
+        ///
+        /// - solidColor: solid color
+        /// - customView: custom view
+        public enum Background {
+            case solidColor(_: UIColor)
+            case customView(_: UIView)
+        }
+        
+        /// Duration of the animation (default is 0.20s)
+        public var duration: TimeInterval = 0.20
+        
+        /// Direction of the transition (default is `toRight`)
+        public var direction: TransitionOptions.Direction = .toRight
+        
+        /// Style of the transition (default is `linear`)
+        public var style: TransitionOptions.Curve = .linear
+        
+        /// Background of the transition (default is `nil`)
+        public var background: TransitionOptions.Background? = nil
+        
+        /// Initialize a new options object with given direction and curve
+        ///
+        /// - Parameters:
+        ///   - direction: direction
+        ///   - style: style
+        public init(direction: TransitionOptions.Direction = .toRight, style: TransitionOptions.Curve = .linear) {
+            self.direction = direction
+            self.style = style
+        }
+        
+        public init() { }
+        
+        /// Return the animation to perform for given options object
+        internal var animation: CATransition {
+            let transition = self.direction.transition()
+            transition.duration = self.duration
+            transition.timingFunction = self.style.function
+            return transition
+        }
+    }
+    
+    
+    /// Change the root view controller of the window
+    ///
+    /// - Parameters:
+    ///   - controller: controller to set
+    ///   - options: options of the transition
+    public func setRootViewController(_ controller: UIViewController, options: TransitionOptions = TransitionOptions()) {
+        
+        var transitionWnd: UIWindow? = nil
+        if let background = options.background {
+            transitionWnd = UIWindow(frame: UIScreen.main.bounds)
+            switch background {
+            case .customView(let view):
+                transitionWnd?.rootViewController = UIViewController.newController(withView: view, frame: transitionWnd!.bounds)
+            case .solidColor(let color):
+                transitionWnd?.backgroundColor = color
+            }
+            transitionWnd?.makeKeyAndVisible()
+        }
+        
+        // Make animation
+        self.layer.add(options.animation, forKey: kCATransition)
+        self.rootViewController = controller
+        self.makeKeyAndVisible()
+        
+        if let wnd = transitionWnd {
+            DispatchQueue.main.asyncAfter(deadline: (.now() + 1 + options.duration), execute: {
+                wnd.removeFromSuperview()
+            })
+        }
+    }
+}
+
+internal extension UIViewController {
+    
+    /// Create a new empty controller instance with given view
+    ///
+    /// - Parameters:
+    ///   - view: view
+    ///   - frame: frame
+    /// - Returns: instance
+    static func newController(withView view: UIView, frame: CGRect) -> UIViewController {
+        view.frame = frame
+        let controller = UIViewController()
+        controller.view = view
+        return controller
+    }
+    
+}
+
+extension PastelView{
+    
+    func prepareDefaultPastelView(){
+        
+        let colors = [#colorLiteral(red: 0.1960784346, green: 0.3411764801, blue: 0.1019607857, alpha: 1), #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1), #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)]
+        self.setColors(colors)
+        self.animationDuration = 3
+    }
+    
+    func prepareCustomPastelViewWithColors(colors: [UIColor]){
+        
+        self.setColors(colors)
+        self.animationDuration = 3
+    }
+    
+}
