@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "AA5669061443207477F9898CD694261D"
-               BuildableName = "Stripe.bundle"
-               BlueprintName = "Stripe-Stripe"
+               BlueprintIdentifier = "07651546E9E57444F4544398A4F935AF"
+               BuildableName = "BSImagePicker.bundle"
+               BlueprintName = "BSImagePicker-BSImagePicker"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -47,9 +47,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "AA5669061443207477F9898CD694261D"
-            BuildableName = "Stripe.bundle"
-            BlueprintName = "Stripe-Stripe"
+            BlueprintIdentifier = "07651546E9E57444F4544398A4F935AF"
+            BuildableName = "BSImagePicker.bundle"
+            BlueprintName = "BSImagePicker-BSImagePicker"
             ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "AA5669061443207477F9898CD694261D"
-               BuildableName = "Stripe.bundle"
-               BlueprintName = "Stripe-Stripe"
+               BlueprintIdentifier = "5053B0CFF2A69E9CED6EADC728A90E17"
+               BuildableName = "SwiftIcons.bundle"
+               BlueprintName = "SwiftIcons-SwiftIcons"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -47,9 +47,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "AA5669061443207477F9898CD694261D"
-            BuildableName = "Stripe.bundle"
-            BlueprintName = "Stripe-Stripe"
+            BlueprintIdentifier = "5053B0CFF2A69E9CED6EADC728A90E17"
+            BuildableName = "SwiftIcons.bundle"
+            BlueprintName = "SwiftIcons-SwiftIcons"
             ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
