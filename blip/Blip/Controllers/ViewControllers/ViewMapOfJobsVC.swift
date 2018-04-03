@@ -19,10 +19,12 @@ import Stripe
 import Kingfisher
 import NotificationBannerSwift
 import AZDialogView
+import SwiftIcons
 
 class ViewMapOfJobsVC: UIViewController {
 
     @IBOutlet weak var map: MGLMapView!
+    @IBOutlet weak var postTestJobButton: RaisedButton!
     
     var dbRef: DatabaseReference!
     var acceptedJob: Job!
@@ -45,6 +47,7 @@ class ViewMapOfJobsVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        useCurrentLocations()
         prepareMap()
         // Do any additional setup after loading the view.
     }
@@ -52,6 +55,14 @@ class ViewMapOfJobsVC: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+
+    @IBAction func testPost(_ sender: Any) {
+        service.getCurrentUserInfo { (user) in
+            
+            self.service.addTestJob(title: "Pickup", orderer: user,  deliveryLocation: self.currentLocation, pickupLocation: CLLocationCoordinate2D(latitude: -79.68, longitude: 43.61), earnings: 5.00, estimatedTime: 10.00)
+        }
     }
 }
 
@@ -64,6 +75,26 @@ extension ViewMapOfJobsVC: MGLMapViewDelegate{
             print("Got jobs from firebase")
             self.allAnnotations = annotations
         }
+    }
+    
+    func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
+
+        guard annotation is MGLPointAnnotation else {
+            return nil
+        }
+        let annotationView = CustomAnnotationView()
+        if let castedAnnotation = annotation as? CustomMGLAnnotation{
+            
+            annotationView.frame = CGRect(x: 0, y: 0, width: 35, height: 35 )
+            let deliveryIcon = UIImage(icon: .icofont(.vehicleDeliveryVan), size: CGSize(width: 35, height: 35))
+            let deliveryImageView = UIImageView(image: deliveryIcon)
+            deliveryImageView.isUserInteractionEnabled = true
+            annotationView.addSubview(deliveryImageView)
+            annotationView.layer.cornerRadius = annotationView.frame.size.height/2
+            annotationView.isUserInteractionEnabled = true
+        }
+        return annotationView
+        
     }
 }
 
@@ -105,5 +136,19 @@ extension ViewMapOfJobsVC: CLLocationManagerDelegate{
         currentLocation = locValue
         service.updateJobAccepterLocation(location: locValue)
         manager.stopUpdatingLocation()
+    }
+    
+    func useCurrentLocations(){
+        // Ask for Authorisation from the User.
+        self.locationManager.requestAlwaysAuthorization()
+        
+        // For use in foreground
+        self.locationManager.requestWhenInUseAuthorization()
+        
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+            locationManager.startUpdatingLocation()
+        }
     }
 }

@@ -273,7 +273,7 @@ class EmailVerifyVC: UIViewController {
         let rating: Float = 5.0
         self.newUserUID = Auth.auth().currentUser?.uid
         let emailHash = MD5(string: self.emailTF.text!)
-        let userDict:[String:Any] = ["uid":self.newUserUID, "Name":"\(firstName!) \(lastName!)", "Email":emailTF.text!, "Rating":rating, "ratingSum":rating, "currentDevice":AppDelegate.DEVICEID]
+        let userDict:[String:Any] = ["uid":self.newUserUID, "name":"\(firstName!) \(lastName!)", "email":emailTF.text!, "rating":rating, "ratingSum":rating, "currentDevice":AppDelegate.DEVICEID]
         self.dbRef.child("Users/\(emailHash)").updateChildValues(userDict) { (error, databaseRef) in
             if let err = error{
                 print(err.localizedDescription)

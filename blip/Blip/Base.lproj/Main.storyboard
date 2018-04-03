@@ -481,7 +481,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <action selector="continuePressed:" destination="dBu-Ev-kY4" eventType="touchUpInside" id="ztJ-MW-SA2"/>
+                                            <action selector="continuePressed:" destination="dBu-Ev-kY4" eventType="touchUpInside" id="U7n-oW-sXe"/>
                                         </connections>
                                     </button>
                                     <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5fO-3e-SUg">
@@ -855,7 +855,7 @@
         <!--rootAfterLogin-->
         <scene sceneID="7YW-k3-JPG">
             <objects>
-                <navigationController storyboardIdentifier="rootAfterLogin" title="rootAfterLogin" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Lt5-zt-yGE" customClass="navigationBarViewController" customModule="Blip" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="rootAfterLogin" title="rootAfterLogin" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Lt5-zt-yGE" customClass="NavigationBarViewController" customModule="Blip" customModuleProvider="target" sceneMemberID="viewController">
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="dUC-PG-JxM">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -878,10 +878,10 @@
             </objects>
             <point key="canvasLocation" x="-2266" y="-101"/>
         </scene>
-        <!--Sell Time-->
+        <!--MapOfJobs-->
         <scene sceneID="qBQ-H6-THN">
             <objects>
-                <viewController storyboardIdentifier="SellVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="e6i-Zq-4L0" customClass="SellVC" customModule="Blip" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MapOfJobs" title="MapOfJobs" useStoryboardIdentifierAsRestorationIdentifier="YES" id="e6i-Zq-4L0" customClass="ViewMapOfJobsVC" customModule="Blip" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Fax-FL-YwO"/>
                         <viewControllerLayoutGuide type="bottom" id="wOl-lD-vZy"/>
@@ -923,7 +923,7 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
-                                                    <action selector="postJobPressed:" destination="e6i-Zq-4L0" eventType="touchUpInside" id="6R1-aq-5hf"/>
+                                                    <action selector="testPost:" destination="e6i-Zq-4L0" eventType="touchUpInside" id="qnx-qM-fNb"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -949,256 +949,12 @@
                                     <constraint firstItem="6Wl-l6-Soe" firstAttribute="centerY" secondItem="OyW-R3-gLA" secondAttribute="centerY" id="hWY-yR-MoS"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kP0-qX-gGy" userLabel="JobDetailsView">
-                                <rect key="frame" x="32.5" y="820" width="310" height="500"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lFt-TV-ABJ" userLabel="Cancel" customClass="RaisedButton" customModule="Material">
-                                        <rect key="frame" x="10" y="10" width="20" height="20"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="20" id="QK4-1n-j7u"/>
-                                            <constraint firstAttribute="width" constant="20" id="w9y-BT-irE"/>
-                                        </constraints>
-                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="pulseColor">
-                                                <color key="value" red="0.87196621190000001" green="0.44680542820000002" blue="0.38951410959999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
-                                                <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="cancelDetailsPressed:" destination="e6i-Zq-4L0" eventType="touchUpInside" id="dXL-hj-LsM"/>
-                                        </connections>
-                                    </button>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="onDrag" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="saK-an-0bn" customClass="TextView" customModule="Material">
-                                        <rect key="frame" x="44" y="217" width="222" height="137"/>
-                                        <color key="backgroundColor" red="0.99999058249999995" green="0.99999368190000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="yes" spellCheckingType="yes"/>
-                                    </textView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter your job details" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="TkK-LG-SrD">
-                                        <rect key="frame" x="44" y="32" width="222" height="44"/>
-                                        <fontDescription key="fontDescription" name="CenturyGothic-Bold" family="Century Gothic" pointSize="20"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="A8J-Ua-fdL" customClass="TextField" customModule="Material">
-                                        <rect key="frame" x="46" y="137" width="219" height="30"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
-                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="yes" spellCheckingType="yes"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                                <real key="value" value="0.0"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="dividerColor">
-                                                <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="dividerThickness">
-                                                <real key="value" value="1"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isClearIconButtonEnabled" value="YES"/>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="dividerNormalHeight">
-                                                <real key="value" value="1"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="dividerActiveHeight">
-                                                <real key="value" value="1"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </textField>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RgU-ic-5Xu" customClass="RaisedButton" customModule="Material">
-                                        <rect key="frame" x="33.5" y="411" width="244" height="40"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
-                                        <state key="normal" title="Next">
-                                            <color key="titleColor" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                        </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="pulseColor">
-                                                <color key="value" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
-                                                <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="title" value="Next"/>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
-                                                <color key="value" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="nextPressedOnDetails:" destination="e6i-Zq-4L0" eventType="touchUpInside" id="Iik-aY-9AV"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" red="0.87196621190000001" green="0.44680542820000002" blue="0.38951410959999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                <constraints>
-                                    <constraint firstItem="RgU-ic-5Xu" firstAttribute="centerX" secondItem="kP0-qX-gGy" secondAttribute="centerX" id="0QE-G4-tXG"/>
-                                    <constraint firstItem="lFt-TV-ABJ" firstAttribute="leading" secondItem="kP0-qX-gGy" secondAttribute="leading" constant="10" id="0zX-aX-ILY"/>
-                                    <constraint firstItem="TkK-LG-SrD" firstAttribute="top" secondItem="kP0-qX-gGy" secondAttribute="top" constant="32" id="2Ee-Ed-1CM"/>
-                                    <constraint firstItem="TkK-LG-SrD" firstAttribute="width" secondItem="kP0-qX-gGy" secondAttribute="width" multiplier="240/335" id="5h6-3W-izw"/>
-                                    <constraint firstItem="TkK-LG-SrD" firstAttribute="height" secondItem="kP0-qX-gGy" secondAttribute="height" multiplier="59/667" id="Bb6-FY-N9c"/>
-                                    <constraint firstItem="TkK-LG-SrD" firstAttribute="centerX" secondItem="kP0-qX-gGy" secondAttribute="centerX" id="C3c-bV-AbV"/>
-                                    <constraint firstItem="A8J-Ua-fdL" firstAttribute="centerX" secondItem="kP0-qX-gGy" secondAttribute="centerX" id="LSx-L5-jPn"/>
-                                    <constraint firstItem="saK-an-0bn" firstAttribute="centerX" secondItem="kP0-qX-gGy" secondAttribute="centerX" id="UZL-2y-Tdn"/>
-                                    <constraint firstItem="lFt-TV-ABJ" firstAttribute="top" secondItem="kP0-qX-gGy" secondAttribute="top" constant="10" id="irO-z9-Nrc"/>
-                                    <constraint firstItem="saK-an-0bn" firstAttribute="height" secondItem="kP0-qX-gGy" secondAttribute="height" multiplier="183/667" id="k7W-0Z-NN5"/>
-                                    <constraint firstItem="saK-an-0bn" firstAttribute="top" secondItem="A8J-Ua-fdL" secondAttribute="bottom" constant="50" id="ogB-kH-aXz"/>
-                                    <constraint firstItem="saK-an-0bn" firstAttribute="width" secondItem="kP0-qX-gGy" secondAttribute="width" multiplier="240/335" id="rPf-er-T80"/>
-                                    <constraint firstAttribute="bottom" secondItem="RgU-ic-5Xu" secondAttribute="bottom" constant="49" id="t9K-kY-t89"/>
-                                    <constraint firstItem="A8J-Ua-fdL" firstAttribute="width" secondItem="kP0-qX-gGy" secondAttribute="width" multiplier="237/335" id="uS1-sS-9PG"/>
-                                    <constraint firstItem="A8J-Ua-fdL" firstAttribute="top" secondItem="TkK-LG-SrD" secondAttribute="bottom" constant="61" id="zFw-AE-h2s"/>
-                                </constraints>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rlw-mr-YqQ" userLabel="jobPriceView">
-                                <rect key="frame" x="32.5" y="1620" width="310" height="500"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aUK-I9-jHh" userLabel="Cancel" customClass="RaisedButton" customModule="Material">
-                                        <rect key="frame" x="10" y="10" width="20" height="20"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="20" id="2ed-ag-UTz"/>
-                                            <constraint firstAttribute="width" constant="20" id="MTP-9n-Y2V"/>
-                                        </constraints>
-                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="pulseColor">
-                                                <color key="value" red="0.87196621190000001" green="0.44680542820000002" blue="0.38951410959999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
-                                                <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="cancelPricePressed:" destination="e6i-Zq-4L0" eventType="touchUpInside" id="oC8-Cf-e3Q"/>
-                                        </connections>
-                                    </button>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wyp-gb-ynf" customClass="TextField" customModule="Material">
-                                        <rect key="frame" x="45.5" y="228" width="219" height="30"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
-                                        <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="$/hour"/>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="detail" value="Enter the price per hour you'd be willing to pay"/>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isClearIconButtonEnabled" value="YES"/>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="dividerColor">
-                                                <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="dividerThickness">
-                                                <real key="value" value="1"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </textField>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jX5-Cm-qNt" customClass="RaisedButton" customModule="Material">
-                                        <rect key="frame" x="33" y="411" width="244" height="40"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
-                                        <state key="normal" title="Submit">
-                                            <color key="titleColor" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                        </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="pulseColor">
-                                                <color key="value" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
-                                                <color key="value" red="0.99999058249999995" green="0.99999368190000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="title" value="Submit"/>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
-                                                <color key="value" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="submitJob:" destination="e6i-Zq-4L0" eventType="touchUpInside" id="3Ki-PA-OOf"/>
-                                        </connections>
-                                    </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pricing and time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rLm-TI-cX5">
-                                        <rect key="frame" x="44" y="32" width="222" height="44"/>
-                                        <fontDescription key="fontDescription" name="CenturyGothic-Bold" family="Century Gothic" pointSize="20"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="86v-sA-sZ1" customClass="TextField" customModule="Material">
-                                        <rect key="frame" x="45.5" y="137" width="219" height="30"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
-                                        <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Hours"/>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="detail" value="The total number of hours desired"/>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isClearIconButtonEnabled" value="YES"/>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="dividerColor">
-                                                <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="dividerThickness">
-                                                <real key="value" value="1"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="dividerNormalHeight">
-                                                <real key="value" value="1"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="dividerActiveHeight">
-                                                <real key="value" value="1"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </textField>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="oGm-cb-oQ3" userLabel="Schedule Job" customClass="TextField" customModule="Material">
-                                        <rect key="frame" x="45.5" y="319" width="219" height="30"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
-                                        <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Job Expiry"/>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="detail" value="How many hours from now would you like to schedule your job?"/>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isClearIconButtonEnabled" value="YES"/>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="dividerColor">
-                                                <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="dividerThickness">
-                                                <real key="value" value="1"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </textField>
-                                </subviews>
-                                <color key="backgroundColor" red="0.87196621190000001" green="0.44680542820000002" blue="0.38951410959999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                <constraints>
-                                    <constraint firstItem="aUK-I9-jHh" firstAttribute="leading" secondItem="rlw-mr-YqQ" secondAttribute="leading" constant="10" id="3Ps-XD-WGi"/>
-                                    <constraint firstItem="rLm-TI-cX5" firstAttribute="top" secondItem="rlw-mr-YqQ" secondAttribute="top" constant="32" id="8WR-8Y-knU"/>
-                                    <constraint firstItem="jX5-Cm-qNt" firstAttribute="centerX" secondItem="rlw-mr-YqQ" secondAttribute="centerX" id="A0k-3o-7Iw"/>
-                                    <constraint firstAttribute="bottom" secondItem="jX5-Cm-qNt" secondAttribute="bottom" constant="49" id="GLa-cA-O2g"/>
-                                    <constraint firstItem="86v-sA-sZ1" firstAttribute="width" secondItem="rlw-mr-YqQ" secondAttribute="width" multiplier="237/335" id="GmM-UF-fgF"/>
-                                    <constraint firstItem="oGm-cb-oQ3" firstAttribute="width" secondItem="rlw-mr-YqQ" secondAttribute="width" multiplier="237/335" id="H5G-dj-lmq"/>
-                                    <constraint firstItem="86v-sA-sZ1" firstAttribute="centerX" secondItem="rlw-mr-YqQ" secondAttribute="centerX" id="HwL-uG-5b9"/>
-                                    <constraint firstItem="wyp-gb-ynf" firstAttribute="top" secondItem="86v-sA-sZ1" secondAttribute="bottom" constant="61" id="TgW-ff-ba8"/>
-                                    <constraint firstItem="86v-sA-sZ1" firstAttribute="top" secondItem="rLm-TI-cX5" secondAttribute="bottom" constant="61" id="aNx-bV-sr8"/>
-                                    <constraint firstItem="oGm-cb-oQ3" firstAttribute="centerX" secondItem="rlw-mr-YqQ" secondAttribute="centerX" id="ck0-oY-flH"/>
-                                    <constraint firstItem="wyp-gb-ynf" firstAttribute="centerX" secondItem="rlw-mr-YqQ" secondAttribute="centerX" id="iPi-sF-1ek"/>
-                                    <constraint firstItem="rLm-TI-cX5" firstAttribute="width" secondItem="rlw-mr-YqQ" secondAttribute="width" multiplier="240/335" id="jkC-G5-7QI"/>
-                                    <constraint firstItem="oGm-cb-oQ3" firstAttribute="top" secondItem="wyp-gb-ynf" secondAttribute="bottom" constant="61" id="koI-4k-cbZ"/>
-                                    <constraint firstItem="rLm-TI-cX5" firstAttribute="centerX" secondItem="rlw-mr-YqQ" secondAttribute="centerX" id="nTf-PL-yPC"/>
-                                    <constraint firstItem="wyp-gb-ynf" firstAttribute="width" secondItem="rlw-mr-YqQ" secondAttribute="width" multiplier="237/335" id="rzC-hD-JkR"/>
-                                    <constraint firstItem="rLm-TI-cX5" firstAttribute="height" secondItem="rlw-mr-YqQ" secondAttribute="height" multiplier="59/667" id="sY1-Oj-nb6"/>
-                                    <constraint firstItem="aUK-I9-jHh" firstAttribute="top" secondItem="rlw-mr-YqQ" secondAttribute="top" constant="10" id="uwg-gb-f0F"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.87196621190000001" green="0.44680542820000002" blue="0.38951410959999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
-                            <constraint firstItem="rlw-mr-YqQ" firstAttribute="top" secondItem="Fax-FL-YwO" secondAttribute="bottom" constant="1600" id="5bb-sN-OSN"/>
-                            <constraint firstItem="jX5-Cm-qNt" firstAttribute="height" secondItem="CgQ-Il-ro5" secondAttribute="height" multiplier="0.06" id="6Ru-4H-L4N"/>
-                            <constraint firstItem="RgU-ic-5Xu" firstAttribute="width" secondItem="CgQ-Il-ro5" secondAttribute="width" multiplier="0.65" id="NYi-Oo-KOg"/>
-                            <constraint firstItem="rlw-mr-YqQ" firstAttribute="width" secondItem="CgQ-Il-ro5" secondAttribute="width" multiplier="310/375" id="SJg-Af-5bf"/>
-                            <constraint firstItem="rlw-mr-YqQ" firstAttribute="height" secondItem="CgQ-Il-ro5" secondAttribute="height" multiplier="500/667" id="TPg-gQ-aRA"/>
-                            <constraint firstItem="kP0-qX-gGy" firstAttribute="top" secondItem="Fax-FL-YwO" secondAttribute="bottom" constant="800" id="Twb-zm-axr"/>
-                            <constraint firstItem="kP0-qX-gGy" firstAttribute="width" secondItem="CgQ-Il-ro5" secondAttribute="width" multiplier="310/375" id="acx-l7-tAB"/>
                             <constraint firstItem="OyW-R3-gLA" firstAttribute="height" secondItem="CgQ-Il-ro5" secondAttribute="height" id="fu9-uP-Hy2"/>
-                            <constraint firstItem="RgU-ic-5Xu" firstAttribute="height" secondItem="CgQ-Il-ro5" secondAttribute="height" multiplier="0.06" id="i4G-Jb-KTD"/>
-                            <constraint firstItem="rlw-mr-YqQ" firstAttribute="centerX" secondItem="CgQ-Il-ro5" secondAttribute="centerX" id="iJY-Sl-TnX"/>
                             <constraint firstItem="OyW-R3-gLA" firstAttribute="centerX" secondItem="CgQ-Il-ro5" secondAttribute="centerX" id="kdy-F3-KZI"/>
                             <constraint firstItem="OyW-R3-gLA" firstAttribute="width" secondItem="CgQ-Il-ro5" secondAttribute="width" id="mO8-Ut-ykh"/>
-                            <constraint firstItem="jX5-Cm-qNt" firstAttribute="width" secondItem="CgQ-Il-ro5" secondAttribute="width" multiplier="0.65" id="mOB-ay-9jU"/>
-                            <constraint firstItem="kP0-qX-gGy" firstAttribute="height" secondItem="CgQ-Il-ro5" secondAttribute="height" multiplier="500/667" id="q5k-SL-dLy"/>
-                            <constraint firstItem="kP0-qX-gGy" firstAttribute="centerX" secondItem="CgQ-Il-ro5" secondAttribute="centerX" id="sJq-OT-DY7"/>
                             <constraint firstItem="OyW-R3-gLA" firstAttribute="centerY" secondItem="CgQ-Il-ro5" secondAttribute="centerY" id="waX-YC-eaK"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="gfT-Ho-qd0"/>
@@ -1208,21 +964,8 @@
                     <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="MapView" destination="6Wl-l6-Soe" id="8Lq-b7-dEK"/>
-                        <outlet property="cancelDetails" destination="lFt-TV-ABJ" id="Je5-6d-2aH"/>
-                        <outlet property="cancelPrice" destination="aUK-I9-jHh" id="rqM-eT-fA4"/>
-                        <outlet property="jobDetailsConstraint" destination="Twb-zm-axr" id="6yB-mC-jVp"/>
-                        <outlet property="jobDetailsTF" destination="saK-an-0bn" id="N0O-ZM-OFr"/>
-                        <outlet property="jobDetailsView" destination="kP0-qX-gGy" id="gfd-Mn-tFV"/>
-                        <outlet property="jobPriceView" destination="rlw-mr-YqQ" id="apv-go-IJj"/>
-                        <outlet property="jobPriceViewConstraint" destination="5bb-sN-OSN" id="Fhh-qj-bfk"/>
-                        <outlet property="jobTitleTF" destination="A8J-Ua-fdL" id="Ony-qY-ym8"/>
-                        <outlet property="numberOfHoursTF" destination="86v-sA-sZ1" id="Key-bp-ZSg"/>
-                        <outlet property="postJobButton" destination="jcq-bN-Gic" id="W9J-qn-HAv"/>
-                        <outlet property="pricePerHour" destination="wyp-gb-ynf" id="LN3-Rm-dfA"/>
-                        <outlet property="rootView" destination="OyW-R3-gLA" id="HGf-cT-Tdd"/>
-                        <outlet property="scheduleJob" destination="oGm-cb-oQ3" id="YkY-u1-lCz"/>
-                        <outlet property="submitJobButton" destination="jX5-Cm-qNt" id="bRM-7p-lPT"/>
+                        <outlet property="map" destination="6Wl-l6-Soe" id="Gk3-L6-S8X"/>
+                        <outlet property="postTestJobButton" destination="jcq-bN-Gic" id="Fpv-60-MQN"/>
                         <segue destination="BjN-Qk-ddr" kind="show" identifier="endJobFromSellVC" id="dN8-sI-vgH">
                             <nil key="action"/>
                         </segue>
@@ -1419,10 +1162,10 @@
             </objects>
             <point key="canvasLocation" x="-3052" y="-101.19940029985008"/>
         </scene>
-        <!--OnboardingVC View Controller-->
+        <!--OnboardingVC-->
         <scene sceneID="OhT-Wb-fyJ">
             <objects>
-                <viewController id="xPf-xU-e3O" customClass="OnboardingVCViewController" customModule="Blip" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="xPf-xU-e3O" customClass="OnboardingVC" customModule="Blip" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="NMA-x0-Olq"/>
                         <viewControllerLayoutGuide type="bottom" id="EGJ-Ie-grw"/>
@@ -1478,7 +1221,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="GoToLGSU:" destination="xPf-xU-e3O" eventType="touchUpInside" id="FO0-bf-Osb"/>
+                                    <action selector="GoToLGSU:" destination="xPf-xU-e3O" eventType="touchUpInside" id="qsf-tn-m5x"/>
                                     <action selector="loginButton:" destination="xOF-GW-QrG" eventType="touchUpInside" id="JyD-um-GgC"/>
                                 </connections>
                             </button>
@@ -1520,10 +1263,10 @@
                     </view>
                     <navigationItem key="navigationItem" id="lhr-4a-tSW"/>
                     <connections>
-                        <outlet property="gradientView" destination="HIU-cU-PGO" id="0JN-we-HZq"/>
-                        <outlet property="pageControl" destination="DvV-V4-VC7" id="ggK-Vu-Lrf"/>
-                        <outlet property="scrollView" destination="rxs-Di-X3P" id="jra-Sj-Bkl"/>
-                        <outlet property="serviceAnimationView" destination="nfR-WB-amP" id="QFb-rP-Boz"/>
+                        <outlet property="gradientView" destination="HIU-cU-PGO" id="asB-SG-G9l"/>
+                        <outlet property="pageControl" destination="DvV-V4-VC7" id="Smc-Fy-uFx"/>
+                        <outlet property="scrollView" destination="rxs-Di-X3P" id="xuo-i4-QAc"/>
+                        <outlet property="serviceAnimationView" destination="nfR-WB-amP" id="FOd-2n-kSv"/>
                         <segue destination="DgH-8b-JZs" kind="show" identifier="goToLGSU" id="nki-b7-hNw">
                             <nil key="action"/>
                         </segue>
@@ -1536,7 +1279,7 @@
         <!--rootViewController-->
         <scene sceneID="42h-Gx-T5q">
             <objects>
-                <navigationController storyboardIdentifier="rootViewController" title="rootViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="V9e-Cj-ili" customClass="navigationBarViewController" customModule="Blip" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="rootViewController" title="rootViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="V9e-Cj-ili" customClass="NavigationBarViewController" customModule="Blip" customModuleProvider="target" sceneMemberID="viewController">
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="tzh-42-Ck6">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -1622,12 +1365,6 @@
                                     <action selector="loginWithFacebookClicked:" destination="DgH-8b-JZs" eventType="touchUpInside" id="FHf-8f-6bD"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="facebookButton" translatesAutoresizingMaskIntoConstraints="NO" id="dk5-W7-MGb">
-                                <rect key="frame" x="65.5" y="394" width="45" height="40"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="45" id="P8f-GC-zHG"/>
-                                </constraints>
-                            </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pin-CU-Iel" customClass="RaisedButton" customModule="Material">
                                 <rect key="frame" x="65.5" y="455" width="244" height="40"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -1656,9 +1393,6 @@
                                     </segue>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="email" translatesAutoresizingMaskIntoConstraints="NO" id="inn-if-zwX">
-                                <rect key="frame" x="65.5" y="455" width="52" height="40"/>
-                            </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dont have an account?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CLm-7n-7F1">
                                 <rect key="frame" x="97.5" y="334" width="180" height="20"/>
                                 <constraints>
@@ -1703,29 +1437,21 @@
                         <constraints>
                             <constraint firstItem="V0l-Ae-wT3" firstAttribute="height" secondItem="1TI-lb-Wo2" secondAttribute="height" multiplier="0.06" id="1zj-fo-GXL"/>
                             <constraint firstItem="pin-CU-Iel" firstAttribute="width" secondItem="1TI-lb-Wo2" secondAttribute="width" multiplier="0.65" id="42o-Ct-z9E"/>
-                            <constraint firstItem="inn-if-zwX" firstAttribute="height" secondItem="pin-CU-Iel" secondAttribute="height" id="82x-w8-iTS"/>
                             <constraint firstItem="pin-CU-Iel" firstAttribute="top" secondItem="Pjm-C1-5bV" secondAttribute="bottom" constant="21" id="8Eu-6M-3OB"/>
                             <constraint firstItem="Pjm-C1-5bV" firstAttribute="centerX" secondItem="1TI-lb-Wo2" secondAttribute="centerX" id="9zh-gZ-Bg4"/>
                             <constraint firstItem="V0l-Ae-wT3" firstAttribute="top" secondItem="ciV-Cu-mEf" secondAttribute="bottom" constant="50" id="EQ2-Qs-BVW"/>
-                            <constraint firstItem="inn-if-zwX" firstAttribute="width" secondItem="pin-CU-Iel" secondAttribute="width" multiplier="52/244" id="GiF-dT-dWx"/>
                             <constraint firstItem="Pjm-C1-5bV" firstAttribute="top" secondItem="V0l-Ae-wT3" secondAttribute="bottom" constant="100" id="HcT-44-V8V"/>
                             <constraint firstItem="V0l-Ae-wT3" firstAttribute="centerX" secondItem="1TI-lb-Wo2" secondAttribute="centerX" id="IRA-Uk-gbj"/>
                             <constraint firstItem="pin-CU-Iel" firstAttribute="centerX" secondItem="1TI-lb-Wo2" secondAttribute="centerX" id="Jpf-QK-7JQ"/>
                             <constraint firstItem="ciV-Cu-mEf" firstAttribute="centerX" secondItem="1TI-lb-Wo2" secondAttribute="centerX" id="KRq-cy-8Q9"/>
-                            <constraint firstItem="dk5-W7-MGb" firstAttribute="leading" secondItem="Pjm-C1-5bV" secondAttribute="leading" id="Kzp-Ot-CH8"/>
                             <constraint firstItem="ciV-Cu-mEf" firstAttribute="top" secondItem="cUu-ED-oOW" secondAttribute="bottom" constant="25" id="Lm3-fr-r2A"/>
                             <constraint firstItem="V0l-Ae-wT3" firstAttribute="width" secondItem="1TI-lb-Wo2" secondAttribute="width" multiplier="0.65" id="MVF-L8-cGn"/>
                             <constraint firstItem="Pjm-C1-5bV" firstAttribute="height" secondItem="1TI-lb-Wo2" secondAttribute="height" multiplier="0.06" id="S9c-SY-6Xi"/>
-                            <constraint firstItem="dk5-W7-MGb" firstAttribute="width" secondItem="Pjm-C1-5bV" secondAttribute="width" multiplier="45/244" id="Sy4-AE-ybc"/>
                             <constraint firstItem="pin-CU-Iel" firstAttribute="height" secondItem="1TI-lb-Wo2" secondAttribute="height" multiplier="0.06" id="T2F-aI-YnM"/>
                             <constraint firstItem="CLm-7n-7F1" firstAttribute="top" secondItem="V0l-Ae-wT3" secondAttribute="bottom" constant="40" id="Yjz-LV-to2"/>
                             <constraint firstItem="Pjm-C1-5bV" firstAttribute="top" secondItem="CLm-7n-7F1" secondAttribute="bottom" constant="40" id="jCo-nh-3k7"/>
-                            <constraint firstItem="inn-if-zwX" firstAttribute="leading" secondItem="pin-CU-Iel" secondAttribute="leading" id="llu-wv-dg9"/>
                             <constraint firstItem="CLm-7n-7F1" firstAttribute="centerX" secondItem="1TI-lb-Wo2" secondAttribute="centerX" id="pSb-Gn-Gg7"/>
-                            <constraint firstItem="dk5-W7-MGb" firstAttribute="top" secondItem="Pjm-C1-5bV" secondAttribute="top" id="pes-aw-drK"/>
                             <constraint firstItem="Pjm-C1-5bV" firstAttribute="width" secondItem="1TI-lb-Wo2" secondAttribute="width" multiplier="0.65" id="qNf-Ve-fze"/>
-                            <constraint firstItem="inn-if-zwX" firstAttribute="top" secondItem="pin-CU-Iel" secondAttribute="top" id="qhA-jY-KOA"/>
-                            <constraint firstItem="dk5-W7-MGb" firstAttribute="height" secondItem="Pjm-C1-5bV" secondAttribute="height" id="vJp-OZ-xgR"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="D4O-n1-yDP"/>
                     </view>
@@ -2131,11 +1857,9 @@
     </scenes>
     <resources>
         <image name="Sell Time" width="29" height="29"/>
-        <image name="email" width="644" height="470"/>
         <image name="emptyProfilePicture" width="64" height="64"/>
-        <image name="facebookButton" width="512" height="512"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Wrg-kj-ten"/>
+        <segue reference="B4u-9l-MEL"/>
     </inferredMetricsTieBreakers>
 </document>

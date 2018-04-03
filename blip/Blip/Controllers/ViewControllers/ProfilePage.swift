@@ -49,7 +49,7 @@ class ProfilePage: UIViewController, UIImagePickerControllerDelegate, UINavigati
         self.gradientView.animationDuration = 3.0
         gradientView.setColors([#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1),#colorLiteral(red: 0.7605337501, green: 0.7767006755, blue: 0.7612826824, alpha: 1)])
         profilePic.isUserInteractionEnabled = true
-        profilePic.cornerRadius = profilePic.frame.height/2
+        profilePic.layer.cornerRadius = profilePic.frame.height/2
         self.ratingsTableView.delegate = self
         self.ratingsTableView.dataSource = self
 //        if let completedJobs = currUser?.completedJobs{

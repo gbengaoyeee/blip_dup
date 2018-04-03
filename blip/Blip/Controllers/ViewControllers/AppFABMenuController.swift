@@ -112,7 +112,7 @@ extension AppFABMenuController {
         fabMenu.fabButton?.animate(.rotate(0))
         fabMenu.close()
         let sb = UIStoryboard.init(name: "Main", bundle: nil)
-        let profilepage = sb.instantiateViewController(withIdentifier: "profilePage") as? ConfirmProfilePageVC
+        let profilepage = sb.instantiateViewController(withIdentifier: "profilePage") as? ProfilePage
         profilepage?.currUser = currUser
         self.present(profilepage!, animated: true, completion: nil)
     }

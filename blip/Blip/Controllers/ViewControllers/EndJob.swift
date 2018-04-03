@@ -39,19 +39,19 @@ class EndJob: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func endJobPressed(){
-        
-        service.endJobPressed(job: self.job)
-        self.navigationController?.popToRootViewController(animated: true)
-    }
+//    @IBAction func endJobPressed(){
+//
+//        service.endJobPressed(job: self.job)
+//        self.navigationController?.popToRootViewController(animated: true)
+//    }
     
-    @IBAction func disputeButtonPressed(_ sender: UIButton) {
-        let sb = UIStoryboard.init(name: "Main", bundle: nil)
-        let disputeVc = sb.instantiateViewController(withIdentifier: "dispute") as! DisputeVC
-        disputeVc.job = self.job
-        self.present(disputeVc, animated: true, completion: nil)
-        
-    }
+//    @IBAction func disputeButtonPressed(_ sender: UIButton) {
+//        let sb = UIStoryboard.init(name: "Main", bundle: nil)
+//        let disputeVc = sb.instantiateViewController(withIdentifier: "dispute") as! DisputeVC
+//        disputeVc.job = self.job
+//        self.present(disputeVc, animated: true, completion: nil)
+//        
+//    }
     
 
 }

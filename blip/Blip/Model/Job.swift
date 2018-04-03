@@ -28,16 +28,18 @@ class Job{
     var deliveryAddress: String!
     var pickupAddress: String!
 
-    init(snapshot: DataSnapshot) {
-        
-        let jobValues = snapshot.value as! [String:AnyObject]
-        let deliveryLocation = CLLocationCoordinate2D(latitude: (jobValues["deliveryLocationLat"] as? Double)!, longitude: (jobValues["deliveryLocationLong"] as? Double)!)
-        let pickupLocation = CLLocationCoordinate2D(latitude: (jobValues["pickupLocationLat"] as? Double)!, longitude: (jobValues["pickupLocationLong"] as? Double)!)
-        let title = jobValues["jobTitle"] as? String
+    init?(snapshot: DataSnapshot) {
+        guard snapshot.key.isEmpty else {
+            return nil
+        }
+        let jobValues = snapshot.value as? [String:AnyObject]
+        let deliveryLocation = CLLocationCoordinate2D(latitude: (jobValues!["deliveryLocationLat"] as? Double)!, longitude: (jobValues!["deliveryLocationLong"] as? Double)!)
+        let pickupLocation = CLLocationCoordinate2D(latitude: (jobValues!["pickupLocationLat"] as? Double)!, longitude: (jobValues!["pickupLocationLong"] as? Double)!)
+        let title = jobValues!["jobTitle"] as? String
         let orderer = BlipUser(snapshot: snapshot.childSnapshot(forPath: "orderer"))
-        let earnings = jobValues["earnings"] as? Double
-        let estimatedTime = jobValues["estimatedTime"] as? Double
-
+        let earnings = jobValues!["earnings"] as? Double
+        let estimatedTime = jobValues!["estimatedTime"] as? Double
+        
         self.ref = snapshot.ref
         self.jobID = snapshot.key
         self.deliveryLocationCoordinates = deliveryLocation

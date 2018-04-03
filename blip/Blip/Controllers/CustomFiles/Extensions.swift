@@ -8,6 +8,7 @@
 
 import Foundation
 import Lottie
+import Pastel
 
 extension UIView{
 
@@ -121,9 +122,9 @@ extension UIView{
 
 extension UIViewController{
     
-    func removedBlurredLoader(){
+    func removedBlurredLoader(animation: LOTAnimationView){
         
-        self.loadingAnimation.stop()
+        animation.stop()
         if let loadingViewAfterStripe = self.view.viewWithTag(100){
             loadingViewAfterStripe.removeFromSuperview()
         }

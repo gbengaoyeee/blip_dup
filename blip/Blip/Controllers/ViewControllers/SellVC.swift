@@ -395,14 +395,14 @@
 //    }
 //    
 //    func mapView(_ mapView: MGLMapView, tapOnCalloutFor annotation: MGLAnnotation) {
-//        
+//
 ////        if let anno = annotation as? CustomMGLAnnotation{
 ////            let popup = self.prepareAndShowPopup(job: anno.job!)
 ////            self.present(popup, animated: true, completion: nil)
 ////        }
-//        
+//
 //    }
-//    
+//
 //    //Loads the profilePicture for the map annotation
 //    func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
 //        // This example is only concerned with point annotations.
@@ -411,7 +411,7 @@
 //        }
 //        let annotationView = CustomAnnotationView()
 //        if let castedAnnotation = annotation as? CustomMGLAnnotation{
-//            
+//
 //            annotationView.frame = CGRect(x: 0, y: 0, width: 35, height: 35 )
 //            let profileImage = UIImageView(frame: CGRect(x: 0, y: 0, width: 35, height: 35 ))
 //            profileImage.contentMode = .scaleAspectFill
@@ -422,9 +422,9 @@
 //            annotationView.isUserInteractionEnabled = true
 //        }
 //        return annotationView
-//        
+//
 //    }
-//    
+//
 //    
 //    //Prepares custom textfields for the job form
 //    func prepareTitleTextField(){
@@ -524,7 +524,7 @@
 //            locationManager.startUpdatingLocation()
 //        }
 //    }
-//    
+//
 //    func prepareCancelButtons(){
 //        self.cancelDetails.cornerRadius = self.cancelDetails.frame.height/2
 //        self.cancelPrice.cornerRadius = self.cancelPrice.frame.height/2
