@@ -144,7 +144,6 @@ class NewSignUpVC: UIViewController {
     fileprivate func setupLastNameTF(){
         //need x, y, width, height, constraints
         lastNameTF.topAnchor.constraint(equalTo: firstNameTF.bottomAnchor, constant: 30).isActive = true
-        
         lastNameTF.leftAnchor.constraint(equalTo: firstNameTF.leftAnchor).isActive = true
         lastNameTF.rightAnchor.constraint(equalTo: firstNameTF.rightAnchor).isActive = true
         lastNameTF.heightAnchor.constraint(equalToConstant: 20).isActive = true
@@ -153,10 +152,8 @@ class NewSignUpVC: UIViewController {
     fileprivate func setupEmailTF(){
         //need x, y, width, height, constraints
         emailTF.topAnchor.constraint(equalTo: firstNameTF.topAnchor).isActive = true
-//
         emailTF.leftAnchor.constraint(equalTo: firstNameTF.rightAnchor, constant: 30).isActive = true
         emailTF.widthAnchor.constraint(equalTo: firstNameTF.widthAnchor).isActive = true
-//        emailTF.rightAnchor.constraint(equalTo: lastNameTF.rightAnchor).isActive = true
         emailTF.heightAnchor.constraint(equalTo: firstNameTF.heightAnchor).isActive = true
     }
     ///Password textfield constraints
@@ -166,7 +163,6 @@ class NewSignUpVC: UIViewController {
 
         passwordTF.leftAnchor.constraint(equalTo: lastNameTF.rightAnchor, constant: 30).isActive = true
         passwordTF.widthAnchor.constraint(equalTo: lastNameTF.widthAnchor).isActive = true
-//        passwordTF.rightAnchor.constraint(equalTo: emailTF.rightAnchor).isActive = true
         passwordTF.heightAnchor.constraint(equalTo: lastNameTF.heightAnchor).isActive = true
     }
     
