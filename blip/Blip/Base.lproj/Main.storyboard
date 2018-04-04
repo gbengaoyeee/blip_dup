@@ -443,7 +443,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Set up your profile" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="15" translatesAutoresizingMaskIntoConstraints="NO" id="e4U-pm-G0O">
-                                        <rect key="frame" x="57.5" y="85" width="262" height="37"/>
+                                        <rect key="frame" x="56.5" y="85" width="262" height="37"/>
                                         <fontDescription key="fontDescription" name="CenturyGothic-Bold" family="Century Gothic" pointSize="30"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -1468,13 +1468,14 @@
         <scene sceneID="JUR-Lc-RYa">
             <objects>
                 <viewController id="uRx-r0-n1m" customClass="NewSignUpVC" customModule="Blip" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="vuX-rO-cvd">
+                    <view key="view" contentMode="scaleToFill" id="vuX-rO-cvd" customClass="PastelView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.9254191517829895" green="0.92553013563156128" blue="0.92538142204284668" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="tI1-L1-wTg"/>
                     </view>
                     <connections>
+                        <outlet property="gradientView" destination="vuX-rO-cvd" id="05d-or-eqO"/>
                         <segue destination="2ZB-Hg-o6Y" kind="show" identifier="choosePicture" id="bH6-Ha-txo"/>
                     </connections>
                 </viewController>
