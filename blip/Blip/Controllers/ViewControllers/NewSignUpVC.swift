@@ -14,6 +14,8 @@ import PopupDialog
 /// I did this to leverage Srikanth's selfishness so he SHARES the work and DOESNT do the whole thing HIMSELF AND I HOPE HE SEES THIS ;(
 class NewSignUpVC: UIViewController {
 
+    @IBOutlet var gradientView: PastelView!
+    
     let headerLabel: UILabel = {
         let label = UILabel(frame: CGRect(x: 46.5, y: 45, width: 282, height: 37))
         label.text = "Lets get you started"
@@ -94,7 +96,6 @@ class NewSignUpVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isHidden = false
-        view.backgroundColor = UIColor(r: 121, g: 214, b: 249)
         
         addViews()
         setupHeaderLabel()
@@ -103,7 +104,12 @@ class NewSignUpVC: UIViewController {
         setupEmailTF()
         setupPasswordTF()
         setupContinueButton()
-        
+        setupGradientView()
+    }
+    
+    fileprivate func setupGradientView(){
+        gradientView.prepareDefaultPastelView()
+        gradientView.startAnimation()
     }
     
     ///Add subviews to the view
