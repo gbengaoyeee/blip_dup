@@ -96,7 +96,7 @@ class NewSignUpVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isHidden = false
-        
+        view.backgroundColor = UIColor.blue
         addViews()
         setupHeaderLabel()
         setupFirstNameTF()
@@ -104,7 +104,7 @@ class NewSignUpVC: UIViewController {
         setupEmailTF()
         setupPasswordTF()
         setupContinueButton()
-        setupGradientView()
+//        setupGradientView()
     }
     
     fileprivate func setupGradientView(){
@@ -135,8 +135,8 @@ class NewSignUpVC: UIViewController {
     ///First name textfield constraints
     fileprivate func setupFirstNameTF(){
         //need x, y, width, height, constraints
-        firstNameTF.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 40).isActive = true
-        firstNameTF.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -40).isActive = true
+        firstNameTF.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 30).isActive = true
+        firstNameTF.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -30).isActive = true
         firstNameTF.topAnchor.constraint(equalTo: headerLabel.bottomAnchor, constant: 50).isActive = true
         firstNameTF.heightAnchor.constraint(equalToConstant: 20).isActive = true
     }
@@ -152,28 +152,30 @@ class NewSignUpVC: UIViewController {
     ///Email textfield constraints
     fileprivate func setupEmailTF(){
         //need x, y, width, height, constraints
-        emailTF.topAnchor.constraint(equalTo: lastNameTF.bottomAnchor, constant: 30).isActive = true
-        
-        emailTF.leftAnchor.constraint(equalTo: lastNameTF.leftAnchor).isActive = true
-        emailTF.rightAnchor.constraint(equalTo: lastNameTF.rightAnchor).isActive = true
-        emailTF.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        emailTF.topAnchor.constraint(equalTo: firstNameTF.topAnchor).isActive = true
+//
+        emailTF.leftAnchor.constraint(equalTo: firstNameTF.rightAnchor, constant: 30).isActive = true
+        emailTF.widthAnchor.constraint(equalTo: firstNameTF.widthAnchor).isActive = true
+//        emailTF.rightAnchor.constraint(equalTo: lastNameTF.rightAnchor).isActive = true
+        emailTF.heightAnchor.constraint(equalTo: firstNameTF.heightAnchor).isActive = true
     }
     ///Password textfield constraints
     fileprivate func setupPasswordTF(){
         //need x, y, width, height, constraints
-        passwordTF.topAnchor.constraint(equalTo: emailTF.bottomAnchor, constant: 30).isActive = true
-        
-        passwordTF.leftAnchor.constraint(equalTo: emailTF.leftAnchor).isActive = true
-        passwordTF.rightAnchor.constraint(equalTo: emailTF.rightAnchor).isActive = true
-        passwordTF.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        passwordTF.topAnchor.constraint(equalTo: lastNameTF.topAnchor).isActive = true
+
+        passwordTF.leftAnchor.constraint(equalTo: lastNameTF.rightAnchor, constant: 30).isActive = true
+        passwordTF.widthAnchor.constraint(equalTo: lastNameTF.widthAnchor).isActive = true
+//        passwordTF.rightAnchor.constraint(equalTo: emailTF.rightAnchor).isActive = true
+        passwordTF.heightAnchor.constraint(equalTo: lastNameTF.heightAnchor).isActive = true
     }
     
     fileprivate func setupContinueButton(){
         //need x, y, width, height, constraints
         continueButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        continueButton.topAnchor.constraint(equalTo: passwordTF.bottomAnchor, constant: 30).isActive = true
+        continueButton.topAnchor.constraint(equalTo: lastNameTF.bottomAnchor, constant: 30).isActive = true
         continueButton.widthAnchor.constraint(equalTo: passwordTF.widthAnchor).isActive = true
-        passwordTF.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        continueButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         //add functionality to the button
         continueButton.addTarget(self, action: #selector(handleContinueButton), for: .touchUpInside)
