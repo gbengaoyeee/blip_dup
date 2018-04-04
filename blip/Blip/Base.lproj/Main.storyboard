@@ -38,7 +38,7 @@
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="CXJ-py-RfG" customClass="TextField" customModule="Material">
-                                <rect key="frame" x="65.5" y="230" width="244" height="40"/>
+                                <rect key="frame" x="65.5" y="186" width="244" height="40"/>
                                 <color key="backgroundColor" white="1" alpha="0.20077054790000001" colorSpace="calibratedWhite"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
@@ -60,7 +60,7 @@
                                 </userDefinedRuntimeAttributes>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="zrd-HM-TwB" customClass="TextField" customModule="Material">
-                                <rect key="frame" x="65.5" y="320" width="244" height="40"/>
+                                <rect key="frame" x="65.5" y="276" width="244" height="40"/>
                                 <color key="backgroundColor" white="1" alpha="0.20077054790000001" colorSpace="calibratedWhite"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
@@ -85,22 +85,22 @@
                                 </connections>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lets get you started" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" minimumFontSize="15" translatesAutoresizingMaskIntoConstraints="NO" id="uqq-Vr-48e">
-                                <rect key="frame" x="46.5" y="89" width="282" height="37"/>
+                                <rect key="frame" x="46.5" y="45" width="282" height="37"/>
                                 <fontDescription key="fontDescription" name="CenturyGothic-Bold" family="Century Gothic" pointSize="30"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What is your first and last name?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="11" translatesAutoresizingMaskIntoConstraints="NO" id="ZLZ-3x-KBd">
-                                <rect key="frame" x="78" y="146" width="219" height="54"/>
+                                <rect key="frame" x="78" y="102" width="219" height="54"/>
                                 <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="22"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SoY-PQ-QKq" userLabel="AnimationViewTwo">
-                                <rect key="frame" x="112.5" y="386" width="150" height="150"/>
+                                <rect key="frame" x="112.5" y="342" width="150" height="150"/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WtI-wX-ge6" customClass="RaisedButton" customModule="Material">
-                                <rect key="frame" x="65.5" y="412" width="244" height="40"/>
+                                <rect key="frame" x="65.5" y="368" width="244" height="40"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
                                 <state key="normal" title="Continue">
@@ -172,7 +172,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="u5p-ft-5Ez" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4226" y="600"/>
+            <point key="canvasLocation" x="-4223" y="1368"/>
         </scene>
         <!--Password Reset-->
         <scene sceneID="4dR-6P-HnE">
@@ -259,19 +259,19 @@
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter a valid email address and choose a password" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="11" translatesAutoresizingMaskIntoConstraints="NO" id="fvu-so-doV">
-                                <rect key="frame" x="78" y="146" width="219" height="81"/>
+                                <rect key="frame" x="78" y="102" width="219" height="81"/>
                                 <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="22"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lets get you started" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" minimumFontSize="15" translatesAutoresizingMaskIntoConstraints="NO" id="ygw-1K-X1M">
-                                <rect key="frame" x="46.5" y="89" width="282" height="37"/>
+                                <rect key="frame" x="46.5" y="45" width="282" height="37"/>
                                 <fontDescription key="fontDescription" name="CenturyGothic-Bold" family="Century Gothic" pointSize="30"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="ube-Se-FN6" customClass="TextField" customModule="Material">
-                                <rect key="frame" x="65.5" y="257" width="244" height="40"/>
+                                <rect key="frame" x="65.5" y="213" width="244" height="40"/>
                                 <color key="backgroundColor" white="1" alpha="0.20077054790000001" colorSpace="calibratedWhite"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
@@ -293,11 +293,11 @@
                                 </userDefinedRuntimeAttributes>
                             </textField>
                             <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FX8-Lz-N48" userLabel="AnimationViewThree">
-                                <rect key="frame" x="112.5" y="413" width="150" height="150"/>
+                                <rect key="frame" x="112.5" y="369" width="150" height="150"/>
                                 <gestureRecognizers/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AqD-32-VOI" customClass="RaisedButton" customModule="Material">
-                                <rect key="frame" x="65.5" y="439" width="244" height="40"/>
+                                <rect key="frame" x="65.5" y="395" width="244" height="40"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
                                 <state key="normal" title="Continue">
@@ -323,7 +323,7 @@
                                 </connections>
                             </button>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qSN-pN-75I" customClass="RaisedButton" customModule="Material">
-                                <rect key="frame" x="65.5" y="439" width="244" height="40"/>
+                                <rect key="frame" x="65.5" y="395" width="244" height="40"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
                                 <state key="normal" title="Continue">
@@ -349,7 +349,7 @@
                                 </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="heG-L9-j6Q" customClass="TextField" customModule="Material">
-                                <rect key="frame" x="65.5" y="347" width="244" height="40"/>
+                                <rect key="frame" x="65.5" y="303" width="244" height="40"/>
                                 <color key="backgroundColor" white="1" alpha="0.20077054790000001" colorSpace="calibratedWhite"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
@@ -425,7 +425,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="y78-1Y-qed" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3540" y="600"/>
+            <point key="canvasLocation" x="-3535" y="1368"/>
         </scene>
         <!--Profile Picture-->
         <scene sceneID="Ujy-Sb-aVT">
@@ -443,7 +443,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Set up your profile" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="15" translatesAutoresizingMaskIntoConstraints="NO" id="e4U-pm-G0O">
-                                        <rect key="frame" x="56.5" y="85" width="262" height="37"/>
+                                        <rect key="frame" x="57.5" y="85" width="262" height="37"/>
                                         <fontDescription key="fontDescription" name="CenturyGothic-Bold" family="Century Gothic" pointSize="30"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -480,9 +480,6 @@
                                                 <color key="value" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="continuePressed:" destination="dBu-Ev-kY4" eventType="touchUpInside" id="U7n-oW-sXe"/>
-                                        </connections>
                                     </button>
                                     <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5fO-3e-SUg">
                                         <rect key="frame" x="112.5" y="310" width="150" height="150"/>
@@ -518,6 +515,7 @@
                     </view>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
+                        <outlet property="continueButt" destination="VH0-xt-jjY" id="mNd-cn-Nqq"/>
                         <outlet property="gradientView" destination="suv-Px-mun" id="m2l-JV-GVE"/>
                         <outlet property="profilePicture" destination="5fO-3e-SUg" id="CNo-tL-Kge"/>
                         <segue destination="AtM-V3-sZl" kind="show" identifier="endSignUp" id="Q5Z-r9-dQx">
@@ -527,7 +525,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Eeg-Ls-m9q" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2871" y="600"/>
+            <point key="canvasLocation" x="-2879" y="1368"/>
         </scene>
         <!--End Sign UpVC-->
         <scene sceneID="8Dq-Lt-eZL">
@@ -596,7 +594,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3AS-MS-Jwy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2199" y="601"/>
+            <point key="canvasLocation" x="-2196" y="1369"/>
         </scene>
         <!--Confirm Profile PageVC-->
         <scene sceneID="f8q-or-ud7">
@@ -1388,9 +1386,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <segue destination="R09-x0-N5b" kind="show" id="ZDi-XH-jSd">
-                                        <nil key="action"/>
-                                    </segue>
+                                    <segue destination="uRx-r0-n1m" kind="show" id="vXd-cc-Tyv"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dont have an account?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CLm-7n-7F1">
@@ -1467,6 +1463,39 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="w0G-B4-kaT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-3930.4000000000001" y="-101.19940029985008"/>
+        </scene>
+        <!--New Sign UpVC-->
+        <scene sceneID="JUR-Lc-RYa">
+            <objects>
+                <viewController id="uRx-r0-n1m" customClass="NewSignUpVC" customModule="Blip" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="vuX-rO-cvd">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.9254191517829895" green="0.92553013563156128" blue="0.92538142204284668" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <viewLayoutGuide key="safeArea" id="tI1-L1-wTg"/>
+                    </view>
+                    <connections>
+                        <segue destination="2ZB-Hg-o6Y" kind="show" identifier="choosePicture" id="bH6-Ha-txo"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ETA-Xo-tF0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3930" y="677"/>
+        </scene>
+        <!--Choose PictureVC-->
+        <scene sceneID="dex-lz-2Rn">
+            <objects>
+                <viewController id="2ZB-Hg-o6Y" customClass="ChoosePictureVC" customModule="Blip" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="DU7-km-jPB">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="Hcr-Z3-rMK"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fru-De-JpS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3161" y="677"/>
         </scene>
         <!--startJob-->
         <scene sceneID="S1K-Sq-4Wc">

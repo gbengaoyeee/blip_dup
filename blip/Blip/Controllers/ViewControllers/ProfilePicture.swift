@@ -11,11 +11,13 @@ import Pastel
 import Firebase
 import FirebaseStorage
 import PopupDialog
+import Material
 
 class ProfilePicture: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     @IBOutlet weak var gradientView: PastelView!
     @IBOutlet weak var profilePicture: UIImageView!
+    @IBOutlet weak var continueButt:UIButton!
     let helper = HelperFunctions()
     var userRef: DatabaseReference!
     var userUploadedPicture = false
@@ -24,6 +26,8 @@ class ProfilePicture: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        continueButt.addTarget(self, action: #selector(handleContinue), for: .touchUpInside)
+        
         profilePicture.image = UIImage(named: "emptyProfilePicture")
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ProfilePicture.imageTapped(gesture:)))
         userRef = Database.database().reference().child("Users").child(helper.MD5(string: (Auth.auth().currentUser?.email)!))
@@ -107,8 +111,7 @@ class ProfilePicture: UIViewController, UIImagePickerControllerDelegate, UINavig
         // Dispose of any resources that can be recreated.
     }
     
-
-    @IBAction func continuePressed(_ sender: UIButton) {
+    @objc fileprivate func handleContinue(){
         if !(internet){
             let popup = popupForNoInternet()
             self.present(popup, animated: true, completion: nil)
@@ -135,14 +138,50 @@ class ProfilePicture: UIViewController, UIImagePickerControllerDelegate, UINavig
                         if err != nil{
                             return
                         }
+                        let imgValues:[String:Any] = ["photoURL":profileImgURL!]
+                        self.userRef.updateChildValues(imgValues)
+                        self.performSegue(withIdentifier: "endSignUp", sender: nil)
                     })
-                    let imgValues:[String:Any] = ["photoURL":profileImgURL!]
-                    self.userRef.updateChildValues(imgValues)
                 })
-                self.performSegue(withIdentifier: "endSignUp", sender: nil)
             }
         }
     }
+
+//    @IBAction func continuePressed(_ sender: UIButton) {
+//        if !(internet){
+//            let popup = popupForNoInternet()
+//            self.present(popup, animated: true, completion: nil)
+//            return
+//        }
+//
+//        let storageRef = Storage.storage().reference(forURL: "gs://blip-c1e83.appspot.com/").child("profile_image").child(helper.MD5(string: (Auth.auth().currentUser?.email)!))
+//
+//        if !userUploadedPicture{
+//            let errorPopup = PopupDialog(title: "Error", message: "Please upload a profile picture")
+//            self.present(errorPopup, animated: true, completion: nil)
+//        }
+//        else{
+//            if let profileImg = profilePicture.image, let imageData = UIImageJPEGRepresentation(profileImg, 0.1){
+//                storageRef.putData(imageData, metadata: nil, completion: { (metadata, error) in
+//                    if error != nil{
+//                        return
+//                    }
+//
+//                    let profileImgURL = metadata?.downloadURL()?.absoluteString
+//                    let profile = Auth.auth().currentUser?.createProfileChangeRequest()
+//                    profile?.photoURL = URL(string: profileImgURL!)
+//                    profile?.commitChanges(completion: { (err) in
+//                        if err != nil{
+//                            return
+//                        }
+//                        let imgValues:[String:Any] = ["photoURL":profileImgURL!]
+//                        self.userRef.updateChildValues(imgValues)
+//                        self.performSegue(withIdentifier: "endSignUp", sender: nil)
+//                    })
+//                })
+//            }
+//        }
+//    }
     
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {

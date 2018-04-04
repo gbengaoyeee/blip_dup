@@ -43,9 +43,7 @@ class Lgsupage: UIViewController {
     }
     
     
-    
     override func viewDidLoad() {
-        
         super.viewDidLoad()
         self.dbRef = Database.database().reference()
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -53,36 +51,39 @@ class Lgsupage: UIViewController {
             self.dbRef.child("Users").child(hash).removeValue()
         }
         self.navigationController?.navigationBar.isHidden = true
+        playLogoAnimation()
+        playBackgroundVideo()
+    }
+    
+    
+    fileprivate func playLogoAnimation() {
         BlipLabel.adjustsFontSizeToFitWidth = true
         BlipLogo.handledAnimation(Animation: logoAnimation)
         logoAnimation.play()
+    }
+    
+    fileprivate func playBackgroundVideo(){
         //Load video background
-        
         let URL = Bundle.main.url(forResource: "lgsu", withExtension: "mp4")
-        
         Player = AVPlayer.init(url: URL!)
         Player.allowsExternalPlayback = true
         Player.isMuted = true
         PlayerLayer = AVPlayerLayer(player: Player)
         PlayerLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
         PlayerLayer.frame = view.layer.frame
-        
         Player.actionAtItemEnd = AVPlayerActionAtItemEnd.none
         
         Player.play()
+        
         view.layer.insertSublayer(PlayerLayer, at: 0)
         let darkView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height))
         darkView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         darkView.alpha = 0.5
         self.view.insertSubview(darkView, at: 1)
-
+        
         NotificationCenter.default.addObserver(self,selector: #selector(appWillEnterForegroundNotification),name: .UIApplicationWillEnterForeground, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(playerItemReachEnd(notification:)), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: Player.currentItem)
-        
-        
     }
-    
-    
     
     //Handle the swipes
     
@@ -106,19 +107,15 @@ class Lgsupage: UIViewController {
         }
     }
     @objc func appWillEnterForegroundNotification() {
-        
         Player.play()
     }
 
     @objc func playerItemReachEnd(notification:NSNotification){
-        
         Player.seek(to:kCMTimeZero)
     }
     
     override func didReceiveMemoryWarning() {
-        
         super.didReceiveMemoryWarning()
-        
     }
     
     func getFBUserData(){

@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '23029FEFA5DFAEAD5BDFC79CE20A6DCC'
-               BlueprintName = 'SHSearchBar'
+               BlueprintIdentifier = '5053B0CFF2A69E9CED6EADC728A90E17'
+               BlueprintName = 'SwiftIcons-SwiftIcons'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'SHSearchBar.framework'>
+               BuildableName = 'SwiftIcons.bundle'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
