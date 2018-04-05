@@ -54,17 +54,16 @@ extension UIView{
 
     
     
-    func handledAnimation(Animation: LOTAnimationView){
-        
+    func handledAnimation(Animation: LOTAnimationView, width: CGFloat, height: CGFloat){
         
         self.addSubview(Animation)
         let yCenterConstraint = NSLayoutConstraint(item: Animation, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 0)
         let xCenterConstraint = NSLayoutConstraint(item: Animation, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0)
-        let widthConstraint = NSLayoutConstraint(item: Animation, attribute: .width, relatedBy: .equal, toItem: self, attribute: .width, multiplier: 1, constant: 0)
-        let heightConstraint = NSLayoutConstraint(item: Animation, attribute: .height, relatedBy: .equal, toItem: self, attribute: .height, multiplier: 1, constant: 0)
+        let widthConstraint = NSLayoutConstraint(item: Animation, attribute: .width, relatedBy: .equal, toItem: self, attribute: .width, multiplier: width, constant: 0)
+        let heightConstraint = NSLayoutConstraint(item: Animation, attribute: .height, relatedBy: .equal, toItem: self, attribute: .height, multiplier: height, constant: 0)
         self.addConstraints([xCenterConstraint,yCenterConstraint,widthConstraint,heightConstraint])
         Animation.translatesAutoresizingMaskIntoConstraints = false
-        Animation.contentMode = .scaleAspectFit
+        Animation.contentMode = .scaleAspectFill
         
     }
 
@@ -147,7 +146,7 @@ extension UIViewController{
         loadingView.frame.origin = self.view.bounds.origin
         loadingView.center = self.view.convert(self.view.center, from: loadingView)
         let loadingAnimation = LOTAnimationView(name: "loading")
-        loadingView.handledAnimation(Animation: loadingAnimation)
+        loadingView.handledAnimation(Animation: loadingAnimation, width: 1, height: 1)
         self.view.addSubview(loadingView)
         loadingAnimation.play()
         loadingAnimation.loopAnimation = true

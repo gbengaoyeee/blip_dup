@@ -41,8 +41,8 @@ class LoginVC: UIViewController {
         gradientViewLogin.animationDuration = 3.0
         gradientViewLogin.setColors([#colorLiteral(red: 0.3476088047, green: 0.1101973727, blue: 0.08525472134, alpha: 1),#colorLiteral(red: 0.9411764741, green: 0.4980392158, blue: 0.3529411852, alpha: 1)])
         self.hideKeyboardWhenTappedAround()
-        self.usernameanim.handledAnimation(Animation: animationView)
-        self.passwordanim.handledAnimation(Animation: animationViewTwo)
+        self.usernameanim.handledAnimation(Animation: animationView, width: 1, height: 1)
+        self.passwordanim.handledAnimation(Animation: animationViewTwo, width: 1, height: 1)
         animationView.play()
         animationViewTwo.play()
         self.forgetPassword.addTarget(self, action: #selector(goToForgotPasswordPage), for: .touchUpInside)

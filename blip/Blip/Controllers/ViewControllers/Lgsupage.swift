@@ -58,7 +58,7 @@ class Lgsupage: UIViewController {
     
     fileprivate func playLogoAnimation() {
         BlipLabel.adjustsFontSizeToFitWidth = true
-        BlipLogo.handledAnimation(Animation: logoAnimation)
+        BlipLogo.handledAnimation(Animation: logoAnimation, width: 1, height: 1)
         logoAnimation.play()
     }
     

@@ -25,7 +25,7 @@ class OnboardingVC: UIViewController, UIScrollViewDelegate {
         
         super.viewDidLoad()
         gradientView.animationDuration = 3.0
-        gradientView.setColors([#colorLiteral(red: 0.5725490451, green: 0, blue: 0.2313725501, alpha: 1),#colorLiteral(red: 0.9411764741, green: 0.4980392158, blue: 0.3529411852, alpha: 1)])
+        gradientView.prepareDefaultPastelView()
         self.navigationController?.navigationBar.isHidden = true
         prepareAnimation()
         setupScrollView()
@@ -79,7 +79,7 @@ class OnboardingVC: UIViewController, UIScrollViewDelegate {
     
     func prepareAnimation(){
         
-        serviceAnimationView.handledAnimation(Animation: serviceAnimation)
+        serviceAnimationView.handledAnimation(Animation: serviceAnimation, width: 1.3, height: 1.3)
     }
 
     override func didReceiveMemoryWarning() {

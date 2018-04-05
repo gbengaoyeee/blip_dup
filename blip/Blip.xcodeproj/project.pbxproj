@@ -38,7 +38,6 @@
 		3B537358202EBE310020F3B1 /* outline_user.json in Resources */ = {isa = PBXBuildFile; fileRef = 3B53734B202EBE300020F3B1 /* outline_user.json */; };
 		3B537359202EBE310020F3B1 /* location.json in Resources */ = {isa = PBXBuildFile; fileRef = 3B53734C202EBE310020F3B1 /* location.json */; };
 		3B53735A202EBE310020F3B1 /* check.json in Resources */ = {isa = PBXBuildFile; fileRef = 3B53734D202EBE310020F3B1 /* check.json */; };
-		3B537373202EC0DC0020F3B1 /* EmailVerifyVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53735C202EC0D80020F3B1 /* EmailVerifyVC.swift */; };
 		3B537374202EC0DC0020F3B1 /* NavigationBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53735D202EC0D80020F3B1 /* NavigationBarViewController.swift */; };
 		3B537375202EC0DC0020F3B1 /* PasswordReset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53735E202EC0D80020F3B1 /* PasswordReset.swift */; };
 		3B537376202EC0DC0020F3B1 /* CustomAPIAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53735F202EC0D80020F3B1 /* CustomAPIAdapter.swift */; };
@@ -47,7 +46,6 @@
 		3B53737A202EC0DC0020F3B1 /* EndSignUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537363202EC0D90020F3B1 /* EndSignUp.swift */; };
 		3B53737B202EC0DC0020F3B1 /* OnboardingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537364202EC0D90020F3B1 /* OnboardingVC.swift */; };
 		3B53737C202EC0DC0020F3B1 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537365202EC0D90020F3B1 /* LoginVC.swift */; };
-		3B53737D202EC0DC0020F3B1 /* AddNameVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537366202EC0D90020F3B1 /* AddNameVC.swift */; };
 		3B53737E202EC0DC0020F3B1 /* MyAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537367202EC0D90020F3B1 /* MyAPIClient.swift */; };
 		3B537381202EC0DC0020F3B1 /* ProfilePicture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53736A202EC0DA0020F3B1 /* ProfilePicture.swift */; };
 		3B537382202EC0DC0020F3B1 /* SellVC+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53736B202EC0DA0020F3B1 /* SellVC+.swift */; };
@@ -63,6 +61,7 @@
 		5F33377A20332B4600B83E01 /* RatingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F33377920332B4600B83E01 /* RatingViewController.swift */; };
 		5FDEF87F206B56DC00F33733 /* ViewMapOfJobsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FDEF87E206B56DC00F33733 /* ViewMapOfJobsVC.swift */; };
 		E44A286AF55A28A06A305841 /* Pods_BlipTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F498B34F0F7DEA567870388 /* Pods_BlipTests.framework */; };
+		F3E330B42075A38100F19CF8 /* camera.json in Resources */ = {isa = PBXBuildFile; fileRef = F3E330B32075A38000F19CF8 /* camera.json */; };
 		F3F5081E2031F77E00252E65 /* CenturyGothic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B537340202EBD4C0020F3B1 /* CenturyGothic.ttf */; };
 		F3F5081F2031F78300252E65 /* CenturyGothicBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B53733F202EBD4C0020F3B1 /* CenturyGothicBold.ttf */; };
 		F3F508202031F78C00252E65 /* lgsu.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 3B14B53F202F55E100B1C015 /* lgsu.mp4 */; };
@@ -133,7 +132,6 @@
 		3B53734B202EBE300020F3B1 /* outline_user.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = outline_user.json; sourceTree = "<group>"; };
 		3B53734C202EBE310020F3B1 /* location.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = location.json; sourceTree = "<group>"; };
 		3B53734D202EBE310020F3B1 /* check.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = check.json; sourceTree = "<group>"; };
-		3B53735C202EC0D80020F3B1 /* EmailVerifyVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailVerifyVC.swift; sourceTree = "<group>"; };
 		3B53735D202EC0D80020F3B1 /* NavigationBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationBarViewController.swift; sourceTree = "<group>"; };
 		3B53735E202EC0D80020F3B1 /* PasswordReset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordReset.swift; sourceTree = "<group>"; };
 		3B53735F202EC0D80020F3B1 /* CustomAPIAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAPIAdapter.swift; sourceTree = "<group>"; };
@@ -142,7 +140,6 @@
 		3B537363202EC0D90020F3B1 /* EndSignUp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndSignUp.swift; sourceTree = "<group>"; };
 		3B537364202EC0D90020F3B1 /* OnboardingVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingVC.swift; sourceTree = "<group>"; };
 		3B537365202EC0D90020F3B1 /* LoginVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
-		3B537366202EC0D90020F3B1 /* AddNameVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddNameVC.swift; sourceTree = "<group>"; };
 		3B537367202EC0D90020F3B1 /* MyAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyAPIClient.swift; sourceTree = "<group>"; };
 		3B53736A202EC0DA0020F3B1 /* ProfilePicture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePicture.swift; sourceTree = "<group>"; };
 		3B53736B202EC0DA0020F3B1 /* SellVC+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SellVC+.swift"; sourceTree = "<group>"; };
@@ -162,6 +159,7 @@
 		CC3B578818C69E894B2F65CD /* Pods_BlipUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BlipUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA08477A131A88FA8EB584E0 /* Pods-BlipTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlipTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BlipTests/Pods-BlipTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E8545681CCD5C87C2E3C5E6F /* Pods-BlipUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlipUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BlipUITests/Pods-BlipUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		F3E330B32075A38000F19CF8 /* camera.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = camera.json; sourceTree = "<group>"; };
 		F3F508212032085600252E65 /* Blip-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Blip-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -314,6 +312,7 @@
 		3B537339202EBBBE0020F3B1 /* Animations */ = {
 			isa = PBXGroup;
 			children = (
+				F3E330B32075A38000F19CF8 /* camera.json */,
 				3B537347202EBE2F0020F3B1 /* 5_stars.json */,
 				3B53734D202EBE310020F3B1 /* check.json */,
 				3B537345202EBE2E0020F3B1 /* clock.json */,
@@ -331,10 +330,8 @@
 		3B53733A202EBBDC0020F3B1 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				3B537366202EC0D90020F3B1 /* AddNameVC.swift */,
 				3B53736C202EC0DB0020F3B1 /* AppFABMenuController.swift */,
 				3B537360202EC0D80020F3B1 /* ProfilePage.swift */,
-				3B53735C202EC0D80020F3B1 /* EmailVerifyVC.swift */,
 				3B537363202EC0D90020F3B1 /* EndSignUp.swift */,
 				3B537371202EC0DC0020F3B1 /* Lgsupage.swift */,
 				3B537365202EC0D90020F3B1 /* LoginVC.swift */,
@@ -540,6 +537,7 @@
 				3B537351202EBE310020F3B1 /* onboarding.json in Resources */,
 				3B537352202EBE310020F3B1 /* clock.json in Resources */,
 				3B537350202EBE310020F3B1 /* simple_outline_lock_.json in Resources */,
+				F3E330B42075A38100F19CF8 /* camera.json in Resources */,
 				3B537359202EBE310020F3B1 /* location.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -781,7 +779,6 @@
 			files = (
 				3B14B53C202F459900B1C015 /* EndJob.swift in Sources */,
 				3B53737C202EC0DC0020F3B1 /* LoginVC.swift in Sources */,
-				3B53737D202EC0DC0020F3B1 /* AddNameVC.swift in Sources */,
 				3B537335202EBA6B0020F3B1 /* LocationManager.swift in Sources */,
 				5F33377A20332B4600B83E01 /* RatingViewController.swift in Sources */,
 				3B537376202EC0DC0020F3B1 /* CustomAPIAdapter.swift in Sources */,
@@ -790,7 +787,6 @@
 				3B53739D202EC2210020F3B1 /* CustomMGLAnnotation.swift in Sources */,
 				3B53733D202EBD0F0020F3B1 /* Connectivity.swift in Sources */,
 				3B537382202EC0DC0020F3B1 /* SellVC+.swift in Sources */,
-				3B537373202EC0DC0020F3B1 /* EmailVerifyVC.swift in Sources */,
 				3B5372F8202EB4320020F3B1 /* AppDelegate.swift in Sources */,
 				3B537330202EBA6B0020F3B1 /* AppError.swift in Sources */,
 				3B537381202EC0DC0020F3B1 /* ProfilePicture.swift in Sources */,
