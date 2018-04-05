@@ -30,7 +30,7 @@ class ProfilePicture: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         profilePicture.image = UIImage(named: "emptyProfilePicture")
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ProfilePicture.imageTapped(gesture:)))
-        userRef = Database.database().reference().child("Users").child(helper.MD5(string: (Auth.auth().currentUser?.email)!))
+        userRef = Database.database().reference().child("Couriers").child(helper.MD5(string: (Auth.auth().currentUser?.email)!))
         self.navigationController?.navigationBar.isHidden = true
         profilePicture.layer.cornerRadius = profilePicture.frame.width/2
         // add it to the image view;

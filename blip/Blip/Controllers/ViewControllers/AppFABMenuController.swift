@@ -19,7 +19,7 @@ class AppFABMenuController: FABMenuController, STPPaymentContextDelegate{
     var paymentContext: STPPaymentContext? = nil
     
     var currUser: BlipUser?
-    let service = ServiceCalls()
+    let service = ServiceCalls.instance
     let userDefaults = UserDefaults.standard
     
     

@@ -48,7 +48,7 @@ class Lgsupage: UIViewController {
         self.dbRef = Database.database().reference()
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         if let hash = appDelegate.lastUserHash{
-            self.dbRef.child("Users").child(hash).removeValue()
+            self.dbRef.child("Couriers").child(hash).removeValue()
         }
         self.navigationController?.navigationBar.isHidden = true
         playLogoAnimation()
@@ -149,7 +149,7 @@ class Lgsupage: UIViewController {
                                 print(err?.localizedDescription ?? "")
                             }else{
                                 let emailHash = self.MD5(string: (user?.email)!)
-                                self.dbRef.child("Users").child(emailHash).child("photoURL").setValue(url?.absoluteString)
+                                self.dbRef.child("Couriers").child(emailHash).child("photoURL").setValue(url?.absoluteString)
                             }
                         })
                         
@@ -185,12 +185,12 @@ class Lgsupage: UIViewController {
         let rating: Float = 5.0
         let emailHash = MD5(string: user.email!)
         let token = ["currentDevice" : AppDelegate.DEVICEID]
-        dbRef.child("Users").child(emailHash).child("uid").setValue(user.uid)
-        dbRef.child("Users").child(emailHash).child("Name").setValue("\(user.displayName!)")
-        dbRef.child("Users").child(emailHash).child("Email").setValue(user.email)
-        dbRef.child("Users").child(emailHash).child("Rating").setValue(rating)
-        dbRef.child("Users").child(emailHash).child("ratingSum").setValue(5.0)
-        dbRef.child("Users").child(emailHash).updateChildValues(token)
+        dbRef.child("Couriers").child(emailHash).child("uid").setValue(user.uid)
+        dbRef.child("Couriers").child(emailHash).child("Name").setValue("\(user.displayName!)")
+        dbRef.child("Couriers").child(emailHash).child("Email").setValue(user.email)
+        dbRef.child("Couriers").child(emailHash).child("Rating").setValue(rating)
+        dbRef.child("Couriers").child(emailHash).child("ratingSum").setValue(5.0)
+        dbRef.child("Couriers").child(emailHash).updateChildValues(token)
     }
     
 }

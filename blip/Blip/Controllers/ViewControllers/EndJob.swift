@@ -15,7 +15,7 @@ class EndJob: UIViewController {
     
     @IBOutlet var gradientView: PastelView!
     
-    let service = ServiceCalls()
+    let service = ServiceCalls.instance
     var job: Job!
 
     override func viewDidLoad() {

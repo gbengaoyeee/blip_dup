@@ -159,7 +159,7 @@ class ProfilePage: UIViewController, UIImagePickerControllerDelegate, UINavigati
     
     @IBAction func dismissButton(_ sender: UIButton) {
         let helper = HelperFunctions()
-        self.userRef = Database.database().reference().child("Users").child(helper.MD5(string: (Auth.auth().currentUser?.email)!))
+        self.userRef = Database.database().reference().child("Couriers").child(helper.MD5(string: (Auth.auth().currentUser?.email)!))
         if (userChangedProfilePic){
             
             let storageRef = Storage.storage().reference(forURL: "gs://blip-c1e83.appspot.com/").child("profile_image").child(helper.MD5(string: (Auth.auth().currentUser?.email)!))

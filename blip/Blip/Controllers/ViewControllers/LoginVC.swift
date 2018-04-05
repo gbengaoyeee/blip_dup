@@ -137,7 +137,7 @@ class LoginVC: UIViewController {
                 }
                 else if (error == nil && (user?.isEmailVerified)!){
                     // else perform segue
-                    let ref = Database.database().reference().child("Users").child(self.MD5(string: (user?.email)!))
+                    let ref = Database.database().reference().child("Couriers").child(self.MD5(string: (user?.email)!))
                     let token = ["currentDevice": AppDelegate.DEVICEID]
                     ref.updateChildValues(token)
                     self.loginCredentialsCorrectAnimation()
@@ -202,7 +202,7 @@ class LoginVC: UIViewController {
                 }
                 else if (error == nil && (user?.isEmailVerified)!){
                     // else perform segue
-                    let ref = Database.database().reference().child("Users").child(self.MD5(string: (user?.email)!))
+                    let ref = Database.database().reference().child("Couriers").child(self.MD5(string: (user?.email)!))
                     let token = ["currentDevice": AppDelegate.DEVICEID]
                     ref.updateChildValues(token)
                     self.loginCredentialsCorrectAnimation()

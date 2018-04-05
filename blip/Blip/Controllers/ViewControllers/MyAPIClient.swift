@@ -14,7 +14,7 @@ import FirebaseDatabase
 
 class MyAPIClient: NSObject, STPEphemeralKeyProvider {
     
-    let service = ServiceCalls()
+    let service = ServiceCalls.instance
     var customer_id: String?
     static let sharedClient = MyAPIClient()
     var baseURLString: String? = "https://us-central1-blip-c1e83.cloudfunctions.net/"

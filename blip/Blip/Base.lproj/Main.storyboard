@@ -518,19 +518,16 @@
                         <outlet property="continueButt" destination="VH0-xt-jjY" id="mNd-cn-Nqq"/>
                         <outlet property="gradientView" destination="suv-Px-mun" id="m2l-JV-GVE"/>
                         <outlet property="profilePicture" destination="5fO-3e-SUg" id="CNo-tL-Kge"/>
-                        <segue destination="AtM-V3-sZl" kind="show" identifier="endSignUp" id="Q5Z-r9-dQx">
-                            <nil key="action"/>
-                        </segue>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Eeg-Ls-m9q" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2879" y="1368"/>
         </scene>
-        <!--End Sign UpVC-->
+        <!--End Sign Up-->
         <scene sceneID="8Dq-Lt-eZL">
             <objects>
-                <viewController id="AtM-V3-sZl" customClass="endSignUpVC" customModule="Blip" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="AtM-V3-sZl" customClass="EndSignUp" customModule="Blip" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="nTy-hR-vd8"/>
                         <viewControllerLayoutGuide type="bottom" id="TQH-St-XQL"/>
@@ -540,7 +537,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You're all set!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="15" translatesAutoresizingMaskIntoConstraints="NO" id="pZR-7U-VxA">
-                                <rect key="frame" x="56.5" y="85" width="262" height="37"/>
+                                <rect key="frame" x="56.5" y="129" width="262" height="37"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="37" id="5e9-mm-8Lr"/>
                                     <constraint firstAttribute="width" constant="262" id="Jw3-Y8-PA9"/>
@@ -572,7 +569,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="continueButtonPressed:" destination="AtM-V3-sZl" eventType="touchUpInside" id="gWM-qP-yHa"/>
+                                    <action selector="continueButtonPressed:" destination="AtM-V3-sZl" eventType="touchUpInside" id="Bom-pw-H4b"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -588,13 +585,13 @@
                         <viewLayoutGuide key="safeArea" id="7iU-lo-NdM"/>
                     </view>
                     <connections>
-                        <outlet property="continueButton" destination="f3o-Mz-ktO" id="YmX-Dm-bAU"/>
+                        <outlet property="continueButton" destination="f3o-Mz-ktO" id="jTk-Tm-4R1"/>
                         <outlet property="gradientView" destination="KNt-qK-SfV" id="rpX-C5-Ehu"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3AS-MS-Jwy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2196" y="1369"/>
+            <point key="canvasLocation" x="-2266" y="677"/>
         </scene>
         <!--Confirm Profile PageVC-->
         <scene sceneID="f8q-or-ud7">
@@ -1396,7 +1393,7 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <segue destination="uRx-r0-n1m" kind="show" id="vXd-cc-Tyv"/>
+                                    <segue destination="uRx-r0-n1m" kind="show" id="Bdr-JI-VRf"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dont have an account?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CLm-7n-7F1">
@@ -1688,6 +1685,7 @@
                         <outlet property="goButton" destination="8RF-i0-W7t" id="DGp-sN-QzJ"/>
                         <outlet property="gradientView" destination="DU7-km-jPB" id="Wiy-92-wqg"/>
                         <outlet property="profileImageView" destination="DCg-XE-jzd" id="u2i-fw-GXb"/>
+                        <segue destination="AtM-V3-sZl" kind="show" identifier="endSignUp" id="UPR-0B-vp1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fru-De-JpS" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -50,7 +50,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             if let user = Auth.auth().currentUser{
                 let hash = MD5(string: user.email!)
                 self.lastUserHash = hash
-                self.dbRef.child("Users").child(hash).removeValue()
+                self.dbRef.child("Couriers").child(hash).removeValue()
                 user.delete(completion: { (error) in
                     if let err = error{
                         print(err.localizedDescription)

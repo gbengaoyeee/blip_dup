@@ -44,9 +44,8 @@ class NewSignUpVC: UIViewController {
         gradientView.startAnimation()
     }
     
-    ///First name textfield constraints
+    ///Setup TextFields
     fileprivate func setupTF(tf: TextField, title: String){
-
         tf.placeholderLabel.font = UIFont(name: "Century Gothic", size: 17)
         tf.font = UIFont(name: "Century Gothic", size: 17)
         tf.textColor = UIColor.white
@@ -60,7 +59,6 @@ class NewSignUpVC: UIViewController {
     }
     
     fileprivate func setupGoButton(){
-        
         goButton.layer.cornerRadius = goButton.frame.size.height/2
         goButton.backgroundColor = UIColor.white
         goButton.setIcon(icon: .googleMaterialDesign(.arrowForward), iconSize: 30, color: #colorLiteral(red: 0, green: 0.8495121598, blue: 0, alpha: 1), backgroundColor: UIColor.white, forState: .normal)
@@ -88,8 +86,16 @@ class NewSignUpVC: UIViewController {
         else{
             self.performSegue(withIdentifier: "choosePicture", sender: nil)
         }
-        
-        
+    }
+    
+    
+    ///Sends the textfield information to the choose profile VC
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "choosePicture"{
+            let userInfoDict = ["name":"\(self.firstNameTF.text!) \(self.lastNameTF.text!)", "email":self.emailTF.text!, "password":self.passwordTF.text!]
+            let destination = segue.destination as! ChoosePictureVC
+            destination.userInfoDict = userInfoDict
+        }
     }
     
     
@@ -140,7 +146,6 @@ class NewSignUpVC: UIViewController {
         return popup
     }
     
-
 }
 
 

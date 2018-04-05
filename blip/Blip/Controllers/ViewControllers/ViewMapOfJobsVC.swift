@@ -28,7 +28,7 @@ class ViewMapOfJobsVC: UIViewController {
     
     var dbRef: DatabaseReference!
     var acceptedJob: Job!
-    let service = ServiceCalls()
+    let service = ServiceCalls.instance
     var locationManager = CLLocationManager()
     let camera = MGLMapCamera()
     var currentLocation: CLLocationCoordinate2D!
