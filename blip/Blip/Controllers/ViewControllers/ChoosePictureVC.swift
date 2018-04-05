@@ -41,6 +41,7 @@ class ChoosePictureVC: UIViewController {
     fileprivate func prepareCameraAnimation(){
         let cameraAnimation = LOTAnimationView(name: "camera")
         cameraAnimationView.handledAnimation(Animation: cameraAnimation, width: 2, height: 2)
+        cameraAnimation.isUserInteractionEnabled = false
         cameraAnimation.play()
     }
 }

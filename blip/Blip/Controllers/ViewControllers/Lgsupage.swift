@@ -42,9 +42,9 @@ class Lgsupage: UIViewController {
         
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        prepareFacebookButton()
         self.dbRef = Database.database().reference()
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         if let hash = appDelegate.lastUserHash{
@@ -55,11 +55,18 @@ class Lgsupage: UIViewController {
         playBackgroundVideo()
     }
     
-    
     fileprivate func playLogoAnimation() {
         BlipLabel.adjustsFontSizeToFitWidth = true
         BlipLogo.handledAnimation(Animation: logoAnimation, width: 1, height: 1)
         logoAnimation.play()
+    }
+    
+    
+    fileprivate func prepareFacebookButton(){
+        let facebookImage = UIImage(icon: .fontAwesome(.facebookF), size: CGSize(width: 40, height: 40), textColor: UIColor.white, backgroundColor: .clear)
+        
+        facebookLoginButton.image = facebookImage
+        
     }
     
     fileprivate func playBackgroundVideo(){
