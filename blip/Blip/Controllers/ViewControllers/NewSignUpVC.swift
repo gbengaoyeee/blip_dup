@@ -47,14 +47,14 @@ class NewSignUpVC: UIViewController {
     ///First name textfield constraints
     fileprivate func setupTF(tf: TextField, title: String){
 
-        tf.placeholderLabel.font = UIFont(name: "CenturyGothic-Bold", size: 17)
-        tf.font = UIFont(name: "CenturyGothic", size: 17)
+        tf.placeholderLabel.font = UIFont(name: "Century Gothic", size: 17)
+        tf.font = UIFont(name: "Century Gothic", size: 17)
+        tf.textColor = UIColor.white
         tf.autocorrectionType = .no
         tf.textColor = Color.white
         tf.placeholder = title
-        tf.placeholderLabel.alpha = 0.6
-        tf.placeholderActiveColor = UIColor(r: 236, g: 236, b: 236)
-        tf.placeholderNormalColor = UIColor(r: 236, g: 236, b: 236)
+        tf.placeholderActiveColor = UIColor.white
+        tf.placeholderNormalColor = UIColor.white
         tf.translatesAutoresizingMaskIntoConstraints = false
         
     }
