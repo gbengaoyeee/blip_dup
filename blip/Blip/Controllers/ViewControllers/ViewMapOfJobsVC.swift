@@ -82,18 +82,40 @@ extension ViewMapOfJobsVC: MGLMapViewDelegate{
             return nil
         }
         let annotationView = CustomAnnotationView()
-        if let castedAnnotation = annotation as? CustomMGLAnnotation{
-            
-            annotationView.frame = CGRect(x: 0, y: 0, width: 35, height: 35 )
-            let deliveryIcon = UIImage(icon: .icofont(.vehicleDeliveryVan), size: CGSize(width: 35, height: 35))
-            let deliveryImageView = UIImageView(image: deliveryIcon)
-            deliveryImageView.isUserInteractionEnabled = true
-            annotationView.addSubview(deliveryImageView)
-            annotationView.layer.cornerRadius = annotationView.frame.size.height/2
-            annotationView.isUserInteractionEnabled = true
-        }
+        annotationView.frame = CGRect(x: 0, y: 0, width: 50, height: 50 )
+        annotationView.backgroundColor = UIColor.white
+        annotationView.layer.cornerRadius = annotationView.frame.size.height/2
+        annotationView.clipsToBounds = true
+        let deliveryIcon = UIImage(icon: .icofont(.vehicleDeliveryVan), size: CGSize(width: 50, height: 50))
+        let deliveryImageView = UIImageView(image: deliveryIcon)
+        deliveryImageView.isUserInteractionEnabled = true
+        annotationView.addSubview(deliveryImageView)
+        annotationView.layer.cornerRadius = annotationView.frame.size.height/2
+        annotationView.isUserInteractionEnabled = true
         return annotationView
         
+    }
+    
+    func mapView(_ mapView: MGLMapView, didSelect annotation: MGLAnnotation) {
+
+        print(map.annotations)
+        if let castedAnnotation = annotation as? CustomMGLAnnotation{
+            
+            let allAnnotations = map.annotations!
+            map.removeAnnotations(allAnnotations)
+            let pickupAnnotation = MGLPointAnnotation()
+            pickupAnnotation.coordinate = (castedAnnotation.job?.pickupLocationCoordinates)!
+            self.map.addAnnotation(annotation)
+            self.map.addAnnotation(pickupAnnotation)
+        }
+    }
+    
+    func mapView(_ mapView: MGLMapView, didDeselect annotation: MGLAnnotation) {
+        
+        self.map.removeAnnotations(self.map.annotations!)
+        for annotation in allAnnotations.values{
+            self.map.addAnnotation(annotation)
+        }
     }
 }
 
