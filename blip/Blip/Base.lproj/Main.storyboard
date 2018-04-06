@@ -524,260 +524,6 @@
             </objects>
             <point key="canvasLocation" x="-2879" y="1368"/>
         </scene>
-        <!--Confirm Profile PageVC-->
-        <scene sceneID="f8q-or-ud7">
-            <objects>
-                <viewController storyboardIdentifier="profilePage" id="AQG-cB-ulg" customClass="ConfirmProfilePageVC" customModule="Blip" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="oTt-6a-7vg"/>
-                        <viewControllerLayoutGuide type="bottom" id="UNJ-xg-AHo"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="1XP-bO-CVs">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h0K-Eh-Gxr" userLabel="gradientView" customClass="PastelView" customModule="Pastel">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vdd-wD-gUK">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="245"/>
-                                        <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="emptyProfilePicture" translatesAutoresizingMaskIntoConstraints="NO" id="B4m-US-Lb2">
-                                                <rect key="frame" x="137" y="60" width="100" height="100"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="100" id="Vdn-lC-qiv"/>
-                                                    <constraint firstAttribute="height" constant="100" id="ySv-8D-M7v"/>
-                                                </constraints>
-                                            </imageView>
-                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4XP-oO-cMV" userLabel="Rating" customClass="CosmosView" customModule="Cosmos">
-                                                <rect key="frame" x="128" y="173" width="120" height="20"/>
-                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="color" keyPath="filledColor">
-                                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                            </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Rating" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3jP-ja-e69">
-                                                <rect key="frame" x="158" y="197" width="59" height="21"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="59" id="Lvx-UK-B3J"/>
-                                                    <constraint firstAttribute="height" constant="21" id="O7w-uf-ca1"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" name="CenturyGothic-Bold" family="Century Gothic" pointSize="17"/>
-                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Earned" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tFl-G1-K5C">
-                                                <rect key="frame" x="280" y="197" width="70" height="21"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="70" id="9k4-ZZ-ywc"/>
-                                                    <constraint firstAttribute="height" constant="21" id="wye-ao-nOR"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" name="CenturyGothic-Bold" family="Century Gothic" pointSize="17"/>
-                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Jobs" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EDT-hv-GJ8">
-                                                <rect key="frame" x="25" y="197" width="59" height="21"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="21" id="vKx-LI-8tD"/>
-                                                    <constraint firstAttribute="width" constant="59" id="xx4-pD-Btf"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" name="CenturyGothic-Bold" family="Century Gothic" pointSize="17"/>
-                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="0" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jar-gI-5mh" userLabel="TotalTime">
-                                                <rect key="frame" x="290" y="142" width="50" height="50"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="50" id="alA-aM-jEG"/>
-                                                    <constraint firstAttribute="height" constant="50" id="ixK-IE-kkB"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
-                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kdp-ql-a69" userLabel="TotalJobs">
-                                                <rect key="frame" x="29" y="157" width="50" height="20"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="50" id="8rR-Kp-WSN"/>
-                                                    <constraint firstAttribute="height" constant="20" id="nRk-it-olH"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
-                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wc8-H1-2mJ" userLabel="Close Button" customClass="RaisedButton" customModule="Material">
-                                                <rect key="frame" x="25" y="45" width="24" height="24"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="4up-rZ-hWS"/>
-                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="N6d-sa-Enx"/>
-                                                    <constraint firstAttribute="height" constant="40" id="ZiB-PC-FT8"/>
-                                                    <constraint firstAttribute="width" constant="40" id="gEz-TX-GfP"/>
-                                                </constraints>
-                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="color" keyPath="pulseColor">
-                                                        <color key="value" red="1" green="0.50962010619999998" blue="0.44240797749999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
-                                                        <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
-                                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                                <connections>
-                                                    <action selector="dismissButton:" destination="AQG-cB-ulg" eventType="touchUpInside" id="Uzv-Y2-2Yh"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
-                                        <color key="backgroundColor" red="0.87196621190000001" green="0.44680542820000002" blue="0.38951410959999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                        <constraints>
-                                            <constraint firstAttribute="trailing" secondItem="tFl-G1-K5C" secondAttribute="trailing" constant="25" id="03m-DK-FlY"/>
-                                            <constraint firstItem="3jP-ja-e69" firstAttribute="centerX" secondItem="4XP-oO-cMV" secondAttribute="centerX" id="ARx-PR-1oA"/>
-                                            <constraint firstItem="4XP-oO-cMV" firstAttribute="centerX" secondItem="vdd-wD-gUK" secondAttribute="centerX" id="DaA-x2-Mxb"/>
-                                            <constraint firstItem="B4m-US-Lb2" firstAttribute="centerX" secondItem="vdd-wD-gUK" secondAttribute="centerX" id="Erd-6b-fp0"/>
-                                            <constraint firstItem="Jar-gI-5mh" firstAttribute="centerX" secondItem="tFl-G1-K5C" secondAttribute="centerX" id="SdP-Ko-xVE"/>
-                                            <constraint firstItem="Kdp-ql-a69" firstAttribute="centerX" secondItem="EDT-hv-GJ8" secondAttribute="centerX" id="Vyg-qv-jwY"/>
-                                            <constraint firstItem="4XP-oO-cMV" firstAttribute="top" secondItem="B4m-US-Lb2" secondAttribute="bottom" constant="13" id="avz-2g-ADS"/>
-                                            <constraint firstItem="Jar-gI-5mh" firstAttribute="centerY" secondItem="Kdp-ql-a69" secondAttribute="centerY" id="dkq-44-FxI"/>
-                                            <constraint firstItem="EDT-hv-GJ8" firstAttribute="leading" secondItem="vdd-wD-gUK" secondAttribute="leading" constant="25" id="eOA-yh-qwz"/>
-                                            <constraint firstItem="B4m-US-Lb2" firstAttribute="top" secondItem="vdd-wD-gUK" secondAttribute="top" constant="60" id="ghS-hW-64v"/>
-                                            <constraint firstItem="tFl-G1-K5C" firstAttribute="centerY" secondItem="3jP-ja-e69" secondAttribute="centerY" id="nDv-sz-Dsk"/>
-                                            <constraint firstAttribute="height" constant="245" id="pLp-Tu-iD1"/>
-                                            <constraint firstItem="EDT-hv-GJ8" firstAttribute="centerY" secondItem="3jP-ja-e69" secondAttribute="centerY" id="pUP-gE-x7e"/>
-                                            <constraint firstItem="3jP-ja-e69" firstAttribute="top" secondItem="4XP-oO-cMV" secondAttribute="bottom" constant="4" id="s5w-Vx-SQX"/>
-                                            <constraint firstItem="tFl-G1-K5C" firstAttribute="top" secondItem="Jar-gI-5mh" secondAttribute="bottom" constant="5" id="xeB-ne-Kar"/>
-                                            <constraint firstItem="Wc8-H1-2mJ" firstAttribute="leading" secondItem="vdd-wD-gUK" secondAttribute="leading" constant="8" id="yQs-38-yey"/>
-                                        </constraints>
-                                    </view>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L5w-uL-Vhk" customClass="RaisedButton" customModule="Material">
-                                        <rect key="frame" x="66" y="600" width="244" height="40"/>
-                                        <color key="backgroundColor" red="0.87196621190000001" green="0.44680542820000002" blue="0.38951410959999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                        <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
-                                        <state key="normal" title="Hire">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                                <real key="value" value="0.0"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="pulseColor">
-                                                <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
-                                                <color key="value" red="0.87196621190000001" green="0.44680542820000002" blue="0.38951410959999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="title" value="Hire"/>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
-                                                <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="confirmclicked:" destination="AQG-cB-ulg" eventType="touchUpInside" id="zzS-S9-y6A"/>
-                                        </connections>
-                                    </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Srikanth Srinivas" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C3O-Gj-0YA">
-                                        <rect key="frame" x="38" y="269" width="300" height="35"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="300" id="0Ks-3c-01C"/>
-                                            <constraint firstAttribute="height" constant="35" id="8Ig-hX-SJI"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="20"/>
-                                        <color key="textColor" red="0.87196621190000001" green="0.44680542820000002" blue="0.38951410959999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reviews" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vnM-E2-1Z1">
-                                        <rect key="frame" x="142" y="309" width="92" height="21"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="92" id="P0G-P8-alt"/>
-                                            <constraint firstAttribute="height" constant="21" id="jnj-Te-6pV"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="CenturyGothic-Bold" family="Century Gothic" pointSize="17"/>
-                                        <color key="textColor" red="0.87196621190000001" green="0.44680542820000002" blue="0.38951410959999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CPg-6Y-YbA" userLabel="Ratings Container">
-                                        <rect key="frame" x="0.0" y="338" width="375" height="240"/>
-                                        <subviews>
-                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="wot-M1-axe">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="240"/>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <prototypes>
-                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" id="yqk-Ua-JGm">
-                                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
-                                                        <autoresizingMask key="autoresizingMask"/>
-                                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="yqk-Ua-JGm" id="o0S-dt-q2f">
-                                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
-                                                            <autoresizingMask key="autoresizingMask"/>
-                                                        </tableViewCellContentView>
-                                                    </tableViewCell>
-                                                </prototypes>
-                                            </tableView>
-                                        </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstAttribute="trailing" secondItem="wot-M1-axe" secondAttribute="trailing" id="D9q-on-rkq"/>
-                                            <constraint firstItem="wot-M1-axe" firstAttribute="leading" secondItem="CPg-6Y-YbA" secondAttribute="leading" id="Ij9-0r-Q27"/>
-                                            <constraint firstItem="wot-M1-axe" firstAttribute="top" secondItem="CPg-6Y-YbA" secondAttribute="top" id="eUW-e5-xKU"/>
-                                            <constraint firstAttribute="bottom" secondItem="wot-M1-axe" secondAttribute="bottom" id="hj3-mq-0R8"/>
-                                        </constraints>
-                                    </view>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstItem="L5w-uL-Vhk" firstAttribute="top" secondItem="CPg-6Y-YbA" secondAttribute="bottom" constant="22" id="8Zc-6D-tfX"/>
-                                    <constraint firstItem="CPg-6Y-YbA" firstAttribute="top" secondItem="vnM-E2-1Z1" secondAttribute="bottom" constant="8" id="Eam-1G-p2Q"/>
-                                    <constraint firstAttribute="trailing" secondItem="CPg-6Y-YbA" secondAttribute="trailing" id="Iwg-NI-nkg"/>
-                                    <constraint firstItem="vnM-E2-1Z1" firstAttribute="top" secondItem="C3O-Gj-0YA" secondAttribute="bottom" constant="5" id="RRg-zS-xWH"/>
-                                    <constraint firstItem="CPg-6Y-YbA" firstAttribute="leading" secondItem="h0K-Eh-Gxr" secondAttribute="leading" id="RoD-AY-Nl1"/>
-                                    <constraint firstItem="C3O-Gj-0YA" firstAttribute="top" secondItem="vdd-wD-gUK" secondAttribute="bottom" constant="24" id="kn5-iW-C2A"/>
-                                    <constraint firstAttribute="trailing" secondItem="vdd-wD-gUK" secondAttribute="trailing" id="pEa-fh-Jdj"/>
-                                    <constraint firstItem="vdd-wD-gUK" firstAttribute="top" secondItem="h0K-Eh-Gxr" secondAttribute="top" id="yAA-Qa-WM4"/>
-                                    <constraint firstItem="vdd-wD-gUK" firstAttribute="leading" secondItem="h0K-Eh-Gxr" secondAttribute="leading" id="zCP-uG-iJq"/>
-                                </constraints>
-                            </view>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="vnM-E2-1Z1" firstAttribute="centerX" secondItem="1XP-bO-CVs" secondAttribute="centerX" id="1IG-eh-U9z"/>
-                            <constraint firstItem="h0K-Eh-Gxr" firstAttribute="centerX" secondItem="1XP-bO-CVs" secondAttribute="centerX" id="7ID-Sv-Ryd"/>
-                            <constraint firstItem="C3O-Gj-0YA" firstAttribute="centerX" secondItem="1XP-bO-CVs" secondAttribute="centerX" id="CMf-XL-HRe"/>
-                            <constraint firstItem="L5w-uL-Vhk" firstAttribute="width" secondItem="1XP-bO-CVs" secondAttribute="width" multiplier="0.65" id="F3c-mi-wn0"/>
-                            <constraint firstItem="vdd-wD-gUK" firstAttribute="width" secondItem="1XP-bO-CVs" secondAttribute="width" id="Irt-KZ-gOK"/>
-                            <constraint firstItem="CPg-6Y-YbA" firstAttribute="height" secondItem="1XP-bO-CVs" secondAttribute="height" multiplier="240/667" id="J2i-8d-xc5"/>
-                            <constraint firstItem="h0K-Eh-Gxr" firstAttribute="width" secondItem="1XP-bO-CVs" secondAttribute="width" id="ODd-pI-bfj"/>
-                            <constraint firstItem="CPg-6Y-YbA" firstAttribute="width" secondItem="1XP-bO-CVs" secondAttribute="width" id="WJa-6K-W9I"/>
-                            <constraint firstItem="93w-Dn-7Dp" firstAttribute="top" secondItem="Wc8-H1-2mJ" secondAttribute="top" constant="10" id="Yu4-JA-XXi"/>
-                            <constraint firstItem="h0K-Eh-Gxr" firstAttribute="centerY" secondItem="1XP-bO-CVs" secondAttribute="centerY" id="ceK-cE-BAh"/>
-                            <constraint firstItem="L5w-uL-Vhk" firstAttribute="centerX" secondItem="1XP-bO-CVs" secondAttribute="centerX" id="i1d-O5-FKI"/>
-                            <constraint firstItem="h0K-Eh-Gxr" firstAttribute="height" secondItem="1XP-bO-CVs" secondAttribute="height" id="iS6-ux-JEi"/>
-                            <constraint firstItem="CPg-6Y-YbA" firstAttribute="centerX" secondItem="vdd-wD-gUK" secondAttribute="centerX" id="uCD-aQ-3Bh"/>
-                            <constraint firstItem="L5w-uL-Vhk" firstAttribute="height" secondItem="1XP-bO-CVs" secondAttribute="height" multiplier="0.06" id="vz3-OM-AMW"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="93w-Dn-7Dp"/>
-                    </view>
-                    <toolbarItems/>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
-                    <connections>
-                        <outlet property="closeButton" destination="Wc8-H1-2mJ" id="poK-zA-eJI"/>
-                        <outlet property="fullNameLabel" destination="C3O-Gj-0YA" id="9tO-qX-dh9"/>
-                        <outlet property="gradientView" destination="h0K-Eh-Gxr" id="7f8-oK-f5i"/>
-                        <outlet property="hireButton" destination="L5w-uL-Vhk" id="dIO-cz-tfG"/>
-                        <outlet property="profilePic" destination="B4m-US-Lb2" id="tJQ-Na-WPG"/>
-                        <outlet property="ratingAnimationView" destination="4XP-oO-cMV" id="zHe-jw-9Dc"/>
-                        <outlet property="ratingsTableView" destination="wot-M1-axe" id="iY2-6T-ntW"/>
-                        <outlet property="totalJobs" destination="Kdp-ql-a69" id="mGF-lE-hjh"/>
-                        <outlet property="totalTime" destination="Jar-gI-5mh" id="f6I-wv-ZVw"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="iQR-ZC-Ehv" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-690.39999999999998" y="599.55022488755628"/>
-        </scene>
         <!--rootAfterLogin-->
         <scene sceneID="7YW-k3-JPG">
             <objects>
@@ -796,6 +542,10 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </textAttributes>
                     </navigationBar>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="heroNavigationAnimationTypeString" value="fade"/>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
+                    </userDefinedRuntimeAttributes>
                     <connections>
                         <segue destination="e6i-Zq-4L0" kind="relationship" relationship="rootViewController" id="B4u-9l-MEL"/>
                     </connections>
@@ -889,13 +639,13 @@
                     <navigationItem key="navigationItem" id="qth-8L-YoO"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
+                    </userDefinedRuntimeAttributes>
                     <connections>
                         <outlet property="map" destination="6Wl-l6-Soe" id="Gk3-L6-S8X"/>
                         <outlet property="postTestJobButton" destination="jcq-bN-Gic" id="Fpv-60-MQN"/>
                         <segue destination="BjN-Qk-ddr" kind="show" identifier="endJobFromSellVC" id="dN8-sI-vgH">
-                            <nil key="action"/>
-                        </segue>
-                        <segue destination="4Vg-fc-iNc" kind="show" identifier="startJobFromSellVC" id="fI1-nZ-nav">
                             <nil key="action"/>
                         </segue>
                     </connections>
@@ -1737,7 +1487,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Iq3-4q-DQe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-514" y="-493"/>
+            <point key="canvasLocation" x="-530" y="-747"/>
         </scene>
         <!--feedbackController-->
         <scene sceneID="5Sg-Uy-Eog">
@@ -2032,7 +1782,6 @@
     </scenes>
     <resources>
         <image name="Sell Time" width="29" height="29"/>
-        <image name="emptyProfilePicture" width="64" height="64"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="B4u-9l-MEL"/>
