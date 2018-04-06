@@ -43,7 +43,6 @@
 		3B537376202EC0DC0020F3B1 /* CustomAPIAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53735F202EC0D80020F3B1 /* CustomAPIAdapter.swift */; };
 		3B537377202EC0DC0020F3B1 /* ProfilePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537360202EC0D80020F3B1 /* ProfilePage.swift */; };
 		3B537379202EC0DC0020F3B1 /* SellVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537362202EC0D90020F3B1 /* SellVC.swift */; };
-		3B53737A202EC0DC0020F3B1 /* EndSignUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537363202EC0D90020F3B1 /* EndSignUp.swift */; };
 		3B53737B202EC0DC0020F3B1 /* OnboardingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537364202EC0D90020F3B1 /* OnboardingVC.swift */; };
 		3B53737C202EC0DC0020F3B1 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537365202EC0D90020F3B1 /* LoginVC.swift */; };
 		3B53737E202EC0DC0020F3B1 /* MyAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537367202EC0D90020F3B1 /* MyAPIClient.swift */; };
@@ -137,7 +136,6 @@
 		3B53735F202EC0D80020F3B1 /* CustomAPIAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAPIAdapter.swift; sourceTree = "<group>"; };
 		3B537360202EC0D80020F3B1 /* ProfilePage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePage.swift; sourceTree = "<group>"; };
 		3B537362202EC0D90020F3B1 /* SellVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SellVC.swift; sourceTree = "<group>"; };
-		3B537363202EC0D90020F3B1 /* EndSignUp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndSignUp.swift; sourceTree = "<group>"; };
 		3B537364202EC0D90020F3B1 /* OnboardingVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingVC.swift; sourceTree = "<group>"; };
 		3B537365202EC0D90020F3B1 /* LoginVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		3B537367202EC0D90020F3B1 /* MyAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyAPIClient.swift; sourceTree = "<group>"; };
@@ -332,7 +330,6 @@
 			children = (
 				3B53736C202EC0DB0020F3B1 /* AppFABMenuController.swift */,
 				3B537360202EC0D80020F3B1 /* ProfilePage.swift */,
-				3B537363202EC0D90020F3B1 /* EndSignUp.swift */,
 				3B537371202EC0DC0020F3B1 /* Lgsupage.swift */,
 				3B537365202EC0D90020F3B1 /* LoginVC.swift */,
 				3B537367202EC0D90020F3B1 /* MyAPIClient.swift */,
@@ -805,7 +802,6 @@
 				3B537379202EC0DC0020F3B1 /* SellVC.swift in Sources */,
 				3B537388202EC0DC0020F3B1 /* Lgsupage.swift in Sources */,
 				3B53739B202EC2210020F3B1 /* CustomAnnotationView.swift in Sources */,
-				3B53737A202EC0DC0020F3B1 /* EndSignUp.swift in Sources */,
 				3B537387202EC0DC0020F3B1 /* SplashViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

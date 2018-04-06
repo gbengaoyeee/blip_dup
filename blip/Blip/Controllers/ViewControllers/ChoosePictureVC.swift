@@ -50,7 +50,7 @@ class ChoosePictureVC: UIViewController, UIImagePickerControllerDelegate, UINavi
         profileImageView.isUserInteractionEnabled = true
         let gesture = UITapGestureRecognizer(target: self, action: #selector(handleImageTap))
         profileImageView.addGestureRecognizer(gesture)
-        profileImageView.layer.cornerRadius = 180/2
+        profileImageView.layer.cornerRadius = 90
         profileImageView.layer.masksToBounds = true
     }
     
@@ -84,7 +84,8 @@ class ChoosePictureVC: UIViewController, UIImagePickerControllerDelegate, UINavi
                         self.present(self.prepareEmailVerifyPopup(user: FIRuser), animated: true, completion: nil)
                     }else{
                         //perform segue
-                        self.performSegue(withIdentifier: "endSignUp", sender: nil)
+                        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                        appDelegate.setLoginAsRoot()
                     }
                 })
             }
@@ -150,6 +151,10 @@ class ChoosePictureVC: UIViewController, UIImagePickerControllerDelegate, UINavi
                                 if errMsg != nil{
                                     print(errMsg!)
                                     return
+                                }
+                                else{
+                                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                                    appDelegate.setLoginAsRoot()
                                 }
                             })
                         }

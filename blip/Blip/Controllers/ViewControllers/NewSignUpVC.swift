@@ -15,12 +15,18 @@ import SwiftIcons
 /// I did this to leverage Srikanth's selfishness so he SHARES the work and DOESNT do the whole thing HIMSELF AND I HOPE HE SEES THIS ;(
 class NewSignUpVC: UIViewController {
 
+    @IBOutlet weak var signUpInfoLabel: UILabel!
+    @IBOutlet weak var passwordLeading: NSLayoutConstraint!
+    @IBOutlet weak var emailLeading: NSLayoutConstraint!
+    @IBOutlet weak var lastnameLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var firstnameLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var goButton: RaisedButton!
     @IBOutlet weak var passwordTF: TextField!
     @IBOutlet weak var emailTF: TextField!
     @IBOutlet weak var lastNameTF: TextField!
     @IBOutlet weak var firstNameTF: TextField!
     @IBOutlet var gradientView: PastelView!
+    var correctLeadingConstraint: CGFloat!
     
     
     override func viewDidLoad() {
@@ -32,6 +38,7 @@ class NewSignUpVC: UIViewController {
         setupTF(tf: emailTF, title: "Email")
         setupTF(tf: passwordTF, title: "Password")
         self.hideKeyboardWhenTappedAround()
+        setupProperConstraints()
         setupGradientView()
     }
     
@@ -44,8 +51,17 @@ class NewSignUpVC: UIViewController {
         gradientView.startAnimation()
     }
     
+    fileprivate func setupProperConstraints(){
+    
+        firstnameLeadingConstraint.constant = (self.view.frame.size.width - 220)/2
+        correctLeadingConstraint = firstnameLeadingConstraint.constant
+        lastnameLeadingConstraint.constant = correctLeadingConstraint
+        
+    }
+    
     ///Setup TextFields
     fileprivate func setupTF(tf: TextField, title: String){
+        
         tf.placeholderLabel.font = UIFont(name: "Century Gothic", size: 17)
         tf.font = UIFont(name: "Century Gothic", size: 17)
         tf.textColor = UIColor.white
@@ -68,26 +84,68 @@ class NewSignUpVC: UIViewController {
     }
 
     @objc fileprivate func handleContinueButton(){
-        let isTextfieldsEmpty = firstNameTF.isEmpty || lastNameTF.isEmpty || emailTF.isEmpty || passwordTF.isEmpty
+        let isTextfieldsEmpty = firstNameTF.isEmpty && lastNameTF.isEmpty && emailTF.isEmpty && passwordTF.isEmpty
         
         
         if (isTextfieldsEmpty){// there is empty field(s)
             self.present(popupForEmptyField(), animated: true, completion: nil)
         }
-        //REMEMBER TO UNCOMMENT AFTER DONE SIGN UP
-        else if !(validateEmail(enteredEmail: (emailTF.text)!)){
-            self.present(popupForInvalidEmail(), animated: true, completion: nil)
-        }
-//        else if !(validatePassword(enteredPassword: (passwordTF.text)!)){
-//            self.present(popupForInvalidPassword(), animated: true, completion: nil)
-//        }
             
-        //if all fields have been filled up and email is valid
-        else{
-            self.performSegue(withIdentifier: "choosePicture", sender: nil)
+        else if firstNameTF.isEmpty || lastNameTF.isEmpty{
+            self.present(popupForEmptyField(), animated: true, completion: nil)
+        }
+            
+        else if !firstNameTF.isEmpty && !lastNameTF.isEmpty && emailTF.isEmpty && passwordTF.isEmpty{
+            signUpInfoLabel.text = "We require a valid email address to verify your account. Your information will not be shared with any third party"
+            UIView.animate(withDuration: 1) {
+                self.firstnameLeadingConstraint.constant = -230
+                self.lastnameLeadingConstraint.constant = -230
+                self.emailLeading.constant = self.correctLeadingConstraint
+                self.passwordLeading.constant = self.correctLeadingConstraint
+                self.view.layoutIfNeeded()
+            }
+        }
+        //REMEMBER TO UNCOMMENT AFTER DONE SIGN UP
+            
+        else if !firstNameTF.isEmpty && !lastNameTF.isEmpty && !emailTF.isEmpty && !passwordTF.isEmpty{
+            if validateEmail(enteredEmail: emailTF.text!){
+                self.performSegue(withIdentifier: "choosePicture", sender: nil)
+            }
+            else{
+                self.present(popupForInvalidEmail(), animated: true, completion: nil)
+            }
         }
     }
     
+    @IBAction func nextOnLastName(_ sender: Any) {
+        
+        if firstNameTF.isEmpty || lastNameTF.isEmpty{
+            self.present(popupForEmptyField(), animated: true, completion: nil)
+        }
+            
+        else{
+            signUpInfoLabel.text = "We require a valid email address to verify your account. Your information will not be shared with any third party"
+            UIView.animate(withDuration: 1) {
+                self.firstnameLeadingConstraint.constant = -230
+                self.lastnameLeadingConstraint.constant = -230
+                self.emailLeading.constant = self.correctLeadingConstraint
+                self.passwordLeading.constant = self.correctLeadingConstraint
+                self.view.layoutIfNeeded()
+            }
+        }
+    }
+    
+    @IBAction func nextOnPassword(_ sender: Any) {
+        
+        if !firstNameTF.isEmpty && !lastNameTF.isEmpty && !emailTF.isEmpty && !passwordTF.isEmpty{
+            if validateEmail(enteredEmail: emailTF.text!){
+                self.performSegue(withIdentifier: "choosePicture", sender: nil)
+            }
+            else{
+                self.present(popupForInvalidEmail(), animated: true, completion: nil)
+            }
+        }
+    }
     
     ///Sends the textfield information to the choose profile VC
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -97,7 +155,7 @@ class NewSignUpVC: UIViewController {
             destination.userInfoDict = userInfoDict
         }
     }
-    
+
     
     fileprivate func validateEmail(enteredEmail:String) -> Bool {
         
