@@ -30,24 +30,25 @@ class Job{
     var ordererSnapRef: DatabaseReference?
 
     init?(snapshot: DataSnapshot) {
-        guard snapshot.key.isEmpty,
-            let jobValues = snapshot.value as? [String:AnyObject],
-            let deliveryLatitude = jobValues["deliveryLocationLat"] as? Double,
-            let deliveryLongitude = jobValues["deliveryLocationLong"] as? Double,
-            let pickupLatitude = jobValues["pickupLocationLat"] as? Double,
-            let pickupLongitude = jobValues["pickupLocationLong"] as? Double,
-            let title = jobValues["jobTitle"] as? String,
-            let orderer = BlipUser(snapshot: snapshot.childSnapshot(forPath: "orderer")),
-            let earnings = jobValues["earnings"] as? Double,
-            let estimatedTime = jobValues["estimatedTime"] as? Double
-            else{return}
-        
+        guard !snapshot.key.isEmpty else {
+            return nil
+        }
+        let jobValues = snapshot.value as? [String:AnyObject]
+        let deliveryLatitude = jobValues!["deliveryLocationLat"] as? Double
+        let deliveryLongitude = jobValues!["deliveryLocationLong"] as? Double
+        let pickupLatitude = jobValues!["pickupLocationLat"] as? Double
+        let pickupLongitude = jobValues!["pickupLocationLong"] as? Double
+        let title = jobValues!["jobTitle"] as? String
+        let orderer = BlipUser(snapshot: snapshot.childSnapshot(forPath: "orderer"))
+        let earnings = jobValues!["earnings"] as? Double
+        let estimatedTime = jobValues!["estimatedTime"] as? Double
+    
         self.ref = snapshot.ref
         self.jobID = snapshot.key
-        self.deliveryLocationCoordinates = CLLocationCoordinate2D(latitude: deliveryLatitude, longitude: deliveryLongitude)
+        self.deliveryLocationCoordinates = CLLocationCoordinate2D(latitude: deliveryLatitude!, longitude: deliveryLongitude!)
         self.title = title
         self.orderer = orderer
-        self.pickupLocationCoordinates = CLLocationCoordinate2D(latitude: pickupLatitude, longitude: pickupLongitude)
+        self.pickupLocationCoordinates = CLLocationCoordinate2D(latitude: pickupLatitude!, longitude: pickupLongitude!)
         self.earnings = earnings
         self.estimatedTime = estimatedTime
         self.ordererSnapRef = snapshot.childSnapshot(forPath: "orderer").ref

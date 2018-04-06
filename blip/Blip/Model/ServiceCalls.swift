@@ -147,18 +147,18 @@ class ServiceCalls{
         var annotationDict: [String:CustomMGLAnnotation] = [:]
         
         jobsRefHandle = jobsRef.observe(.childAdded, with: { (snap) in
+
             if let job = Job(snapshot: snap){
-                if job.orderer.userEmailHash != self.emailHash{
-                    let point = CustomMGLAnnotation()
-                    point.job = job
-                    point.coordinate = (job.deliveryLocationCoordinates)!
-                    point.title = job.title
-                    point.subtitle = "\(job.earnings)"
-                    MapView.addAnnotation(point)
-                    annotationDict[(job.jobID)!] = point
-                    print(annotationDict)
-                    completion(annotationDict)
-                }
+                print("Ordered by ", job.orderer.name!)
+                let point = CustomMGLAnnotation()
+                point.job = job
+                point.coordinate = (job.deliveryLocationCoordinates)!
+                point.title = job.title
+                point.subtitle = "\(job.earnings)"
+                MapView.addAnnotation(point)
+                annotationDict[(job.jobID)!] = point
+                print(annotationDict)
+                completion(annotationDict)
             }
         })
     }

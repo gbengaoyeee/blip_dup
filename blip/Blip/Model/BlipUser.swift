@@ -26,16 +26,18 @@ class BlipUser{
     var ref:DatabaseReference!
     
     init?(snapshot: DataSnapshot){
-        guard !snapshot.key.isEmpty,
-            let userValues = snapshot.value as? [String:AnyObject],
-            let email = userValues["email"] as? String,
-            let name = userValues["name"] as? String,
-            let rating = userValues["rating"] as? Double,
-            let currentDevice = userValues["currentDevice"] as? String,
-            let customerID = userValues["customer_id"] as? String,
-            let photoURL = userValues["photoURL"] as? String,
-            let uid = userValues["uid"] as? String
-            else{return}
+        guard !snapshot.key.isEmpty else {
+            return nil
+        }
+        let emailHashKey = snapshot.value as! [String: AnyObject]
+        let userValues = snapshot.childSnapshot(forPath: emailHashKey.keys.first!).value as? [String:AnyObject]
+        let email = userValues!["email"] as? String
+        let name = userValues!["name"] as? String
+        let rating = userValues!["rating"] as? Double
+        let currentDevice = userValues!["currentDevice"] as? String
+        let customerID = userValues!["customer_id"] as? String
+        let photoURL = userValues!["photoURL"] as? String
+        let uid = userValues!["uid"] as? String
         
         self.ref = snapshot.ref
         self.userEmailHash = snapshot.key
@@ -44,7 +46,7 @@ class BlipUser{
         self.rating = rating
         self.currentDevice = currentDevice
         self.customerID = customerID
-        self.photoURL = URL(string: photoURL)
+        self.photoURL = URL(string: photoURL!)
         self.uid = uid
         
         if let userval = snapshot.value as? [String:AnyObject]{
