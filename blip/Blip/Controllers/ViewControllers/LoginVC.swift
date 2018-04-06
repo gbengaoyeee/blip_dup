@@ -102,7 +102,6 @@ class LoginVC: UIViewController {
     
     @IBAction func loginWithReturn(_ sender: Any){ // primary target action for passwordTF
         // check if fields are not empty
-        print("HEY")
         self.loginButtonView.makeButtonDissapear()
         self.forgetPassword.makeButtonDissapear()
         self.subview.isHidden = false
