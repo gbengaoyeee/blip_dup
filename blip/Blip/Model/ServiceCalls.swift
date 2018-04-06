@@ -137,6 +137,34 @@ class ServiceCalls{
     }
     
     
+    
+    ///**
+    //     doesn't load tasks that are taken
+    // */
+    //
+    func getJobsFromFirebase(MapView:MGLMapView , completion: @escaping ([String:CustomMGLAnnotation]?)->()){
+        
+        var annotationDict: [String:CustomMGLAnnotation] = [:]
+        
+        jobsRefHandle = jobsRef.observe(.childAdded, with: { (snap) in
+            if let job = Job(snapshot: snap){
+                if job.orderer.userEmailHash != self.emailHash{
+                    let point = CustomMGLAnnotation()
+                    point.job = job
+                    point.coordinate = (job.deliveryLocationCoordinates)!
+                    point.title = job.title
+                    point.subtitle = "\(job.earnings)"
+                    MapView.addAnnotation(point)
+                    annotationDict[(job.jobID)!] = point
+                    print(annotationDict)
+                    completion(annotationDict)
+                }
+            }
+        })
+    }
+
+    
+    
     /**
      Add a job to Firebase Database
      */
@@ -271,63 +299,7 @@ class ServiceCalls{
     ////            }
     ////        })
     ////    }
-    //
-    ///**
-    //     doesn't load tasks that are taken
-    // */
-    //
-    func getJobsFromFirebase(MapView:MGLMapView , completion: @escaping ([String:CustomMGLAnnotation]?)->()){
-        
-        var annotationDict: [String:CustomMGLAnnotation] = [:]
-        
-        jobsRefHandle = jobsRef.observe(.childAdded, with: { (snap) in
-            if let job = Job(snapshot: snap){
-                if job.orderer.userEmailHash != self.emailHash{
-                    let point = CustomMGLAnnotation()
-                    point.job = job
-                    point.coordinate = (job.deliveryLocationCoordinates)
-                    point.title = job.title
-                    point.subtitle = "\(job.earnings)"
-                    MapView.addAnnotation(point)
-                    annotationDict[(job.jobID)!] = point
-                    completion(annotationDict)
-                }
-            }
-        })
-        
-        //        jobsRef.observe(.value) { (data) in
-        //
-        //            data.ref.observeSingleEvent(of: .value, with: { (data2) in
-        //
-        //
-        //                let job = Job(snapshot: data2)
-        //                print(data2.value)
-        //                // check if the curr job snap is not curr user's and also if the job is not accepted
-        //                let dict = data2.value as? [String: AnyObject]
-        //                print("HERE WE HAVE", job?.jobOwnerEmailHash)
-        //                if (job?.jobOwnerEmailHash != self.emailHash && dict!["isTakenBy"] == nil){
-        //
-        //                    let jobPosterRef = self.userRef.child((job?.jobOwnerEmailHash)!)
-        //                    jobPosterRef.observeSingleEvent(of: .value, with: { (snapshot2) in
-        //                        let userVal = snapshot2.value as? [String:AnyObject]
-        //                        job?.jobOwnerRating = userVal!["Rating"] as? Float
-        //                        job?.jobOwnerPhotoURL = URL(string: (userVal!["photoURL"] as? String)!)
-        //
-        //                        let point = CustomMGLAnnotation()
-        //                        point.job = job
-        //                        point.coordinate = (job?.location.coordinate)!
-        //                        point.title = job?.title
-        //                        point.subtitle = ("$"+"\((job?.wage_per_hour)!)"+"/Hour")
-        //                        point.photoURL = job?.jobOwnerPhotoURL
-        //                        MapView.addAnnotation(point)
-        //                        annotationDict[(job?.jobID)!] = point
-        //                        completion(annotationDict)
-        //                    })
-        //                }
-        //            })
-        //        }
-    }
-    //
+
     //    func cancelJobPost(job: Job){
     //
     //        jobsRef.child(job.jobID).removeValue()

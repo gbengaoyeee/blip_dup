@@ -69,7 +69,6 @@ class ViewMapOfJobsVC: UIViewController {
 extension ViewMapOfJobsVC: MGLMapViewDelegate{
     
     func prepareMap(){
-        
         self.map.delegate = self
         service.getJobsFromFirebase(MapView: self.map) { (annotations) in
             print("Got jobs from firebase")

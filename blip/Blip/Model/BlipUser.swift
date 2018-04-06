@@ -35,7 +35,7 @@ class BlipUser{
             let customerID = userValues["customer_id"] as? String,
             let photoURL = userValues["photoURL"] as? String,
             let uid = userValues["uid"] as? String
-            else{return nil}
+            else{return}
         
         self.ref = snapshot.ref
         self.userEmailHash = snapshot.key
