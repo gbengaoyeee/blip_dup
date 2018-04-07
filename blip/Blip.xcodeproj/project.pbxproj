@@ -15,6 +15,8 @@
 		3B14B542202F5EA100B1C015 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B14B540202F5EA000B1C015 /* AVKit.framework */; };
 		3B14B543202F5EA100B1C015 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B14B541202F5EA100B1C015 /* AVFoundation.framework */; };
 		3B14B545202F5EC300B1C015 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B14B544202F5EC300B1C015 /* CoreLocation.framework */; };
+		3B4B92CA20797E030075BE98 /* PickUpAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4B92C920797E030075BE98 /* PickUpAnnotation.swift */; };
+		3B4B92CC20797EA90075BE98 /* DeliveryAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4B92CB20797EA90075BE98 /* DeliveryAnnotation.swift */; };
 		3B5372F8202EB4320020F3B1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5372F7202EB4320020F3B1 /* AppDelegate.swift */; };
 		3B5372FD202EB4320020F3B1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B5372FB202EB4320020F3B1 /* Main.storyboard */; };
 		3B5372FF202EB4320020F3B1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B5372FE202EB4320020F3B1 /* Assets.xcassets */; };
@@ -100,6 +102,8 @@
 		3B14B541202F5EA100B1C015 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		3B14B544202F5EC300B1C015 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		3B14B547202F5F1100B1C015 /* AWSCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AWSCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3B4B92C920797E030075BE98 /* PickUpAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickUpAnnotation.swift; sourceTree = "<group>"; };
+		3B4B92CB20797EA90075BE98 /* DeliveryAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryAnnotation.swift; sourceTree = "<group>"; };
 		3B5372F4202EB4320020F3B1 /* Blip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Blip.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B5372F7202EB4320020F3B1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3B5372FC202EB4320020F3B1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -355,6 +359,8 @@
 				3B53738A202EC2200020F3B1 /* Extensions.swift */,
 				3B53738E202EC2200020F3B1 /* CustomAnnotationView.swift */,
 				3B537390202EC2200020F3B1 /* BlipAnnotation.swift */,
+				3B4B92CB20797EA90075BE98 /* DeliveryAnnotation.swift */,
+				3B4B92C920797E030075BE98 /* PickUpAnnotation.swift */,
 				5F33377920332B4600B83E01 /* RatingViewController.swift */,
 				5FDEF880206B5ED700F33733 /* CustomXIB */,
 			);
@@ -804,10 +810,12 @@
 				3B537330202EBA6B0020F3B1 /* AppError.swift in Sources */,
 				3B537381202EC0DC0020F3B1 /* ProfilePicture.swift in Sources */,
 				3B537397202EC2210020F3B1 /* Extensions.swift in Sources */,
+				3B4B92CC20797EA90075BE98 /* DeliveryAnnotation.swift in Sources */,
 				3B537334202EBA6B0020F3B1 /* BlipUser.swift in Sources */,
 				3B537375202EC0DC0020F3B1 /* PasswordReset.swift in Sources */,
 				3B537383202EC0DC0020F3B1 /* AppFABMenuController.swift in Sources */,
 				3B537377202EC0DC0020F3B1 /* ProfilePage.swift in Sources */,
+				3B4B92CA20797E030075BE98 /* PickUpAnnotation.swift in Sources */,
 				3B53737B202EC0DC0020F3B1 /* OnboardingVC.swift in Sources */,
 				3B53732E202EBA6B0020F3B1 /* ServiceCalls.swift in Sources */,
 				3B53732F202EBA6B0020F3B1 /* Job.swift in Sources */,

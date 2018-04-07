@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'E28D539C313C1330A9F4C3D03325B1A3'
-               BlueprintName = 'Stripe'
+               BlueprintIdentifier = 'AA43523BC0565661F3D16B0F4F9F4218'
+               BlueprintName = 'MapboxMobileEvents'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'Stripe.framework'>
+               BuildableName = 'MapboxMobileEvents.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

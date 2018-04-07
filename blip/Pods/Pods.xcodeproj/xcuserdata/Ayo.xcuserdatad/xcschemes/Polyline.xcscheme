@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'E28D539C313C1330A9F4C3D03325B1A3'
-               BlueprintName = 'Stripe'
+               BlueprintIdentifier = '9040A548E45CE366F5320DD22F1105C8'
+               BlueprintName = 'Polyline'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'Stripe.framework'>
+               BuildableName = 'Polyline.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

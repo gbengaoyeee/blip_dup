@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'E28D539C313C1330A9F4C3D03325B1A3'
-               BlueprintName = 'Stripe'
+               BlueprintIdentifier = '3116EAE554952680855AD0833FDCD8B7'
+               BlueprintName = 'MapboxSpeech'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'Stripe.framework'>
+               BuildableName = 'MapboxSpeech.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
