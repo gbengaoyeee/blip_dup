@@ -168,10 +168,16 @@ extension ViewMapOfJobsVC: MGLMapViewDelegate{
             let pickupAnnotation = MGLPointAnnotation()
             pickupAnnotation.coordinate = (castedAnnotation.job?.pickupLocationCoordinates)!
             self.map.addAnnotation(pickupAnnotation)
+            map.showsUserLocation = true
             map.showAnnotations(map.annotations!, animated: true)
+            calculateRoute(from: (map.userLocation?.coordinate)!, to: pickupAnnotation.coordinate, completion: { (route, error) in
+                if error != nil{
+                    print("Error calculating route to pickup point")
+                }
+            })
             calculateRoute(from: (pickupAnnotation.coordinate), to: annotation.coordinate) { (route, error) in
                 if error != nil {
-                    print("Error calculating route")
+                    print("Error calculating route to delivery point")
                 }
             }
         }
