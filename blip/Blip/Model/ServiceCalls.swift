@@ -142,19 +142,18 @@ class ServiceCalls{
     //     doesn't load tasks that are taken
     // */
     //
-    func getJobsFromFirebase(MapView:MGLMapView , completion: @escaping ([String:CustomMGLAnnotation]?)->()){
+    func getJobsFromFirebase(MapView:MGLMapView , completion: @escaping ([String:BlipAnnotation]?)->()){
         
-        var annotationDict: [String:CustomMGLAnnotation] = [:]
+        var annotationDict: [String:BlipAnnotation] = [:]
         
         jobsRefHandle = jobsRef.observe(.childAdded, with: { (snap) in
 
             if let job = Job(snapshot: snap){
                 print("Ordered by ", job.orderer.name!)
-                let point = CustomMGLAnnotation()
+                let point = BlipAnnotation(coordinate: job.deliveryLocationCoordinates, title: job.title, subtitle: "\(job.earnings)")
                 point.job = job
-                point.coordinate = (job.deliveryLocationCoordinates)!
-                point.title = job.title
-                point.subtitle = "\(job.earnings)"
+                point.reuseIdentifier = "customAnnotation\(job.jobID)"
+                point.image = UIImage(icon: .icofont(.vehicleDeliveryVan), size: CGSize(width: 50, height: 50))
                 MapView.addAnnotation(point)
                 annotationDict[(job.jobID)!] = point
                 print(annotationDict)
@@ -310,7 +309,7 @@ class ServiceCalls{
     //        jobsRef.child(job.jobID).updateChildValues(["accepterHasBegun": true, "jobHasBegun": false])
     //    }
     //
-    ////    func updateUI(map: MGLMapView, completion: @escaping(Int?, Job?, [String:CustomMGLAnnotation]?) -> ()){
+    ////    func updateUI(map: MGLMapView, completion: @escaping(Int?, Job?, [String:BlipAnnotation]?) -> ()){
     ////
     ////        jobsRef.observe(.childAdded) { (addedJob) in
     ////
@@ -319,13 +318,13 @@ class ServiceCalls{
     ////            if job?.jobOwnerEmailHash != self.emailHash{
     ////
     ////                print("making annotation")
-    ////                var annotationDict: [String:CustomMGLAnnotation] = [:]
+    ////                var annotationDict: [String:BlipAnnotation] = [:]
     ////                let jobPosterRef = self.userRef.child((job?.jobOwnerEmailHash)!)
     ////                jobPosterRef.observeSingleEvent(of: .value, with: { (snapshot2) in
     ////                    let userVal = snapshot2.value as? [String:AnyObject]
     ////                    job?.jobOwnerRating = userVal!["Rating"] as? Float
     ////                    job?.jobOwnerPhotoURL = URL(string: (userVal!["photoURL"] as? String)!)
-    ////                    let point = CustomMGLAnnotation()
+    ////                    let point = BlipAnnotation()
     ////                    point.job = job
     ////                    point.coordinate = (job?.location.coordinate)!
     ////                    point.title = job?.title

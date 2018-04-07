@@ -53,7 +53,7 @@
 //    var locationTimer = Timer()
 //    var latestAccepted:Job!
 //    let loadingAnimation = LOTAnimationView(name: "loading")
-//    var allAnnotations: [String:CustomMGLAnnotation]!
+//    var allAnnotations: [String:BlipAnnotation]!
 //    let check = LOTAnimationView(name: "check")
 //    var connectivity = Connectivity()
 //    var internet:Bool!
@@ -396,7 +396,7 @@
 //    
 //    func mapView(_ mapView: MGLMapView, tapOnCalloutFor annotation: MGLAnnotation) {
 //
-////        if let anno = annotation as? CustomMGLAnnotation{
+////        if let anno = annotation as? BlipAnnotation{
 ////            let popup = self.prepareAndShowPopup(job: anno.job!)
 ////            self.present(popup, animated: true, completion: nil)
 ////        }
@@ -410,7 +410,7 @@
 //            return nil
 //        }
 //        let annotationView = CustomAnnotationView()
-//        if let castedAnnotation = annotation as? CustomMGLAnnotation{
+//        if let castedAnnotation = annotation as? BlipAnnotation{
 //
 //            annotationView.frame = CGRect(x: 0, y: 0, width: 35, height: 35 )
 //            let profileImage = UIImageView(frame: CGRect(x: 0, y: 0, width: 35, height: 35 ))
@@ -477,7 +477,7 @@
 //        animation.handledAnimation(Animation: ratingAnimation)
 //        var rating = CGFloat(0)
 //        
-//        if let anno = annotation as? CustomMGLAnnotation{
+//        if let anno = annotation as? BlipAnnotation{
 //            rating = CGFloat((anno.job?.orderer.rating)!/5)
 //        }        
 //        ratingAnimation.play(toProgress: rating, withCompletion: nil)
@@ -491,7 +491,7 @@
 //        let picture = UIImageView(frame: CGRect(x: 0, y: 0, width: 35, height: 35))
 //        picture.cornerRadius = picture.frame.height/2
 //        
-//        if let anno = annotation as? CustomMGLAnnotation{
+//        if let anno = annotation as? BlipAnnotation{
 //            if let profilePic = anno.job?.orderer.photoURL{
 //                picture.contentMode = .scaleAspectFill
 //                picture.kf.setImage(with: profilePic)

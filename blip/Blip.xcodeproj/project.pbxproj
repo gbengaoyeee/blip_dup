@@ -53,7 +53,7 @@
 		3B537388202EC0DC0020F3B1 /* Lgsupage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537371202EC0DC0020F3B1 /* Lgsupage.swift */; };
 		3B537397202EC2210020F3B1 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53738A202EC2200020F3B1 /* Extensions.swift */; };
 		3B53739B202EC2210020F3B1 /* CustomAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53738E202EC2200020F3B1 /* CustomAnnotationView.swift */; };
-		3B53739D202EC2210020F3B1 /* CustomMGLAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537390202EC2200020F3B1 /* CustomMGLAnnotation.swift */; };
+		3B53739D202EC2210020F3B1 /* BlipAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537390202EC2200020F3B1 /* BlipAnnotation.swift */; };
 		3BCD8444207416E70079B4D4 /* NewSignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCD8443207416E70079B4D4 /* NewSignUpVC.swift */; };
 		3BCD844620747C130079B4D4 /* ChoosePictureVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCD844520747C130079B4D4 /* ChoosePictureVC.swift */; };
 		5F33377820332B0B00B83E01 /* RatingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F33377720332B0B00B83E01 /* RatingViewController.xib */; };
@@ -146,7 +146,7 @@
 		3B537371202EC0DC0020F3B1 /* Lgsupage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lgsupage.swift; sourceTree = "<group>"; };
 		3B53738A202EC2200020F3B1 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		3B53738E202EC2200020F3B1 /* CustomAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAnnotationView.swift; sourceTree = "<group>"; };
-		3B537390202EC2200020F3B1 /* CustomMGLAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomMGLAnnotation.swift; sourceTree = "<group>"; };
+		3B537390202EC2200020F3B1 /* BlipAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlipAnnotation.swift; sourceTree = "<group>"; };
 		3BCD8443207416E70079B4D4 /* NewSignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSignUpVC.swift; sourceTree = "<group>"; };
 		3BCD844520747C130079B4D4 /* ChoosePictureVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoosePictureVC.swift; sourceTree = "<group>"; };
 		52A65DC4170733BA25C15CE1 /* Pods-Blip.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Blip.release.xcconfig"; path = "Pods/Target Support Files/Pods-Blip/Pods-Blip.release.xcconfig"; sourceTree = "<group>"; };
@@ -354,7 +354,7 @@
 				3B53735F202EC0D80020F3B1 /* CustomAPIAdapter.swift */,
 				3B53738A202EC2200020F3B1 /* Extensions.swift */,
 				3B53738E202EC2200020F3B1 /* CustomAnnotationView.swift */,
-				3B537390202EC2200020F3B1 /* CustomMGLAnnotation.swift */,
+				3B537390202EC2200020F3B1 /* BlipAnnotation.swift */,
 				5F33377920332B4600B83E01 /* RatingViewController.swift */,
 				5FDEF880206B5ED700F33733 /* CustomXIB */,
 			);
@@ -781,7 +781,7 @@
 				3B537376202EC0DC0020F3B1 /* CustomAPIAdapter.swift in Sources */,
 				3BCD844620747C130079B4D4 /* ChoosePictureVC.swift in Sources */,
 				3BCD8444207416E70079B4D4 /* NewSignUpVC.swift in Sources */,
-				3B53739D202EC2210020F3B1 /* CustomMGLAnnotation.swift in Sources */,
+				3B53739D202EC2210020F3B1 /* BlipAnnotation.swift in Sources */,
 				3B53733D202EBD0F0020F3B1 /* Connectivity.swift in Sources */,
 				3B537382202EC0DC0020F3B1 /* SellVC+.swift in Sources */,
 				3B5372F8202EB4320020F3B1 /* AppDelegate.swift in Sources */,

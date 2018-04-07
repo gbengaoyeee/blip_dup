@@ -38,7 +38,7 @@ class ViewMapOfJobsVC: UIViewController {
     let companyName = "Blip"
     var locationTimer = Timer()
     var latestAccepted:Job!
-    var allAnnotations: [String:CustomMGLAnnotation]!
+    var allAnnotations: [String:BlipAnnotation]!
     let check = LOTAnimationView(name: "check")
     var connectivity = Connectivity()
     var internet:Bool!
@@ -77,7 +77,6 @@ extension ViewMapOfJobsVC: MGLMapViewDelegate{
     }
     
     func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
-
         guard annotation is MGLPointAnnotation else {
             return nil
         }
@@ -90,17 +89,35 @@ extension ViewMapOfJobsVC: MGLMapViewDelegate{
         let deliveryImageView = UIImageView(image: deliveryIcon)
         deliveryImageView.isUserInteractionEnabled = true
         annotationView.addSubview(deliveryImageView)
-        annotationView.layer.cornerRadius = annotationView.frame.size.height/2
+//        annotationView.layer.cornerRadius = annotationView.frame.size.height/2
         annotationView.isUserInteractionEnabled = true
         return annotationView
+    }
+    
+    func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
+        if let point = annotation as? BlipAnnotation,
+            
+            let image = point.image,
+            let reuseIdentifier = point.reuseIdentifier {
+            
+            if let annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: reuseIdentifier) {
+                // The annotatation image has already been cached, just reuse it.
+                return annotationImage
+            } else {
+                // Create a new annotation image.
+                return MGLAnnotationImage(image: image, reuseIdentifier: reuseIdentifier)
+            }
+        }
         
+        // Fallback to the default marker image.
+        return nil
     }
     
     func mapView(_ mapView: MGLMapView, didSelect annotation: MGLAnnotation) {
-
-        print(map.annotations)
-        if let castedAnnotation = annotation as? CustomMGLAnnotation{
-            
+//        print(map.annotations)
+        print("SELECTED")
+        map.removeAnnotation(annotation)
+        if let castedAnnotation = annotation as? BlipAnnotation{
             let allAnnotations = map.annotations!
             map.removeAnnotations(allAnnotations)
             let pickupAnnotation = MGLPointAnnotation()
