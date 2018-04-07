@@ -13,6 +13,9 @@ import CoreLocation
 import Material
 import FBSDKLoginKit
 import Mapbox
+import MapboxDirections
+import MapboxNavigation
+import MapboxCoreNavigation
 import PopupDialog
 import Alamofire
 import Stripe
@@ -26,6 +29,7 @@ class ViewMapOfJobsVC: UIViewController {
     @IBOutlet weak var map: MGLMapView!
     @IBOutlet weak var postTestJobButton: RaisedButton!
     
+    var directionsRoute: Route?
     var dbRef: DatabaseReference!
     var acceptedJob: Job!
     let service = ServiceCalls.instance
@@ -38,7 +42,7 @@ class ViewMapOfJobsVC: UIViewController {
     let companyName = "Blip"
     var locationTimer = Timer()
     var latestAccepted:Job!
-    var allAnnotations: [String:CustomMGLAnnotation]!
+    var allAnnotations: [String:BlipAnnotation]!
     let check = LOTAnimationView(name: "check")
     var connectivity = Connectivity()
     var internet:Bool!
@@ -61,7 +65,7 @@ class ViewMapOfJobsVC: UIViewController {
     @IBAction func testPost(_ sender: Any) {
         service.getCurrentUserInfo { (user) in
             
-            self.service.addTestJob(title: "Pickup", orderer: user,  deliveryLocation: self.currentLocation, pickupLocation: CLLocationCoordinate2D(latitude: -79.68, longitude: 43.61), earnings: 5.00, estimatedTime: 10.00)
+            self.service.addTestJob(title: "Pickup", orderer: user,  deliveryLocation: self.currentLocation, pickupLocation: CLLocationCoordinate2D(latitude: 43.61, longitude: -79.68), earnings: 5.00, estimatedTime: 10.00)
         }
     }
 }
@@ -76,37 +80,100 @@ extension ViewMapOfJobsVC: MGLMapViewDelegate{
         }
     }
     
-    func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
-
-        guard annotation is MGLPointAnnotation else {
-            return nil
-        }
-        let annotationView = CustomAnnotationView()
-        annotationView.frame = CGRect(x: 0, y: 0, width: 50, height: 50 )
-        annotationView.backgroundColor = UIColor.white
-        annotationView.layer.cornerRadius = annotationView.frame.size.height/2
-        annotationView.clipsToBounds = true
-        let deliveryIcon = UIImage(icon: .icofont(.vehicleDeliveryVan), size: CGSize(width: 50, height: 50))
-        let deliveryImageView = UIImageView(image: deliveryIcon)
-        deliveryImageView.isUserInteractionEnabled = true
-        annotationView.addSubview(deliveryImageView)
-        annotationView.layer.cornerRadius = annotationView.frame.size.height/2
-        annotationView.isUserInteractionEnabled = true
-        return annotationView
+    func calculateRoute(from origin: CLLocationCoordinate2D,
+                        to destination: CLLocationCoordinate2D,
+                        completion: @escaping (Route?, Error?) -> ()) {
         
+        // Coordinate accuracy is the maximum distance away from the waypoint that the route may still be considered viable, measured in meters. Negative values indicate that a indefinite number of meters away from the route and still be considered viable.
+        let origin = Waypoint(coordinate: origin, coordinateAccuracy: -1, name: "Start")
+        let destination = Waypoint(coordinate: destination, coordinateAccuracy: -1, name: "Finish")
+        
+        // Specify that the route is intended for automobiles avoiding traffic
+        let options = NavigationRouteOptions(waypoints: [origin, destination], profileIdentifier: .automobileAvoidingTraffic)
+        
+        // Generate the route object and draw it on the map
+        _ = Directions.shared.calculate(options) { [unowned self] (waypoints, routes, error) in
+            self.directionsRoute = routes?.first
+            // Draw the route on the map after creating it
+            self.drawRoute(route: self.directionsRoute!)
+        }
+    }
+    
+    func drawRoute(route: Route) {
+        guard route.coordinateCount > 0 else { return }
+        // Convert the route’s coordinates into a polyline
+        var routeCoordinates = route.coordinates!
+        let polyline = MGLPolylineFeature(coordinates: &routeCoordinates, count: route.coordinateCount)
+        
+        // If there's already a route line on the map, reset its shape to the new route
+        if let source = map.style?.source(withIdentifier: "route-source") as? MGLShapeSource {
+            source.shape = polyline
+        } else {
+            let source = MGLShapeSource(identifier: "route-source", features: [polyline], options: nil)
+            
+            // Customize the route line color and width
+            let lineStyle = MGLLineStyleLayer(identifier: "route-style", source: source)
+            lineStyle.lineColor = MGLStyleValue(rawValue: #colorLiteral(red: 0.2796384096, green: 0.4718205929, blue: 1, alpha: 1))
+            lineStyle.lineWidth = MGLStyleValue(rawValue: 8)
+            
+            // Add the source and style layer of the route line to the map
+            map.style?.addSource(source)
+            map.style?.addLayer(lineStyle)
+        }
+    }
+
+//
+//    func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
+//        guard annotation is MGLPointAnnotation else {
+//            return nil
+//        }
+//        let annotationView = CustomAnnotationView()
+//        annotationView.frame = CGRect(x: 0, y: 0, width: 50, height: 50 )
+//        annotationView.backgroundColor = UIColor.white
+//        annotationView.layer.cornerRadius = annotationView.frame.size.height/2
+//        annotationView.clipsToBounds = true
+//        let deliveryIcon = UIImage(icon: .icofont(.vehicleDeliveryVan), size: CGSize(width: 50, height: 50))
+//        let deliveryImageView = UIImageView(image: deliveryIcon)
+//        deliveryImageView.isUserInteractionEnabled = true
+//        annotationView.addSubview(deliveryImageView)
+////        annotationView.layer.cornerRadius = annotationView.frame.size.height/2
+//        annotationView.isUserInteractionEnabled = true
+//        return annotationView
+//    }
+    
+    func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
+        if let point = annotation as? BlipAnnotation,
+            
+            let image = point.image,
+            let reuseIdentifier = point.reuseIdentifier {
+            
+            if let annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: reuseIdentifier) {
+                // The annotatation image has already been cached, just reuse it.
+                return annotationImage
+            } else {
+                // Create a new annotation image.
+                return MGLAnnotationImage(image: image, reuseIdentifier: reuseIdentifier)
+            }
+        }
+        
+        // Fallback to the default marker image.
+        return MGLAnnotationImage(image: UIImage(icon: .icofont(.vehicleDeliveryVan), size: CGSize(width: 50, height: 50)), reuseIdentifier: "pickupAnnotation")
     }
     
     func mapView(_ mapView: MGLMapView, didSelect annotation: MGLAnnotation) {
 
-        print(map.annotations)
-        if let castedAnnotation = annotation as? CustomMGLAnnotation{
-            
-            let allAnnotations = map.annotations!
-            map.removeAnnotations(allAnnotations)
+        if let castedAnnotation = annotation as? BlipAnnotation{
+            map.removeAnnotations(map.annotations!)
+            map.addAnnotation(annotation)
             let pickupAnnotation = MGLPointAnnotation()
             pickupAnnotation.coordinate = (castedAnnotation.job?.pickupLocationCoordinates)!
-            self.map.addAnnotation(annotation)
             self.map.addAnnotation(pickupAnnotation)
+            map.showAnnotations(map.annotations!, animated: true)
+            calculateRoute(from: (pickupAnnotation.coordinate), to: annotation.coordinate) { (route, error) in
+                if error != nil {
+                    print("Error calculating route")
+                }
+            }
         }
     }
     

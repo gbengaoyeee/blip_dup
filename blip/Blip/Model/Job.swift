@@ -39,7 +39,7 @@ class Job{
         let pickupLatitude = jobValues!["pickupLocationLat"] as? Double
         let pickupLongitude = jobValues!["pickupLocationLong"] as? Double
         let title = jobValues!["jobTitle"] as? String
-        let orderer = BlipUser(snapshot: snapshot.childSnapshot(forPath: "orderer"))
+        let orderer = BlipUser(snapFromJob: snapshot.childSnapshot(forPath: "orderer"))
         let earnings = jobValues!["earnings"] as? Double
         let estimatedTime = jobValues!["estimatedTime"] as? Double
     

@@ -19,6 +19,7 @@ target 'Blip' do
   pod 'FBSDKLoginKit'
   pod 'FBSDKShareKit'
   pod 'Mapbox-iOS-SDK'
+  pod 'MapboxNavigation'
   pod 'PopupDialog'
   pod 'Stripe'
   pod 'Kingfisher'
