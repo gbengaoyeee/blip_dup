@@ -27,10 +27,21 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
         }
     }
     
-    func optimizeRoute(locations: [CLLocationCoordinate2D], completion: @escaping (NSData) -> ()){
+    ///Converts all the coordinates of the locations into a string format: "longitude,latitude;longitude,latitude"
+    private func convertLocationToString(locations:[CLLocationCoordinate2D])->String{
+        var str = ""
+        for loc in locations{
+            str = str + "\(loc.longitude),\(loc.latitude);"
+        }
+        let retStr = String(str.dropLast())
+        return retStr
         
+    }
+    
+    func optimizeRoute(locations: [CLLocationCoordinate2D], completion: @escaping (NSData) -> ()){
         let url = self.baseURL.appendingPathComponent("optimizeRoute")
-        let coords = // Need you to make this a string of coordinates from the locations parameter for example, if theres 3 locations it organizes them by: "Long,Lat;Long,Lat;Long,Lat" like this: "-122.42,37.78;-122.45,37.91;-122.48,37.73"
+        // Need you to make this a string of coordinates from the locations parameter for example, if theres 3 locations it organizes them by: "Long,Lat;Long,Lat;Long,Lat" like this: "-122.42,37.78;-122.45,37.91;-122.48,37.73"
+        let coords = convertLocationToString(locations: locations)
         Alamofire.request(url, method: .get, parameters: [
             "optimizationURL": "https://api.mapbox.com/optimized-trips/v1/mapbox/driving/"
                 ])
