@@ -65,7 +65,7 @@ class ViewMapOfJobsVC: UIViewController {
     @IBAction func testPost(_ sender: Any) {
         service.getCurrentUserInfo { (user) in
             
-            self.service.addTestJob(title: "Pickup", orderer: user,  deliveryLocation: self.currentLocation, pickupLocation: CLLocationCoordinate2D(latitude: 43.61, longitude: -79.68), earnings: 5.00, estimatedTime: 10.00)
+            self.service.addTestJob(title: "Pickup", orderer: user,  deliveryLocation: self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 2000), pickupLocation: CLLocationCoordinate2D(latitude: 43.61, longitude: -79.68), earnings: 5.00, estimatedTime: 10.00)
         }
     }
 }
@@ -170,7 +170,7 @@ extension ViewMapOfJobsVC: MGLMapViewDelegate{
             self.map.addAnnotation(pickupAnnotation)
             map.showsUserLocation = true
             map.showAnnotations(map.annotations!, animated: true)
-            calculateRoute(from: (map.userLocation?.coordinate)!, to: pickupAnnotation.coordinate, completion: { (route, error) in
+            calculateRoute(from: annotation.coordinate, to: pickupAnnotation.coordinate, completion: { (route, error) in
                 if error != nil{
                     print("Error calculating route to pickup point")
                 }
