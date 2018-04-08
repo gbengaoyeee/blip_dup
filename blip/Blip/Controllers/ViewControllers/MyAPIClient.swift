@@ -11,6 +11,10 @@ import Stripe
 import Alamofire
 import CoreLocation
 import Firebase
+import MapboxDirections
+import Mapbox
+import MapboxCoreNavigation
+import MapboxNavigation
 import FirebaseDatabase
 
 class MyAPIClient: NSObject, STPEphemeralKeyProvider {
@@ -38,13 +42,19 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
         
     }
     
-    func optimizeRoute(locations: [CLLocationCoordinate2D], completion: @escaping (NSData) -> ()){
-        let url = self.baseURL.appendingPathComponent("optimizeRoute")
-        // Need you to make this a string of coordinates from the locations parameter for example, if theres 3 locations it organizes them by: "Long,Lat;Long,Lat;Long,Lat" like this: "-122.42,37.78;-122.45,37.91;-122.48,37.73"
+    func optimizeRoute(locations: [CLLocationCoordinate2D], completion: @escaping ([String: AnyObject]?) -> ()){
         let coords = convertLocationToString(locations: locations)
-        Alamofire.request(url, method: .get, parameters: [
-            "optimizationURL": "https://api.mapbox.com/optimized-trips/v1/mapbox/driving/"
-                ])
+        let url = "https://api.mapbox.com/optimized-trips/v1/mapbox/driving/\(coords)?access_token=pk.eyJ1Ijoic3Jpa2FudGhzcm52cyIsImEiOiJjajY0NDI0ejYxcDljMnFtcTNlYWliajNoIn0.jDevn4Fm6WBZUx7TDtys9Q"
+        
+        Alamofire.request(url, method: .get)
+            .responseJSON { (response) in
+                switch response.result {
+                case .success(let json):
+                    completion(json as? [String: AnyObject])
+                case .failure(let error):
+                    completion(nil)
+                }
+            }
     }
     
     func createCustomerKey(withAPIVersion apiVersion: String, completion: @escaping STPJSONResponseCompletionBlock) {

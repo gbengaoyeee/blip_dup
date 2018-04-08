@@ -126,75 +126,42 @@ extension ViewMapOfJobsVC: MGLMapViewDelegate{
         }
     }
     
-    func dot(size: Int) -> UIImage {
-        let floatSize = CGFloat(size)
-        let rect = CGRect(x: 0, y: 0, width: floatSize, height: floatSize)
-        let strokeWidth: CGFloat = 1
-        
-        UIGraphicsBeginImageContextWithOptions(rect.size, false, UIScreen.main.scale)
-        
-        let ovalPath = UIBezierPath(ovalIn: rect.insetBy(dx: strokeWidth, dy: strokeWidth))
-        UIColor.darkGray.setFill()
-        ovalPath.fill()
-        
-        UIColor.white.setStroke()
-        ovalPath.lineWidth = strokeWidth
-        ovalPath.stroke()
-        
-        let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
-        UIGraphicsEndImageContext()
-        
-        return image
-    }
-    
     func mapView(_ mapView: MGLMapView, didSelect annotation: MGLAnnotation) {
 
         if let castedAnnotation = annotation as? BlipAnnotation{
+            
+            var waypoints = [Waypoint]()
+            MyAPIClient.sharedClient.optimizeRoute(locations: [(castedAnnotation.job?.pickupLocationCoordinates)!, (castedAnnotation.job?.deliveryLocationCoordinates)!], completion: { (data) in
+                print(data!)
+//                c = 0
+//                for each in waypoints{
+//                    if each["waypoint_index"] == c{
+//                        construct
+//                    }
+//                    c++
+//                }
+                // for each waypoint in data!["waypoints"]{
+                // Waypoint(coordinate:
+            })
             mapView.removeAnnotations(mapView.annotations!)
+            mapView.addAnnotation(annotation)
             let pickupAnnotation = BlipAnnotation(coordinate: (castedAnnotation.job?.pickupLocationCoordinates)!, title: "Pickup Point", subtitle: nil)
+            mapView.addAnnotation(pickupAnnotation)
+            mapView.showAnnotations([annotation, pickupAnnotation, map.userLocation!], animated: true)
             calculateRoute(from: pickupAnnotation.coordinate, to: annotation.coordinate, completion: { (route, error) in
                 if error != nil{
                     print("Error calculating route to pickup point")
-                }
-                else{
-                    mapView.addAnnotations([pickupAnnotation, annotation])
-                    mapView.showAnnotations([annotation, pickupAnnotation, self.map.userLocation!], animated: true)
                 }
             })
         }
     }
     
-    func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
-        if let point = annotation as? CustomPointAnnotation,
-            
-            let image = point.image,
-            let reuseIdentifier = point.reuseIdentifier {
-            
-            if let annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: reuseIdentifier) {
-                // The annotatation image has already been cached, just reuse it.
-                return annotationImage
-            } else {
-                // Create a new annotation image.
-                return MGLAnnotationImage(image: image, reuseIdentifier: reuseIdentifier)
-            }
-        }
+    func mapView(_ mapView: MGLMapView, didDeselect annotation: MGLAnnotation) {
         
-        // Fallback to the default marker image.
-        return nil
-    }
-    
-    func mapView(_ mapView: MGLMapView, strokeColorForShapeAnnotation annotation: MGLShape) -> UIColor {
-        if let annotation = annotation as? CustomPolyline {
-            // Return orange if the polyline does not have a custom color.
-            return annotation.color ?? .orange
+        self.map.removeAnnotations(self.map.annotations!)
+        for annotation in allAnnotations.values{
+            self.map.addAnnotation(annotation)
         }
-        
-        // Fallback to the default tint color.
-        return mapView.tintColor
-    }
-    
-    func mapView(_ mapView: MGLMapView, annotationCanShowCallout annotation: MGLAnnotation) -> Bool {
-        return true
     }
 }
 
