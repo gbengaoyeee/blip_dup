@@ -65,7 +65,7 @@ class ViewMapOfJobsVC: UIViewController {
     @IBAction func testPost(_ sender: Any) {
         service.getCurrentUserInfo { (user) in
             
-            self.service.addTestJob(title: "Pickup", orderer: user,  deliveryLocation: self.currentLocation, pickupLocation: CLLocationCoordinate2D(latitude: 43.61, longitude: -79.68), earnings: 5.00, estimatedTime: 10.00)
+            self.service.addTestJob(title: "Pickup", orderer: user,  deliveryLocation: self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 2000), pickupLocation: CLLocationCoordinate2D(latitude: 43.61, longitude: -79.68), earnings: 5.00, estimatedTime: 10.00)
         }
     }
 }
@@ -74,6 +74,9 @@ extension ViewMapOfJobsVC: MGLMapViewDelegate{
     
     func prepareMap(){
         self.map.delegate = self
+        map.showsUserLocation = true
+        map.showsUserHeadingIndicator = true
+        map.userTrackingMode = .followWithHeading
         service.getJobsFromFirebase(MapView: self.map) { (annotations) in
             print("Got jobs from firebase")
             self.allAnnotations = annotations
@@ -85,11 +88,12 @@ extension ViewMapOfJobsVC: MGLMapViewDelegate{
                         completion: @escaping (Route?, Error?) -> ()) {
         
         // Coordinate accuracy is the maximum distance away from the waypoint that the route may still be considered viable, measured in meters. Negative values indicate that a indefinite number of meters away from the route and still be considered viable.
-        let origin = Waypoint(coordinate: origin, coordinateAccuracy: -1, name: "Start")
-        let destination = Waypoint(coordinate: destination, coordinateAccuracy: -1, name: "Finish")
+        let startPoint = Waypoint(coordinate: currentLocation, coordinateAccuracy: -1, name: "Origin")
+        let pickup = Waypoint(coordinate: origin, coordinateAccuracy: -1, name: "Pickup")
+        let delivery = Waypoint(coordinate: destination, coordinateAccuracy: -1, name: "Delivery")
         
         // Specify that the route is intended for automobiles avoiding traffic
-        let options = NavigationRouteOptions(waypoints: [origin, destination], profileIdentifier: .automobileAvoidingTraffic)
+        let options = NavigationRouteOptions(waypoints: [startPoint, pickup, delivery], profileIdentifier: .automobileAvoidingTraffic)
         
         // Generate the route object and draw it on the map
         _ = Directions.shared.calculate(options) { [unowned self] (waypoints, routes, error) in
@@ -121,28 +125,47 @@ extension ViewMapOfJobsVC: MGLMapViewDelegate{
             map.style?.addLayer(lineStyle)
         }
     }
+    
+    func dot(size: Int) -> UIImage {
+        let floatSize = CGFloat(size)
+        let rect = CGRect(x: 0, y: 0, width: floatSize, height: floatSize)
+        let strokeWidth: CGFloat = 1
+        
+        UIGraphicsBeginImageContextWithOptions(rect.size, false, UIScreen.main.scale)
+        
+        let ovalPath = UIBezierPath(ovalIn: rect.insetBy(dx: strokeWidth, dy: strokeWidth))
+        UIColor.darkGray.setFill()
+        ovalPath.fill()
+        
+        UIColor.white.setStroke()
+        ovalPath.lineWidth = strokeWidth
+        ovalPath.stroke()
+        
+        let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        
+        return image
+    }
+    
+    func mapView(_ mapView: MGLMapView, didSelect annotation: MGLAnnotation) {
 
-//
-//    func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
-//        guard annotation is MGLPointAnnotation else {
-//            return nil
-//        }
-//        let annotationView = CustomAnnotationView()
-//        annotationView.frame = CGRect(x: 0, y: 0, width: 50, height: 50 )
-//        annotationView.backgroundColor = UIColor.white
-//        annotationView.layer.cornerRadius = annotationView.frame.size.height/2
-//        annotationView.clipsToBounds = true
-//        let deliveryIcon = UIImage(icon: .icofont(.vehicleDeliveryVan), size: CGSize(width: 50, height: 50))
-//        let deliveryImageView = UIImageView(image: deliveryIcon)
-//        deliveryImageView.isUserInteractionEnabled = true
-//        annotationView.addSubview(deliveryImageView)
-////        annotationView.layer.cornerRadius = annotationView.frame.size.height/2
-//        annotationView.isUserInteractionEnabled = true
-//        return annotationView
-//    }
+        if let castedAnnotation = annotation as? BlipAnnotation{
+            mapView.removeAnnotations(mapView.annotations!)
+            let pickupAnnotation = BlipAnnotation(coordinate: (castedAnnotation.job?.pickupLocationCoordinates)!, title: "Pickup Point", subtitle: nil)
+            calculateRoute(from: pickupAnnotation.coordinate, to: annotation.coordinate, completion: { (route, error) in
+                if error != nil{
+                    print("Error calculating route to pickup point")
+                }
+                else{
+                    mapView.addAnnotations([pickupAnnotation, annotation])
+                    mapView.showAnnotations([annotation, pickupAnnotation, self.map.userLocation!], animated: true)
+                }
+            })
+        }
+    }
     
     func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
-        if let point = annotation as? BlipAnnotation,
+        if let point = annotation as? CustomPointAnnotation,
             
             let image = point.image,
             let reuseIdentifier = point.reuseIdentifier {
@@ -157,32 +180,21 @@ extension ViewMapOfJobsVC: MGLMapViewDelegate{
         }
         
         // Fallback to the default marker image.
-        return MGLAnnotationImage(image: UIImage(icon: .icofont(.vehicleDeliveryVan), size: CGSize(width: 50, height: 50)), reuseIdentifier: "pickupAnnotation")
+        return nil
     }
     
-    func mapView(_ mapView: MGLMapView, didSelect annotation: MGLAnnotation) {
-
-        if let castedAnnotation = annotation as? BlipAnnotation{
-            map.removeAnnotations(map.annotations!)
-            map.addAnnotation(annotation)
-            let pickupAnnotation = MGLPointAnnotation()
-            pickupAnnotation.coordinate = (castedAnnotation.job?.pickupLocationCoordinates)!
-            self.map.addAnnotation(pickupAnnotation)
-            map.showAnnotations(map.annotations!, animated: true)
-            calculateRoute(from: (pickupAnnotation.coordinate), to: annotation.coordinate) { (route, error) in
-                if error != nil {
-                    print("Error calculating route")
-                }
-            }
+    func mapView(_ mapView: MGLMapView, strokeColorForShapeAnnotation annotation: MGLShape) -> UIColor {
+        if let annotation = annotation as? CustomPolyline {
+            // Return orange if the polyline does not have a custom color.
+            return annotation.color ?? .orange
         }
-    }
-    
-    func mapView(_ mapView: MGLMapView, didDeselect annotation: MGLAnnotation) {
         
-        self.map.removeAnnotations(self.map.annotations!)
-        for annotation in allAnnotations.values{
-            self.map.addAnnotation(annotation)
-        }
+        // Fallback to the default tint color.
+        return mapView.tintColor
+    }
+    
+    func mapView(_ mapView: MGLMapView, annotationCanShowCallout annotation: MGLAnnotation) -> Bool {
+        return true
     }
 }
 

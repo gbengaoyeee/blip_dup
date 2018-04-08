@@ -9,6 +9,7 @@
 import Foundation
 import Stripe
 import Alamofire
+import CoreLocation
 import Firebase
 import FirebaseDatabase
 
@@ -26,6 +27,14 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
         }
     }
     
+    func optimizeRoute(locations: [CLLocationCoordinate2D], completion: @escaping (NSData) -> ()){
+        
+        let url = self.baseURL.appendingPathComponent("optimizeRoute")
+        let coords = // Need you to make this a string of coordinates from the locations parameter for example, if theres 3 locations it organizes them by: "Long,Lat;Long,Lat;Long,Lat" like this: "-122.42,37.78;-122.45,37.91;-122.48,37.73"
+        Alamofire.request(url, method: .get, parameters: [
+            "optimizationURL": "https://api.mapbox.com/optimized-trips/v1/mapbox/driving/"
+                ])
+    }
     
     func createCustomerKey(withAPIVersion apiVersion: String, completion: @escaping STPJSONResponseCompletionBlock) {
         let url = self.baseURL.appendingPathComponent("ephemeral_keys")
