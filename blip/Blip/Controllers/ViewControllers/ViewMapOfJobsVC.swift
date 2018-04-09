@@ -132,16 +132,22 @@ extension ViewMapOfJobsVC: MGLMapViewDelegate{
             
             var waypoints = [Waypoint]()
             MyAPIClient.sharedClient.optimizeRoute(locations: [(castedAnnotation.job?.pickupLocationCoordinates)!, (castedAnnotation.job?.deliveryLocationCoordinates)!], completion: { (data) in
-                print(data!)
-//                c = 0
-//                for each in waypoints{
-//                    if each["waypoint_index"] == c{
-//                        construct
-//                    }
-//                    c++
-//                }
-                // for each waypoint in data!["waypoints"]{
-                // Waypoint(coordinate:
+                let arrayOfWaypoints = data!["waypoints"] as! [[String:Any]]
+                print(arrayOfWaypoints)
+                
+                var ind = 0
+                for way in arrayOfWaypoints{
+                    if (way["waypoint_index"] as! Int) == ind{
+                        print("found index:", ind)
+                        let name = (way["name"] as! String)
+                        let longitude = (way["location"] as! [Double])[0]
+                        let latitude = (way["location"] as! [Double])[1]
+                        let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+                        let waypoint = Waypoint(coordinate: coordinate, coordinateAccuracy: -1, name: name)
+                        waypoints.append(waypoint)
+                    }
+                    ind += 1
+                }
             })
             mapView.removeAnnotations(mapView.annotations!)
             mapView.addAnnotation(annotation)

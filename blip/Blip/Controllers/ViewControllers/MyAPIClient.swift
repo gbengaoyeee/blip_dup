@@ -45,8 +45,7 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
     func optimizeRoute(locations: [CLLocationCoordinate2D], completion: @escaping ([String: AnyObject]?) -> ()){
         let coords = convertLocationToString(locations: locations)
         let url = "https://api.mapbox.com/optimized-trips/v1/mapbox/driving/\(coords)?access_token=pk.eyJ1Ijoic3Jpa2FudGhzcm52cyIsImEiOiJjajY0NDI0ejYxcDljMnFtcTNlYWliajNoIn0.jDevn4Fm6WBZUx7TDtys9Q"
-        
-        Alamofire.request(url, method: .get)
+        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil)
             .responseJSON { (response) in
                 switch response.result {
                 case .success(let json):
@@ -54,7 +53,16 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
                 case .failure(let error):
                     completion(nil)
                 }
-            }
+        }
+//        Alamofire.request(url, method: .get)
+//            .responseJSON { (response) in
+//                switch response.result {
+//                case .success(let json):
+//                    completion(json as? [String: AnyObject])
+//                case .failure(let error):
+//                    completion(nil)
+//                }
+//            }
     }
     
     func createCustomerKey(withAPIVersion apiVersion: String, completion: @escaping STPJSONResponseCompletionBlock) {
