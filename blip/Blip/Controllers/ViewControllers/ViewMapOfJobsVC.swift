@@ -134,20 +134,15 @@ extension ViewMapOfJobsVC: MGLMapViewDelegate{
             var waypointList = [Waypoint]()
             MyAPIClient.sharedClient.optimizeRoute(locations: (castedAnnotation.job?.locList)!, completion: { (data) in
                 let arrayOfWaypoints = data!["waypoints"] as! [[String:Any]]
-                print(arrayOfWaypoints)
-                
-                var ind = 0
+            
                 for way in arrayOfWaypoints{
-                    if (way["waypoint_index"] as! Int) == ind{
-                        print("found index:", ind)
-                        let name = (way["name"] as! String)
-                        let longitude = (way["location"] as! [Double])[0]
-                        let latitude = (way["location"] as! [Double])[1]
-                        let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-                        let waypoint = Waypoint(coordinate: coordinate, coordinateAccuracy: -1, name: name)
-                        waypointList.append(waypoint)
-                    }
-                    ind += 1
+                    
+                    let name = (way["name"] as! String)
+                    let longitude = (way["location"] as! [Double])[0]
+                    let latitude = (way["location"] as! [Double])[1]
+                    let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+                    let waypoint = Waypoint(coordinate: coordinate, coordinateAccuracy: -1, name: name)
+                    waypointList.insert(waypoint, at: (way["waypoint_index"] as! Int))
                 }
                 print(waypointList, "This is the waypoint list")
                 mapView.removeAnnotations(mapView.annotations!)
