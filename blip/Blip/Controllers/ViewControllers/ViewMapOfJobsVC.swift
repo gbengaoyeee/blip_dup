@@ -65,7 +65,10 @@ class ViewMapOfJobsVC: UIViewController {
     @IBAction func testPost(_ sender: Any) {
         service.getCurrentUserInfo { (user) in
             
-            self.service.addTestJob(title: "Pickup", orderer: user,  deliveryLocation: self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 2000), pickupLocation: CLLocationCoordinate2D(latitude: 43.61, longitude: -79.68), earnings: 5.00, estimatedTime: 10.00)
+            let delivery1 = Delivery(deliveryLocation: self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 2000), identifier: "d1", origin: CLLocationCoordinate2D(latitude: 43.61, longitude: -79.68))
+            let delivery2 = Delivery(deliveryLocation: self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 2000), identifier: "d2", origin: CLLocationCoordinate2D(latitude: 43.61, longitude: -79.68))
+            let delivery3 = Delivery(deliveryLocation: self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 2000), identifier: "d3", origin: CLLocationCoordinate2D(latitude: 43.61, longitude: -79.68))
+            self.service.addTestJob(title: "Pickup", orderer: user,  deliveries: [delivery1, delivery2, delivery3], pickupLocation: CLLocationCoordinate2D(latitude: 43.61, longitude: -79.68), earnings: 5.00, estimatedTime: 10.00)
         }
     }
 }
@@ -131,12 +134,12 @@ extension ViewMapOfJobsVC: MGLMapViewDelegate{
         if let castedAnnotation = annotation as? BlipAnnotation{
             
             var waypoints = [Waypoint]()
-            MyAPIClient.sharedClient.optimizeRoute(locations: [(castedAnnotation.job?.pickupLocationCoordinates)!, (castedAnnotation.job?.deliveryLocationCoordinates)!], completion: { (data) in
+            MyAPIClient.sharedClient.optimizeRoute(locations: [(castedAnnotation.job?.pickupLocationCoordinates)!, (castedAnnotation.job?.deliveries.first?.deliveryLocation)!], completion: { (data) in
                 print(data!)
 //                c = 0
 //                for each in waypoints{
 //                    if each["waypoint_index"] == c{
-//                        construct
+//                        construct a waypoint with name and location key remmeber that location longitude is first, latitude is second so dont get confused because CLLOcation construction does it oopsite way. But the json data is opposite, it is long first then lat
 //                    }
 //                    c++
 //                }

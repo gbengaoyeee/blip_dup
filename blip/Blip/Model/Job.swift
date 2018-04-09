@@ -15,17 +15,15 @@ import MapKit
 
 class Job{
     
+    var deliveries = [Delivery]()
     var orderer: BlipUser!
     var title: String!
-    var deliveryLocationCoordinates: CLLocationCoordinate2D!
     var pickupLocationCoordinates: CLLocationCoordinate2D!
     var earnings: Double!
     var estimatedTime: Double!
     var jobID: String!
     var ref: DatabaseReference!
-    var deliveryPlacemark: CLPlacemark!
     var pickupPlacemark: CLPlacemark!
-    var deliveryAddress: String!
     var pickupAddress: String!
     var ordererSnapRef: DatabaseReference?
 
@@ -34,8 +32,12 @@ class Job{
             return nil
         }
         let jobValues = snapshot.value as? [String:AnyObject]
-        let deliveryLatitude = jobValues!["deliveryLocationLat"] as? Double
-        let deliveryLongitude = jobValues!["deliveryLocationLong"] as? Double
+        let deliveriesSnap = snapshot.childSnapshot(forPath: "deliveries")
+        for snap in (deliveriesSnap.value as? [String: AnyObject])!{
+            let delivery = Delivery(snapshot: deliveriesSnap.childSnapshot(forPath: "\(snap.key)"))
+            self.deliveries.append(delivery!)
+        }
+        
         let pickupLatitude = jobValues!["pickupLocationLat"] as? Double
         let pickupLongitude = jobValues!["pickupLocationLong"] as? Double
         let title = jobValues!["jobTitle"] as? String
@@ -45,7 +47,6 @@ class Job{
     
         self.ref = snapshot.ref
         self.jobID = snapshot.key
-        self.deliveryLocationCoordinates = CLLocationCoordinate2D(latitude: deliveryLatitude!, longitude: deliveryLongitude!)
         self.title = title
         self.orderer = orderer
         self.pickupLocationCoordinates = CLLocationCoordinate2D(latitude: pickupLatitude!, longitude: pickupLongitude!)
@@ -61,14 +62,6 @@ class Job{
                 self.pickupPlacemark = placeMark
                 self.pickupAddress = self.parseAddress(placemark: self.pickupPlacemark!)
                 print("ADDRESS: ", self.pickupAddress)
-            }
-        })
-        geocoder.reverseGeocodeLocation(CLLocation(latitude: (self.deliveryLocationCoordinates?.latitude)!, longitude: (self.deliveryLocationCoordinates?.longitude)!), completionHandler: { (placemarks, error) in
-            if(error == nil){
-                let placeMark = placemarks?[0]
-                self.deliveryPlacemark = placeMark
-                self.deliveryAddress = self.parseAddress(placemark: self.deliveryPlacemark!)
-                print("ADDRESS: ", self.deliveryAddress)
             }
         })
     }

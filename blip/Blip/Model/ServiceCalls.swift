@@ -150,7 +150,7 @@ class ServiceCalls{
 
             if let job = Job(snapshot: snap){
                 print("Ordered by ", job.orderer.name!)
-                let point = BlipAnnotation(coordinate: job.deliveryLocationCoordinates, title: job.title, subtitle: "\(job.earnings)")
+                let point = BlipAnnotation(coordinate: job.pickupLocationCoordinates, title: job.title, subtitle: "\(job.earnings)")
                 point.job = job
                 point.reuseIdentifier = "customAnnotation\(job.jobID)"
                 point.image = UIImage(icon: .icofont(.vehicleDeliveryVan), size: CGSize(width: 50, height: 50))
@@ -168,12 +168,10 @@ class ServiceCalls{
      Add a job to Firebase Database
      */
     
-    func addTestJob(title: String, orderer: BlipUser, deliveryLocation: CLLocationCoordinate2D, pickupLocation: CLLocationCoordinate2D, earnings: Double, estimatedTime: Double){
+    func addTestJob(title: String, orderer: BlipUser, deliveries: [Delivery], pickupLocation: CLLocationCoordinate2D, earnings: Double, estimatedTime: Double){
         
         let user = Auth.auth().currentUser
         let newJobID = self.jobsRef.childByAutoId().key
-        let deliveryLat = deliveryLocation.latitude
-        let deliveryLong = deliveryLocation.longitude
         let pickupLat = pickupLocation.latitude
         let pickupLong = pickupLocation.longitude
         
@@ -190,14 +188,18 @@ class ServiceCalls{
         
         let userDict: [String: Any] = [orderer.userEmailHash!: ["email": orderer.email!, "name": orderer.name!, "rating": orderer.rating!, "currentDevice": orderer.currentDevice!, "customerID": orderer.customerID!, "photoURL": orderer.photoURL!.absoluteString, "uid": orderer.uid!]]
         
-        let jobDict: [String:Any] = ["deliveryLocationLat":deliveryLat, "deliveryLocationLong":deliveryLong, "pickupLocationLat":pickupLat, "pickupLocationLong":pickupLong, "orderer": userDict, "estimatedTime": estimatedTime, "earnings":earnings]
+        var deliveryDict: [String: Any] = [:]
+        for delivery in deliveries{
+            deliveryDict[delivery.identifier] = ["deliveryLat": delivery.deliveryLocation.latitude, "deliveryLong": delivery.deliveryLocation.longitude, "originLat": delivery.origin.latitude, "originLong": delivery.origin.longitude]
+        }
+        
+        let jobDict: [String:Any] = ["deliveries": deliveryDict,  "pickupLocationLat":pickupLat, "pickupLocationLong":pickupLong, "orderer": userDict, "estimatedTime": estimatedTime, "earnings":earnings]
 
         // adding job to the user who posted list of last post
         let ordererRef = self.userRef.child(self.emailHash).child("order")
         
         self.jobsRef.child(newJobID).updateChildValues(jobDict)
         ordererRef.setValue(newJobID)
-        print(userDict)
 
     }
     
