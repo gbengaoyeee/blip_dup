@@ -128,19 +128,44 @@ extension ViewMapOfJobsVC: MGLMapViewDelegate{
     
     func mapView(_ mapView: MGLMapView, lineWidthForPolylineAnnotation annotation: MGLPolyline) -> CGFloat {
         // Set the line width for polyline annotations
-        return 6.0
+        return 3.0
     }
     
     func mapView(_ mapView: MGLMapView, strokeColorForShapeAnnotation annotation: MGLShape) -> UIColor {
-        // Give our polyline a unique color by checking for its `title` property
-        if (annotation.title == "Crema to Council Crest" && annotation is MGLPolyline) {
-            // Mapbox cyan
-            return UIColor(red: 59/255, green:178/255, blue:208/255, alpha:1)
+        return UIColor.blue
+    }
+    
+    func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
+        // Substitute our custom view for the user location annotation. This custom view is defined below.
+        if annotation is MGLUserLocation && mapView.userLocation != nil {
+            return CustomUserLocationAnnotationView()
         }
-        else
-        {
-            return UIColor.green
+        return nil
+    }
+    
+    func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
+        
+        if let annotationTitle = annotation.title{
+            if let unwrappedTitle = annotationTitle{
+                
+                print(unwrappedTitle, "This is the annotation title")
+                    
+                if unwrappedTitle == "Pickup"{
+                    
+                    let annotationImage = UIImage(icon: .icofont(.foodBasket), size: CGSize(size: 50), textColor: UIColor.black, backgroundColor: UIColor.white)
+                    let mglAnnotationImage = MGLAnnotationImage(image: annotationImage, reuseIdentifier: "Pickup")
+                    return mglAnnotationImage
+                }
+                    
+                else if unwrappedTitle == "Delivery"{
+                    
+                    let annotationImage = UIImage(icon: .icofont(.vehicleDeliveryVan), size: CGSize(size: 50), textColor: UIColor.black, backgroundColor: UIColor.white)
+                    let mglAnnotationImage = MGLAnnotationImage(image: annotationImage, reuseIdentifier: "Delivery")
+                    return mglAnnotationImage
+                }
+            }
         }
+        return nil
     }
     
     func mapView(_ mapView: MGLMapView, alphaForShapeAnnotation annotation: MGLShape) -> CGFloat {
@@ -152,33 +177,29 @@ extension ViewMapOfJobsVC: MGLMapViewDelegate{
 
         if let castedAnnotation = annotation as? BlipAnnotation{
             
-            var waypointList = [Waypoint]()
-            MyAPIClient.sharedClient.optimizeRoute(locations: (castedAnnotation.job?.locList)!, completion: { (data) in
-//                var ind = 0
-//                while ind < (castedAnnotation.job?.locList.count)!{
-//
-//                    for way in arrayOfWaypoints{
-//
-//                        if (way["waypoint_index"] as! Int) == ind{
-//                            print("found index:", ind)
-//                            let name = (way["name"] as! String)
-//                            let longitude = (way["location"] as! [Double])[0]
-//                            let latitude = (way["location"] as! [Double])[1]
-//                            let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-//                            let waypoint = Waypoint(coordinate: coordinate, coordinateAccuracy: -1, name: name)
-//                            waypointList.append(waypoint)
-//                            ind += 1
-//                        }
-//                    }
-//                }
+            
+            var locationList = (castedAnnotation.job?.locList)!
+            locationList.append(self.currentLocation)
+            
+            MyAPIClient.sharedClient.optimizeRoute(locations: locationList, completion: { (data) in
                 
-                print(data, "This is the waypoint list")
                 mapView.removeAnnotations(mapView.annotations!)
                 mapView.addAnnotation(annotation)
-                let pickupAnnotation = BlipAnnotation(coordinate: (castedAnnotation.job?.pickupLocationCoordinates)!, title: "Pickup Point", subtitle: nil)
-                mapView.addAnnotation(pickupAnnotation)
-                mapView.showAnnotations([annotation, pickupAnnotation, self.map.userLocation!], animated: true)
-                // if let here 
+                
+                var allAnnotations = mapView.annotations
+                allAnnotations?.append(self.map.userLocation!)
+                
+                for delivery in (castedAnnotation.job?.deliveries)!{
+                    
+                    let deliveryAnnotation = MGLPointAnnotation()
+                    deliveryAnnotation.title = "Delivery"
+                    deliveryAnnotation.coordinate = delivery.deliveryLocation
+                    deliveryAnnotation.subtitle = delivery.identifier
+                    allAnnotations?.append(deliveryAnnotation)
+                    mapView.addAnnotation(deliveryAnnotation)
+                }
+                mapView.showAnnotations(allAnnotations!, animated: true)
+                // if let here
                 self.drawRoute(data: data!)
             })
         }
