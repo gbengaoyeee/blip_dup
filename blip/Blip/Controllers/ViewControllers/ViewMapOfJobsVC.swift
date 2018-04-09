@@ -86,17 +86,15 @@ extension ViewMapOfJobsVC: MGLMapViewDelegate{
         }
     }
     
-    func calculateRoute(from origin: CLLocationCoordinate2D,
-                        to destination: CLLocationCoordinate2D,
+    func calculateRoute(waypoints: [Waypoint],
                         completion: @escaping (Route?, Error?) -> ()) {
         
         // Coordinate accuracy is the maximum distance away from the waypoint that the route may still be considered viable, measured in meters. Negative values indicate that a indefinite number of meters away from the route and still be considered viable.
         let startPoint = Waypoint(coordinate: currentLocation, coordinateAccuracy: -1, name: "Origin")
-        let pickup = Waypoint(coordinate: origin, coordinateAccuracy: -1, name: "Pickup")
-        let delivery = Waypoint(coordinate: destination, coordinateAccuracy: -1, name: "Delivery")
-        
+        var waypointsWithCurrentLoc = waypoints
+        waypointsWithCurrentLoc.insert(startPoint, at: 0)
         // Specify that the route is intended for automobiles avoiding traffic
-        let options = NavigationRouteOptions(waypoints: [startPoint, pickup, delivery], profileIdentifier: .automobileAvoidingTraffic)
+        let options = NavigationRouteOptions(waypoints: waypointsWithCurrentLoc, profileIdentifier: .automobileAvoidingTraffic)
         
         // Generate the route object and draw it on the map
         _ = Directions.shared.calculate(options) { [unowned self] (waypoints, routes, error) in
@@ -133,28 +131,35 @@ extension ViewMapOfJobsVC: MGLMapViewDelegate{
 
         if let castedAnnotation = annotation as? BlipAnnotation{
             
-            var waypoints = [Waypoint]()
-            MyAPIClient.sharedClient.optimizeRoute(locations: [(castedAnnotation.job?.pickupLocationCoordinates)!, (castedAnnotation.job?.deliveries.first?.deliveryLocation)!], completion: { (data) in
-                print(data!)
-//                c = 0
-//                for each in waypoints{
-//                    if each["waypoint_index"] == c{
-//                        construct a waypoint with name and location key remmeber that location longitude is first, latitude is second so dont get confused because CLLOcation construction does it oopsite way. But the json data is opposite, it is long first then lat
-//                    }
-//                    c++
-//                }
-                // for each waypoint in data!["waypoints"]{
-                // Waypoint(coordinate:
-            })
-            mapView.removeAnnotations(mapView.annotations!)
-            mapView.addAnnotation(annotation)
-            let pickupAnnotation = BlipAnnotation(coordinate: (castedAnnotation.job?.pickupLocationCoordinates)!, title: "Pickup Point", subtitle: nil)
-            mapView.addAnnotation(pickupAnnotation)
-            mapView.showAnnotations([annotation, pickupAnnotation, map.userLocation!], animated: true)
-            calculateRoute(from: pickupAnnotation.coordinate, to: annotation.coordinate, completion: { (route, error) in
-                if error != nil{
-                    print("Error calculating route to pickup point")
+            var waypointList = [Waypoint]()
+            MyAPIClient.sharedClient.optimizeRoute(locations: (castedAnnotation.job?.locList)!, completion: { (data) in
+                let arrayOfWaypoints = data!["waypoints"] as! [[String:Any]]
+                print(arrayOfWaypoints)
+                
+                var ind = 0
+                for way in arrayOfWaypoints{
+                    if (way["waypoint_index"] as! Int) == ind{
+                        print("found index:", ind)
+                        let name = (way["name"] as! String)
+                        let longitude = (way["location"] as! [Double])[0]
+                        let latitude = (way["location"] as! [Double])[1]
+                        let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+                        let waypoint = Waypoint(coordinate: coordinate, coordinateAccuracy: -1, name: name)
+                        waypointList.append(waypoint)
+                    }
+                    ind += 1
                 }
+                print(waypointList, "This is the waypoint list")
+                mapView.removeAnnotations(mapView.annotations!)
+                mapView.addAnnotation(annotation)
+                let pickupAnnotation = BlipAnnotation(coordinate: (castedAnnotation.job?.pickupLocationCoordinates)!, title: "Pickup Point", subtitle: nil)
+                mapView.addAnnotation(pickupAnnotation)
+                mapView.showAnnotations([annotation, pickupAnnotation, self.map.userLocation!], animated: true)
+                self.calculateRoute(waypoints: waypointList, completion: { (route, error) in
+                    if error != nil{
+                        print("Error calculating route to pickup point")
+                    }
+                })
             })
         }
     }

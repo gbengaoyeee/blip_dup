@@ -26,7 +26,8 @@ class Job{
     var pickupPlacemark: CLPlacemark!
     var pickupAddress: String!
     var ordererSnapRef: DatabaseReference?
-
+    var locList = [CLLocationCoordinate2D]()
+    
     init?(snapshot: DataSnapshot) {
         guard !snapshot.key.isEmpty else {
             return nil
@@ -35,6 +36,7 @@ class Job{
         let deliveriesSnap = snapshot.childSnapshot(forPath: "deliveries")
         for snap in (deliveriesSnap.value as? [String: AnyObject])!{
             let delivery = Delivery(snapshot: deliveriesSnap.childSnapshot(forPath: "\(snap.key)"))
+            self.locList.append((delivery?.deliveryLocation)!)
             self.deliveries.append(delivery!)
         }
         
@@ -50,6 +52,7 @@ class Job{
         self.title = title
         self.orderer = orderer
         self.pickupLocationCoordinates = CLLocationCoordinate2D(latitude: pickupLatitude!, longitude: pickupLongitude!)
+        self.locList.insert(pickupLocationCoordinates, at: 0)
         self.earnings = earnings
         self.estimatedTime = estimatedTime
         self.ordererSnapRef = snapshot.childSnapshot(forPath: "orderer").ref
