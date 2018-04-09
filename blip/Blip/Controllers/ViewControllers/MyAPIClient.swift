@@ -42,14 +42,25 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
         
     }
     
-    func optimizeRoute(locations: [CLLocationCoordinate2D], completion: @escaping ([String: AnyObject]?) -> ()){
+    func optimizeRoute(locations: [CLLocationCoordinate2D], completion: @escaping (Data?) -> ()){
         let coords = convertLocationToString(locations: locations)
-        let url = "https://api.mapbox.com/optimized-trips/v1/mapbox/driving/\(coords)?access_token=pk.eyJ1Ijoic3Jpa2FudGhzcm52cyIsImEiOiJjajY0NDI0ejYxcDljMnFtcTNlYWliajNoIn0.jDevn4Fm6WBZUx7TDtys9Q"
+        let url = "https://api.mapbox.com/optimized-trips/v1/mapbox/driving/\(coords)?roundtrip=false&source=first&destination=last&geometries=geojson&access_token=pk.eyJ1Ijoic3Jpa2FudGhzcm52cyIsImEiOiJjajY0NDI0ejYxcDljMnFtcTNlYWliajNoIn0.jDevn4Fm6WBZUx7TDtys9Q"
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil)
             .responseJSON { (response) in
                 switch response.result {
                 case .success(let json):
-                    completion(json as? [String: AnyObject])
+                    let jsonData = json as? [String: AnyObject]
+                    let geoJsonData = jsonData!["trips"] as? [[String: AnyObject]]
+                    let data = geoJsonData![0] as? [String: AnyObject]
+                    do{
+                        let subData = try JSONSerialization.data(withJSONObject: data!["geometry"], options: .prettyPrinted)
+                        completion(subData)
+                    }
+                    
+                    catch{
+                        
+                    }
+                    
                 case .failure(let error):
                     completion(nil)
                 }
@@ -63,6 +74,24 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
 //                    completion(nil)
 //                }
 //            }
+    }
+    
+    func stringify(json: Any, prettyPrinted: Bool = false) -> String {
+        var options: JSONSerialization.WritingOptions = []
+        if prettyPrinted {
+            options = JSONSerialization.WritingOptions.prettyPrinted
+        }
+        
+        do {
+            let data = try JSONSerialization.data(withJSONObject: json, options: options)
+            if let string = String(data: data, encoding: String.Encoding.utf8) {
+                return string
+            }
+        } catch {
+            print(error)
+        }
+        
+        return ""
     }
     
     func createCustomerKey(withAPIVersion apiVersion: String, completion: @escaping STPJSONResponseCompletionBlock) {

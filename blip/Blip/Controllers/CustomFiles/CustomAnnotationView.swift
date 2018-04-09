@@ -120,3 +120,4 @@ class CustomUserLocationAnnotationView: MGLUserLocationAnnotationView {
         return bezierPath.cgPath
     }
 }
+
