@@ -150,7 +150,7 @@ class ServiceCalls{
 
             if let job = Job(snapshot: snap){
                 print("Ordered by ", job.orderer.name!)
-                let point = BlipAnnotation(coordinate: job.pickupLocationCoordinates, title: job.title, subtitle: "\(job.earnings)")
+                let point = BlipAnnotation(coordinate: job.pickupLocationCoordinates, title: "Pickup", subtitle: job.title)
                 point.job = job
                 point.reuseIdentifier = "customAnnotation\(job.jobID)"
                 point.image = UIImage(icon: .icofont(.vehicleDeliveryVan), size: CGSize(width: 50, height: 50))
