@@ -1,0 +1,21 @@
+{
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "shell": "firebase experimental:functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "dependencies": {
+    "@google-cloud/logging": "^1.1.3s",
+    "app": "^0.1.0",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "firebase-admin": "^5.8.2",
+    "firebase-functions": "^0.8.1",
+    "geolib": "^2.0.24",
+    "stripe": "^5.4.0",
+    "walmart": "0.0.4"
+  }
+}

@@ -52,7 +52,6 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
                     let jsonData = json as? [String: AnyObject]
                     let geoJsonData = jsonData!["trips"] as? [[String: AnyObject]]
                     let data = geoJsonData![0] as? [String: AnyObject]
-                    print(data!)
                     do{
                         let subData = try JSONSerialization.data(withJSONObject: data!["geometry"]!, options: .prettyPrinted)
                         completion(subData)
@@ -66,15 +65,18 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
                     completion(nil)
                 }
         }
-//        Alamofire.request(url, method: .get)
-//            .responseJSON { (response) in
-//                switch response.result {
-//                case .success(let json):
-//                    completion(json as? [String: AnyObject])
-//                case .failure(let error):
-//                    completion(nil)
-//                }
-//            }
+    }
+    
+    func getBestJobAt(location: CLLocationCoordinate2D, userHash: String, completion: @escaping(Error?) -> ()){
+        let locationLat = Double(location.latitude)
+        let locationLong = Double(location.longitude)
+        let url = self.baseURL.appendingPathComponent("getBestJob")
+        let params: [String: Any] = [
+            "locationLat" : locationLat,
+            "locationLong" : locationLong,
+            "emailHash" : userHash
+        ]
+        Alamofire.request(url, method: .post, parameters: params)
     }
     
     func stringify(json: Any, prettyPrinted: Bool = false) -> String {

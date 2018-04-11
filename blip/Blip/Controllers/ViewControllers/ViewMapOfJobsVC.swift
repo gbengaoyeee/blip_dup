@@ -48,11 +48,11 @@ class ViewMapOfJobsVC: UIViewController {
     var internet:Bool!
     let userDefault = UserDefaults.standard
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         useCurrentLocations()
         prepareMap()
+        
         // Do any additional setup after loading the view.
     }
 
@@ -61,6 +61,18 @@ class ViewMapOfJobsVC: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        let screenBrightness = UIScreen.main.brightness
+        
+        if screenBrightness < 0.4{
+            map.styleURL = URL(string: "mapbox://styles/srikanthsrnvs/cjft4wgos7sa72rn0f7ykelkm")
+            UIApplication.shared.statusBarStyle = .lightContent
+        }
+        else{
+            map.styleURL = URL(string: "mapbox://styles/srikanthsrnvs/cjd6ciwwm54my2rms3052j5us")
+            UIApplication.shared.statusBarStyle = .default
+        }
+    }
 
     @IBAction func testPost(_ sender: Any) {
         service.getCurrentUserInfo { (user) in
@@ -86,24 +98,6 @@ extension ViewMapOfJobsVC: MGLMapViewDelegate{
         }
     }
     
-//    func calculateRoute(waypoints: [Waypoint],
-//                        completion: @escaping (Route?, Error?) -> ()) {
-//
-//        // Coordinate accuracy is the maximum distance away from the waypoint that the route may still be considered viable, measured in meters. Negative values indicate that a indefinite number of meters away from the route and still be considered viable.
-//        let startPoint = Waypoint(coordinate: currentLocation, coordinateAccuracy: -1, name: "Origin")
-//        var waypointsWithCurrentLoc = waypoints
-//        waypointsWithCurrentLoc.insert(startPoint, at: 0)
-//        // Specify that the route is intended for automobiles avoiding traffic
-//        let options = NavigationRouteOptions(waypoints: waypointsWithCurrentLoc, profileIdentifier: .automobileAvoidingTraffic)
-//
-//        // Generate the route object and draw it on the map
-//        _ = Directions.shared.calculate(options) { [unowned self] (waypoints, routes, error) in
-//            self.directionsRoute = routes?.first
-//            // Draw the route on the map after creating it
-//            self.drawRoute(route: self.directionsRoute!)
-//        }
-//    }
-    
     func drawRoute(data: Data) {
         do {
             // Convert the file contents to a shape collection feature object
@@ -128,11 +122,11 @@ extension ViewMapOfJobsVC: MGLMapViewDelegate{
     
     func mapView(_ mapView: MGLMapView, lineWidthForPolylineAnnotation annotation: MGLPolyline) -> CGFloat {
         // Set the line width for polyline annotations
-        return 3.0
+        return 4.5
     }
     
     func mapView(_ mapView: MGLMapView, strokeColorForShapeAnnotation annotation: MGLShape) -> UIColor {
-        return UIColor.blue
+        return #colorLiteral(red: 0.2796384096, green: 0.4718205929, blue: 1, alpha: 1)
     }
     
     func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
@@ -147,25 +141,26 @@ extension ViewMapOfJobsVC: MGLMapViewDelegate{
         
         if let annotationTitle = annotation.title{
             if let unwrappedTitle = annotationTitle{
-                
-                print(unwrappedTitle, "This is the annotation title")
-                    
                 if unwrappedTitle == "Pickup"{
                     
-                    let annotationImage = UIImage(icon: .icofont(.foodBasket), size: CGSize(size: 50), textColor: UIColor.black, backgroundColor: UIColor.white)
+                    let annotationImage = UIImage(icon: .googleMaterialDesign(.star), size: CGSize(size: 50), textColor: UIColor.yellow, backgroundColor: UIColor.clear)
                     let mglAnnotationImage = MGLAnnotationImage(image: annotationImage, reuseIdentifier: "Pickup")
                     return mglAnnotationImage
                 }
                     
                 else if unwrappedTitle == "Delivery"{
                     
-                    let annotationImage = UIImage(icon: .icofont(.vehicleDeliveryVan), size: CGSize(size: 50), textColor: UIColor.black, backgroundColor: UIColor.white)
+                    let annotationImage = UIImage(icon: .icofont(.vehicleDeliveryVan), size: CGSize(size: 40), textColor: UIColor.white, backgroundColor: UIColor.clear)
                     let mglAnnotationImage = MGLAnnotationImage(image: annotationImage, reuseIdentifier: "Delivery")
                     return mglAnnotationImage
                 }
             }
         }
         return nil
+    }
+    
+    func mapView(_ mapView: MGLMapView, annotationCanShowCallout annotation: MGLAnnotation) -> Bool {
+        return true
     }
     
     func mapView(_ mapView: MGLMapView, alphaForShapeAnnotation annotation: MGLShape) -> CGFloat {
@@ -175,33 +170,43 @@ extension ViewMapOfJobsVC: MGLMapViewDelegate{
     
     func mapView(_ mapView: MGLMapView, didSelect annotation: MGLAnnotation) {
 
-        if let castedAnnotation = annotation as? BlipAnnotation{
-            
-            
-            var locationList = (castedAnnotation.job?.locList)!
-            locationList.append(self.currentLocation)
-            
-            MyAPIClient.sharedClient.optimizeRoute(locations: locationList, completion: { (data) in
-                
-                mapView.removeAnnotations(mapView.annotations!)
-                mapView.addAnnotation(annotation)
-                
-                var allAnnotations = mapView.annotations
-                allAnnotations?.append(self.map.userLocation!)
-                
-                for delivery in (castedAnnotation.job?.deliveries)!{
-                    
-                    let deliveryAnnotation = MGLPointAnnotation()
-                    deliveryAnnotation.title = "Delivery"
-                    deliveryAnnotation.coordinate = delivery.deliveryLocation
-                    deliveryAnnotation.subtitle = delivery.identifier
-                    allAnnotations?.append(deliveryAnnotation)
-                    mapView.addAnnotation(deliveryAnnotation)
+        if let annotationTitle = annotation.title{
+            if let unwrappedTitle = annotationTitle{
+                if unwrappedTitle == "Pickup"{
+                    print("Tapped pickup")
+                    if let castedAnnotation = annotation as? BlipAnnotation{
+                        
+                        var locationList = (castedAnnotation.job?.locList)!
+                        locationList.append((mapView.userLocation?.coordinate)!)
+                        
+                        MyAPIClient.sharedClient.optimizeRoute(locations: locationList, completion: { (data) in
+                            
+                            mapView.removeAnnotations(mapView.annotations!)
+                            mapView.addAnnotation(annotation)
+                            
+                            var allAnnotations = mapView.annotations
+                            allAnnotations?.append(self.map.userLocation!)
+                            
+                            for delivery in (castedAnnotation.job?.deliveries)!{
+                                
+                                let deliveryAnnotation = MGLPointAnnotation()
+                                deliveryAnnotation.title = "Delivery"
+                                deliveryAnnotation.coordinate = delivery.deliveryLocation
+                                deliveryAnnotation.subtitle = delivery.identifier
+                                allAnnotations?.append(deliveryAnnotation)
+                                mapView.addAnnotation(deliveryAnnotation)
+                            }
+                            mapView.showAnnotations(allAnnotations!, animated: true)
+                            // if let here
+                            self.drawRoute(data: data!)
+                            
+                            for anno in mapView.annotations!{
+                        
+                            }
+                        })
+                    }
                 }
-                mapView.showAnnotations(allAnnotations!, animated: true)
-                // if let here
-                self.drawRoute(data: data!)
-            })
+            }
         }
     }
     
@@ -212,6 +217,10 @@ extension ViewMapOfJobsVC: MGLMapViewDelegate{
             self.map.addAnnotation(annotation)
         }
     }
+    
+//    func openCalloutFor(annotation: MGLPointAnnotation){
+//        annotatio
+//    }
 }
 
 extension ViewMapOfJobsVC: STPPaymentContextDelegate{
@@ -250,6 +259,9 @@ extension ViewMapOfJobsVC: CLLocationManagerDelegate{
         self.map.setZoomLevel(7, animated: true)
         self.map.setCamera(camera, withDuration: 4, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
         currentLocation = locValue
+        MyAPIClient.sharedClient.getBestJobAt(location: self.currentLocation, userHash: "hello") { (error) in
+            print(error)
+        }
         service.updateJobAccepterLocation(location: locValue)
         manager.stopUpdatingLocation()
     }
