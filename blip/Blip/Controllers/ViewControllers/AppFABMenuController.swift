@@ -5,6 +5,7 @@ import Firebase
 import FBSDKLoginKit
 import Stripe
 import PopupDialog
+import Kingfisher
 
 class AppFABMenuController: FABMenuController, STPPaymentContextDelegate{
     fileprivate let fabMenuSize = CGSize(width: 40, height: 40)
@@ -51,15 +52,23 @@ class AppFABMenuController: FABMenuController, STPPaymentContextDelegate{
         prepareProfilePageFabMenuItem()
         preparePaymentMethodsItem()
         prepareFABMenu()
-        
     }
 }
 
 extension AppFABMenuController {
     fileprivate func prepareFABButton() {
-        fabButton = FABButton(image: Icon.cm.menu, tintColor: .white)
+        
+        fabButton = FABButton()
         fabButton.pulseColor = .white
-        fabButton.backgroundColor = Color.red.base
+        fabButton.backgroundColor = #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1)
+        fabButton.imageView?.makeCircular()
+        fabButton.makeCircular()
+        KingfisherManager.shared.retrieveImage(with: URL(string: userDefaults.dictionary(forKey: "loginCredentials")!["picture"] as! String)!, options: nil, progressBlock: nil) { (image, error, type, url) in
+            if let image = image {
+                self.fabButton.setImage(image, for: .normal)
+                self.fabButton.clipsToBounds = true
+            }
+        }
     }
     
     fileprivate func prepareLogoutFabMenuItem() {
@@ -131,7 +140,7 @@ extension AppFABMenuController {
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             appDelegate.setLogoutAsRoot()
 
-//            userDefaults.removeObject(forKey: "loginCredentials")
+
             
         } catch let signOutError as NSError {
             let signOutErrorPopup = PopupDialog(title: "Error", message: "Error signing you out, try again later" + signOutError.localizedDescription )

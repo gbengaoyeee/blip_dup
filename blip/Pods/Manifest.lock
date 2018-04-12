@@ -14,37 +14,37 @@ PODS:
   - CHIPageControl/Fresno (0.1.5)
   - Cosmos (15.0.0)
   - DynamicBlurView (2.0.2)
-  - FBSDKCoreKit (4.31.1):
+  - FBSDKCoreKit (4.32.0):
     - Bolts (~> 1.7)
-  - FBSDKLoginKit (4.31.1):
+  - FBSDKLoginKit (4.32.0):
     - FBSDKCoreKit
-  - FBSDKShareKit (4.31.1):
-    - FBSDKCoreKit (~> 4.31.1)
-  - Firebase/Auth (4.11.0):
+  - FBSDKShareKit (4.32.0):
+    - FBSDKCoreKit (~> 4.32.0)
+  - Firebase/Auth (4.12.0):
     - Firebase/Core
-    - FirebaseAuth (= 4.5.0)
-  - Firebase/Core (4.11.0):
+    - FirebaseAuth (= 4.6.0)
+  - Firebase/Core (4.12.0):
     - FirebaseAnalytics (= 4.1.0)
-    - FirebaseCore (= 4.0.18)
-  - Firebase/Database (4.11.0):
+    - FirebaseCore (= 4.0.19)
+  - Firebase/Database (4.12.0):
     - Firebase/Core
     - FirebaseDatabase (= 4.1.5)
-  - Firebase/Messaging (4.11.0):
+  - Firebase/Messaging (4.12.0):
     - Firebase/Core
-    - FirebaseMessaging (= 2.1.1)
-  - Firebase/Storage (4.11.0):
+    - FirebaseMessaging (= 2.2.0)
+  - Firebase/Storage (4.12.0):
     - Firebase/Core
-    - FirebaseStorage (= 2.1.3)
+    - FirebaseStorage (= 2.2.0)
   - FirebaseAnalytics (4.1.0):
     - FirebaseCore (~> 4.0)
     - FirebaseInstanceID (~> 2.0)
     - GoogleToolboxForMac/NSData+zlib (~> 2.1)
     - nanopb (~> 0.3)
-  - FirebaseAuth (4.5.0):
+  - FirebaseAuth (4.6.0):
     - FirebaseAnalytics (~> 4.1)
     - GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)
     - GTMSessionFetcher/Core (~> 1.1)
-  - FirebaseCore (4.0.18):
+  - FirebaseCore (4.0.19):
     - GoogleToolboxForMac/NSData+zlib (~> 2.1)
   - FirebaseDatabase (4.1.5):
     - FirebaseAnalytics (~> 4.1)
@@ -52,13 +52,13 @@ PODS:
     - leveldb-library (~> 1.18)
   - FirebaseInstanceID (2.0.10):
     - FirebaseCore (~> 4.0)
-  - FirebaseMessaging (2.1.1):
+  - FirebaseMessaging (2.2.0):
     - FirebaseAnalytics (~> 4.1)
     - FirebaseCore (~> 4.0)
     - FirebaseInstanceID (~> 2.0)
     - GoogleToolboxForMac/Logger (~> 2.1)
     - Protobuf (~> 3.5)
-  - FirebaseStorage (2.1.3):
+  - FirebaseStorage (2.2.0):
     - FirebaseAnalytics (~> 4.1)
     - FirebaseCore (~> 4.0)
     - GTMSessionFetcher/Core (~> 1.1)
@@ -75,25 +75,24 @@ PODS:
     - GoogleToolboxForMac/NSString+URLArguments (= 2.1.3)
   - GoogleToolboxForMac/NSString+URLArguments (2.1.3)
   - GTMSessionFetcher/Core (1.1.15)
-  - Hero (1.1.0)
+  - Hero (1.2.0)
   - IBAnimatable (5.0.0)
   - Kingfisher (4.7.0)
   - leveldb-library (1.20)
   - lottie-ios (2.5.0)
   - Mapbox-iOS-SDK (3.7.6)
-  - MapboxCoreNavigation (0.16.0):
-    - MapboxDirections.swift (~> 0.19.0)
-    - MapboxMobileEvents (~> 0.3)
-    - Turf (~> 0.0.4)
+  - MapboxCoreNavigation (0.16.1):
+    - MapboxDirections.swift (~> 0.19.1)
+    - MapboxMobileEvents (~> 0.4)
+    - Turf (~> 0.1)
   - MapboxDirections.swift (0.19.1):
     - Polyline (~> 4.2)
   - MapboxMobileEvents (0.4.0)
-  - MapboxNavigation (0.16.0):
+  - MapboxNavigation (0.16.1):
     - Mapbox-iOS-SDK (~> 3.6)
-    - MapboxCoreNavigation (= 0.16.0)
+    - MapboxCoreNavigation (= 0.16.1)
     - MapboxSpeech (~> 0.0.1)
     - Solar (~> 2.1)
-    - Turf (~> 0.0.4)
   - MapboxSpeech (0.0.1)
   - MarqueeLabel/Swift (3.1.4)
   - Material (2.14.0):
@@ -116,12 +115,14 @@ PODS:
   - PopupDialog (0.7.1):
     - DynamicBlurView (~> 2.0)
   - Protobuf (3.5.0)
+  - Pulsator (0.5.1)
   - RevealingSplashView (0.5.0)
   - SnapKit (4.0.0)
   - Solar (2.1.0)
+  - SRCountdownTimer (1.1)
   - Stripe (12.1.2)
   - SwiftIcons (2.0.1)
-  - Turf (0.0.4)
+  - Turf (0.1.1)
   - UIImageViewModeScaleAspect (1.5)
 
 DEPENDENCIES:
@@ -148,7 +149,9 @@ DEPENDENCIES:
   - NotificationBannerSwift
   - Pastel
   - PopupDialog
+  - Pulsator
   - RevealingSplashView
+  - SRCountdownTimer
   - Stripe
   - SwiftIcons
 
@@ -161,29 +164,29 @@ SPEC CHECKSUMS:
   CHIPageControl: 79d19a8ee2e35fa3c1da6533adb5364c77b5cfea
   Cosmos: a6dbd3d0baa0cc8f51f8598f7508d5a09d0a9ade
   DynamicBlurView: aa6db4defc6e537eb86fc5e58dd3991666178399
-  FBSDKCoreKit: e08ccfcefa7bc1347a07c276dac9bf6c7fe57024
-  FBSDKLoginKit: 99797ac39252fef6f72600b886f6ee60b4b29cab
-  FBSDKShareKit: e640c41c9fcd61929eeb3d0c21ad335103e7cb62
-  Firebase: cc13dfab1038c8b45d7903e01fc690451d6d0b24
+  FBSDKCoreKit: 55d7f2ac45d9c4b9b6119f4e43900fe84b9b7b1b
+  FBSDKLoginKit: 32ac05c2a59952c363c2e85aafa8f73ba93bcbad
+  FBSDKShareKit: 658780d0d108b8ad590a54afb5ac1427bdc8de28
+  Firebase: d7fdf40e4d6c841849c52919f437fd3a0009ded0
   FirebaseAnalytics: 3dfae28d4a5e06f86c4fae830efc2ad3fadb19bc
-  FirebaseAuth: 147bf340a0706b44ca1753d6b41ebafd9687cfe6
-  FirebaseCore: b981f47e5254cbcfdeb483355300d743f6fcab2c
+  FirebaseAuth: 85a1b118a89838efc6f6ab3f2b1f94747d72a915
+  FirebaseCore: ff49ebb37e0f63a570d78c4f1c1c0befe8659d5c
   FirebaseDatabase: 5f0bc6134c5c237cf55f9e1249d406770a75eafd
   FirebaseInstanceID: 8d20d890d65c917f9f7d9950b6e10a760ad34321
-  FirebaseMessaging: db0e01c52ef7e1f42846431273558107d084ede4
-  FirebaseStorage: 9a863a2bb96c406958eeff7c2f1dfa9f44c44a13
+  FirebaseMessaging: 75cdb862e86c30e0913a2ff307e48d49357c5b73
+  FirebaseStorage: 0c223481c8f89ed300cf1239ddd2d9833622c65f
   GoogleToolboxForMac: 2501e2ad72a52eb3dfe7bd9aee7dad11b858bd20
   GTMSessionFetcher: 5fa5b80fd20e439ef5f545fb2cb3ca6c6714caa2
-  Hero: ce59e81c79390613d97b43da7179e2c5e1017e04
+  Hero: 33dadf2cd1c98af71e213dcbc2902e6e03622a4e
   IBAnimatable: aa2286a9cf8fb4ae2e1be85c5287ae56143b024f
   Kingfisher: da6b005aa96d37698e3e4f1ccfe96a5b9bbf27d6
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   lottie-ios: d699fdee68d7b63e721d949388b015fef1aaa4ac
   Mapbox-iOS-SDK: 23ececda1d90c3b436b45e2c88e9677f025303c0
-  MapboxCoreNavigation: 0ebb72a3253af35695f2b2bd7c919d67ad354fb5
+  MapboxCoreNavigation: 516b2114b3a7d6f09ad9175915718cd6fea0c955
   MapboxDirections.swift: 3d902e3dc35f14cc6a322785e07f2ee6197237dc
   MapboxMobileEvents: e71cf788a95fa0c01ad6ce17fd5efd13140af5ff
-  MapboxNavigation: 6fc118df531264d75f6b22b459ed9271a941b0b7
+  MapboxNavigation: 58f06a66998639cc978d515f8adbc5da5f7d51ef
   MapboxSpeech: 6cc9b3d53adc2988af3ebc704dd17907b84a3f9f
   MarqueeLabel: bf768455fe88d427f71476ebb23f9092b660f40b
   Material: c5bea030f57d4b903c5284200bb612d571c9ec03
@@ -194,14 +197,16 @@ SPEC CHECKSUMS:
   Polyline: 3d69f75bb136357e27291d439d0436c6ebda57a4
   PopupDialog: 39598b7d41719f5c025b4b70e62728bae7734fef
   Protobuf: 8a9838fba8dae3389230e1b7f8c104aa32389c03
+  Pulsator: f465ca37212d826523fe8c79b07c1a4c1a941f5e
   RevealingSplashView: 0794eecad3a8983ac11a1fe474e9a9b51b926780
   SnapKit: a42d492c16e80209130a3379f73596c3454b7694
   Solar: 2dc6e7cc39186cb0c8228fa08df76fb50c7d8f24
+  SRCountdownTimer: 9c92e444b5403c92f01dd6610299b8c634bc8562
   Stripe: 3230cdf8a8b0c04902e45e86f222fb82a926239c
   SwiftIcons: e475a56ae2c2da40672dbf16061ca5dd5cee7dbb
-  Turf: 6c169618fa671e3f8a7b764b5b3332053ad6110e
+  Turf: 4ace207379c8d58a8e45842755de821dac3fae72
   UIImageViewModeScaleAspect: 11a790a0b9d248a13dc63e3a78991f1463b6d84e
 
-PODFILE CHECKSUM: 6fa531cf7d39840edd8c77dd89fc4f7d3e1041d0
+PODFILE CHECKSUM: 543aa9b4df7fcf3144e71c1e25f194730afb042b
 
-COCOAPODS: 1.3.1
+COCOAPODS: 1.4.0

@@ -67,6 +67,18 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
         }
     }
     
+    func getNumberOfJobsNearMe(location: CLLocationCoordinate2D, completion: @escaping(Int?) -> ()){
+        
+        let locationLat = Double(location.latitude)
+        let locationLong = Double(location.longitude)
+        let url = self.baseURL.appendingPathComponent("getNumberOfJobs")
+        let params: [String: Any] = [
+            "locationLat" : locationLat,
+            "locationLong" : locationLong
+        ]
+        Alamofire.request(url, method: .post, parameters: params)
+    }
+    
     func getBestJobAt(location: CLLocationCoordinate2D, userHash: String, completion: @escaping(Error?) -> ()){
         let locationLat = Double(location.latitude)
         let locationLong = Double(location.longitude)

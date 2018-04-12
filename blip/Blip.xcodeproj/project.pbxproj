@@ -63,6 +63,7 @@
 		5FDEF87F206B56DC00F33733 /* ViewMapOfJobsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FDEF87E206B56DC00F33733 /* ViewMapOfJobsVC.swift */; };
 		E44A286AF55A28A06A305841 /* Pods_BlipTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F498B34F0F7DEA567870388 /* Pods_BlipTests.framework */; };
 		F30D60CB207B19930022F90D /* Delivery.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30D60CA207B19930022F90D /* Delivery.swift */; };
+		F347473E207FC40D00F9A603 /* SearchForJobVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F347473D207FC40D00F9A603 /* SearchForJobVC.swift */; };
 		F3E330B42075A38100F19CF8 /* camera.json in Resources */ = {isa = PBXBuildFile; fileRef = F3E330B32075A38000F19CF8 /* camera.json */; };
 		F3F5081E2031F77E00252E65 /* CenturyGothic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B537340202EBD4C0020F3B1 /* CenturyGothic.ttf */; };
 		F3F5081F2031F78300252E65 /* CenturyGothicBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B53733F202EBD4C0020F3B1 /* CenturyGothicBold.ttf */; };
@@ -163,6 +164,7 @@
 		DA08477A131A88FA8EB584E0 /* Pods-BlipTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlipTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BlipTests/Pods-BlipTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E8545681CCD5C87C2E3C5E6F /* Pods-BlipUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlipUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BlipUITests/Pods-BlipUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		F30D60CA207B19930022F90D /* Delivery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Delivery.swift; sourceTree = "<group>"; };
+		F347473D207FC40D00F9A603 /* SearchForJobVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchForJobVC.swift; sourceTree = "<group>"; };
 		F3E330B32075A38000F19CF8 /* camera.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = camera.json; sourceTree = "<group>"; };
 		F3F508212032085600252E65 /* Blip-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Blip-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -351,6 +353,7 @@
 				5FDEF87E206B56DC00F33733 /* ViewMapOfJobsVC.swift */,
 				3BCD8443207416E70079B4D4 /* NewSignUpVC.swift */,
 				3BCD844520747C130079B4D4 /* ChoosePictureVC.swift */,
+				F347473D207FC40D00F9A603 /* SearchForJobVC.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -633,7 +636,9 @@
 				"${BUILT_PRODUCTS_DIR}/Polyline/Polyline.framework",
 				"${BUILT_PRODUCTS_DIR}/PopupDialog/PopupDialog.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
+				"${BUILT_PRODUCTS_DIR}/Pulsator/Pulsator.framework",
 				"${BUILT_PRODUCTS_DIR}/RevealingSplashView/RevealingSplashView.framework",
+				"${BUILT_PRODUCTS_DIR}/SRCountdownTimer/SRCountdownTimer.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Solar/Solar.framework",
 				"${BUILT_PRODUCTS_DIR}/Stripe/Stripe.framework",
@@ -677,7 +682,9 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Polyline.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PopupDialog.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Pulsator.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RevealingSplashView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SRCountdownTimer.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Solar.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Stripe.framework",
@@ -811,6 +818,7 @@
 				3B537382202EC0DC0020F3B1 /* SellVC+.swift in Sources */,
 				3B5372F8202EB4320020F3B1 /* AppDelegate.swift in Sources */,
 				3B537330202EBA6B0020F3B1 /* AppError.swift in Sources */,
+				F347473E207FC40D00F9A603 /* SearchForJobVC.swift in Sources */,
 				3B537381202EC0DC0020F3B1 /* ProfilePicture.swift in Sources */,
 				F30D60CB207B19930022F90D /* Delivery.swift in Sources */,
 				3B537397202EC2210020F3B1 /* Extensions.swift in Sources */,

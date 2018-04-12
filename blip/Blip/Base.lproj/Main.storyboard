@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="V9e-Cj-ili">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="V9e-Cj-ili">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -165,9 +165,7 @@
                         <outlet property="firstNameTF" destination="CXJ-py-RfG" id="275-JJ-Q93"/>
                         <outlet property="gradientView" destination="C5h-GM-0wA" id="ps2-oc-wud"/>
                         <outlet property="lastNameTF" destination="zrd-HM-TwB" id="BKG-aT-e97"/>
-                        <segue destination="KPa-cD-RPw" kind="show" identifier="ToEmailVerifyVC" id="l9I-A1-ZbX">
-                            <nil key="action"/>
-                        </segue>
+                        <segue destination="KPa-cD-RPw" kind="show" identifier="ToEmailVerifyVC" id="l9I-A1-ZbX"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="u5p-ft-5Ez" sceneMemberID="firstResponder"/>
@@ -207,16 +205,28 @@
                                 <rect key="frame" x="65.5" y="405" width="244" height="40"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
-                                <color key="tintColor" red="0.32496961949999997" green="0.52787870169999995" blue="0.96867686509999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                <state key="normal" title="Send Password Reset Link">
+                                <color key="tintColor" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <state key="normal" title="Send reset link">
                                     <color key="titleColor" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="pulseColor">
+                                        <color key="value" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
+                                        <color key="value" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
+                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="title" value="Send reset link"/>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="sendLink:" destination="H7z-0J-SuD" eventType="touchUpInside" id="rBn-aw-ZUe"/>
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="0.87131638600000005" green="0.34940668270000003" blue="0.3278341783" alpha="0.80699861620000002" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
                             <constraint firstItem="ZPQ-lX-yLJ" firstAttribute="centerX" secondItem="fZY-5S-p5t" secondAttribute="centerX" id="9Is-2E-XaH"/>
                             <constraint firstItem="ZPQ-lX-yLJ" firstAttribute="top" secondItem="cAE-rj-s3e" secondAttribute="bottom" constant="52" id="ETq-oo-iEH"/>
@@ -418,9 +428,7 @@
                         <outlet property="emailTF" destination="ube-Se-FN6" id="koJ-09-sKO"/>
                         <outlet property="gradientView" destination="NHU-IG-xFy" id="nnS-gW-RMb"/>
                         <outlet property="passwordTF" destination="heG-L9-j6Q" id="KUk-Vw-jbf"/>
-                        <segue destination="dBu-Ev-kY4" kind="show" identifier="chooseProfilePicture" id="8K7-PT-mjg">
-                            <nil key="action"/>
-                        </segue>
+                        <segue destination="dBu-Ev-kY4" kind="show" identifier="chooseProfilePicture" id="8K7-PT-mjg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="y78-1Y-qed" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -547,12 +555,79 @@
                         <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
                     </userDefinedRuntimeAttributes>
                     <connections>
-                        <segue destination="e6i-Zq-4L0" kind="relationship" relationship="rootViewController" id="B4u-9l-MEL"/>
+                        <segue destination="TKO-X2-gMW" kind="relationship" relationship="rootViewController" id="CYk-Yv-1Q4"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rmB-YJ-N8n" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2266" y="-101"/>
+        </scene>
+        <!--Search For JobVC-->
+        <scene sceneID="f0C-01-7xO">
+            <objects>
+                <viewController id="TKO-X2-gMW" customClass="SearchForJobVC" customModule="Blip" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="k1b-e6-YiJ" customClass="MGLMapView">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="F1g-OS-zCz">
+                                <rect key="frame" x="79" y="487" width="131" height="102"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" id="A6u-93-7M7"/>
+                                    <constraint firstAttribute="height" id="YuS-dQ-o2m"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yjo-Ea-HG0" customClass="RaisedButton" customModule="Material">
+                                <rect key="frame" x="150" y="514" width="75" height="75"/>
+                                <color key="backgroundColor" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="75" id="DI2-ll-N2k"/>
+                                    <constraint firstAttribute="height" constant="75" id="hjL-QA-gb3"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
+                                <state key="normal" title="Go">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="pulseColor">
+                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
+                                        <color key="value" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="title" value="Go"/>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
+                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="F1g-OS-zCz" firstAttribute="centerY" secondItem="Yjo-Ea-HG0" secondAttribute="centerY" id="8kh-9J-Wlz"/>
+                            <constraint firstItem="Yjo-Ea-HG0" firstAttribute="centerX" secondItem="xni-lE-of8" secondAttribute="centerX" id="Ty3-cK-aGJ"/>
+                            <constraint firstItem="F1g-OS-zCz" firstAttribute="centerX" secondItem="Yjo-Ea-HG0" secondAttribute="centerX" id="Ujn-nK-BDD"/>
+                            <constraint firstItem="xni-lE-of8" firstAttribute="bottom" secondItem="Yjo-Ea-HG0" secondAttribute="bottom" constant="78" id="tNb-cB-eQ6"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="xni-lE-of8"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="string" keyPath="styleURL__" value="mapbox://styles/srikanthsrnvs/cjfwr3b7o15bi2snwepfqjqsk"/>
+                            <userDefinedRuntimeAttribute type="number" keyPath="minimumZoomLevel">
+                                <real key="value" value="2"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                    <navigationItem key="navigationItem" id="yLA-nY-IhM"/>
+                    <connections>
+                        <outlet property="goButton" destination="Yjo-Ea-HG0" id="6OC-wQ-sUX"/>
+                        <outlet property="goButtonPulseAnimation" destination="F1g-OS-zCz" id="hVu-7L-nHF"/>
+                        <outlet property="map" destination="k1b-e6-YiJ" id="IyO-MK-efC"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fpp-hs-Po5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1420" y="-100.29985007496252"/>
         </scene>
         <!--MapOfJobs-->
         <scene sceneID="qBQ-H6-THN">
@@ -645,14 +720,12 @@
                     <connections>
                         <outlet property="map" destination="6Wl-l6-Soe" id="Gk3-L6-S8X"/>
                         <outlet property="postTestJobButton" destination="jcq-bN-Gic" id="Fpv-60-MQN"/>
-                        <segue destination="BjN-Qk-ddr" kind="show" identifier="endJobFromSellVC" id="dN8-sI-vgH">
-                            <nil key="action"/>
-                        </segue>
+                        <segue destination="BjN-Qk-ddr" kind="show" identifier="endJobFromSellVC" id="dN8-sI-vgH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xm5-W0-Sl0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1474" y="-101"/>
+            <point key="canvasLocation" x="-530" y="-101"/>
         </scene>
         <!--LoginVC-->
         <scene sceneID="d0L-8V-apV">
@@ -668,7 +741,6 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JV9-db-2i9" userLabel="gradientView" customClass="PastelView" customModule="Pastel">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <color key="backgroundColor" red="0.079774440459999998" green="0.78299492390000003" blue="0.15149520429999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             </view>
                             <view userInteractionEnabled="NO" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="9pS-4x-rky" userLabel="AnimationView">
                                 <rect key="frame" x="94" y="405.5" width="187.5" height="150"/>
@@ -778,7 +850,6 @@
                                 </userDefinedRuntimeAttributes>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" red="0.079774440459999998" green="0.78299492390000003" blue="0.15149520429999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
                             <constraint firstItem="5Rr-Po-Ici" firstAttribute="height" secondItem="yN1-hg-tCJ" secondAttribute="height" multiplier="0.054" id="0WL-5V-udi"/>
                             <constraint firstItem="R92-JG-PM2" firstAttribute="top" secondItem="jd0-VS-U0t" secondAttribute="bottom" constant="50" id="43K-U1-hYn"/>
@@ -834,9 +905,7 @@
                         <outlet property="passwordanim" destination="5Rr-Po-Ici" id="60M-gs-iiU"/>
                         <outlet property="subview" destination="9pS-4x-rky" id="oQ8-NQ-b7s"/>
                         <outlet property="usernameanim" destination="vbX-mc-euX" id="rQe-yb-aTh"/>
-                        <segue destination="Lt5-zt-yGE" kind="show" id="ARa-Zc-67J">
-                            <nil key="action"/>
-                        </segue>
+                        <segue destination="Lt5-zt-yGE" kind="show" id="ARa-Zc-67J"/>
                         <segue destination="H7z-0J-SuD" kind="presentation" identifier="forgotPasswordPage" id="VlG-z2-vrL"/>
                     </connections>
                 </viewController>
@@ -885,21 +954,21 @@
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
                                 <state key="normal" title="Get Started">
-                                    <color key="titleColor" red="0.88225442170000001" green="0.319435209" blue="0.25485315920000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    <color key="titleColor" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 </state>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
                                         <real key="value" value="0.0"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="color" keyPath="pulseColor">
-                                        <color key="value" red="0.88225442170000001" green="0.319435209" blue="0.25485315920000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <color key="value" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
                                         <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="string" keyPath="title" value="Get Started"/>
                                     <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
-                                        <color key="value" red="0.88225442170000001" green="0.319435209" blue="0.25485315920000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <color key="value" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
@@ -925,7 +994,6 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.079774440459999998" green="0.78299492390000003" blue="0.15149520429999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
                             <constraint firstItem="WXs-uH-DHn" firstAttribute="centerX" secondItem="HIU-cU-PGO" secondAttribute="centerX" id="60z-G7-VN3"/>
                             <constraint firstItem="DvV-V4-VC7" firstAttribute="top" secondItem="rxs-Di-X3P" secondAttribute="bottom" constant="10" id="6Cn-e9-h4c"/>
@@ -949,9 +1017,7 @@
                         <outlet property="pageControl" destination="DvV-V4-VC7" id="Smc-Fy-uFx"/>
                         <outlet property="scrollView" destination="rxs-Di-X3P" id="xuo-i4-QAc"/>
                         <outlet property="serviceAnimationView" destination="nfR-WB-amP" id="FOd-2n-kSv"/>
-                        <segue destination="DgH-8b-JZs" kind="show" identifier="goToLGSU" id="nki-b7-hNw">
-                            <nil key="action"/>
-                        </segue>
+                        <segue destination="DgH-8b-JZs" kind="show" identifier="goToLGSU" id="nki-b7-hNw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TdO-dF-Fwp" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1023,9 +1089,7 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <segue destination="xOF-GW-QrG" kind="show" id="yMu-Pd-UoJ">
-                                        <nil key="action"/>
-                                    </segue>
+                                    <segue destination="xOF-GW-QrG" kind="show" id="yMu-Pd-UoJ"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pjm-C1-5bV" customClass="RaisedButton" customModule="Material">
@@ -1122,7 +1186,6 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.084168596959999994" green="0.83425793999999998" blue="0.158696527" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
                             <constraint firstItem="V0l-Ae-wT3" firstAttribute="height" secondItem="1TI-lb-Wo2" secondAttribute="height" multiplier="0.06" id="1zj-fo-GXL"/>
                             <constraint firstItem="pin-CU-Iel" firstAttribute="width" secondItem="1TI-lb-Wo2" secondAttribute="width" multiplier="0.65" id="42o-Ct-z9E"/>
@@ -1260,7 +1323,6 @@
                                 </userDefinedRuntimeAttributes>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="0.084168596959999994" green="0.83425793999999998" blue="0.158696527" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
                             <constraint firstItem="RVx-NY-kBj" firstAttribute="width" secondItem="AYw-Ng-4rm" secondAttribute="width" id="0uR-SW-Det"/>
                             <constraint firstItem="JHc-ES-7Z5" firstAttribute="leading" secondItem="tI1-L1-wTg" secondAttribute="leading" constant="385" id="1yk-lG-bEq"/>
@@ -1345,26 +1407,25 @@
                                 <rect key="frame" x="65" y="502" width="244" height="40"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
-                                <color key="tintColor" red="0.084168596959999994" green="0.83425793999999998" blue="0.158696527" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <color key="tintColor" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <state key="normal" title="Continue">
-                                    <color key="titleColor" red="0.084168596959999994" green="0.83425793999999998" blue="0.158696527" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    <color key="titleColor" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 </state>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="color" keyPath="pulseColor">
-                                        <color key="value" red="0.084168596959999994" green="0.83425793999999998" blue="0.158696527" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <color key="value" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
                                         <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
-                                        <color key="value" red="0.084168596959999994" green="0.83425793999999998" blue="0.158696527" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <color key="value" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="string" keyPath="heroID" value="signUp"/>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="0.084168596959999994" green="0.83425793999999998" blue="0.158696527" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
                             <constraint firstItem="DCg-XE-jzd" firstAttribute="height" secondItem="1Ze-zr-00g" secondAttribute="height" id="CWV-0F-X2C"/>
                             <constraint firstItem="1Ze-zr-00g" firstAttribute="top" secondItem="JJU-ku-Nsz" secondAttribute="bottom" constant="40" id="DqM-Rw-fQ3"/>
@@ -1783,7 +1844,4 @@
     <resources>
         <image name="Sell Time" width="29" height="29"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="B4u-9l-MEL"/>
-    </inferredMetricsTieBreakers>
 </document>

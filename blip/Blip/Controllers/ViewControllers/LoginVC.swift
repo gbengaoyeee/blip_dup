@@ -29,7 +29,7 @@ class LoginVC: UIViewController {
     @IBOutlet weak var forgetPassword: UIButton!
     let animationView = LOTAnimationView(name: "outline_user")
     let animationViewTwo = LOTAnimationView(name: "simple_outline_lock_")
-    
+    let service = ServiceCalls.instance
     let userDefault = UserDefaults.standard
     var userCredDict:[String:String]!
     let loginCredentials = "loginCredentials"
@@ -145,19 +145,27 @@ class LoginVC: UIViewController {
                     if let prevCred = self.userDefault.value(forKey: "loginCredentials") as? [String:String]{
                         if(prevCred["email"] == self.emailTF.text && prevCred["password"] == self.passwordTF.text){
                             // save user credentials into UserDefaults
-                            self.userCredDict = [:]
-                            self.userCredDict["email"] = self.emailTF.text!
-                            self.userCredDict["password"] = self.passwordTF.text!
-                            self.userDefault.setValue(self.userCredDict, forKey: self.loginCredentials)
-                            return
+                            self.service.getCurrentUserInfo(completion: { (user) in
+                                self.userCredDict = [:]
+                                self.userCredDict["email"] = self.emailTF.text!
+                                self.userCredDict["picture"] = user.photoURL?.absoluteString
+                                self.userCredDict["password"] = self.passwordTF.text!
+                                self.userDefault.setValue(self.userCredDict, forKey: self.loginCredentials)
+                                return
+                            })
+                            
                         }
                     }//end
                     
                     // save user credentials into UserDefaults for the first time
-                    self.userCredDict = [:]
-                    self.userCredDict["email"] = self.emailTF.text!
-                    self.userCredDict["password"] = self.passwordTF.text!
-                    self.userDefault.setValue(self.userCredDict, forKey: self.loginCredentials)
+                    self.service.getCurrentUserInfo(completion: { (user) in
+                        self.userCredDict = [:]
+                        self.userCredDict["email"] = self.emailTF.text!
+                        self.userCredDict["picture"] = user.photoURL?.absoluteString
+                        self.userCredDict["password"] = self.passwordTF.text!
+                        self.userDefault.set(user.photoURL, forKey: "photoURL")
+                        self.userDefault.setValue(self.userCredDict, forKey: self.loginCredentials)
+                    })
                 }
             })
         }
@@ -210,19 +218,27 @@ class LoginVC: UIViewController {
                     if let prevCred = self.userDefault.value(forKey: "loginCredentials") as? [String:String]{
                         if(prevCred["email"] == self.emailTF.text && prevCred["password"] == self.passwordTF.text){
                             // save user credentials into UserDefaults
-                            self.userCredDict = [:]
-                            self.userCredDict["email"] = self.emailTF.text!
-                            self.userCredDict["password"] = self.passwordTF.text!
-                            self.userDefault.setValue(self.userCredDict, forKey: self.loginCredentials)
-                            return
+                            self.service.getCurrentUserInfo(completion: { (user) in
+                                self.userCredDict = [:]
+                                self.userCredDict["email"] = self.emailTF.text!
+                                self.userCredDict["picture"] = user.photoURL?.absoluteString
+                                self.userCredDict["password"] = self.passwordTF.text!
+                                self.userDefault.setValue(self.userCredDict, forKey: self.loginCredentials)
+                                return
+                            })
+                            
                         }
                     }//end
                     
                     // save user credentials into UserDefaults for the first time
-                    self.userCredDict = [:]
-                    self.userCredDict["email"] = self.emailTF.text!
-                    self.userCredDict["password"] = self.passwordTF.text!
-                    self.userDefault.setValue(self.userCredDict, forKey: self.loginCredentials)
+                    self.service.getCurrentUserInfo(completion: { (user) in
+                        self.userCredDict = [:]
+                        self.userCredDict["email"] = self.emailTF.text!
+                        self.userCredDict["picture"] = user.photoURL?.absoluteString
+                        self.userCredDict["password"] = self.passwordTF.text!
+                        self.userDefault.set(user.photoURL, forKey: "photoURL")
+                        self.userDefault.setValue(self.userCredDict, forKey: self.loginCredentials)
+                    })
                 }
             })
         }

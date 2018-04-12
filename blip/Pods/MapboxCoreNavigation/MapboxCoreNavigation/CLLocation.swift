@@ -5,13 +5,8 @@ import Turf
 extension CLLocation {
     
     var isQualified: Bool {
-        #if (arch(i386) || arch(x86_64)) && (os(iOS) || os(watchOS) || os(tvOS))
-            return true
-        #else
-            return
-                0...100 ~= horizontalAccuracy &&
-                0...30 ~= verticalAccuracy
-        #endif
+        return
+            0...100 ~= horizontalAccuracy
     }
     
     /// Returns a dictionary representation of the location.
@@ -156,7 +151,7 @@ extension CLLocation {
         if course >= 0 &&
             (speed >= RouteSnappingMinimumSpeed || isWithinDepatureStep) &&
             (horizontalAccuracy < RouteSnappingMinimumHorizontalAccuracy || isWithinDepatureStep) &&
-            course.differenceBetween(self.course) > RouteSnappingMaxManipulatedCourseAngle {
+            course.difference(from: self.course) > RouteSnappingMaxManipulatedCourseAngle {
             return false
         }
         return true

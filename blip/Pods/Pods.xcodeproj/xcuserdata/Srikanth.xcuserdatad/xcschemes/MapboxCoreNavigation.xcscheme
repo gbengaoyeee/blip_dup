@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "159DC89174C862F7B0FD41DB6FCD8DDA"
+               BlueprintIdentifier = "287D7D574D14350FA55A1AB8A3163CC3"
                BlueprintName = "MapboxCoreNavigation"
                ReferencedContainer = "container:Pods.xcodeproj"
                BuildableName = "MapboxCoreNavigation.framework">

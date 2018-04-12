@@ -33,6 +33,11 @@ extension UIView{
         self.layer.add(leftToRightTransition, forKey: "leftToRightTransition")
     }
     
+    func makeCircular(){
+        assert(self.frame.size.height == self.frame.size.width)
+        self.layer.cornerRadius = self.frame.size.height/2
+    }
+    
     func rightToLeftAnimation(duration: TimeInterval = 0.5, completionDelegate: AnyObject? = nil) {
         // Create a CATransition object
         let rightToLeftTransition = CATransition()
@@ -386,9 +391,9 @@ extension PastelView{
     
     func prepareDefaultPastelView(){
         
-        let colors = [#colorLiteral(red: 0.1960784346, green: 0.3411764801, blue: 0.1019607857, alpha: 1), #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1), #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)]
+        let colors = [#colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1), #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1), #colorLiteral(red: 0.2796384096, green: 0.4718205929, blue: 1, alpha: 1)]
         self.setColors(colors)
-        self.animationDuration = 3
+        self.animationDuration = 2
     }
     
     func prepareCustomPastelViewWithColors(colors: [UIColor]){

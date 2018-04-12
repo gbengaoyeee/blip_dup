@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "0E987C0B4C374D85212D376162AABE2C"
+               BlueprintIdentifier = "54B47B17ED552BC694DB25CD6ABEE073"
                BuildableName = "MapboxDirections.framework"
                BlueprintName = "MapboxDirections.swift"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -26,7 +26,6 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      language = ""
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
@@ -37,7 +36,6 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      language = ""
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
@@ -47,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "0E987C0B4C374D85212D376162AABE2C"
+            BlueprintIdentifier = "54B47B17ED552BC694DB25CD6ABEE073"
             BuildableName = "MapboxDirections.framework"
             BlueprintName = "MapboxDirections.swift"
             ReferencedContainer = "container:Pods.xcodeproj">

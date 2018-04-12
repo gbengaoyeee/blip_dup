@@ -32,6 +32,8 @@ target 'Blip' do
   pod 'BSImagePicker'
   pod 'SwiftIcons'
   pod "Hero"
+  pod 'SRCountdownTimer'
+  pod "Pulsator"
 
   target 'BlipTests' do
     inherit! :search_paths

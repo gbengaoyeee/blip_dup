@@ -199,28 +199,12 @@ extension ViewMapOfJobsVC: MGLMapViewDelegate{
                             mapView.showAnnotations(allAnnotations!, animated: true)
                             // if let here
                             self.drawRoute(data: data!)
-                            
-                            for anno in mapView.annotations!{
-                        
-                            }
                         })
                     }
                 }
             }
         }
     }
-    
-    func mapView(_ mapView: MGLMapView, didDeselect annotation: MGLAnnotation) {
-        
-        self.map.removeAnnotations(self.map.annotations!)
-        for annotation in allAnnotations.values{
-            self.map.addAnnotation(annotation)
-        }
-    }
-    
-//    func openCalloutFor(annotation: MGLPointAnnotation){
-//        annotatio
-//    }
 }
 
 extension ViewMapOfJobsVC: STPPaymentContextDelegate{
@@ -259,9 +243,6 @@ extension ViewMapOfJobsVC: CLLocationManagerDelegate{
         self.map.setZoomLevel(7, animated: true)
         self.map.setCamera(camera, withDuration: 4, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
         currentLocation = locValue
-        MyAPIClient.sharedClient.getBestJobAt(location: self.currentLocation, userHash: "hello") { (error) in
-            print(error)
-        }
         service.updateJobAccepterLocation(location: locValue)
         manager.stopUpdatingLocation()
     }
