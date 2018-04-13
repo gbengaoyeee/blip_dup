@@ -23,6 +23,7 @@ class SearchForJobVC: UIViewController {
     var locationManager = CLLocationManager()
     var currentLocation: CLLocationCoordinate2D!
     let service = ServiceCalls.instance
+    let userDefaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,9 +75,27 @@ class SearchForJobVC: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
         gradient.frame = map.bounds
     }
+    
+    @IBAction func postTestJob(_ sender: Any) {
+        service.getCurrentUserInfo { (user) in
+            
+            let delivery1 = Delivery(deliveryLocation: self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 2000), identifier: "d1", origin: CLLocationCoordinate2D(latitude: 43.61, longitude: -79.68))
+            let delivery2 = Delivery(deliveryLocation: self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 2000), identifier: "d2", origin: CLLocationCoordinate2D(latitude: 43.61, longitude: -79.68))
+            let delivery3 = Delivery(deliveryLocation: self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 2000), identifier: "d3", origin: CLLocationCoordinate2D(latitude: 43.61, longitude: -79.68))
+            self.service.addTestJob(title: "Pickup", orderer: user,  deliveries: [delivery1, delivery2, delivery3], pickupLocation: self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 2000), earnings: 5.00, estimatedTime: 10.00)
+        }
+    }
+    
+    @IBAction func searchForJob(_ sender: Any) {
+//        MyAPIClient.sharedClient.getBestJobAt(location: currentLocation, userHash: userDefaults.dictionary(forKey: "loginCredentials")!["emailHash"] as! String) { (error) in
+//            if (error != nil){
+//                print(error!)
+//            }
+//        }
+    }
+    
 }
 
 extension SearchForJobVC: MGLMapViewDelegate{

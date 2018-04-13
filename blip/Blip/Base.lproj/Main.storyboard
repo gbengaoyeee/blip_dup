@@ -601,14 +601,30 @@
                                         <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="searchForJob:" destination="TKO-X2-gMW" eventType="touchUpInside" id="CvC-sz-hgw"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JZz-UL-eYA">
+                                <rect key="frame" x="160" y="182" width="54" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="3j3-ZG-4gH"/>
+                                    <constraint firstAttribute="width" constant="54" id="vtx-3t-J49"/>
+                                </constraints>
+                                <state key="normal" title="Test job"/>
+                                <connections>
+                                    <action selector="postTestJob:" destination="TKO-X2-gMW" eventType="touchUpInside" id="s5p-FK-tcw"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="F1g-OS-zCz" firstAttribute="centerY" secondItem="Yjo-Ea-HG0" secondAttribute="centerY" id="8kh-9J-Wlz"/>
+                            <constraint firstItem="JZz-UL-eYA" firstAttribute="centerY" secondItem="xni-lE-of8" secondAttribute="centerY" id="JhP-PC-htu"/>
                             <constraint firstItem="Yjo-Ea-HG0" firstAttribute="centerX" secondItem="xni-lE-of8" secondAttribute="centerX" id="Ty3-cK-aGJ"/>
                             <constraint firstItem="F1g-OS-zCz" firstAttribute="centerX" secondItem="Yjo-Ea-HG0" secondAttribute="centerX" id="Ujn-nK-BDD"/>
                             <constraint firstItem="xni-lE-of8" firstAttribute="bottom" secondItem="Yjo-Ea-HG0" secondAttribute="bottom" constant="78" id="tNb-cB-eQ6"/>
+                            <constraint firstItem="JZz-UL-eYA" firstAttribute="centerX" secondItem="xni-lE-of8" secondAttribute="centerX" id="tsl-J5-A65"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="xni-lE-of8"/>
                         <userDefinedRuntimeAttributes>
@@ -735,7 +751,7 @@
                         <viewControllerLayoutGuide type="top" id="P7g-cZ-LGK"/>
                         <viewControllerLayoutGuide type="bottom" id="JAt-Ly-Hko"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="yN1-hg-tCJ">
+                    <view key="view" contentMode="scaleToFill" id="yN1-hg-tCJ" customClass="PastelView" customModule="Pastel">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -899,7 +915,7 @@
                     <connections>
                         <outlet property="emailTF" destination="jd0-VS-U0t" id="Yc4-4s-vPt"/>
                         <outlet property="forgetPassword" destination="zNb-dY-Ysf" id="CKQ-Mw-EFV"/>
-                        <outlet property="gradientViewLogin" destination="JV9-db-2i9" id="tTf-D4-mKr"/>
+                        <outlet property="gradientViewLogin" destination="yN1-hg-tCJ" id="d4m-Ni-8Vw"/>
                         <outlet property="loginButtonView" destination="ugC-JO-uax" id="k0b-WN-570"/>
                         <outlet property="passwordTF" destination="R92-JG-PM2" id="860-S8-kjf"/>
                         <outlet property="passwordanim" destination="5Rr-Po-Ici" id="60M-gs-iiU"/>

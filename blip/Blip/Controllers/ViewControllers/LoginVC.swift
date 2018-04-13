@@ -100,14 +100,23 @@ class LoginVC: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func loginWithReturn(_ sender: Any){ // primary target action for passwordTF
-        // check if fields are not empty
+    @IBAction func loginWithReturn(_ sender: Any){
+        
+        login()
+    }
+    
+    @IBAction func loginButton(_ sender: UIButton) {
+        
+        login()
+     }
+    
+    func login(){
         self.loginButtonView.makeButtonDissapear()
         self.forgetPassword.makeButtonDissapear()
         self.subview.isHidden = false
         
         if !(internet){
-            print("WTF")
+            print("No internet")
             let popup = popupForNoInternet()
             self.present(popup, animated: true, completion: nil)
             self.loginButtonView.makeButtonAppear()
@@ -149,6 +158,7 @@ class LoginVC: UIViewController {
                                 self.userCredDict = [:]
                                 self.userCredDict["email"] = self.emailTF.text!
                                 self.userCredDict["picture"] = user.photoURL?.absoluteString
+                                self.userCredDict["emailHash"] = user.userEmailHash
                                 self.userCredDict["password"] = self.passwordTF.text!
                                 self.userDefault.setValue(self.userCredDict, forKey: self.loginCredentials)
                                 return
@@ -162,6 +172,7 @@ class LoginVC: UIViewController {
                         self.userCredDict = [:]
                         self.userCredDict["email"] = self.emailTF.text!
                         self.userCredDict["picture"] = user.photoURL?.absoluteString
+                        self.userCredDict["emailHash"] = user.userEmailHash
                         self.userCredDict["password"] = self.passwordTF.text!
                         self.userDefault.set(user.photoURL, forKey: "photoURL")
                         self.userDefault.setValue(self.userCredDict, forKey: self.loginCredentials)
@@ -170,79 +181,6 @@ class LoginVC: UIViewController {
             })
         }
     }
-    
-    @IBAction func loginButton(_ sender: UIButton) {
-        
-        // check if fields are not empty
-        print("HEY")
-        self.loginButtonView.makeButtonDissapear()
-        self.forgetPassword.makeButtonDissapear()
-        self.subview.isHidden = false
-        
-        if !(internet){
-            print("WTF")
-            let popup = popupForNoInternet()
-            self.present(popup, animated: true, completion: nil)
-            self.loginButtonView.makeButtonAppear()
-            self.forgetPassword.makeButtonAppear()
-            self.subview.isHidden = true
-            return
-        }
-        
-        if (emailTF.text?.isEmpty == true || passwordTF.text?.isEmpty == true){
-            self.view.returnHandledAnimation(filename: "error", subView: subview, tagNum: 1).play()
-            let when = DispatchTime.now() + 2
-            DispatchQueue.main.asyncAfter(deadline: when) {
-                self.loginButtonView.makeButtonAppear()
-                self.forgetPassword.makeButtonAppear()
-                self.subview.makeAnimationDissapear(tag: 1)
-                return
-            }
-        }
-        // check if email is in database and password are correct
-        else{
-            Auth.auth().signIn(withEmail: emailTF.text!, password: passwordTF.text!, completion: { (user, error) in
-                // do some error checking
-                if (error != nil || !(user?.isEmailVerified)!){
-                    self.errorAnimation()
-                    return
-                }
-                else if (error == nil && (user?.isEmailVerified)!){
-                    // else perform segue
-                    let ref = Database.database().reference().child("Couriers").child(self.MD5(string: (user?.email)!))
-                    let token = ["currentDevice": AppDelegate.DEVICEID]
-                    ref.updateChildValues(token)
-                    self.loginCredentialsCorrectAnimation()
-                   
-                    // If someone else logs in using this phone apart from the original user store their info
-                    if let prevCred = self.userDefault.value(forKey: "loginCredentials") as? [String:String]{
-                        if(prevCred["email"] == self.emailTF.text && prevCred["password"] == self.passwordTF.text){
-                            // save user credentials into UserDefaults
-                            self.service.getCurrentUserInfo(completion: { (user) in
-                                self.userCredDict = [:]
-                                self.userCredDict["email"] = self.emailTF.text!
-                                self.userCredDict["picture"] = user.photoURL?.absoluteString
-                                self.userCredDict["password"] = self.passwordTF.text!
-                                self.userDefault.setValue(self.userCredDict, forKey: self.loginCredentials)
-                                return
-                            })
-                            
-                        }
-                    }//end
-                    
-                    // save user credentials into UserDefaults for the first time
-                    self.service.getCurrentUserInfo(completion: { (user) in
-                        self.userCredDict = [:]
-                        self.userCredDict["email"] = self.emailTF.text!
-                        self.userCredDict["picture"] = user.photoURL?.absoluteString
-                        self.userCredDict["password"] = self.passwordTF.text!
-                        self.userDefault.set(user.photoURL, forKey: "photoURL")
-                        self.userDefault.setValue(self.userCredDict, forKey: self.loginCredentials)
-                    })
-                }
-            })
-        }
-     }
     
     
     func MD5(string: String) -> String {
