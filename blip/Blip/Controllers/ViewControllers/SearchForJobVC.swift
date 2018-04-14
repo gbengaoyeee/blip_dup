@@ -18,12 +18,14 @@ class SearchForJobVC: UIViewController {
     @IBOutlet weak var goButtonPulseAnimation: UIView!
     @IBOutlet weak var goButton: RaisedButton!
     @IBOutlet var map: MGLMapView!
+    let pulsator = Pulsator()
     
     var gradient: CAGradientLayer!
     var locationManager = CLLocationManager()
     var currentLocation: CLLocationCoordinate2D!
     let service = ServiceCalls.instance
     let userDefaults = UserDefaults.standard
+    var foundJob: Job!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +37,13 @@ class SearchForJobVC: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
 
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "foundJob"{
+            let dest = segue.destination as! FoundJobVC
+            dest.job = foundJob
+        }
     }
     
     func prepareJobsNearMe(){
@@ -60,7 +69,6 @@ class SearchForJobVC: UIViewController {
     
     func prepareGoButton(){
         
-        let pulsator = Pulsator()
         pulsator.backgroundColor = #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1)
         pulsator.numPulse = 2
         pulsator.animationDuration = 3.0
@@ -89,11 +97,13 @@ class SearchForJobVC: UIViewController {
     }
     
     @IBAction func searchForJob(_ sender: Any) {
-//        MyAPIClient.sharedClient.getBestJobAt(location: currentLocation, userHash: userDefaults.dictionary(forKey: "loginCredentials")!["emailHash"] as! String) { (error) in
-//            if (error != nil){
-//                print(error!)
-//            }
-//        }
+        
+        service.findJob(myLocation: self.currentLocation, userHash: userDefaults.dictionary(forKey: "loginCredentials")!["emailHash"] as! String) { (job) in
+            if let job = job{
+                self.foundJob = job
+                self.performSegue(withIdentifier: "foundJob", sender: self)
+            }
+        }
     }
     
 }

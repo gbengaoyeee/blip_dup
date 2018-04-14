@@ -170,40 +170,40 @@ extension ViewMapOfJobsVC: MGLMapViewDelegate{
     
     func mapView(_ mapView: MGLMapView, didSelect annotation: MGLAnnotation) {
 
-        if let annotationTitle = annotation.title{
-            if let unwrappedTitle = annotationTitle{
-                if unwrappedTitle == "Pickup"{
-                    print("Tapped pickup")
-                    if let castedAnnotation = annotation as? BlipAnnotation{
-                        
-                        var locationList = (castedAnnotation.job?.locList)!
-                        locationList.append((mapView.userLocation?.coordinate)!)
-                        
-                        MyAPIClient.sharedClient.optimizeRoute(locations: locationList, completion: { (data) in
-                            
-                            mapView.removeAnnotations(mapView.annotations!)
-                            mapView.addAnnotation(annotation)
-                            
-                            var allAnnotations = mapView.annotations
-                            allAnnotations?.append(self.map.userLocation!)
-                            
-                            for delivery in (castedAnnotation.job?.deliveries)!{
-                                
-                                let deliveryAnnotation = MGLPointAnnotation()
-                                deliveryAnnotation.title = "Delivery"
-                                deliveryAnnotation.coordinate = delivery.deliveryLocation
-                                deliveryAnnotation.subtitle = delivery.identifier
-                                allAnnotations?.append(deliveryAnnotation)
-                                mapView.addAnnotation(deliveryAnnotation)
-                            }
-                            mapView.showAnnotations(allAnnotations!, animated: true)
-                            // if let here
-                            self.drawRoute(data: data!)
-                        })
-                    }
-                }
-            }
-        }
+//        if let annotationTitle = annotation.title{
+//            if let unwrappedTitle = annotationTitle{
+//                if unwrappedTitle == "Pickup"{
+//                    print("Tapped pickup")
+//                    if let castedAnnotation = annotation as? BlipAnnotation{
+//                        
+//                        var locationList = (castedAnnotation.job?.locList)!
+//                        locationList.append((mapView.userLocation?.coordinate)!)
+//                        
+//                        MyAPIClient.sharedClient.optimizeRoute(locations: locationList, completion: { (data),<#arg#>,<#arg#>  in
+//                            
+//                            mapView.removeAnnotations(mapView.annotations!)
+//                            mapView.addAnnotation(annotation)
+//                            
+//                            var allAnnotations = mapView.annotations
+//                            allAnnotations?.append(self.map.userLocation!)
+//                            
+//                            for delivery in (castedAnnotation.job?.deliveries)!{
+//                                
+//                                let deliveryAnnotation = MGLPointAnnotation()
+//                                deliveryAnnotation.title = "Delivery"
+//                                deliveryAnnotation.coordinate = delivery.deliveryLocation
+//                                deliveryAnnotation.subtitle = delivery.identifier
+//                                allAnnotations?.append(deliveryAnnotation)
+//                                mapView.addAnnotation(deliveryAnnotation)
+//                            }
+//                            mapView.showAnnotations(allAnnotations!, animated: true)
+//                            // if let here
+//                            self.drawRoute(data: data!)
+//                        })
+//                    }
+//                }
+//            }
+//        }
     }
 }
 
