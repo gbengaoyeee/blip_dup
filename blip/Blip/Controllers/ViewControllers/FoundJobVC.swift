@@ -161,6 +161,9 @@ extension FoundJobVC{
             if error == nil{
                 let navigation = NavigationViewController(for: (routes?.first)!)
                 navigation.mapView?.styleURL = URL(string:"mapbox://styles/srikanthsrnvs/cjd6ciwwm54my2rms3052j5us")
+                let x = SimulatedLocationManager(route: (routes?.first)!)
+                x.speedMultiplier = 3
+                navigation.routeController.locationManager = x
                 self.present(navigation, animated: true, completion: nil)
             }
             else{
