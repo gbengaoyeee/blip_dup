@@ -42,9 +42,9 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
         
     }
     
-    func optimizeRoute(locations: [CLLocationCoordinate2D], completion: @escaping ([[String: AnyObject]]?,[String: AnyObject]?, Error?) -> ()){
+    func optimizeRoute(locations: [CLLocationCoordinate2D], distributions: String, completion: @escaping ([[String: AnyObject]]?,[String: AnyObject]?, Error?) -> ()){
         let coords = convertLocationToString(locations: locations)
-        let url = "https://api.mapbox.com/optimized-trips/v1/mapbox/driving/\(coords)?&roundtrip=false&source=first&destination=last&geometries=geojson&access_token=pk.eyJ1Ijoic3Jpa2FudGhzcm52cyIsImEiOiJjajY0NDI0ejYxcDljMnFtcTNlYWliajNoIn0.jDevn4Fm6WBZUx7TDtys9Q"
+        let url = "https://api.mapbox.com/optimized-trips/v1/mapbox/driving/\(coords)?&distributions=\(distributions)&roundtrip=false&source=first&destination=last&geometries=geojson&access_token=pk.eyJ1Ijoic3Jpa2FudGhzcm52cyIsImEiOiJjajY0NDI0ejYxcDljMnFtcTNlYWliajNoIn0.jDevn4Fm6WBZUx7TDtys9Q"
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil)
             .responseJSON { (response) in
                 switch response.result {

@@ -43,6 +43,7 @@ class Delivery{
         guard !snapshot.key.isEmpty else {
             return nil
         }
+        self.identifier = snapshot.key
         let deliveryValues = snapshot.value as? [String: AnyObject]
         self.deliveryLocation = CLLocationCoordinate2D(latitude: (deliveryValues!["deliveryLat"] as? Double)!, longitude: (deliveryValues!["deliveryLong"] as? Double)!)
         self.identifier = snapshot.key

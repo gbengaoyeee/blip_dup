@@ -69,7 +69,12 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
         pickupDist = pickupDist.rounded()
         pickupLabel.text = "Pickup distance: \(pickupDist) km"
         if let job = self.job{
-            MyAPIClient.sharedClient.optimizeRoute(locations: job.locList) { (waypointData, routeData, error) in
+            var distributions: String!
+            for i in stride(from: 0, to: 2*job.deliveries.count, by: 1) {
+                distributions += "\(i),"
+            }
+            distributions = distributions.dropLast()
+            MyAPIClient.sharedClient.optimizeRoute(locations: job.locList, distributions: distributions) { (waypointData, routeData, error) in
                 if error == nil{
                     if let waypointData = waypointData{
                         self.waypoints = self.parseDataFromOptimization(waypointData: waypointData)
