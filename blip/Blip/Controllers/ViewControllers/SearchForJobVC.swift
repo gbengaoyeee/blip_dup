@@ -18,11 +18,14 @@ class SearchForJobVC: UIViewController {
     @IBOutlet weak var goButtonPulseAnimation: UIView!
     @IBOutlet weak var goButton: RaisedButton!
     @IBOutlet var map: MGLMapView!
+    let pulsator = Pulsator()
     
     var gradient: CAGradientLayer!
     var locationManager = CLLocationManager()
     var currentLocation: CLLocationCoordinate2D!
     let service = ServiceCalls.instance
+    let userDefaults = UserDefaults.standard
+    var foundJob: Job!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,6 +37,13 @@ class SearchForJobVC: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
 
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "foundJob"{
+            let dest = segue.destination as! FoundJobVC
+            dest.job = foundJob
+        }
     }
     
     func prepareJobsNearMe(){
@@ -59,7 +69,6 @@ class SearchForJobVC: UIViewController {
     
     func prepareGoButton(){
         
-        let pulsator = Pulsator()
         pulsator.backgroundColor = #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1)
         pulsator.numPulse = 2
         pulsator.animationDuration = 3.0
@@ -74,9 +83,28 @@ class SearchForJobVC: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
         gradient.frame = map.bounds
     }
+    
+    @IBAction func postTestJob(_ sender: Any) {
+        service.getCurrentUserInfo { (user) in
+            
+            let delivery1 = Delivery(deliveryLocation: self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 2000), identifier: "d1", origin: CLLocationCoordinate2D(latitude: 43.61, longitude: -79.68))
+            let delivery2 = Delivery(deliveryLocation: self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 2000), identifier: "d2", origin: CLLocationCoordinate2D(latitude: 43.61, longitude: -79.68))
+            let delivery3 = Delivery(deliveryLocation: self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 2000), identifier: "d3", origin: CLLocationCoordinate2D(latitude: 43.61, longitude: -79.68))
+            self.service.addTestJob(title: "Pickup", orderer: user,  deliveries: [delivery1, delivery2, delivery3], pickupLocation: self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 2000), earnings: 5.00, estimatedTime: 10.00)
+        }
+    }
+    
+    @IBAction func searchForJob(_ sender: Any) {
+        service.findJob(myLocation: self.currentLocation, userHash: userDefaults.dictionary(forKey: "loginCredentials")!["emailHash"] as! String) { (job) in
+            if let job = job{
+                self.foundJob = job
+                self.performSegue(withIdentifier: "foundJob", sender: self)
+            }
+        }
+    }
+    
 }
 
 extension SearchForJobVC: MGLMapViewDelegate{

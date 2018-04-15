@@ -52,6 +52,25 @@ class ServiceCalls{
 //        }
     }
     
+    func findJob(myLocation: CLLocationCoordinate2D, userHash: String, completion: @escaping(Job?) -> ()){
+        
+        userRef.child(emailHash).observe(.childAdded) { (snap) in
+            
+            if snap.key == "givenJob"{
+                if let jobID = snap.value as? [String: AnyObject]{
+                    let j = Job(snapshot: snap.childSnapshot(forPath: jobID.keys.first!))
+                    completion(j)
+                }
+            }
+        }
+        
+        MyAPIClient.sharedClient.getBestJobAt(location: myLocation, userHash: userHash) { (error) in
+            if error != nil{
+                print(error!)
+            }
+        }
+        
+    }
     
     /// Create User in Firebase Authentication and sends verification email
     ///
@@ -162,7 +181,11 @@ class ServiceCalls{
         })
     }
 
-    
+    func getJobFromFirebase(id: String, completion: @escaping(Job?) -> ()){
+        jobsRef.child(id).observeSingleEvent(of: .value) { (snap) in
+            completion(Job(snapshot: snap))
+        }
+    }
     
     /**
      Add a job to Firebase Database

@@ -64,7 +64,6 @@ class Job{
                 let placeMark = placemarks?[0]
                 self.pickupPlacemark = placeMark
                 self.pickupAddress = self.parseAddress(placemark: self.pickupPlacemark!)
-                print("ADDRESS: ", self.pickupAddress)
             }
         })
     }
