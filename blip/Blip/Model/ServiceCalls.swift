@@ -213,7 +213,7 @@ class ServiceCalls{
         
         var deliveryDict: [String: Any] = [:]
         for delivery in deliveries{
-            deliveryDict[delivery.identifier] = ["deliveryLat": delivery.deliveryLocation.latitude, "deliveryLong": delivery.deliveryLocation.longitude, "originLat": delivery.origin.latitude, "originLong": delivery.origin.longitude]
+            deliveryDict[delivery.identifier] = ["deliveryLat": delivery.deliveryLocation.latitude, "deliveryLong": delivery.deliveryLocation.longitude, "originLat": delivery.origin.latitude, "originLong": delivery.origin.longitude, "recieverName": delivery.recieverName,  "recieverNumber": delivery.receiverPhoneNumber]
         }
         
         let jobDict: [String:Any] = ["deliveries": deliveryDict,  "pickupLocationLat":pickupLat, "pickupLocationLong":pickupLong, "orderer": userDict, "estimatedTime": estimatedTime, "earnings":earnings]
