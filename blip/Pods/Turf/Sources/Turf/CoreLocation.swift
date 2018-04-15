@@ -1,7 +1,14 @@
+import Foundation
+#if os(Linux)
+public struct CLLocationCoordinate2D {
+    let latitude: Double
+    let longitude: Double
+}
+public typealias CLLocationDirection = Double
+public typealias CLLocationDistance = Double
+public typealias CLLocationDegrees = Double
+#else
 import CoreLocation
-
-#if os(OSX)
-let CLLocationDistanceMax: CLLocationDistance = .greatestFiniteMagnitude
 #endif
 
 extension CLLocationDirection {
@@ -32,9 +39,12 @@ extension CLLocationDegrees {
 
 extension CLLocationDirection {
     /**
-     Returns the smallest angle between two angles.
+     Returns the smaller difference between the receiver and another direction.
+     
+     To obtain the larger difference between the two directions, subtract the
+     return value from 360°.
      */
-    public func differenceBetween(_ beta: CLLocationDirection) -> CLLocationDirection {
+    public func difference(from beta: CLLocationDirection) -> CLLocationDirection {
         let phi = abs(beta - self).truncatingRemainder(dividingBy: 360)
         return phi > 180 ? 360 - phi : phi
     }
@@ -44,8 +54,7 @@ extension CLLocationCoordinate2D: Equatable {
     
     /// Instantiates a CLLocationCoordinate from a RadianCoordinate2D
     public init(_ radianCoordinate: RadianCoordinate2D) {
-        latitude = radianCoordinate.latitude.toDegrees()
-        longitude = radianCoordinate.longitude.toDegrees()
+        self.init(latitude: radianCoordinate.latitude.toDegrees(), longitude: radianCoordinate.longitude.toDegrees())
     }
     
     public static func ==(lhs: CLLocationCoordinate2D, rhs: CLLocationCoordinate2D) -> Bool {

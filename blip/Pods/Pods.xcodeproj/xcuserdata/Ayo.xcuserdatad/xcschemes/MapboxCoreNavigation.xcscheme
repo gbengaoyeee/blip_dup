@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0700"
+   LastUpgradeVersion = "0930"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -13,11 +13,11 @@
             buildForProfiling = "YES"
             buildForArchiving = "YES">
             <BuildableReference
-               BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '159DC89174C862F7B0FD41DB6FCD8DDA'
-               BlueprintName = 'MapboxCoreNavigation'
-               ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'MapboxCoreNavigation.framework'>
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "287D7D574D14350FA55A1AB8A3163CC3"
+               BlueprintName = "MapboxCoreNavigation"
+               ReferencedContainer = "container:Pods.xcodeproj"
+               BuildableName = "MapboxCoreNavigation.framework">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

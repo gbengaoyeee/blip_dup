@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0700"
+   LastUpgradeVersion = "0930"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -13,11 +13,11 @@
             buildForProfiling = "YES"
             buildForArchiving = "YES">
             <BuildableReference
-               BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '1C78A3BB3E603DF4E3158BC8289F5AF3'
-               BlueprintName = 'Turf'
-               ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'Turf.framework'>
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "F2EA740F7DFFF25D496F592FD08D4E7B"
+               BlueprintName = "Turf"
+               ReferencedContainer = "container:Pods.xcodeproj"
+               BuildableName = "Turf.framework">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

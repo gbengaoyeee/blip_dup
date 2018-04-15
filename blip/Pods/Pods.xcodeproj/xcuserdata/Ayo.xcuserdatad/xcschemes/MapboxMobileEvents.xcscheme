@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0700"
+   LastUpgradeVersion = "0930"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -13,11 +13,11 @@
             buildForProfiling = "YES"
             buildForArchiving = "YES">
             <BuildableReference
-               BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'AA43523BC0565661F3D16B0F4F9F4218'
-               BlueprintName = 'MapboxMobileEvents'
-               ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'MapboxMobileEvents.framework'>
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "E85E2BA1A8B0D3AA13C777A59D59A117"
+               BlueprintName = "MapboxMobileEvents"
+               ReferencedContainer = "container:Pods.xcodeproj"
+               BuildableName = "MapboxMobileEvents.framework">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

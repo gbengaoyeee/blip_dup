@@ -410,7 +410,6 @@
 				3B5372F1202EB4320020F3B1 /* Frameworks */,
 				3B5372F2202EB4320020F3B1 /* Resources */,
 				24A37729C6A8CC773783BF58 /* [CP] Embed Pods Frameworks */,
-				6140339369BE247AF0A13EDE /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -429,8 +428,6 @@
 				3B537304202EB4320020F3B1 /* Sources */,
 				3B537305202EB4320020F3B1 /* Frameworks */,
 				3B537306202EB4320020F3B1 /* Resources */,
-				EEACBDAD7A987661551B6C0F /* [CP] Embed Pods Frameworks */,
-				1BE3931F844212811620B597 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -450,8 +447,6 @@
 				3B53730F202EB4320020F3B1 /* Sources */,
 				3B537310202EB4320020F3B1 /* Frameworks */,
 				3B537311202EB4320020F3B1 /* Resources */,
-				7F72223CC6CE11EF9D63AA88 /* [CP] Embed Pods Frameworks */,
-				064C23AB50309E4972B79B16 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -568,36 +563,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		064C23AB50309E4972B79B16 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BlipUITests/Pods-BlipUITests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		1BE3931F844212811620B597 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BlipTests/Pods-BlipTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		24A37729C6A8CC773783BF58 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -718,36 +683,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		6140339369BE247AF0A13EDE /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Blip/Pods-Blip-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		7F72223CC6CE11EF9D63AA88 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BlipUITests/Pods-BlipUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		88B3209FE857B20B2825F9AB /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -782,21 +717,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		EEACBDAD7A987661551B6C0F /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BlipTests/Pods-BlipTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */

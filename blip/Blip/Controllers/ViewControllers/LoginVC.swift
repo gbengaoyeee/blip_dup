@@ -136,6 +136,7 @@ class LoginVC: UIViewController {
                 }
                 else if (error == nil && (user?.isEmailVerified)!){
                     // else perform segue
+                    self.service.emailHash = self.MD5(string: (user?.email)!)
                     let ref = Database.database().reference().child("Couriers").child(self.MD5(string: (user?.email)!))
                     let token = ["currentDevice": AppDelegate.DEVICEID]
                     ref.updateChildValues(token)
@@ -209,6 +210,7 @@ class LoginVC: UIViewController {
                 }
                 else if (error == nil && (user?.isEmailVerified)!){
                     // else perform segue
+                    self.service.emailHash = self.MD5(string: (user?.email)!)
                     let ref = Database.database().reference().child("Couriers").child(self.MD5(string: (user?.email)!))
                     let token = ["currentDevice": AppDelegate.DEVICEID]
                     ref.updateChildValues(token)

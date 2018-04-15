@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0700"
+   LastUpgradeVersion = "0930"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -13,11 +13,11 @@
             buildForProfiling = "YES"
             buildForArchiving = "YES">
             <BuildableReference
-               BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '409E92BC21862F90CD05B14498505381'
-               BlueprintName = 'Pastel'
-               ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'Pastel.framework'>
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "409E92BC21862F90CD05B14498505381"
+               BlueprintName = "Pastel"
+               ReferencedContainer = "container:Pods.xcodeproj"
+               BuildableName = "Pastel.framework">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

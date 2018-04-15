@@ -23,7 +23,7 @@ class ServiceCalls{
         return _instance
     }
     
-    private var emailHash:String!
+    var emailHash:String!
     private var dbRef:DatabaseReference!{
         return Database.database().reference()
     }

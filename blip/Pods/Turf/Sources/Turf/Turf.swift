@@ -1,10 +1,16 @@
+import Foundation
+#if !os(Linux)
 import CoreLocation
+#endif
 
 public typealias LocationRadians = Double
 public typealias RadianDistance = Double
 public typealias RadianDirection = Double
 
-let metersPerRadian = 6_373_000.0
+
+let metersPerRadian: CLLocationDistance = 6_373_000.0
+// WGS84 equatorial radius as specified by the International Union of Geodesy and Geophysics
+let equatorialRadius: CLLocationDistance = 6_378_137
 
 /**
  A `RadianCoordinate2D` is a coordinate represented in radians as opposed to
@@ -271,17 +277,82 @@ public struct Polyline {
             let intersectionPoint = Turf.intersection((perpendicularPoint1, perpendicularPoint2), segment)
             let intersectionDistance: CLLocationDistance? = intersectionPoint != nil ? coordinate.distance(to: intersectionPoint!) : nil
             
-            if distances.0 < closestCoordinate?.distance ?? CLLocationDistanceMax {
+            if distances.0 < closestCoordinate?.distance ?? .greatestFiniteMagnitude {
                 closestCoordinate = IndexedCoordinate(coordinate: segment.0, index: index, distance: distances.0)
             }
-            if distances.1 < closestCoordinate?.distance ?? CLLocationDistanceMax {
+            if distances.1 < closestCoordinate?.distance ?? .greatestFiniteMagnitude {
                 closestCoordinate = IndexedCoordinate(coordinate: segment.1, index: index+1, distance: distances.1)
             }
-            if intersectionDistance != nil && intersectionDistance! < closestCoordinate?.distance ?? CLLocationDistanceMax {
+            if intersectionDistance != nil && intersectionDistance! < closestCoordinate?.distance ?? .greatestFiniteMagnitude {
                 closestCoordinate = IndexedCoordinate(coordinate: intersectionPoint!, index: (distances.0 < distances.1 ? index : index+1), distance: intersectionDistance!)
             }
         }
         
         return closestCoordinate
+    }
+}
+
+
+/**
+ Creates a `Ring` struct that represents a closed figure that is bounded by three or more straight line segments.
+ */
+public struct Ring {
+    var coordinates: [CLLocationCoordinate2D]
+    
+    /**
+     * Calculate the approximate area of the polygon were it projected onto the earth, in square meters.
+     * Note that this area will be positive if ring is oriented clockwise, otherwise it will be negative.
+     *
+     * Reference:
+     * Robert. G. Chamberlain and William H. Duquette, "Some Algorithms for Polygons on a Sphere", JPL Publication 07-03, Jet Propulsion
+     * Laboratory, Pasadena, CA, June 2007 https://trs.jpl.nasa.gov/handle/2014/41271
+     *
+     */
+    public var area: Double {
+        var area: Double = 0
+        let coordinatesCount: Int = coordinates.count
+        
+        if coordinatesCount > 2 {
+            for index in 0..<coordinatesCount {
+                
+                let controlPoints: (CLLocationCoordinate2D, CLLocationCoordinate2D, CLLocationCoordinate2D)
+                
+                if index == coordinatesCount - 2 {
+                    controlPoints = (coordinates[coordinatesCount - 2],
+                                     coordinates[coordinatesCount - 1],
+                                     coordinates[0])
+                } else if index == coordinatesCount - 1 {
+                    controlPoints = (coordinates[coordinatesCount - 1],
+                                     coordinates[0],
+                                     coordinates[1])
+                } else {
+                    controlPoints = (coordinates[index],
+                                     coordinates[index + 1],
+                                     coordinates[index + 2])
+                }
+                
+                area += (controlPoints.2.longitude.toRadians() - controlPoints.0.longitude.toRadians()) * sin(controlPoints.1.latitude.toRadians())
+            }
+            
+            area *= equatorialRadius * equatorialRadius / 2
+        }
+        return area
+    }
+}
+
+/**
+ Creates a `Polygon` struct from an outer ring and optional inner rings.
+ Inner rings represent any holes the polygon may have.
+ */
+public struct Polygon {
+    var outerRing: Ring
+    var innerRings: [Ring]
+    
+    // Ported from https://github.com/Turfjs/turf/blob/a94151418cb969868fdb42955a19a133512da0fd/packages/turf-area/index.js
+    
+    public var area: Double {
+        return abs(outerRing.area) - innerRings
+            .map { abs($0.area) }
+            .reduce(0, +)
     }
 }
