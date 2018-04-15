@@ -795,20 +795,97 @@
             </objects>
             <point key="canvasLocation" x="-650.39999999999998" y="-95.802098950524751"/>
         </scene>
-        <!--View Controller-->
+        <!--WaypointArrivalVC-->
         <scene sceneID="ACW-aG-v64">
             <objects>
-                <viewController id="zF6-eD-m5p" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WaypointArrivalVC" title="WaypointArrivalVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="zF6-eD-m5p" customClass="WaypointArrivalVC" customModule="Blip" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="efy-Ie-kZr">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pickup order from Walmart" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rbW-jo-upd">
+                                <rect key="frame" x="40" y="65" width="297" height="28.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="300" id="DH0-eK-qoA"/>
+                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="80" id="Xqm-oS-vNk"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="CenturyGothic-Bold" family="Century Gothic" pointSize="23"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Order number 12456" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wgV-0l-5oS">
+                                <rect key="frame" x="40" y="113.5" width="218.5" height="27"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="250" id="Ci7-bH-uoo"/>
+                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="60" id="s9X-df-bqN"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="22"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MVm-ml-bS4" customClass="MGLMapView">
+                                <rect key="frame" x="37.5" y="188" width="300" height="300"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="MVm-ml-bS4" secondAttribute="height" multiplier="1:1" id="agg-Ov-vwd"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="styleURL__" value="mapbox://styles/srikanthsrnvs/cjd6ciwwm54my2rms3052j5us"/>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="heroID" value="map"/>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e7f-U8-fcO" customClass="RaisedButton" customModule="Material">
+                                <rect key="frame" x="37.5" y="590.5" width="300" height="46.5"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="Done">
+                                    <color key="titleColor" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="pulseColor">
+                                        <color key="value" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
+                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="title" value="Done"/>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
+                                        <color key="value" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="donePressed:" destination="zF6-eD-m5p" eventType="touchUpInside" id="D6C-2i-M2g"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <constraints>
+                            <constraint firstItem="wgV-0l-5oS" firstAttribute="leading" secondItem="g7l-S2-Nkp" secondAttribute="leading" constant="40" id="4qG-Cy-j6T"/>
+                            <constraint firstItem="e7f-U8-fcO" firstAttribute="centerX" secondItem="g7l-S2-Nkp" secondAttribute="centerX" id="AY1-ib-TcF"/>
+                            <constraint firstItem="rbW-jo-upd" firstAttribute="leading" secondItem="g7l-S2-Nkp" secondAttribute="leading" constant="40" id="JtF-pt-bhg"/>
+                            <constraint firstItem="wgV-0l-5oS" firstAttribute="top" secondItem="rbW-jo-upd" secondAttribute="bottom" constant="20" id="MKu-zN-FJh"/>
+                            <constraint firstItem="e7f-U8-fcO" firstAttribute="width" secondItem="efy-Ie-kZr" secondAttribute="width" multiplier="0.8" id="N0w-CW-Ifa"/>
+                            <constraint firstItem="MVm-ml-bS4" firstAttribute="top" secondItem="wgV-0l-5oS" secondAttribute="bottom" constant="47.5" id="RXn-Ev-cOb"/>
+                            <constraint firstItem="g7l-S2-Nkp" firstAttribute="bottom" secondItem="e7f-U8-fcO" secondAttribute="bottom" constant="30" id="UaZ-lh-wwp"/>
+                            <constraint firstItem="rbW-jo-upd" firstAttribute="top" secondItem="g7l-S2-Nkp" secondAttribute="top" constant="45" id="XbX-5y-Qhl"/>
+                            <constraint firstItem="MVm-ml-bS4" firstAttribute="width" secondItem="efy-Ie-kZr" secondAttribute="width" multiplier="300/375" id="YO5-rp-U01"/>
+                            <constraint firstItem="e7f-U8-fcO" firstAttribute="height" secondItem="efy-Ie-kZr" secondAttribute="height" multiplier="0.07" id="mFx-Fc-VdO"/>
+                            <constraint firstItem="MVm-ml-bS4" firstAttribute="centerX" secondItem="g7l-S2-Nkp" secondAttribute="centerX" id="w6Z-yZ-3il"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="g7l-S2-Nkp"/>
                     </view>
+                    <connections>
+                        <outlet property="doneButton" destination="e7f-U8-fcO" id="B8P-1w-JYg"/>
+                        <outlet property="instructionLabel" destination="rbW-jo-upd" id="6Bq-9x-1xl"/>
+                        <outlet property="map" destination="MVm-ml-bS4" id="znG-zb-QSs"/>
+                        <outlet property="orderLabel" destination="wgV-0l-5oS" id="xPw-jR-TCS"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mtQ-OJ-A1x" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-650" y="629"/>
+            <point key="canvasLocation" x="-650.39999999999998" y="628.33583208395805"/>
         </scene>
         <!--MapOfJobs-->
         <scene sceneID="qBQ-H6-THN">

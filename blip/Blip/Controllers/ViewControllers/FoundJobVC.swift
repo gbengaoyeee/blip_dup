@@ -134,6 +134,16 @@ extension FoundJobVC: CLLocationManagerDelegate{
     }
 }
 
+extension FoundJobVC: NavigationViewControllerDelegate{
+    
+    func navigationViewController(_ navigationViewController: NavigationViewController, didArriveAt waypoint: Waypoint) -> Bool {
+        
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WaypointArrivalVC") as! WaypointArrivalVC
+        navigationViewController.present(vc, animated: true, completion: nil)
+        return true
+    }
+}
+
 extension FoundJobVC{
     
     func parseDataFromOptimization(waypointData: [[String: AnyObject]]) -> [Waypoint]{
@@ -164,6 +174,7 @@ extension FoundJobVC{
                 let x = SimulatedLocationManager(route: (routes?.first)!)
                 x.speedMultiplier = 3.0
                 navigation.routeController.locationManager = x
+                navigation.delegate = self
                 self.present(navigation, animated: true, completion: nil)
             }
             else{

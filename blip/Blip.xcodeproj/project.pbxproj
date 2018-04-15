@@ -64,6 +64,7 @@
 		E44A286AF55A28A06A305841 /* Pods_BlipTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F498B34F0F7DEA567870388 /* Pods_BlipTests.framework */; };
 		F30D60CB207B19930022F90D /* Delivery.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30D60CA207B19930022F90D /* Delivery.swift */; };
 		F347473E207FC40D00F9A603 /* SearchForJobVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F347473D207FC40D00F9A603 /* SearchForJobVC.swift */; };
+		F36DA5472082F52600525FBA /* WaypointArrivalVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36DA5462082F52600525FBA /* WaypointArrivalVC.swift */; };
 		F38E5A6D208119B400128D46 /* FoundJobVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F38E5A6C208119B400128D46 /* FoundJobVC.swift */; };
 		F3E330B42075A38100F19CF8 /* camera.json in Resources */ = {isa = PBXBuildFile; fileRef = F3E330B32075A38000F19CF8 /* camera.json */; };
 		F3F5081E2031F77E00252E65 /* CenturyGothic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B537340202EBD4C0020F3B1 /* CenturyGothic.ttf */; };
@@ -166,6 +167,7 @@
 		E8545681CCD5C87C2E3C5E6F /* Pods-BlipUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlipUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BlipUITests/Pods-BlipUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		F30D60CA207B19930022F90D /* Delivery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Delivery.swift; sourceTree = "<group>"; };
 		F347473D207FC40D00F9A603 /* SearchForJobVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchForJobVC.swift; sourceTree = "<group>"; };
+		F36DA5462082F52600525FBA /* WaypointArrivalVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaypointArrivalVC.swift; sourceTree = "<group>"; };
 		F38E5A6C208119B400128D46 /* FoundJobVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoundJobVC.swift; sourceTree = "<group>"; };
 		F3E330B32075A38000F19CF8 /* camera.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = camera.json; sourceTree = "<group>"; };
 		F3F508212032085600252E65 /* Blip-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Blip-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -357,6 +359,7 @@
 				3BCD844520747C130079B4D4 /* ChoosePictureVC.swift */,
 				F347473D207FC40D00F9A603 /* SearchForJobVC.swift */,
 				F38E5A6C208119B400128D46 /* FoundJobVC.swift */,
+				F36DA5462082F52600525FBA /* WaypointArrivalVC.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -836,6 +839,7 @@
 				3B53732F202EBA6B0020F3B1 /* Job.swift in Sources */,
 				3B53737E202EC0DC0020F3B1 /* MyAPIClient.swift in Sources */,
 				5FDEF87F206B56DC00F33733 /* ViewMapOfJobsVC.swift in Sources */,
+				F36DA5472082F52600525FBA /* WaypointArrivalVC.swift in Sources */,
 				F38E5A6D208119B400128D46 /* FoundJobVC.swift in Sources */,
 				3B537374202EC0DC0020F3B1 /* NavigationBarViewController.swift in Sources */,
 				3B537331202EBA6B0020F3B1 /* HelperFunctions.swift in Sources */,
