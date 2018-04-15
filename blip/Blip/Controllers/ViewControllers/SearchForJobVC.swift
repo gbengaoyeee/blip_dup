@@ -47,7 +47,6 @@ class SearchForJobVC: UIViewController {
     }
     
     func prepareJobsNearMe(){
-        
         MyAPIClient.sharedClient.getNumberOfJobsNearMe(location: self.currentLocation) { (jobNumber) in
             let leftImageView = UIImageView()
             leftImageView.setIcon(icon: .googleMaterialDesign(.info), textColor: UIColor.white, backgroundColor: UIColor.clear, size: CGSize(size: 50))
@@ -89,9 +88,9 @@ class SearchForJobVC: UIViewController {
     @IBAction func postTestJob(_ sender: Any) {
         service.getCurrentUserInfo { (user) in
             
-            let delivery1 = Delivery(deliveryLocation: self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 2000), identifier: "d1", origin: CLLocationCoordinate2D(latitude: 43.61, longitude: -79.68))
-            let delivery2 = Delivery(deliveryLocation: self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 2000), identifier: "d2", origin: CLLocationCoordinate2D(latitude: 43.61, longitude: -79.68))
-            let delivery3 = Delivery(deliveryLocation: self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 2000), identifier: "d3", origin: CLLocationCoordinate2D(latitude: 43.61, longitude: -79.68))
+            let delivery1 = Delivery(deliveryLocation: self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 2000), identifier: "d1", origin: CLLocationCoordinate2D(latitude: 43.61, longitude: -79.68), recieverName: "Srikanth Srinivas", recieverNumber: "647-983-9837")
+            let delivery2 = Delivery(deliveryLocation: self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 2000), identifier: "d2", origin: CLLocationCoordinate2D(latitude: 43.61, longitude: -79.68), recieverName: "Martin John", recieverNumber: "647-883-9898")
+            let delivery3 = Delivery(deliveryLocation: self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 2000), identifier: "d3", origin: CLLocationCoordinate2D(latitude: 43.61, longitude: -79.68), recieverName: "Gbenga Ayobami", recieverNumber: "647-943-9827")
             self.service.addTestJob(title: "Pickup", orderer: user,  deliveries: [delivery1, delivery2, delivery3], pickupLocation: self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 2000), earnings: 5.00, estimatedTime: 10.00)
         }
     }
@@ -104,7 +103,6 @@ class SearchForJobVC: UIViewController {
             }
         }
     }
-    
 }
 
 extension SearchForJobVC: MGLMapViewDelegate{

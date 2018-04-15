@@ -75,7 +75,6 @@ extension UIView{
 
 
     func returnHandledAnimation(filename: String, subView: UIView, tagNum: Int) -> LOTAnimationView{
-    
         let animationView = LOTAnimationView(name: filename)
         subView.addSubview(animationView)
         let yCenterConstraint = NSLayoutConstraint(item: animationView, attribute: .centerY, relatedBy: .equal, toItem: subView, attribute: .centerY, multiplier: 1, constant: 0)
@@ -87,11 +86,9 @@ extension UIView{
         animationView.contentMode = .scaleAspectFit
         animationView.tag = tagNum
         return animationView
-        
     }
     
     func returnHandledAnimationScaleToFill(filename: String, subView: UIView, tagNum: Int) -> LOTAnimationView{
-        
         let animationView = LOTAnimationView(name: filename)
         subView.addSubview(animationView)
         let yCenterConstraint = NSLayoutConstraint(item: animationView, attribute: .centerY, relatedBy: .equal, toItem: subView, attribute: .centerY, multiplier: 1, constant: 0)
@@ -103,7 +100,6 @@ extension UIView{
         animationView.contentMode = .scaleAspectFill
         animationView.tag = tagNum
         return animationView
-        
     }
     
     func makeAnimationDissapear(tag: Int){

@@ -63,7 +63,6 @@ class ViewMapOfJobsVC: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         let screenBrightness = UIScreen.main.brightness
-        
         if screenBrightness < 0.4{
             map.styleURL = URL(string: "mapbox://styles/srikanthsrnvs/cjft4wgos7sa72rn0f7ykelkm")
             UIApplication.shared.statusBarStyle = .lightContent
@@ -74,22 +73,6 @@ class ViewMapOfJobsVC: UIViewController {
         }
     }
 
-    @IBAction func testPost(_ sender: Any) {
-        print("email hash is: ", service.emailHash)
-        let coord = CLLocationCoordinate2D(latitude: 43.698191, longitude: -79.489006)
-        MyAPIClient.sharedClient.getBestJobAt(location: coord, userHash: service.emailHash) { (error) in
-            if let err = error{
-                print(err.localizedDescription)
-            }
-        }
-//        service.getCurrentUserInfo { (user) in
-//
-//            let delivery1 = Delivery(deliveryLocation: self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 2000), identifier: "d1", origin: CLLocationCoordinate2D(latitude: 43.61, longitude: -79.68))
-//            let delivery2 = Delivery(deliveryLocation: self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 2000), identifier: "d2", origin: CLLocationCoordinate2D(latitude: 43.61, longitude: -79.68))
-//            let delivery3 = Delivery(deliveryLocation: self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 2000), identifier: "d3", origin: CLLocationCoordinate2D(latitude: 43.61, longitude: -79.68))
-//            self.service.addTestJob(title: "Pickup", orderer: user,  deliveries: [delivery1, delivery2, delivery3], pickupLocation: CLLocationCoordinate2D(latitude: 43.61, longitude: -79.68), earnings: 5.00, estimatedTime: 10.00)
-//        }
-    }
 }
 
 extension ViewMapOfJobsVC: MGLMapViewDelegate{

@@ -29,6 +29,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     var currentLocation: CLLocationCoordinate2D!
     var locationManager = CLLocationManager()
     var waypoints: [Waypoint]!
+    var timer = Timer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,19 +40,30 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         prepareDataForNavigation()
+        setupTimer()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = true
     }
     
-    func prepareDataForNavigation(){
+    fileprivate func setupTimer(){
+        timer = Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(handleTimer), userInfo: nil, repeats: false)
+    }
+    
+    @objc fileprivate func handleTimer(){
+        print("REACHED!!")
+        service.putBackJob()
+        self.dismiss(animated: true, completion: nil)
+        timer.invalidate()
         
+    }
+    
+    func prepareDataForNavigation(){
         var pickupDist = self.currentLocation.distance(to: job.pickupLocationCoordinates!)
         pickupDist = pickupDist/1000
         pickupDist = pickupDist.rounded()
@@ -76,7 +88,6 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
             print("Error occured. Job was nil")
             self.navigationController?.popViewController(animated: true)
         }
-        
     }
     
     func prepareMap(){
@@ -90,7 +101,6 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     }
     
     func prepareCenterView(){
-        
         let pulsator = Pulsator()
         pulsator.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         pulsator.numPulse = 4
@@ -105,7 +115,6 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     }
     
     @IBAction func acceptJobPressed(_ sender: Any) {
-        
         calculateAndPresentNavigation(waypointList: self.waypoints)
     }
 }
@@ -162,7 +171,7 @@ extension FoundJobVC{
                 let navigation = NavigationViewController(for: (routes?.first)!)
                 navigation.mapView?.styleURL = URL(string:"mapbox://styles/srikanthsrnvs/cjd6ciwwm54my2rms3052j5us")
                 let x = SimulatedLocationManager(route: (routes?.first)!)
-                x.speedMultiplier = 3
+                x.speedMultiplier = 3.0
                 navigation.routeController.locationManager = x
                 self.present(navigation, animated: true, completion: nil)
             }

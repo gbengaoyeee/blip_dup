@@ -18,11 +18,15 @@ class Delivery{
     var deliveryLocation: CLLocationCoordinate2D!
     var identifier: String!
     var origin: CLLocationCoordinate2D!
+    var recieverName: String!
+    var receiverPhoneNumber: String!
     
-    init(deliveryLocation: CLLocationCoordinate2D, identifier: String, origin: CLLocationCoordinate2D) {
+    init(deliveryLocation: CLLocationCoordinate2D, identifier: String, origin: CLLocationCoordinate2D, recieverName: String, recieverNumber: String) {
         self.deliveryLocation = deliveryLocation
         self.identifier = identifier
         self.origin = origin
+        self.recieverName = recieverName
+        self.receiverPhoneNumber = recieverNumber
         
         let geocoder = CLGeocoder()
         geocoder.reverseGeocodeLocation(CLLocation(latitude: (deliveryLocation.latitude), longitude: (deliveryLocation.longitude)), completionHandler: { (placemarks, error) in
@@ -43,6 +47,8 @@ class Delivery{
         self.deliveryLocation = CLLocationCoordinate2D(latitude: (deliveryValues!["deliveryLat"] as? Double)!, longitude: (deliveryValues!["deliveryLong"] as? Double)!)
         self.identifier = snapshot.key
         self.origin = CLLocationCoordinate2D(latitude: (deliveryValues!["originLat"] as? Double)!, longitude: (deliveryValues!["originLong"] as? Double)!)
+        self.recieverName = deliveryValues!["recieverName"] as! String
+        self.receiverPhoneNumber = deliveryValues!["recieverNumber"] as! String
         
         let geocoder = CLGeocoder()
         geocoder.reverseGeocodeLocation(CLLocation(latitude: (deliveryLocation.latitude), longitude: (deliveryLocation.longitude)), completionHandler: { (placemarks, error) in
@@ -50,7 +56,6 @@ class Delivery{
                 let placeMark = placemarks?[0]
                 self.deliveryPlacemark = placeMark
                 self.deliveryAddress = self.parseAddress(placemark: self.deliveryPlacemark!)
-                print("Address: ", self.deliveryAddress)
             }
             else{
                 print("An error occured: ",error!)
