@@ -23,7 +23,7 @@ class ServiceCalls{
         return _instance
     }
     
-    private var emailHash:String!
+    var emailHash:String!
     private var dbRef:DatabaseReference!{
         return Database.database().reference()
     }
@@ -53,9 +53,7 @@ class ServiceCalls{
     }
     
     func findJob(myLocation: CLLocationCoordinate2D, userHash: String, completion: @escaping(Job?) -> ()){
-        
         userRef.child(emailHash).observe(.childAdded) { (snap) in
-            
             if snap.key == "givenJob"{
                 if let jobID = snap.value as? [String: AnyObject]{
                     let j = Job(snapshot: snap.childSnapshot(forPath: jobID.keys.first!))
@@ -63,7 +61,6 @@ class ServiceCalls{
                 }
             }
         }
-        
         MyAPIClient.sharedClient.getBestJobAt(location: myLocation, userHash: userHash) { (error) in
             if error != nil{
                 print(error!)
@@ -162,11 +159,8 @@ class ServiceCalls{
     // */
     //
     func getJobsFromFirebase(MapView:MGLMapView , completion: @escaping ([String:BlipAnnotation]?)->()){
-        
         var annotationDict: [String:BlipAnnotation] = [:]
-        
         jobsRefHandle = jobsRef.observe(.childAdded, with: { (snap) in
-
             if let job = Job(snapshot: snap){
                 print("Ordered by ", job.orderer.name!)
                 let point = BlipAnnotation(coordinate: job.pickupLocationCoordinates, title: "Pickup", subtitle: job.jobID)
@@ -185,6 +179,20 @@ class ServiceCalls{
         jobsRef.child(id).observeSingleEvent(of: .value) { (snap) in
             completion(Job(snapshot: snap))
         }
+    }
+    
+    func putBackJob(){
+        self.userRef.child(emailHash).child("givenJob").removeValue()
+        self.userRef.child(emailHash).observeSingleEvent(of: .childRemoved) { (snapshot) in
+            if snapshot.key == "givenJob"{
+                self.jobsRef.updateChildValues(snapshot.value as! [String:Any])
+            }
+        }
+//        self.userRef.child(emailHash).observe(.childRemoved) { (snapshot) in
+//            if snapshot.key == "givenJob"{
+//                self.jobsRef.updateChildValues(snapshot.value as! [String:Any])
+//            }
+//        }
     }
     
     /**
@@ -227,17 +235,14 @@ class ServiceCalls{
     }
     
     func GetUserHashWhoAccepted(completion: @escaping(String) -> ()){
-        
         userRef.child(emailHash).observeSingleEvent(of: .value) { (hash) in
-            
-            
             if let acceptedHash = hash.value as? [String: AnyObject]{
                 print(acceptedHash)
                 completion((acceptedHash["latestPostAccepted"] as? String)!)
             }
         }
     }
-    //
+    
     //    func getUserInfo(hash: String, completion: @escaping (BlipUser?) -> ()){
     //        print("user", Auth.auth().currentUser)
     //        print("email", (Auth.auth().currentUser?.email)!)

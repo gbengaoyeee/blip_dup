@@ -644,7 +644,7 @@
                         <outlet property="goButton" destination="Yjo-Ea-HG0" id="6OC-wQ-sUX"/>
                         <outlet property="goButtonPulseAnimation" destination="F1g-OS-zCz" id="hVu-7L-nHF"/>
                         <outlet property="map" destination="k1b-e6-YiJ" id="IyO-MK-efC"/>
-                        <segue destination="H07-W2-WS5" kind="show" identifier="foundJob" id="fnn-LB-UCm"/>
+                        <segue destination="H07-W2-WS5" kind="presentation" identifier="foundJob" id="pBq-Ls-F0d"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fpp-hs-Po5" userLabel="First Responder" sceneMemberID="firstResponder"/>

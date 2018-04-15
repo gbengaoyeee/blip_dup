@@ -63,7 +63,6 @@ class ViewMapOfJobsVC: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         let screenBrightness = UIScreen.main.brightness
-        
         if screenBrightness < 0.4{
             map.styleURL = URL(string: "mapbox://styles/srikanthsrnvs/cjft4wgos7sa72rn0f7ykelkm")
             UIApplication.shared.statusBarStyle = .lightContent
@@ -73,6 +72,7 @@ class ViewMapOfJobsVC: UIViewController {
             UIApplication.shared.statusBarStyle = .default
         }
     }
+
 }
 
 extension ViewMapOfJobsVC: MGLMapViewDelegate{

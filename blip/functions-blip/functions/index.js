@@ -140,17 +140,58 @@ exports.addNewPaymentSource = functions.https.onRequest((req,res) => {
     });
   });
 
-exports.getBestJob = functions.https.onRequest((req,res) => {
-  var long = req.body.locationLong,
-      lat = req.body.locationLat,
-      emailHash = req.body.emailHash;
-  var minDist = 20000,
-      currentDist = 0,
-      jobKey;
-  admin.database().ref('AllJobs').on('value').then((snapshot) =>{ 
-    console.log(snapshot);
-  })
-})
+  exports.getBestJob = functions.https.onRequest((req,res) => {
+    var long = req.body.locationLong,
+        lat = req.body.locationLat,
+        emailHash = req.body.emailHash;
+    var minDist = 20000,
+        currentDist = 0,
+        jobKey;
+    var allJobsref = admin.database().ref('AllJobs');
+    allJobsref.once('value', function(snapshot){
+      // console.log(data.val());
+      var allJobsValues = snapshot.val();
+      if (allJobsValues != null){
+        var keysArr = Object.keys(allJobsValues);// this gives an array of keys of JobIDs
+        var minimumDistance = 20000;
+        var closestJobId = null;    //should hold the closest job available
+        for (const jobId in allJobsValues){
+          const compareLat = allJobsValues[jobId].pickupLocationLat;
+          const compareLong = allJobsValues[jobId].pickupLocationLong;
+          console.log("latitude is: " + compareLat+" and longitude is: "+compareLong);
+          const distance = geo.getDistance({latitude: lat, longitude: long}, {latitude: compareLat, longitude: compareLong});
+          if(distance < minimumDistance){
+            closestJobId = jobId;
+            minimumDistance = distance;
+            console.log("Distance is: "+distance);
+          }
+        }//end of for loop
+        if (closestJobId != null){
+          console.log('Found 1: '+closestJobId);
+          const jobIdRef = admin.database().ref('/AllJobs/' + closestJobId);
+          // const jobIdRef = allJobsref.ref('/'+closestJobId);
+          jobIdRef.once('value',function(snap){
+            const userRef = admin.database().ref('Couriers');
+            var updates = {};
+            updates['/'+emailHash+'/givenJob/'+closestJobId] = snap.val();
+            userRef.update(updates);
+            jobIdRef.remove(gotError);
+          }, gotError);
+        }else{
+          console.log('Found Nothing!');
+          //found no close jobs
+        }//end of if-statements
+      }else{
+        //AllJobs Reference is empty
+      }
+
+      
+    }, gotError);//end of observe
+  })//End of Function
+  
+  function gotError(err){
+    console.log(err);
+  }
 
 exports.deleteUserFromDatabase = functions.auth.user().onDelete(event =>{
 

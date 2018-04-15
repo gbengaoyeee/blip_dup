@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0700"
+   LastUpgradeVersion = "0930"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -13,11 +13,11 @@
             buildForProfiling = "YES"
             buildForArchiving = "YES">
             <BuildableReference
-               BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'F467649ABA1FF5D1E01962A9EF972261'
-               BlueprintName = 'PopupDialog'
-               ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'PopupDialog.framework'>
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "8401AEC2BB7ED17BFEAE65F6781F0DEA"
+               BlueprintName = "PopupDialog"
+               ReferencedContainer = "container:Pods.xcodeproj"
+               BuildableName = "PopupDialog.framework">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

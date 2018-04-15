@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0700"
+   LastUpgradeVersion = "0930"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -13,11 +13,11 @@
             buildForProfiling = "YES"
             buildForArchiving = "YES">
             <BuildableReference
-               BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '6930D5D0C3440426432777093903702D'
-               BlueprintName = 'BSGridCollectionViewLayout'
-               ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'BSGridCollectionViewLayout.framework'>
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "6930D5D0C3440426432777093903702D"
+               BlueprintName = "BSGridCollectionViewLayout"
+               ReferencedContainer = "container:Pods.xcodeproj"
+               BuildableName = "BSGridCollectionViewLayout.framework">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

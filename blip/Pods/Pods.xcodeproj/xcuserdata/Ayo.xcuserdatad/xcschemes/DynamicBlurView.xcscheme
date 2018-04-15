@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0700"
+   LastUpgradeVersion = "0930"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -13,11 +13,11 @@
             buildForProfiling = "YES"
             buildForArchiving = "YES">
             <BuildableReference
-               BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '9AD6E417B292CCB529632F0FA6F2EFEC'
-               BlueprintName = 'DynamicBlurView'
-               ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'DynamicBlurView.framework'>
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "9AD6E417B292CCB529632F0FA6F2EFEC"
+               BlueprintName = "DynamicBlurView"
+               ReferencedContainer = "container:Pods.xcodeproj"
+               BuildableName = "DynamicBlurView.framework">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

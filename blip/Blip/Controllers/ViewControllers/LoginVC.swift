@@ -101,7 +101,6 @@ class LoginVC: UIViewController {
     }
     
     @IBAction func loginWithReturn(_ sender: Any){
-        
         login()
     }
     
@@ -110,7 +109,7 @@ class LoginVC: UIViewController {
         login()
      }
     
-    func login(){
+    fileprivate func login(){
         self.loginButtonView.makeButtonDissapear()
         self.forgetPassword.makeButtonDissapear()
         self.subview.isHidden = false
@@ -145,6 +144,7 @@ class LoginVC: UIViewController {
                 }
                 else if (error == nil && (user?.isEmailVerified)!){
                     // else perform segue
+                    self.service.emailHash = self.MD5(string: (user?.email)!)
                     let ref = Database.database().reference().child("Couriers").child(self.MD5(string: (user?.email)!))
                     let token = ["currentDevice": AppDelegate.DEVICEID]
                     ref.updateChildValues(token)

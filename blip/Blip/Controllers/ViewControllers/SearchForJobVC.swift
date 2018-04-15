@@ -47,7 +47,6 @@ class SearchForJobVC: UIViewController {
     }
     
     func prepareJobsNearMe(){
-        
         MyAPIClient.sharedClient.getNumberOfJobsNearMe(location: self.currentLocation) { (jobNumber) in
             let leftImageView = UIImageView()
             leftImageView.setIcon(icon: .googleMaterialDesign(.info), textColor: UIColor.white, backgroundColor: UIColor.clear, size: CGSize(size: 50))
@@ -97,7 +96,6 @@ class SearchForJobVC: UIViewController {
     }
     
     @IBAction func searchForJob(_ sender: Any) {
-          
         service.findJob(myLocation: self.currentLocation, userHash: userDefaults.dictionary(forKey: "loginCredentials")!["emailHash"] as! String) { (job) in
             if let job = job{
                 self.foundJob = job
@@ -105,7 +103,6 @@ class SearchForJobVC: UIViewController {
             }
         }
     }
-    
 }
 
 extension SearchForJobVC: MGLMapViewDelegate{
