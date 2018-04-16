@@ -28,7 +28,7 @@ class Job{
         let deliveriesSnap = snapshot.childSnapshot(forPath: "deliveries")
         for snap in (deliveriesSnap.value as? [String: AnyObject])!{
             let delivery = Delivery(snapshot: deliveriesSnap.childSnapshot(forPath: "\(snap.key)"))
-            self.locList.append(delivery?.origin)
+            self.locList.append((delivery?.origin)!)
             self.locList.append((delivery?.deliveryLocation)!)
             self.deliveries.append(delivery!)
         }

@@ -64,21 +64,23 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     }
     
     func prepareDataForNavigation(){
-        var pickupDist = self.currentLocation.distance(to: job.pickupLocationCoordinates!)
-        pickupDist = pickupDist/1000
-        pickupDist = pickupDist.rounded()
-        pickupLabel.text = "Pickup distance: \(pickupDist) km"
+
         if let job = self.job{
             var distributions: String!
             for i in stride(from: 0, to: 2*job.deliveries.count, by: 1) {
-                distributions += "\(i),"
+                
+                if i%2 != 0{
+                    distributions = distributions + "\(i);"
+                }
+                else{
+                    distributions = distributions + "\(i),"
+                }
             }
-            distributions = distributions.dropLast()
+            distributions = String(distributions.dropLast())
             MyAPIClient.sharedClient.optimizeRoute(locations: job.locList, distributions: distributions) { (waypointData, routeData, error) in
                 if error == nil{
                     if let waypointData = waypointData{
                         self.waypoints = self.parseDataFromOptimization(waypointData: waypointData)
-                        self.payoutLabel.text = "Payout: $\(job.earnings!)"
                     }
                     if let routeData = routeData{
                         self.parseRouteData(routeData: routeData)
