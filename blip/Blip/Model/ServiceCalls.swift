@@ -57,7 +57,8 @@ class ServiceCalls{
             if snap.key == "givenJob"{
                 if let jobID = snap.value as? [String: AnyObject]{
                     let j = Job(snapshot: snap.childSnapshot(forPath: jobID.keys.first!))
-                    completion(j)
+                    j?.locList.append(myLocation)
+                    completion(d)
                 }
             }
         }
@@ -199,16 +200,11 @@ class ServiceCalls{
      Add a job to Firebase Database
      */
     
-    func addTestJob(title: String, orderer: BlipUser, deliveries: [Delivery], pickupLocation: CLLocationCoordinate2D, earnings: Double, estimatedTime: Double){
+    func addTestJob(deliveryLocation: CLLocationCoordinate2D, pickupLocation: CLLocationCoordinate2D, recieverName: String, recieverNumber: String){
         
-        let user = Auth.auth().currentUser
         let newJobID = self.jobsRef.childByAutoId().key
-        let pickupLat = pickupLocation.latitude
-        let pickupLong = pickupLocation.longitude
-        
         let date = Date()
         let calendar = Calendar.current
-        
         let day = calendar.component(.day, from: date)
         let month = calendar.component(.month, from: date)
         let year = calendar.component(.year, from: date)
@@ -217,20 +213,9 @@ class ServiceCalls{
         let second = calendar.component(.second, from: date)
         let fullDate = "\(day)-\(month)-\(year) \(hour):\(minute):\(second)"
         
-        let userDict: [String: Any] = [orderer.userEmailHash!: ["email": orderer.email!, "name": orderer.name!, "rating": orderer.rating!, "currentDevice": orderer.currentDevice!, "customerID": orderer.customerID!, "photoURL": orderer.photoURL!.absoluteString, "uid": orderer.uid!]]
-        
-        var deliveryDict: [String: Any] = [:]
-        for delivery in deliveries{
-            deliveryDict[delivery.identifier] = ["deliveryLat": delivery.deliveryLocation.latitude, "deliveryLong": delivery.deliveryLocation.longitude, "originLat": delivery.origin.latitude, "originLong": delivery.origin.longitude, "recieverName": delivery.recieverName,  "recieverNumber": delivery.receiverPhoneNumber]
-        }
-        
-        let jobDict: [String:Any] = ["deliveries": deliveryDict,  "pickupLocationLat":pickupLat, "pickupLocationLong":pickupLong, "orderer": userDict, "estimatedTime": estimatedTime, "earnings":earnings]
+        let dict: [String: Any] = ["deliveryLat": deliveryLocation.latitude, "deliveryLong": deliveryLocation.longitude, "originLat": pickupLocation.latitude, "originLong": pickupLocation.longitude, "recieverName": recieverName,  "recieverNumber": recieverNumber]
 
-        // adding job to the user who posted list of last post
-        let ordererRef = self.userRef.child(self.emailHash).child("order")
-        
-        self.jobsRef.child(newJobID).updateChildValues(jobDict)
-        ordererRef.setValue(newJobID)
+        self.jobsRef.child(newJobID).updateChildValues(dict)
 
     }
     

@@ -154,7 +154,7 @@ exports.addNewPaymentSource = functions.https.onRequest((req,res) => {
       if (allJobsValues != null){
         var keysArr = Object.keys(allJobsValues);// this gives an array of keys of JobIDs
         var minimumDistance = 20000;
-        var totalDistance = null;
+        var totalDistance = 20000;
         var closestJobId = null;    //should hold the closest job available
         for (const jobId in allJobsValues){
           const pickupLat = allJobsValues[jobId].originLat;
@@ -163,25 +163,14 @@ exports.addNewPaymentSource = functions.https.onRequest((req,res) => {
           const deliveryLong = allJobsValues[jobId].deliveryLong;
           const distanceFromCurrentLocationToPickup = geo.getDistance({latitude: lat, longitude: long}, {latitude: pickupLat, longitude: pickupLong});
           const distanceFromPickupToDelivery = geo.getDistance({latitude: pickupLat, longitude: pickupLong}, {latitude: deliveryLat, longitude: deliveryLong});
-          const distanceFromCurrentLocationToDelivery = geo.getDistance({latitude: lat, longitude: long}, {latitude: deliveryLat, longitude: deliveryLong})
-          if((distanceFromCurrentLocationToPickup < minimumDistance) && (distanceFromPickupToDelivery<minimumDistance)){
+          if(distanceFromCurrentLocationToPickup+distanceFromPickupToDelivery < totalDistance){
             closestJobId = jobId;
-            //Average distance
             totalDistance = (distanceFromCurrentLocationToPickup+distanceFromPickupToDelivery);
           }
         }//end of for loop
         if (closestJobId != null){
           console.log('Found 1: '+closestJobId+" "+totalDistance);
           return [closestJobId, totalDistance];
-          // const jobIdRef = admin.database().ref('/AllJobs/' + closestJobId);
-          // // const jobIdRef = allJobsref.ref('/'+closestJobId);
-          // jobIdRef.once('value',function(snap){
-          //   const userRef = admin.database().ref('Couriers');
-          //   var updates = {};
-          //   updates['/'+emailHash+'/givenJob/'+closestJobId] = snap.val();
-          //   userRef.update(updates);
-          //   jobIdRef.remove(gotError);
-          // }, gotError);
         }else{
           console.log('Found Nothing!');
           //found no close jobs
