@@ -154,29 +154,23 @@ exports.addNewPaymentSource = functions.https.onRequest((req,res) => {
       if (allJobsValues != null){
         var keysArr = Object.keys(allJobsValues);// this gives an array of keys of JobIDs
         var minimumDistance = 20000;
+        var totalDistance = 20000;
         var closestJobId = null;    //should hold the closest job available
         for (const jobId in allJobsValues){
-          const compareLat = allJobsValues[jobId].pickupLocationLat;
-          const compareLong = allJobsValues[jobId].pickupLocationLong;
-          console.log("latitude is: " + compareLat+" and longitude is: "+compareLong);
-          const distance = geo.getDistance({latitude: lat, longitude: long}, {latitude: compareLat, longitude: compareLong});
-          if(distance < minimumDistance){
+          const pickupLat = allJobsValues[jobId].originLat;
+          const pickupLong = allJobsValues[jobId].originLong;
+          const deliveryLat = allJobsValues[jobId].deliveryLat;
+          const deliveryLong = allJobsValues[jobId].deliveryLong;
+          const distanceFromCurrentLocationToPickup = geo.getDistance({latitude: lat, longitude: long}, {latitude: pickupLat, longitude: pickupLong});
+          const distanceFromPickupToDelivery = geo.getDistance({latitude: pickupLat, longitude: pickupLong}, {latitude: deliveryLat, longitude: deliveryLong});
+          if(distanceFromCurrentLocationToPickup+distanceFromPickupToDelivery < totalDistance){
             closestJobId = jobId;
-            minimumDistance = distance;
-            console.log("Distance is: "+distance);
+            totalDistance = (distanceFromCurrentLocationToPickup+distanceFromPickupToDelivery);
           }
         }//end of for loop
         if (closestJobId != null){
-          console.log('Found 1: '+closestJobId);
-          const jobIdRef = admin.database().ref('/AllJobs/' + closestJobId);
-          // const jobIdRef = allJobsref.ref('/'+closestJobId);
-          jobIdRef.once('value',function(snap){
-            const userRef = admin.database().ref('Couriers');
-            var updates = {};
-            updates['/'+emailHash+'/givenJob/'+closestJobId] = snap.val();
-            userRef.update(updates);
-            jobIdRef.remove(gotError);
-          }, gotError);
+          console.log('Found 1: '+closestJobId+" "+totalDistance);
+          return [closestJobId, totalDistance];
         }else{
           console.log('Found Nothing!');
           //found no close jobs
@@ -184,8 +178,6 @@ exports.addNewPaymentSource = functions.https.onRequest((req,res) => {
       }else{
         //AllJobs Reference is empty
       }
-
-      
     }, gotError);//end of observe
   })//End of Function
   
@@ -194,7 +186,6 @@ exports.addNewPaymentSource = functions.https.onRequest((req,res) => {
   }
 
 exports.deleteUserFromDatabase = functions.auth.user().onDelete(event =>{
-
     const data = event.data;
     const emailHash = crypto.createHash('md5').update(data.email).digest('hex');
     console.log('Deleting user from database');
