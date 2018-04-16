@@ -158,24 +158,24 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
     
     func completeCharge(job: Job, completion: @escaping(String?) -> ()){
         
-        service.getChargeIDFor(job: job) { (id) in
-            
-            let url = self.baseURL.appendingPathComponent("captureCharge")
-            let params: [String: Any] = [
-                "chargeID": id
-            ]
-            Alamofire.request(url, method: .post, parameters: params)
-                .validate(statusCode: 200..<300)
-                .responseString { response in
-                    switch response.result {
-                    case .success:
-                        completion(response.value!)
-                    case .failure:
-                        completion(nil)
-                    }
-        
-            }
-        }
+//        service.getChargeIDFor(job: job) { (id) in
+//            
+//            let url = self.baseURL.appendingPathComponent("captureCharge")
+//            let params: [String: Any] = [
+//                "chargeID": id
+//            ]
+//            Alamofire.request(url, method: .post, parameters: params)
+//                .validate(statusCode: 200..<300)
+//                .responseString { response in
+//                    switch response.result {
+//                    case .success:
+//                        completion(response.value!)
+//                    case .failure:
+//                        completion(nil)
+//                    }
+//        
+//            }
+//        }
     }
     
     func getCurrentCustomer(completion: @escaping STPJSONResponseCompletionBlock) {

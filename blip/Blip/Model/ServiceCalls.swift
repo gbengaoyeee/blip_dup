@@ -292,14 +292,14 @@ class ServiceCalls{
     ////
     ////    }
     //
-    func getChargeIDFor(job: Job, completion: @escaping(String) ->()){
-        
-        jobsRef.child(job.jobID).child("charge").observeSingleEvent(of: .value) { (id) in
-            if let charge = id.value as? String{
-                completion(charge)
-            }
-        }
-    }
+//    func getChargeIDFor(job: Job, completion: @escaping(String) ->()){
+//        
+//        jobsRef.child(job.jobID).child("charge").observeSingleEvent(of: .value) { (id) in
+//            if let charge = id.value as? String{
+//                completion(charge)
+//            }
+//        }
+//    }
     //
     ////    func removeAcceptedJobsFromMap(completion: @escaping (Job?)->()){
     ////

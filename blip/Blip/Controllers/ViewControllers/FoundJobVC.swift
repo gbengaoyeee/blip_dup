@@ -56,7 +56,6 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     }
     
     @objc fileprivate func handleTimer(){
-        print("REACHED!!")
         service.putBackJob()
         self.dismiss(animated: true, completion: nil)
         timer.invalidate()
@@ -100,7 +99,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     func prepareMap(){
         map.makeCircular()
         map.clipsToBounds = true
-        let camera = MGLMapCamera(lookingAtCenter: job.pickupLocationCoordinates!, fromDistance: 6000, pitch: 0, heading: 0)
+        let camera = MGLMapCamera(lookingAtCenter: (job.deliveries.first?.origin)!, fromDistance: 6000, pitch: 0, heading: 0)
         map.setCamera(camera, animated: true)
         let pickupAnnotation = MGLPointAnnotation()
         pickupAnnotation.coordinate = camera.centerCoordinate

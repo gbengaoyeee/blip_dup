@@ -78,14 +78,14 @@ class ViewMapOfJobsVC: UIViewController {
 extension ViewMapOfJobsVC: MGLMapViewDelegate{
     
     func prepareMap(){
-        self.map.delegate = self
-        map.showsUserLocation = true
-        map.showsUserHeadingIndicator = true
-        map.userTrackingMode = .followWithHeading
-        service.getJobsFromFirebase(MapView: self.map) { (annotations) in
-            print("Got jobs from firebase")
-            self.allAnnotations = annotations
-        }
+//        self.map.delegate = self
+//        map.showsUserLocation = true
+//        map.showsUserHeadingIndicator = true
+//        map.userTrackingMode = .followWithHeading
+//        service.getJobsFromFirebase(MapView: self.map) { (annotations) in
+//            print("Got jobs from firebase")
+//            self.allAnnotations = annotations
+//        }
     }
     
     func drawRoute(data: Data) {
