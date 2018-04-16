@@ -140,50 +140,107 @@ exports.addNewPaymentSource = functions.https.onRequest((req,res) => {
     });
   });
 
-  exports.getBestJob = functions.https.onRequest((req,res) => {
-    var long = req.body.locationLong,
-        lat = req.body.locationLat,
-        emailHash = req.body.emailHash;
-    var minDist = 20000,
-        currentDist = 0,
-        jobKey;
-    var allJobsref = admin.database().ref('AllJobs');
-    allJobsref.once('value', function(snapshot){
-      // console.log(data.val());
-      var allJobsValues = snapshot.val();
-      if (allJobsValues != null){
-        var keysArr = Object.keys(allJobsValues);// this gives an array of keys of JobIDs
-        var minimumDistance = 20000;
-        var totalDistance = 20000;
-        var closestJobId = null;    //should hold the closest job available
-        for (const jobId in allJobsValues){
-          const pickupLat = allJobsValues[jobId].originLat;
-          const pickupLong = allJobsValues[jobId].originLong;
-          const deliveryLat = allJobsValues[jobId].deliveryLat;
-          const deliveryLong = allJobsValues[jobId].deliveryLong;
-          const distanceFromCurrentLocationToPickup = geo.getDistance({latitude: lat, longitude: long}, {latitude: pickupLat, longitude: pickupLong});
-          const distanceFromPickupToDelivery = geo.getDistance({latitude: pickupLat, longitude: pickupLong}, {latitude: deliveryLat, longitude: deliveryLong});
-          if(distanceFromCurrentLocationToPickup+distanceFromPickupToDelivery < totalDistance){
-            closestJobId = jobId;
-            totalDistance = (distanceFromCurrentLocationToPickup+distanceFromPickupToDelivery);
+exports.getBestJob = functions.https.onRequest((req,res) => {
+  var long = req.body.locationLong,
+      lat = req.body.locationLat,
+      emailHash = req.body.emailHash;
+  var minDist = 20000,
+      currentDist = 0,
+      jobKey;
+  getClosestJobIdAndDistance(lat, long, function(err, data){
+    if(err){
+      console.log("Found an Error");
+    }else{
+      var maxDist = 30000;
+      const closestJobIdDict = data[0];//This is a dictionary
+      const closestJobId = Object.keys(closestJobIdDict)[0];
+      const totalDistance = data[1];
+      var jobBundle = [];
+      jobBundle.push(closestJobIdDict);
+      maxDist = maxDist - totalDistance;
+
+      var allJobsref = admin.database().ref('AllJobs');
+      allJobsref.once('value', function(snapshot){
+        var allJobsValues = snapshot.val();
+        if(allJobsValues != null){
+          for (const jobId in allJobsValues){
+            if(jobId != closestJobId){//So skip it sees the same job as the closest it already found
+              const pickupLat = allJobsValues[jobId].originLat;
+              const pickupLong = allJobsValues[jobId].originLong;
+              const deliveryLat = allJobsValues[jobId].deliveryLat;
+              const deliveryLong = allJobsValues[jobId].deliveryLong;
+              var x = geo.getDistance({latitude: pickupLat, longitude: pickupLong}, {latitude: lat, longitude: long});
+              var y = geo.getDistance({latitude: pickupLat, longitude: pickupLong}, {latitude: closestJobIdDict[closestJobId].originLat, longitude: closestJobIdDict[closestJobId].originLong});
+              var z = geo.getDistance({latitude: pickupLat, longitude: pickupLong}, {latitude: closestJobIdDict[closestJobId].deliveryLat, longitude: closestJobIdDict[closestJobId].deliveryLong});
+              var m = geo.getDistance({latitude: pickupLat, longitude: pickupLong}, {latitude: deliveryLat, longitude: deliveryLong});
+              var n = Math.min(...[x,y,z]);
+
+              if (maxDist <= (m+n)){
+                var jobDict = {};
+                jobDict[jobId] = allJobsValues[jobId];
+                jobBundle.push(jobDict)
+                maxDist = maxDist - (m+n);
+              }
+            }
+          }//End of first For loop
+
+          for(const i in jobBundle){
+            admin.database().ref('Couriers/'+emailHash+'/givenJob/deliveries').update(jobBundle[i], gotError);
           }
-        }//end of for loop
-        if (closestJobId != null){
-          console.log('Found 1: '+closestJobId+" "+totalDistance);
-          return [closestJobId, totalDistance];
         }else{
-          console.log('Found Nothing!');
-          //found no close jobs
-        }//end of if-statements
-      }else{
-        //AllJobs Reference is empty
-      }
-    }, gotError);//end of observe
-  })//End of Function
+          //No jobs in the AllJobs Reference
+        }
+      }, gotError);//End of observe single event
+    }
+  });
+})//End of Function
   
-  function gotError(err){
-    console.log(err);
-  }
+function gotError(err){
+  console.log(err);
+}
+
+function getClosestJobIdAndDistance(lat, long, callback){
+  var allJobsref = admin.database().ref('AllJobs');
+  allJobsref.once('value', function(snapshot){
+    // console.log(data.val());
+    var allJobsValues = snapshot.val();
+    if (allJobsValues != null){
+      var keysArr = Object.keys(allJobsValues);// this gives an array of keys of JobIDs
+      var minimumDistance = 20000;
+      var totalDistance = 20000;
+      var closestJobId = {};    //should hold the closest job available
+      for (const jobId in allJobsValues){
+        const pickupLat = allJobsValues[jobId].originLat;
+        const pickupLong = allJobsValues[jobId].originLong;
+        const deliveryLat = allJobsValues[jobId].deliveryLat;
+        const deliveryLong = allJobsValues[jobId].deliveryLong;
+        const distanceFromCurrentLocationToPickup = geo.getDistance({latitude: lat, longitude: long}, {latitude: pickupLat, longitude: pickupLong});
+        const distanceFromPickupToDelivery = geo.getDistance({latitude: pickupLat, longitude: pickupLong}, {latitude: deliveryLat, longitude: deliveryLong});
+        if(distanceFromCurrentLocationToPickup+distanceFromPickupToDelivery < totalDistance){
+          closestJobId = {};
+          closestJobId[jobId] = allJobsValues[jobId];
+          totalDistance = (distanceFromCurrentLocationToPickup+distanceFromPickupToDelivery);
+        }
+      }//end of for loop
+      console.log(closestJobId);
+      if (Object.keys(closestJobId).length > 0){
+        var result = [closestJobId, totalDistance];
+        console.log('Found 1: '+closestJobId+" "+result);
+        callback(null,result);
+        // return [closestJobId, totalDistance];
+      }else{
+        console.log('Found Nothing!');
+        var noJobError = new Error("Found Nothing");
+        callback(noJobError, null);
+        //found no close jobs
+      }//end of if-statements
+    }else{
+      //AllJobs Reference is empty
+      var emptyRefError = new Error("No Jobs Available");
+      callback(emptyRefError, null);
+    }
+  }, gotError);//end of observe
+}
 
 exports.deleteUserFromDatabase = functions.auth.user().onDelete(event =>{
     const data = event.data;
