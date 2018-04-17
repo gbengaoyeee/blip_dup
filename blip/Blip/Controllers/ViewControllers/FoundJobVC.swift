@@ -15,6 +15,7 @@ import MapboxDirections
 import SRCountdownTimer
 import Pulsator
 import PopupDialog
+import NotificationBannerSwift
 
 class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
 
@@ -163,7 +164,7 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
         if let name = waypoint.name{
             if name == "Pickup" || name == "Delivery"{
                 
-                let popup = PopupDialog(title: "Instructions", message: self.instructionsUponArrival(waypoint: waypoint))
+                let popup = PopupDialog(title: "Instructions", message: self.instructionsUponArrival(waypoint: waypoint), gestureDismissal: false)
                 navigationViewController.present(popup, animated: true, completion: nil)
                 let doneButton = PopupDialogButton(title: "Done") {
                     if navigationViewController.routeController.routeProgress.isFinalLeg {
@@ -205,6 +206,11 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
 }
 
 extension FoundJobVC{
+    
+    func call(number: String!)  {
+        let url: NSURL = URL(string: "Tel:\(number)")! as NSURL
+        UIApplication.shared.open(url as URL, options: [:], completionHandler: nil)
+    }
     
     func parseDataFromOptimization(waypointData: [[String: AnyObject]]) -> [Waypoint]{
         
