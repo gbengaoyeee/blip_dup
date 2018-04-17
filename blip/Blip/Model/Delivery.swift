@@ -34,7 +34,6 @@ class Delivery{
                 let placeMark = placemarks?[0]
                 self.deliveryPlacemark = placeMark
                 self.deliveryAddress = self.parseAddress(placemark: self.deliveryPlacemark!)
-                print("Address: ", self.deliveryAddress)
             }
         })
     }

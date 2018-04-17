@@ -65,17 +65,21 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     func prepareDataForNavigation(){
 
         if let job = self.job{
-            var distributions: String!
+            var distributions = ""
             for i in stride(from: 0, to: 2*job.deliveries.count, by: 1) {
                 
                 if i%2 != 0{
-                    distributions = distributions + "\(i);"
+                    distributions = distributions + "\(i+1);"
                 }
                 else{
-                    distributions = distributions + "\(i),"
+                    distributions = distributions + "\(i+1),"
                 }
+                
             }
+            
             distributions = String(distributions.dropLast())
+            print(distributions)
+            print(job.locList)
             MyAPIClient.sharedClient.optimizeRoute(locations: job.locList, distributions: distributions) { (waypointData, routeData, error) in
                 if error == nil{
                     if let waypointData = waypointData{
@@ -121,6 +125,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     }
     
     @IBAction func acceptJobPressed(_ sender: Any) {
+        timer.invalidate()
         calculateAndPresentNavigation(waypointList: self.waypoints)
     }
 }
@@ -153,9 +158,14 @@ extension FoundJobVC: NavigationViewControllerDelegate{
     
     func navigationViewController(_ navigationViewController: NavigationViewController, didArriveAt waypoint: Waypoint) -> Bool {
         
-        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WaypointArrivalVC") as! WaypointArrivalVC
-        navigationViewController.present(vc, animated: true, completion: nil)
-        return true
+        if let name = waypoint.name{
+            if name == "Pickup"{
+                let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WaypointArrivalVC") as! WaypointArrivalVC
+                navigationViewController.present(vc, animated: true, completion: nil)
+                return true
+            }
+        }
+        return false
     }
 }
 
@@ -175,7 +185,30 @@ extension FoundJobVC{
                 }
             }
         }
-        waypointList.insert(Waypoint(coordinate: self.currentLocation, coordinateAccuracy: -1, name: "Origin"), at: 0)
+        for way in waypointList{
+            var dist: Double! = 20000
+            var index: Int!
+            for loc in job.locList{
+                
+                if dist > loc.distance(to: way.coordinate){
+                    dist = loc.distance(to: way.coordinate)
+                    index = job.locList.index(of: loc)
+                }
+            }
+            if index == 0{
+                way.name = "Origin"
+            }
+                
+            else if index%2 == 0{
+                way.name = "Delivery"
+            }
+                
+            else{
+                way.name = "Pickup"
+            }
+            print(way.name!)
+        }
+        
         return waypointList
     }
     

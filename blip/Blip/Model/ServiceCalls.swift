@@ -57,7 +57,7 @@ class ServiceCalls{
             if snap.key == "givenJob"{
                 if let jobID = snap.value as? [String: AnyObject]{
                     let j = Job(snapshot: snap.childSnapshot(forPath: jobID.keys.first!))
-                    j?.locList.append(myLocation)
+                    j?.locList.insert(myLocation, at: 0)
                     completion(j)
                 }
             }
