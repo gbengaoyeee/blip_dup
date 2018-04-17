@@ -160,6 +160,7 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
     
     func navigationViewController(_ navigationViewController: NavigationViewController, didArriveAt waypoint: Waypoint) -> Bool {
         
+        print("name", waypoint.name, navigationViewController.routeController.routeProgress.remainingWaypoints.count)
         navigationViewController.routeController.suspendLocationUpdates()
         if let name = waypoint.name{
             if name == "Pickup" || name == "Delivery"{
@@ -167,7 +168,7 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
                 let popup = PopupDialog(title: "Instructions", message: self.instructionsUponArrival(waypoint: waypoint), gestureDismissal: false)
                 navigationViewController.present(popup, animated: true, completion: nil)
                 let doneButton = PopupDialogButton(title: "Done") {
-                    if navigationViewController.routeController.routeProgress.isFinalLeg {
+                    if navigationViewController.routeController.routeProgress.remainingWaypoints.count == 0{
                         navigationViewController.routeController.resume()
                         popup.dismiss()
                     }
@@ -202,6 +203,11 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
         
         // DO THIS WHEN YOU CANCEL THE NAVIGATION IT HAS TO PUT BACK JOBS IN THE ALLJOBS REF AND REMOVE FROM USER REF
         self.navigationController?.popToRootViewController(animated: true)
+    }
+    
+    func navigationMapView(_ mapView: NavigationMapView, shapeFor waypoints: [Waypoint]) -> MGLShape? {
+        
+        return MGLPointAnnotation()
     }
 }
 
