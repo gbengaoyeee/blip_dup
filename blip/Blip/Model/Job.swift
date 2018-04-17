@@ -16,26 +16,28 @@ import MapKit
 class Job{
     
     var deliveries = [Delivery]()
-    var jobID: String!
     var ref: DatabaseReference!
     var locList = [CLLocationCoordinate2D]()
     
     init?(snapshot: DataSnapshot) {
-        guard !snapshot.key.isEmpty else {
+        guard snapshot.key == "deliveries" else {
             return nil
         }
         let jobValues = snapshot.value as? [String:AnyObject]
-        let deliveriesSnap = snapshot.childSnapshot(forPath: "deliveries")
-        for snap in (deliveriesSnap.value as? [String: AnyObject])!{
-            let delivery = Delivery(snapshot: deliveriesSnap.childSnapshot(forPath: "\(snap.key)"))
-            self.locList.append((delivery?.origin)!)
-            self.locList.append((delivery?.deliveryLocation)!)
-            self.deliveries.append(delivery!)
+        for value in jobValues!{
+            let deliveryValues = value.value as? [String: AnyObject]
+            let id = value.key
+            let deliveryLocation = CLLocationCoordinate2D(latitude: deliveryValues!["deliveryLat"] as! Double, longitude: deliveryValues!["deliveryLong"] as! Double)
+            let origin = CLLocationCoordinate2D(latitude: deliveryValues!["originLat"] as! Double, longitude: deliveryValues!["originLong"] as! Double)
+            let recieverName = deliveryValues!["recieverName"] as! String
+            let recieverNumber = deliveryValues!["recieverNumber"] as! String
+            let delivery = Delivery(deliveryLocation: deliveryLocation, identifier: id, origin: origin, recieverName: recieverName, recieverNumber: recieverNumber)
+            self.locList.append((delivery.origin)!)
+            self.locList.append((delivery.deliveryLocation)!)
+            self.deliveries.append(delivery)
         }
     
         self.ref = snapshot.ref
-        self.jobID = snapshot.key
-        
     }
 }
 

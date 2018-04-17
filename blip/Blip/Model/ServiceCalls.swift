@@ -57,7 +57,7 @@ class ServiceCalls{
             if snap.key == "givenJob"{
                 if let jobID = snap.value as? [String: AnyObject]{
                     let j = Job(snapshot: snap.childSnapshot(forPath: jobID.keys.first!))
-                    j?.locList.append(myLocation)
+                    j?.locList.insert(myLocation, at: 0)
                     completion(j)
                 }
             }
@@ -159,22 +159,21 @@ class ServiceCalls{
     //     doesn't load tasks that are taken
     // */
     //
-    func getJobsFromFirebase(MapView:MGLMapView , completion: @escaping ([String:BlipAnnotation]?)->()){
-        var annotationDict: [String:BlipAnnotation] = [:]
-        jobsRefHandle = jobsRef.observe(.childAdded, with: { (snap) in
-            if let job = Job(snapshot: snap){
-                print("Ordered by ", job.orderer.name!)
-                let point = BlipAnnotation(coordinate: job.pickupLocationCoordinates, title: "Pickup", subtitle: job.jobID)
-                point.job = job
-                point.reuseIdentifier = "customAnnotation\(job.jobID)"
-                point.image = UIImage(icon: .icofont(.vehicleDeliveryVan), size: CGSize(width: 50, height: 50))
-                MapView.addAnnotation(point)
-                annotationDict[(job.jobID)!] = point
-                print(annotationDict)
-                completion(annotationDict)
-            }
-        })
-    }
+//    func getJobsFromFirebase(MapView:MGLMapView , completion: @escaping ([String:BlipAnnotation]?)->()){
+//        var annotationDict: [String:BlipAnnotation] = [:]
+//        jobsRefHandle = jobsRef.observe(.childAdded, with: { (snap) in
+//            if let job = Job(snapshot: snap){
+//                let point = BlipAnnotation(coordinate: job.pickupLocationCoordinates, title: "Pickup", subtitle: job.jobID)
+//                point.job = job
+//                point.reuseIdentifier = "customAnnotation\(job.jobID)"
+//                point.image = UIImage(icon: .icofont(.vehicleDeliveryVan), size: CGSize(width: 50, height: 50))
+//                MapView.addAnnotation(point)
+//                annotationDict[(job.jobID)!] = point
+//                print(annotationDict)
+//                completion(annotationDict)
+//            }
+//        })
+//    }
 
     func getJobFromFirebase(id: String, completion: @escaping(Job?) -> ()){
         jobsRef.child(id).observeSingleEvent(of: .value) { (snap) in
@@ -293,14 +292,14 @@ class ServiceCalls{
     ////
     ////    }
     //
-    func getChargeIDFor(job: Job, completion: @escaping(String) ->()){
-        
-        jobsRef.child(job.jobID).child("charge").observeSingleEvent(of: .value) { (id) in
-            if let charge = id.value as? String{
-                completion(charge)
-            }
-        }
-    }
+//    func getChargeIDFor(job: Job, completion: @escaping(String) ->()){
+//        
+//        jobsRef.child(job.jobID).child("charge").observeSingleEvent(of: .value) { (id) in
+//            if let charge = id.value as? String{
+//                completion(charge)
+//            }
+//        }
+//    }
     //
     ////    func removeAcceptedJobsFromMap(completion: @escaping (Job?)->()){
     ////

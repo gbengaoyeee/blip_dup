@@ -44,7 +44,8 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
     
     func optimizeRoute(locations: [CLLocationCoordinate2D], distributions: String, completion: @escaping ([[String: AnyObject]]?,[String: AnyObject]?, Error?) -> ()){
         let coords = convertLocationToString(locations: locations)
-        let url = "https://api.mapbox.com/optimized-trips/v1/mapbox/driving/\(coords)?&distributions=\(distributions)&roundtrip=false&source=first&destination=last&geometries=geojson&access_token=pk.eyJ1Ijoic3Jpa2FudGhzcm52cyIsImEiOiJjajY0NDI0ejYxcDljMnFtcTNlYWliajNoIn0.jDevn4Fm6WBZUx7TDtys9Q"
+        let url = "https://api.mapbox.com/optimized-trips/v1/mapbox/driving/\(coords)?&distributions=\(distributions)&geometries=geojson&access_token=pk.eyJ1Ijoic3Jpa2FudGhzcm52cyIsImEiOiJjajY0NDI0ejYxcDljMnFtcTNlYWliajNoIn0.jDevn4Fm6WBZUx7TDtys9Q"
+        print(url)
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil)
             .responseJSON { (response) in
                 switch response.result {
@@ -158,24 +159,24 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
     
     func completeCharge(job: Job, completion: @escaping(String?) -> ()){
         
-        service.getChargeIDFor(job: job) { (id) in
-            
-            let url = self.baseURL.appendingPathComponent("captureCharge")
-            let params: [String: Any] = [
-                "chargeID": id
-            ]
-            Alamofire.request(url, method: .post, parameters: params)
-                .validate(statusCode: 200..<300)
-                .responseString { response in
-                    switch response.result {
-                    case .success:
-                        completion(response.value!)
-                    case .failure:
-                        completion(nil)
-                    }
-        
-            }
-        }
+//        service.getChargeIDFor(job: job) { (id) in
+//            
+//            let url = self.baseURL.appendingPathComponent("captureCharge")
+//            let params: [String: Any] = [
+//                "chargeID": id
+//            ]
+//            Alamofire.request(url, method: .post, parameters: params)
+//                .validate(statusCode: 200..<300)
+//                .responseString { response in
+//                    switch response.result {
+//                    case .success:
+//                        completion(response.value!)
+//                    case .failure:
+//                        completion(nil)
+//                    }
+//        
+//            }
+//        }
     }
     
     func getCurrentCustomer(completion: @escaping STPJSONResponseCompletionBlock) {

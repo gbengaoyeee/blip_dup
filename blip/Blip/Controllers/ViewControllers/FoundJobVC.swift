@@ -56,7 +56,6 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     }
     
     @objc fileprivate func handleTimer(){
-        print("REACHED!!")
         service.putBackJob()
         self.dismiss(animated: true, completion: nil)
         timer.invalidate()
@@ -64,21 +63,27 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     }
     
     func prepareDataForNavigation(){
-        var pickupDist = self.currentLocation.distance(to: job.pickupLocationCoordinates!)
-        pickupDist = pickupDist/1000
-        pickupDist = pickupDist.rounded()
-        pickupLabel.text = "Pickup distance: \(pickupDist) km"
+
         if let job = self.job{
-            var distributions: String!
+            var distributions = ""
             for i in stride(from: 0, to: 2*job.deliveries.count, by: 1) {
-                distributions += "\(i),"
+                
+                if i%2 != 0{
+                    distributions = distributions + "\(i+1);"
+                }
+                else{
+                    distributions = distributions + "\(i+1),"
+                }
+                
             }
-            distributions = distributions.dropLast()
+            
+            distributions = String(distributions.dropLast())
+            print(distributions)
+            print(job.locList)
             MyAPIClient.sharedClient.optimizeRoute(locations: job.locList, distributions: distributions) { (waypointData, routeData, error) in
                 if error == nil{
                     if let waypointData = waypointData{
                         self.waypoints = self.parseDataFromOptimization(waypointData: waypointData)
-                        self.payoutLabel.text = "Payout: $\(job.earnings!)"
                     }
                     if let routeData = routeData{
                         self.parseRouteData(routeData: routeData)
@@ -98,7 +103,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     func prepareMap(){
         map.makeCircular()
         map.clipsToBounds = true
-        let camera = MGLMapCamera(lookingAtCenter: job.pickupLocationCoordinates!, fromDistance: 6000, pitch: 0, heading: 0)
+        let camera = MGLMapCamera(lookingAtCenter: (job.deliveries.first?.origin)!, fromDistance: 6000, pitch: 0, heading: 0)
         map.setCamera(camera, animated: true)
         let pickupAnnotation = MGLPointAnnotation()
         pickupAnnotation.coordinate = camera.centerCoordinate
@@ -120,6 +125,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     }
     
     @IBAction func acceptJobPressed(_ sender: Any) {
+        timer.invalidate()
         calculateAndPresentNavigation(waypointList: self.waypoints)
     }
 }
@@ -152,9 +158,14 @@ extension FoundJobVC: NavigationViewControllerDelegate{
     
     func navigationViewController(_ navigationViewController: NavigationViewController, didArriveAt waypoint: Waypoint) -> Bool {
         
-        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WaypointArrivalVC") as! WaypointArrivalVC
-        navigationViewController.present(vc, animated: true, completion: nil)
-        return true
+        if let name = waypoint.name{
+            if name == "Pickup"{
+                let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WaypointArrivalVC") as! WaypointArrivalVC
+                navigationViewController.present(vc, animated: true, completion: nil)
+                return true
+            }
+        }
+        return false
     }
 }
 
@@ -174,7 +185,30 @@ extension FoundJobVC{
                 }
             }
         }
-        waypointList.insert(Waypoint(coordinate: self.currentLocation, coordinateAccuracy: -1, name: "Origin"), at: 0)
+        for way in waypointList{
+            var dist: Double! = 20000
+            var index: Int!
+            for loc in job.locList{
+                
+                if dist > loc.distance(to: way.coordinate){
+                    dist = loc.distance(to: way.coordinate)
+                    index = job.locList.index(of: loc)
+                }
+            }
+            if index == 0{
+                way.name = "Origin"
+            }
+                
+            else if index%2 == 0{
+                way.name = "Delivery"
+            }
+                
+            else{
+                way.name = "Pickup"
+            }
+            print(way.name!)
+        }
+        
         return waypointList
     }
     
