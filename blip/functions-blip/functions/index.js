@@ -151,13 +151,15 @@ exports.getBestJob = functions.https.onRequest((req,res) => {
     if(err){
       console.log("Found an Error");
     }else{
-      var maxDist = 30000;
+      var maxDist = 20000;
       const closestJobIdDict = data[0];//This is a dictionary
       const closestJobId = Object.keys(closestJobIdDict)[0];
+      console.log("Initial MaxDist is: "+maxDist);
+      console.log("Dict: "+closestJobIdDict+" ID: "+closestJobId);
       const totalDistance = data[1];
-      var jobBundle = [];
-      jobBundle.push(closestJobIdDict);
+      var jobBundle = closestJobIdDict;
       maxDist = maxDist - totalDistance;
+
 
       var allJobsref = admin.database().ref('AllJobs');
       allJobsref.once('value', function(snapshot){
@@ -173,20 +175,25 @@ exports.getBestJob = functions.https.onRequest((req,res) => {
               var y = geo.getDistance({latitude: pickupLat, longitude: pickupLong}, {latitude: closestJobIdDict[closestJobId].originLat, longitude: closestJobIdDict[closestJobId].originLong});
               var z = geo.getDistance({latitude: pickupLat, longitude: pickupLong}, {latitude: closestJobIdDict[closestJobId].deliveryLat, longitude: closestJobIdDict[closestJobId].deliveryLong});
               var m = geo.getDistance({latitude: pickupLat, longitude: pickupLong}, {latitude: deliveryLat, longitude: deliveryLong});
+              console.log("x: "+x+" y: "+y+" z: "+z);
               var n = Math.min(...[x,y,z]);
 
-              if (maxDist <= (m+n)){
+              if (maxDist >= (m+n)){
                 var jobDict = {};
-                jobDict[jobId] = allJobsValues[jobId];
-                jobBundle.push(jobDict)
+                // jobDict[jobId] = allJobsValues[jobId];
+                jobBundle[jobId] = allJobsValues[jobId];
                 maxDist = maxDist - (m+n);
+                admin.database().ref('AllJobs/'+jobId).remove().then(() =>{
+                  console.log("Removed job from AllJobs reference successfully");
+                }, () =>{console.log("Cannot remove job from AllJobs reference")});
+                console.log("MaxDist is: "+maxDist);
               }
             }
-          }//End of first For loop
+          }//End of For loop
 
-          for(const i in jobBundle){
-            admin.database().ref('Couriers/'+emailHash+'/givenJob/deliveries').update(jobBundle[i], gotError);
-          }
+          admin.database().ref('Couriers/'+emailHash+'/givenJob/deliveries').update(jobBundle).then(() =>{
+            console.log('Update succeeded!');
+          });
         }else{
           //No jobs in the AllJobs Reference
         }
@@ -196,7 +203,9 @@ exports.getBestJob = functions.https.onRequest((req,res) => {
 })//End of Function
   
 function gotError(err){
-  console.log(err);
+  if(err != null){
+    console.log("Inside gotError Function: "+err);
+  }
 }
 
 function getClosestJobIdAndDistance(lat, long, callback){
