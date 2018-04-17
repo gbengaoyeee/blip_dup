@@ -56,7 +56,7 @@ class ServiceCalls{
         userRef.child(emailHash).observe(.childAdded) { (snap) in
             if snap.key == "givenJob"{
                 if let jobID = snap.value as? [String: AnyObject]{
-                    let j = Job(snapshot: snap.childSnapshot(forPath: jobID.keys.first!))
+                    let j = Job(snapshot: snap.childSnapshot(forPath: jobID.keys.first!), type: "delivery")
                     j?.locList.insert(myLocation, at: 0)
                     completion(j)
                 }
@@ -177,7 +177,7 @@ class ServiceCalls{
 
     func getJobFromFirebase(id: String, completion: @escaping(Job?) -> ()){
         jobsRef.child(id).observeSingleEvent(of: .value) { (snap) in
-            completion(Job(snapshot: snap))
+            completion(Job(snapshot: snap, type: "delivery"))
         }
     }
     
@@ -199,7 +199,7 @@ class ServiceCalls{
      Add a job to Firebase Database
      */
     
-    func addTestJob(deliveryLocation: CLLocationCoordinate2D, pickupLocation: CLLocationCoordinate2D, recieverName: String, recieverNumber: String){
+    func addTestJob(deliveryLocation: CLLocationCoordinate2D, pickupLocation: CLLocationCoordinate2D, recieverName: String, recieverNumber: String, instructions: String){
         
         let newJobID = self.jobsRef.childByAutoId().key
         let date = Date()
@@ -212,7 +212,7 @@ class ServiceCalls{
         let second = calendar.component(.second, from: date)
         let fullDate = "\(day)-\(month)-\(year) \(hour):\(minute):\(second)"
         
-        let dict: [String: Any] = ["deliveryLat": deliveryLocation.latitude, "deliveryLong": deliveryLocation.longitude, "originLat": pickupLocation.latitude, "originLong": pickupLocation.longitude, "recieverName": recieverName,  "recieverNumber": recieverNumber]
+        let dict: [String: Any] = ["deliveryLat": deliveryLocation.latitude, "deliveryLong": deliveryLocation.longitude, "originLat": pickupLocation.latitude, "originLong": pickupLocation.longitude, "recieverName": recieverName,  "recieverNumber": recieverNumber, "instructions": instructions]
 
         self.jobsRef.child(newJobID).updateChildValues(dict)
 

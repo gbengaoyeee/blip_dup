@@ -20,13 +20,15 @@ class Delivery{
     var origin: CLLocationCoordinate2D!
     var recieverName: String!
     var receiverPhoneNumber: String!
+    var instructions: String
     
-    init(deliveryLocation: CLLocationCoordinate2D, identifier: String, origin: CLLocationCoordinate2D, recieverName: String, recieverNumber: String) {
+    init(deliveryLocation: CLLocationCoordinate2D, identifier: String, origin: CLLocationCoordinate2D, recieverName: String, recieverNumber: String, instructions: String) {
         self.deliveryLocation = deliveryLocation
         self.identifier = identifier
         self.origin = origin
         self.recieverName = recieverName
         self.receiverPhoneNumber = recieverNumber
+        self.instructions = instructions
         
         let geocoder = CLGeocoder()
         geocoder.reverseGeocodeLocation(CLLocation(latitude: (deliveryLocation.latitude), longitude: (deliveryLocation.longitude)), completionHandler: { (placemarks, error) in
@@ -49,6 +51,7 @@ class Delivery{
         self.origin = CLLocationCoordinate2D(latitude: (deliveryValues!["originLat"] as? Double)!, longitude: (deliveryValues!["originLong"] as? Double)!)
         self.recieverName = deliveryValues!["recieverName"] as! String
         self.receiverPhoneNumber = deliveryValues!["recieverNumber"] as! String
+        self.instructions = deliveryValues!["instructions"] as! String
         
         let geocoder = CLGeocoder()
         geocoder.reverseGeocodeLocation(CLLocation(latitude: (deliveryLocation.latitude), longitude: (deliveryLocation.longitude)), completionHandler: { (placemarks, error) in

@@ -34,6 +34,51 @@ class CustomAnnotationView: MGLAnnotationView {
     }
 }
 
+class CustomPickupAnnotationView: MGLAnnotationView{
+    let size: CGFloat = 30
+    var dot: CALayer!
+    var arrow: CAShapeLayer!
+    
+    override func layoutSubviews() {
+        // This dot forms the base of the annotation.
+        if dot == nil {
+            dot = CALayer()
+            dot.bounds = CGRect(x: 0, y: 0, width: size, height: size)
+            
+            // Use CALayer’s corner radius to turn this layer into a circle.
+            dot.cornerRadius = size / 2
+            let color = #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1)
+            dot.backgroundColor = color.cgColor
+            dot.borderWidth = 2.5
+            dot.borderColor = UIColor.white.cgColor
+            layer.addSublayer(dot)
+        }
+    }
+}
+
+class CustomDropOffAnnotationView: MGLAnnotationView{
+    let size: CGFloat = 30
+    var dot: CALayer!
+    var arrow: CAShapeLayer!
+    
+    override func layoutSubviews() {
+        // This dot forms the base of the annotation.
+        if dot == nil {
+            dot = CALayer()
+            dot.bounds = CGRect(x: 0, y: 0, width: size, height: size)
+            
+            // Use CALayer’s corner radius to turn this layer into a circle.
+            dot.cornerRadius = size / 2
+            let color = #colorLiteral(red: 0.9574458003, green: 0.233445853, blue: 0.1455087066, alpha: 1)
+            dot.backgroundColor = color.cgColor
+            dot.borderWidth = 2.5
+            dot.borderColor = UIColor.white.cgColor
+            layer.addSublayer(dot)
+        }
+    }
+ 
+}
+
 class CustomUserLocationAnnotationView: MGLUserLocationAnnotationView {
     let size: CGFloat = 30
     var dot: CALayer!
