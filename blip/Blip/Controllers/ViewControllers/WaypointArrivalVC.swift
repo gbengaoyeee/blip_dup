@@ -20,12 +20,13 @@ class WaypointArrivalVC: UIViewController {
     @IBOutlet weak var orderLabel: UILabel!
     @IBOutlet weak var instructionLabel: UILabel!
     
-    var job: Job!
-    var waypoint: Waypoint!
+    var delivery: Delivery!
+    var waypoint: BlipWaypoint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         prepareMap()
+        print(delivery.recieverName)
     }
 
     override func didReceiveMemoryWarning() {

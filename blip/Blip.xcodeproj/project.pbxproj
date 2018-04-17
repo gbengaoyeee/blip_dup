@@ -376,8 +376,8 @@
 				3B4B92CB20797EA90075BE98 /* DeliveryAnnotation.swift */,
 				3B4B92C920797E030075BE98 /* PickUpAnnotation.swift */,
 				5F33377920332B4600B83E01 /* RatingViewController.swift */,
-				5FDEF880206B5ED700F33733 /* CustomXIB */,
 				F3D21EE320857E2100832544 /* BlipWaypoint.swift */,
+				5FDEF880206B5ED700F33733 /* CustomXIB */,
 			);
 			path = CustomFiles;
 			sourceTree = "<group>";
