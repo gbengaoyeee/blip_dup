@@ -56,7 +56,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     }
     
     @objc fileprivate func handleTimer(){
-        service.putBackJob()
+        service.putBackJobs()
         self.dismiss(animated: true, completion: nil)
         timer.invalidate()
         
@@ -172,7 +172,6 @@ extension FoundJobVC: NavigationViewControllerDelegate{
 extension FoundJobVC{
     
     func parseDataFromOptimization(waypointData: [[String: AnyObject]]) -> [Waypoint]{
-        
         var waypointList = [Waypoint]()
         var i = 0
         while waypointList.count < (waypointData.count){
@@ -213,7 +212,6 @@ extension FoundJobVC{
     }
     
     func calculateAndPresentNavigation(waypointList: [Waypoint]){
-        
         let options = NavigationRouteOptions(waypoints: waypointList, profileIdentifier: .automobile)
         _ = Directions.shared.calculate(options, completionHandler: { (waypoints, routes, error) in
             if error == nil{

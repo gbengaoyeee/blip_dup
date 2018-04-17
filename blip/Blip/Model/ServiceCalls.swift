@@ -181,18 +181,14 @@ class ServiceCalls{
         }
     }
     
-    func putBackJob(){
-        self.userRef.child(emailHash).child("givenJob").removeValue()
-        self.userRef.child(emailHash).observeSingleEvent(of: .childRemoved) { (snapshot) in
-            if snapshot.key == "givenJob"{
+    ///Puts the collection of jobs back in AllJobs reference if this user does not accept within 30 seconds
+    func putBackJobs(){
+        self.userRef.child(emailHash).child("givenJob").observeSingleEvent(of: .childRemoved) { (snapshot) in
+            if snapshot.key == "deliveries"{
                 self.jobsRef.updateChildValues(snapshot.value as! [String:Any])
             }
         }
-//        self.userRef.child(emailHash).observe(.childRemoved) { (snapshot) in
-//            if snapshot.key == "givenJob"{
-//                self.jobsRef.updateChildValues(snapshot.value as! [String:Any])
-//            }
-//        }
+        self.userRef.child(emailHash).child("givenJob/deliveries").removeValue()
     }
     
     /**

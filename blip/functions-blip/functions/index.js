@@ -188,6 +188,10 @@ exports.getBestJob = functions.https.onRequest((req,res) => {
                 }, () =>{console.log("Cannot remove job from AllJobs reference")});
                 console.log("MaxDist is: "+maxDist);
               }
+            }else{
+              admin.database().ref('AllJobs/'+jobId).remove().then(() =>{
+                console.log("Removed job from AllJobs reference successfully");
+              }, () =>{console.log("Cannot remove job from AllJobs reference")});
             }
           }//End of For loop
 
