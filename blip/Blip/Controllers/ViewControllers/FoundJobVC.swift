@@ -317,7 +317,6 @@ extension FoundJobVC{
     }
     
     func parseRouteData(routeData: [String: AnyObject]){
-        
         let estimatedTime = routeData["duration"] as! NSNumber
         let minutes = estimatedTime.doubleValue/60
         timeLabel.text = "Estimated time: \(minutes.rounded()) min"

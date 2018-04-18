@@ -32,11 +32,17 @@ class SearchForJobVC: UIViewController {
         prepareMap()
         prepareBlur()
         prepareGoButton()
+        updateCurrentDevice()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
 
+    }
+    
+    ///Update the device token when they enter this VC 
+    fileprivate func updateCurrentDevice(){
+        service.updateCurrentDeviceToken()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
