@@ -64,8 +64,11 @@
 		E44A286AF55A28A06A305841 /* Pods_BlipTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F498B34F0F7DEA567870388 /* Pods_BlipTests.framework */; };
 		F30D60CB207B19930022F90D /* Delivery.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30D60CA207B19930022F90D /* Delivery.swift */; };
 		F347473E207FC40D00F9A603 /* SearchForJobVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F347473D207FC40D00F9A603 /* SearchForJobVC.swift */; };
-		F38E5A6D208119B400128D46 /* FoundJobVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F38E5A6C208119B400128D46 /* FoundJobVC.swift */; };
+		F38E5A6D208119B400128D46 /* FoundJob(MultiplePoints).swift in Sources */ = {isa = PBXBuildFile; fileRef = F38E5A6C208119B400128D46 /* FoundJob(MultiplePoints).swift */; };
 		F3D21EE420857E2100832544 /* BlipWaypoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D21EE320857E2100832544 /* BlipWaypoint.swift */; };
+		F3D21EE62087E9E000832544 /* NavigateVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D21EE52087E9E000832544 /* NavigateVC.swift */; };
+		F3D21EE9208AE39500832544 /* InstructionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D21EE7208AE39500832544 /* InstructionVC.swift */; };
+		F3D21EEA208AE39500832544 /* InstructionVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3D21EE8208AE39500832544 /* InstructionVC.xib */; };
 		F3E330B42075A38100F19CF8 /* camera.json in Resources */ = {isa = PBXBuildFile; fileRef = F3E330B32075A38000F19CF8 /* camera.json */; };
 		F3F5081E2031F77E00252E65 /* CenturyGothic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B537340202EBD4C0020F3B1 /* CenturyGothic.ttf */; };
 		F3F5081F2031F78300252E65 /* CenturyGothicBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B53733F202EBD4C0020F3B1 /* CenturyGothicBold.ttf */; };
@@ -167,8 +170,11 @@
 		E8545681CCD5C87C2E3C5E6F /* Pods-BlipUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlipUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BlipUITests/Pods-BlipUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		F30D60CA207B19930022F90D /* Delivery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Delivery.swift; sourceTree = "<group>"; };
 		F347473D207FC40D00F9A603 /* SearchForJobVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchForJobVC.swift; sourceTree = "<group>"; };
-		F38E5A6C208119B400128D46 /* FoundJobVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoundJobVC.swift; sourceTree = "<group>"; };
+		F38E5A6C208119B400128D46 /* FoundJob(MultiplePoints).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FoundJob(MultiplePoints).swift"; sourceTree = "<group>"; };
 		F3D21EE320857E2100832544 /* BlipWaypoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlipWaypoint.swift; sourceTree = "<group>"; };
+		F3D21EE52087E9E000832544 /* NavigateVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigateVC.swift; sourceTree = "<group>"; };
+		F3D21EE7208AE39500832544 /* InstructionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionVC.swift; sourceTree = "<group>"; };
+		F3D21EE8208AE39500832544 /* InstructionVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InstructionVC.xib; sourceTree = "<group>"; };
 		F3E330B32075A38000F19CF8 /* camera.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = camera.json; sourceTree = "<group>"; };
 		F3F508212032085600252E65 /* Blip-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Blip-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -358,7 +364,8 @@
 				3BCD8443207416E70079B4D4 /* NewSignUpVC.swift */,
 				3BCD844520747C130079B4D4 /* ChoosePictureVC.swift */,
 				F347473D207FC40D00F9A603 /* SearchForJobVC.swift */,
-				F38E5A6C208119B400128D46 /* FoundJobVC.swift */,
+				F38E5A6C208119B400128D46 /* FoundJob(MultiplePoints).swift */,
+				F3D21EE52087E9E000832544 /* NavigateVC.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -383,6 +390,8 @@
 			isa = PBXGroup;
 			children = (
 				5F33377720332B0B00B83E01 /* RatingViewController.xib */,
+				F3D21EE7208AE39500832544 /* InstructionVC.swift */,
+				F3D21EE8208AE39500832544 /* InstructionVC.xib */,
 			);
 			path = CustomXIB;
 			sourceTree = "<group>";
@@ -536,6 +545,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F3F5081E2031F77E00252E65 /* CenturyGothic.ttf in Resources */,
+				F3D21EEA208AE39500832544 /* InstructionVC.xib in Resources */,
 				5F33377820332B0B00B83E01 /* RatingViewController.xib in Resources */,
 				F3F508202031F78C00252E65 /* lgsu.mp4 in Resources */,
 				3B53735A202EBE310020F3B1 /* check.json in Resources */,
@@ -813,6 +823,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B14B53C202F459900B1C015 /* EndJob.swift in Sources */,
+				F3D21EE9208AE39500832544 /* InstructionVC.swift in Sources */,
 				3B53737C202EC0DC0020F3B1 /* LoginVC.swift in Sources */,
 				3B537335202EBA6B0020F3B1 /* LocationManager.swift in Sources */,
 				5F33377A20332B4600B83E01 /* RatingViewController.swift in Sources */,
@@ -840,13 +851,14 @@
 				3B53732F202EBA6B0020F3B1 /* Job.swift in Sources */,
 				3B53737E202EC0DC0020F3B1 /* MyAPIClient.swift in Sources */,
 				5FDEF87F206B56DC00F33733 /* ViewMapOfJobsVC.swift in Sources */,
-				F38E5A6D208119B400128D46 /* FoundJobVC.swift in Sources */,
+				F38E5A6D208119B400128D46 /* FoundJob(MultiplePoints).swift in Sources */,
 				3B537374202EC0DC0020F3B1 /* NavigationBarViewController.swift in Sources */,
 				3B537331202EBA6B0020F3B1 /* HelperFunctions.swift in Sources */,
 				3B537379202EC0DC0020F3B1 /* SellVC.swift in Sources */,
 				3B537388202EC0DC0020F3B1 /* Lgsupage.swift in Sources */,
 				3B53739B202EC2210020F3B1 /* CustomAnnotationView.swift in Sources */,
 				3B537387202EC0DC0020F3B1 /* SplashViewController.swift in Sources */,
+				F3D21EE62087E9E000832544 /* NavigateVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

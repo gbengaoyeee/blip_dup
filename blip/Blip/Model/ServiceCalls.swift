@@ -195,7 +195,7 @@ class ServiceCalls{
      Add a job to Firebase Database
      */
     
-    func addTestJob(deliveryLocation: CLLocationCoordinate2D, pickupLocation: CLLocationCoordinate2D, recieverName: String, recieverNumber: String, instructions: String){
+    func addTestJob(deliveryLocation: CLLocationCoordinate2D, pickupLocation: CLLocationCoordinate2D, recieverName: String, recieverNumber: String, pickupMainInstruction: String, pickupSubInstruction: String, deliveryMainInstruction: String, deliverySubInstruction: String){
         
         let newJobID = self.jobsRef.childByAutoId().key
         let date = Date()
@@ -208,7 +208,7 @@ class ServiceCalls{
         let second = calendar.component(.second, from: date)
         let fullDate = "\(day)-\(month)-\(year) \(hour):\(minute):\(second)"
         
-        let dict: [String: Any] = ["deliveryLat": deliveryLocation.latitude, "deliveryLong": deliveryLocation.longitude, "originLat": pickupLocation.latitude, "originLong": pickupLocation.longitude, "recieverName": recieverName,  "recieverNumber": recieverNumber, "instructions": instructions]
+        let dict: [String: Any] = ["deliveryLat": deliveryLocation.latitude, "deliveryLong": deliveryLocation.longitude, "originLat": pickupLocation.latitude, "originLong": pickupLocation.longitude, "recieverName": recieverName,  "recieverNumber": recieverNumber,"pickupMainInstruction": pickupMainInstruction, "pickupSubInstruction": pickupSubInstruction, "deliveryMainInstruction": deliveryMainInstruction, "deliverySubInstruction": deliverySubInstruction]
 
         self.jobsRef.child(newJobID).updateChildValues(dict)
 
