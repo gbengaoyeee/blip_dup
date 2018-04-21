@@ -216,7 +216,7 @@ class ServiceCalls{
         let hour = calendar.component(.hour, from: date)
         let minute = calendar.component(.minute, from: date)
         let second = calendar.component(.second, from: date)
-        let fullDate = "\(day)-\(month)-\(year) \(hour):\(minute):\(second)"
+        _ = "\(day)-\(month)-\(year) \(hour):\(minute):\(second)"
         
         let dict: [String: Any] = ["deliveryLat": deliveryLocation.latitude, "deliveryLong": deliveryLocation.longitude, "originLat": pickupLocation.latitude, "originLong": pickupLocation.longitude, "recieverName": recieverName,  "recieverNumber": recieverNumber,"pickupMainInstruction": pickupMainInstruction, "pickupSubInstruction": pickupSubInstruction, "deliveryMainInstruction": deliveryMainInstruction, "deliverySubInstruction": deliverySubInstruction]
 
