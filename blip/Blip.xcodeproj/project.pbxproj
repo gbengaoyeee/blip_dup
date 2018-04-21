@@ -11,7 +11,6 @@
 		3B14B533202ED1EA00B1C015 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B14B532202ED1EA00B1C015 /* GoogleService-Info.plist */; };
 		3B14B536202ED43800B1C015 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B14B535202ED43800B1C015 /* MapKit.framework */; };
 		3B14B538202ED67500B1C015 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B14B537202ED67400B1C015 /* SystemConfiguration.framework */; };
-		3B14B53C202F459900B1C015 /* EndJob.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B14B53B202F459600B1C015 /* EndJob.swift */; };
 		3B14B542202F5EA100B1C015 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B14B540202F5EA000B1C015 /* AVKit.framework */; };
 		3B14B543202F5EA100B1C015 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B14B541202F5EA100B1C015 /* AVFoundation.framework */; };
 		3B14B545202F5EC300B1C015 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B14B544202F5EC300B1C015 /* CoreLocation.framework */; };
@@ -103,7 +102,6 @@
 		3B14B535202ED43800B1C015 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		3B14B537202ED67400B1C015 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		3B14B53A202ED68200B1C015 /* AWSCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AWSCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		3B14B53B202F459600B1C015 /* EndJob.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndJob.swift; sourceTree = "<group>"; };
 		3B14B53F202F55E100B1C015 /* lgsu.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = lgsu.mp4; path = Assets.xcassets/lgsu.mp4; sourceTree = "<group>"; };
 		3B14B540202F5EA000B1C015 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		3B14B541202F5EA100B1C015 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -352,7 +350,6 @@
 				3B537371202EC0DC0020F3B1 /* Lgsupage.swift */,
 				3B537365202EC0D90020F3B1 /* LoginVC.swift */,
 				3B537367202EC0D90020F3B1 /* MyAPIClient.swift */,
-				3B14B53B202F459600B1C015 /* EndJob.swift */,
 				3B53735D202EC0D80020F3B1 /* NavigationBarViewController.swift */,
 				3B537364202EC0D90020F3B1 /* OnboardingVC.swift */,
 				3B53735E202EC0D80020F3B1 /* PasswordReset.swift */,
@@ -822,7 +819,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3B14B53C202F459900B1C015 /* EndJob.swift in Sources */,
 				F3D21EE9208AE39500832544 /* InstructionVC.swift in Sources */,
 				3B53737C202EC0DC0020F3B1 /* LoginVC.swift in Sources */,
 				3B537335202EBA6B0020F3B1 /* LocationManager.swift in Sources */,

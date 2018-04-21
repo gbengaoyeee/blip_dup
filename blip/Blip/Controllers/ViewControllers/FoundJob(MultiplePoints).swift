@@ -170,20 +170,6 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
     
     func navigationViewController(_ navigationViewController: NavigationViewController, didArriveAt waypoint: Waypoint) -> Bool {
         
-        print("name", waypoint.name, navigationViewController.routeController.routeProgress.remainingWaypoints.count)
-        navigationViewController.routeController.suspendLocationUpdates()
-        if let name = waypoint.name{
-            if name == "Pickup" || name == "Delivery"{
-                
-                let popup = PopupDialog(title: "Instructions", message: self.instructionsUponArrival(waypoint: waypoint), gestureDismissal: false)
-                let doneButton = PopupDialogButton(title: "Done") {
-                    
-                }
-                popup.addButton(doneButton)
-                
-                navigationViewController.present(popup, animated: true, completion: nil)
-            }
-        }
         return false
     }
     
@@ -290,8 +276,7 @@ extension FoundJobVC{
         })
     }
     
-
-    func instructionsUponArrival(waypoint: Waypoint) -> String{
+    func getDeliveryFor(waypoint: Waypoint) -> Delivery?{
         
         var dist: Double! = 20000
         var index: Int!
@@ -315,16 +300,24 @@ extension FoundJobVC{
             i += 1
         }
         if let index = index{
+            return job.deliveries[index]
+        }
+        return nil
+    }
+    
+    func instructionsUponArrivalAt(waypoint: Waypoint) -> [String]?{
+        
+        if let delivery = getDeliveryFor(waypoint: waypoint){
             if let name = waypoint.name{
                 if name == "Pickup"{
-                    return job.deliveries[index].instructions
+                    return [delivery.pickupMainInstruction, delivery.pickupSubInstruction]
                 }
                 else if name == "Delivery"{
-                    return "Deliver order \(job.deliveries[index].identifier!) to \(job.deliveries[index].recieverName!). Phone no. \(job.deliveries[index].receiverPhoneNumber!)"
+                    return [delivery.deliveryMainInstruction, delivery.deliverySubInstruction]
                 }
             }
         }
-        return ""
+        return nil
     }
     
     func parseRouteData(routeData: [String: AnyObject]){

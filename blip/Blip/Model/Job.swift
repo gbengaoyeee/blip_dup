@@ -42,8 +42,12 @@ class Job{
                 let origin = CLLocationCoordinate2D(latitude: deliveryValues!["originLat"] as! Double, longitude: deliveryValues!["originLong"] as! Double)
                 let recieverName = deliveryValues!["recieverName"] as! String
                 let recieverNumber = deliveryValues!["recieverNumber"] as! String
-                let instructions = deliveryValues!["instructions"] as! String
-                let delivery = Delivery(deliveryLocation: deliveryLocation, identifier: id, origin: origin, recieverName: recieverName, recieverNumber: recieverNumber, instructions: instructions)
+                let deliveryMainInstruction = deliveryValues!["deliveryMainInstruction"] as! String
+                let deliverySubInstruction = deliveryValues!["deliverySubInstruction"] as! String
+                let pickupMainInstruction = deliveryValues!["pickupMainInstruction"] as! String
+                let pickupSubInstruction = deliveryValues!["pickupSubInstruction"] as! String
+                
+                let delivery = Delivery(deliveryLocation: deliveryLocation, identifier: id, origin: origin, recieverName: recieverName, recieverNumber: recieverNumber, pickupMainInstruction: pickupMainInstruction, pickupSubInstruction: pickupSubInstruction, deliveryMainInstruction: deliveryMainInstruction, deliverySubInstruction: deliverySubInstruction)
                 self.locList.append((delivery.origin)!)
                 self.locList.append((delivery.deliveryLocation)!)
                 self.deliveries.append(delivery)

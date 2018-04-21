@@ -147,7 +147,7 @@
                                     <constraint firstAttribute="height" id="YuS-dQ-o2m"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yjo-Ea-HG0" customClass="RaisedButton" customModule="Material">
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yjo-Ea-HG0" customClass="RaisedButton" customModule="Material">
                                 <rect key="frame" x="150" y="514" width="75" height="75"/>
                                 <color key="backgroundColor" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>

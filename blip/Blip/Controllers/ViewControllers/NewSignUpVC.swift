@@ -12,7 +12,6 @@ import Pastel
 import PopupDialog
 import SwiftIcons
 
-/// I did this to leverage Srikanth's selfishness so he SHARES the work and DOESNT do the whole thing HIMSELF AND I HOPE HE SEES THIS ;(
 class NewSignUpVC: UIViewController {
 
     @IBOutlet weak var signUpInfoLabel: UILabel!

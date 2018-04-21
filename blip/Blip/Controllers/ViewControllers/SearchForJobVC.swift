@@ -57,7 +57,7 @@ class SearchForJobVC: UIViewController {
             let leftImageView = UIImageView()
             leftImageView.setIcon(icon: .googleMaterialDesign(.info), textColor: UIColor.white, backgroundColor: UIColor.clear, size: CGSize(size: 50))
             
-            let banner = NotificationBanner(title: "There are\(jobNumber)Job/s near you", subtitle: nil, leftView: leftImageView, rightView: nil, style: .info)
+            let banner = NotificationBanner(title: "There are\(jobNumber ?? 0)Job/s near you", subtitle: nil, leftView: leftImageView, rightView: nil, style: .info)
             banner.dismissOnSwipeUp = true
             banner.show()
         }
