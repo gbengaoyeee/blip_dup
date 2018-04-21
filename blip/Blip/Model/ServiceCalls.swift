@@ -52,6 +52,7 @@ class ServiceCalls{
 //        }
     }
     
+    ///Finds jobs based on this user's location
     func findJob(myLocation: CLLocationCoordinate2D, userHash: String, completion: @escaping(Job?) -> ()){
         userRef.child(emailHash).observe(.childAdded) { (snap) in
             if snap.key == "givenJob"{
@@ -67,7 +68,6 @@ class ServiceCalls{
                 print(error!)
             }
         }
-        
     }
     
     /// Create User in Firebase Authentication and sends verification email
@@ -116,21 +116,32 @@ class ServiceCalls{
                     completion?("error: Couldn't store image",nil)
                     return
                 }
-                let profileImgURL = metadata?.downloadURL()?.absoluteString
-                let profile = Auth.auth().currentUser?.createProfileChangeRequest()
-                profile?.photoURL = URL(string: profileImgURL!)
-                profile?.commitChanges(completion: { (err) in
-                    if err != nil{
-                        completion?(err?.localizedDescription, nil)
+//                let profileImgURL = metadata?.downloadURL()?.absoluteString
+                metadata?.storageReference?.downloadURL(completion: { (profileImgURL, error) in
+                    if error != nil{
+                        completion?("error: Couldn't store image",nil)
                         return
                     }
-                    let imgValues:[String:Any] = ["photoURL":profileImgURL!]
-                    self.userRef.child(self.emailHash).updateChildValues(imgValues)
-                    completion?(nil, nil)
+                    let profile = Auth.auth().currentUser?.createProfileChangeRequest()
+                    profile?.photoURL = profileImgURL
+                    profile?.commitChanges(completion: { (err) in
+                        if err != nil{
+                            completion?(err?.localizedDescription, nil)
+                            return
+                        }
+                        let imgValues:[String:Any] = ["photoURL":profileImgURL!]
+                        self.userRef.child(self.emailHash).updateChildValues(imgValues)
+                        completion?(nil, nil)
+                    })
                 })
             })
             
         }
+    }
+    
+    func updateCurrentDeviceToken(){
+        let token = ["currentDevice": AppDelegate.DEVICEID]
+        userRef.child(emailHash).updateChildValues(token)
     }
     
     /// Signs in a user
@@ -147,7 +158,6 @@ class ServiceCalls{
                 self.handleFirebaseError(error: (error as NSError?)!, completion: completion)
             }else{
                 //No errors
-                //Do whatever is needed
                 completion?(nil, user)
             }
         }
@@ -247,13 +257,10 @@ class ServiceCalls{
     //    }
     //
     func getCurrentUserInfo(completion: @escaping(BlipUser) -> ()){
-        
         userRef.child(emailHash).observeSingleEvent(of: .value, with: { (userSnap) in
-            
             if let user = BlipUser(snapFromUser: userSnap){
                 completion(user)
             }
-                
             else{
                 print(userSnap, "Couldnt get current user info")
             }

@@ -22,7 +22,6 @@ class OnboardingVC: UIViewController, UIScrollViewDelegate {
     let serviceArray = ["Welcome to Blip, the worlds first marketplace for free time","Post jobs at custom locations that you need completed","Need a painter? Someone to move your boxes? Or just someone to pick up ice cream from the closest store for you? Hire other users to complete your tasks","Pay and get paid instantaneously, freelancing your free time to complete other users jobs","Hit get started to begin with a free account"]
     
     override func viewDidLoad() {
-        
         super.viewDidLoad()
         gradientView.animationDuration = 3.0
         gradientView.prepareDefaultPastelView()
@@ -44,9 +43,7 @@ class OnboardingVC: UIViewController, UIScrollViewDelegate {
         scrollView.delegate = self
         scrollView.contentSize = CGSize(width: self.view.frame.size.width * 5, height: scrollView.frame.size.height)
         scrollView.showsHorizontalScrollIndicator = false
-        
         for stage in 0...4{
-    
             let label = UILabel(frame: CGRect(x: scrollView.center.x + CGFloat(stage) * self.view.frame.size.width - 125 , y: 0, width: 250, height: self.scrollView.frame.size.height))
             label.font = UIFont(name: "CenturyGothic", size: 20)
             label.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
@@ -56,29 +53,21 @@ class OnboardingVC: UIViewController, UIScrollViewDelegate {
             label.text = serviceArray[stage]
             scrollView.addSubview(label)
         }
-        
     }
     
     @IBAction func GoToLGSU(_ sender: Any) {
-        
         self.performSegue(withIdentifier: "goToLGSU", sender: self)
     }
-
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-
-        
         let progress = scrollView.contentOffset.x  / self.scrollView.contentSize.width * 1.08
         serviceAnimation.animationProgress = progress
         let pageProgress = scrollView.contentOffset.x / self.view.frame.size.width
         print(progress)
-
         pageControl.progress = Double(pageProgress)
     }
     
-    
     func prepareAnimation(){
-        
         serviceAnimationView.handledAnimation(Animation: serviceAnimation, width: 1.3, height: 1.3)
     }
 

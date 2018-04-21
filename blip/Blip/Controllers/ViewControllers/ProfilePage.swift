@@ -18,7 +18,6 @@ import Cosmos
 import Material
 
 class ProfilePage: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource {
-
     
 //    var applicantInfo: [String:AnyObject]!
     var currUser: BlipUser?
@@ -39,6 +38,7 @@ class ProfilePage: UIViewController, UIImagePickerControllerDelegate, UINavigati
     var picURL: URL?
     let userDefault = UserDefaults.standard
     var userReviews : [String:Double]!
+    let service = ServiceCalls.instance
 //    var job: Job!
     
     override func viewDidLoad() {
@@ -77,14 +77,11 @@ class ProfilePage: UIViewController, UIImagePickerControllerDelegate, UINavigati
                 }
             }
         }
- 
     }
     
     override func viewDidAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = false
         self.gradientView.startAnimation()
-        
-        
         if let providerData = Auth.auth().currentUser?.providerData{
             for userInfo in providerData {
                 if userInfo.providerID == "facebook.com" {
@@ -161,29 +158,37 @@ class ProfilePage: UIViewController, UIImagePickerControllerDelegate, UINavigati
         let helper = HelperFunctions()
         self.userRef = Database.database().reference().child("Couriers").child(helper.MD5(string: (Auth.auth().currentUser?.email)!))
         if (userChangedProfilePic){
-            
-            let storageRef = Storage.storage().reference(forURL: "gs://blip-c1e83.appspot.com/").child("profile_image").child(helper.MD5(string: (Auth.auth().currentUser?.email)!))
-            let imageData = UIImageJPEGRepresentation((profilePic.image)!, 0.1)
-            
-            storageRef.putData(imageData!, metadata: nil, completion: { (metadata, error) in
-                if error != nil{
-                    print(error!.localizedDescription)
-                    return
-                }
-                let profileImgURL = metadata?.downloadURL()?.absoluteString
-                let profile = Auth.auth().currentUser?.createProfileChangeRequest()
-                profile?.photoURL = URL(string: profileImgURL!)
-                profile?.commitChanges(completion: { (err) in
-                    if err != nil{
+            if let image = self.profilePic.image{
+                service.uploadProfileImage(image: image) { (error, any) in
+                    if error != nil{
+                        print(error!)
                         return
                     }
-                    let imgValues:[String:String] = ["photoURL":profileImgURL!]
-                    self.userRef.updateChildValues(imgValues)
                     self.dismiss(animated: true, completion: nil)
-                    
-                })
-                
-            })
+                }
+            }
+//            let storageRef = Storage.storage().reference(forURL: "gs://blip-c1e83.appspot.com/").child("profile_image").child(helper.MD5(string: (Auth.auth().currentUser?.email)!))
+//            let imageData = UIImageJPEGRepresentation((profilePic.image)!, 0.1)
+//
+//            storageRef.putData(imageData!, metadata: nil, completion: { (metadata, error) in
+//                if error != nil{
+//                    print(error!.localizedDescription)
+//                    return
+//                }
+//                let profileImgURL = metadata?.downloadURL()?.absoluteString
+//                let profile = Auth.auth().currentUser?.createProfileChangeRequest()
+//                profile?.photoURL = URL(string: profileImgURL!)
+//                profile?.commitChanges(completion: { (err) in
+//                    if err != nil{
+//                        return
+//                    }
+//                    let imgValues:[String:String] = ["photoURL":profileImgURL!]
+//                    self.userRef.updateChildValues(imgValues)
+//                    self.dismiss(animated: true, completion: nil)
+//
+//                })
+//
+//            })
             
         }else{
             self.dismiss(animated: true, completion: nil)
@@ -192,10 +197,11 @@ class ProfilePage: UIViewController, UIImagePickerControllerDelegate, UINavigati
     
     //Delegate Methods for uiimagepicker
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        let image = info[UIImagePickerControllerOriginalImage] as! UIImage
-        profilePic.image = image
-        userChangedProfilePic = true
-        picker.dismiss(animated: true, completion: nil)
+        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage{
+            profilePic.image = image
+            userChangedProfilePic = true
+            picker.dismiss(animated: true, completion: nil)
+        }
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {

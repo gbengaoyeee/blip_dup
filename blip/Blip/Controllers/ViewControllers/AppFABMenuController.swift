@@ -46,7 +46,6 @@ class AppFABMenuController: FABMenuController, STPPaymentContextDelegate{
     open override func prepare() {
         super.prepare()
         view.backgroundColor = .white
-        
         prepareFABButton()
         prepareLogoutFabMenuItem()
         prepareProfilePageFabMenuItem()
@@ -104,13 +103,11 @@ extension AppFABMenuController {
         paymentMethodsItem.fabButton.addTarget(self, action: #selector(handlePaymentMethods(button:)), for: .touchUpInside)
     }
     
-    
     fileprivate func prepareFABMenu() {
         fabMenu.fabButton = fabButton
         fabMenu.fabMenuItems = [logoutItem, paymentMethodsItem, profilePageItem]
         fabMenuBacking = .none
         fabMenu.fabMenuDirection = .down
-        
         view.layout(fabMenu)
             .top(bottomInset)
             .right(rightInset)
@@ -119,18 +116,19 @@ extension AppFABMenuController {
 }
 
 extension AppFABMenuController {
-    
     @objc fileprivate func handleProfile(button: UIButton){
         fabMenu.fabButton?.animate(.rotate(0))
         fabMenu.close()
         let sb = UIStoryboard.init(name: "Main", bundle: nil)
-        let profilepage = sb.instantiateViewController(withIdentifier: "profilePage") as? ProfilePage
-        profilepage?.currUser = currUser
-        self.present(profilepage!, animated: true, completion: nil)
+        if let profilepage = sb.instantiateViewController(withIdentifier: "profilePage") as? ProfilePage{
+            profilepage.currUser = currUser
+            self.present(profilepage, animated: true, completion: nil)
+        }else{
+            print("Something is Wrong: No profile page")
+        }
     }
     
-    @objc
-    fileprivate func handleLogout(button: UIButton) {
+    @objc fileprivate func handleLogout(button: UIButton) {
         fabMenu.close()
         fabMenu.fabButton?.animate(.rotate(0))
         let firebaseAuth = Auth.auth()
@@ -142,9 +140,6 @@ extension AppFABMenuController {
             self.navigationController?.popToRootViewController(animated: true)
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             appDelegate.setLogoutAsRoot()
-
-
-            
         } catch let signOutError as NSError {
             let signOutErrorPopup = PopupDialog(title: "Error", message: "Error signing you out, try again later" + signOutError.localizedDescription )
             self.present(signOutErrorPopup, animated: true, completion: nil)
@@ -152,8 +147,7 @@ extension AppFABMenuController {
         }
     }
     
-    @objc
-    fileprivate func handlePaymentMethods(button: UIButton) {
+    @objc fileprivate func handlePaymentMethods(button: UIButton) {
         self.paymentContext = STPPaymentContext(apiAdapter: CustomAPIAdapter())
         self.paymentContext!.delegate = self
         self.paymentContext!.hostViewController = self
@@ -162,31 +156,21 @@ extension AppFABMenuController {
 }
 
 extension AppFABMenuController {
-    @objc
-    open func fabMenuWillOpen(fabMenu: FABMenu) {
+    @objc open func fabMenuWillOpen(fabMenu: FABMenu) {
         fabMenu.fabButton?.animate(.rotate(0))
-//        service.getUserInfo(hash: service.emailHash) { (currUser) in
-//            self.currUser = currUser!
-//            print("USER",currUser)
-//            
-//        }
         print("fabMenuWillOpen")
     }
     
-    @objc
-    open func fabMenuDidOpen(fabMenu: FABMenu) {
+    @objc open func fabMenuDidOpen(fabMenu: FABMenu) {
         print("fabMenuDidOpen")
     }
     
-    @objc
-    open func fabMenuWillClose(fabMenu: FABMenu) {
+    @objc open func fabMenuWillClose(fabMenu: FABMenu) {
         fabMenu.fabButton?.animate(.rotate(0))
-        
         print("fabMenuWillClose")
     }
     
-    @objc
-    open func fabMenuDidClose(fabMenu: FABMenu) {
+    @objc open func fabMenuDidClose(fabMenu: FABMenu) {
         print("fabMenuDidClose")
     }
     

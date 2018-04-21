@@ -55,7 +55,6 @@ class LoginVC: UIViewController {
         self.loginButtonView.makeButtonAppear()
         self.forgetPassword.makeButtonAppear()
         gradientViewLogin.startAnimation()
-        
         if let userCred = userDefault.value(forKey: self.loginCredentials) as? [String:String]{
             self.emailTF.text = userCred["email"]
             self.passwordTF.text = userCred["password"]
@@ -105,7 +104,6 @@ class LoginVC: UIViewController {
     }
     
     @IBAction func loginButton(_ sender: UIButton) {
-        
         login()
      }
     
@@ -198,7 +196,6 @@ class LoginVC: UIViewController {
     
     
     func prepareTitleTextField(){
-        
         self.emailTF.placeholderLabel.font = UIFont(name: "Century Gothic", size: 17)
         self.emailTF.font = UIFont(name: "Century Gothic", size: 17)
         self.emailTF.textColor = Color.white
@@ -211,13 +208,10 @@ class LoginVC: UIViewController {
         self.passwordTF.placeholder = "Password"
         self.passwordTF.placeholderActiveColor = Color.white
         self.passwordTF.placeholderNormalColor = Color.white
-        
     }
     
     func ERR_User_Info_Wrong(){
-        
         //Load and play error animation
-        
         let animationViewFour = LOTAnimationView(name: "x_pop")
         self.subview.addSubview(animationViewFour)
         animationViewFour.frame = CGRect(x: 0, y: 0, width: 88, height: 63)
@@ -227,9 +221,7 @@ class LoginVC: UIViewController {
     
     
     func ERR_Empty_Fields(){
-        
         //Load and play error animation
-        
         let animationViewFour = LOTAnimationView(name: "x_pop")
         self.subview.addSubview(animationViewFour)
         animationViewFour.frame = CGRect(x: 0, y: 0, width: 88, height: 63)
@@ -280,7 +272,6 @@ class LoginVC: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 3.5, execute: {
             self.subview.makeAnimationDissapear(tag: 1)
             self.subview.makeAnimationDissapear(tag: 2)
-            
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             appDelegate.isLaunched = false
             print(appDelegate.isLaunched)
