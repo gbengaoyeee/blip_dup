@@ -140,6 +140,8 @@ exports.addNewPaymentSource = functions.https.onRequest((req,res) => {
     });
   });
 
+
+
 exports.getBestJob = functions.https.onRequest((req,res) => {
   var long = req.body.locationLong,
       lat = req.body.locationLat,
@@ -159,7 +161,6 @@ exports.getBestJob = functions.https.onRequest((req,res) => {
       const totalDistance = data[1];
       var jobBundle = closestJobIdDict;
       maxDist = maxDist - totalDistance;
-
 
       var allJobsref = admin.database().ref('AllJobs');
       allJobsref.once('value', function(snapshot){
@@ -204,7 +205,7 @@ exports.getBestJob = functions.https.onRequest((req,res) => {
       }, gotError);//End of observe single event
     }
   });
-})//End of Function
+});//End of Function
   
 function gotError(err){
   if(err != null){
