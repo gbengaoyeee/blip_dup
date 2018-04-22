@@ -174,10 +174,8 @@ exports.getBestJob = functions.https.onRequest((req,res) => {
               const deliveryLong = allJobsValues[jobId].deliveryLong;
               var x = geo.getDistance({latitude: pickupLat, longitude: pickupLong}, {latitude: lat, longitude: long});
               var y = geo.getDistance({latitude: pickupLat, longitude: pickupLong}, {latitude: closestJobIdDict[closestJobId].originLat, longitude: closestJobIdDict[closestJobId].originLong});
-              var z = geo.getDistance({latitude: pickupLat, longitude: pickupLong}, {latitude: closestJobIdDict[closestJobId].deliveryLat, longitude: closestJobIdDict[closestJobId].deliveryLong});
               var m = geo.getDistance({latitude: pickupLat, longitude: pickupLong}, {latitude: deliveryLat, longitude: deliveryLong});
-              console.log("x: "+x+" y: "+y+" z: "+z);
-              var n = Math.min(...[x,y,z]);
+              var n = Math.min(...[x,y]);
 
               if (maxDist >= (m+n)){
                 var jobDict = {};

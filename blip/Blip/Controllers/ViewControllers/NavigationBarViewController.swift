@@ -16,7 +16,6 @@ class NavigationBarViewController: AnimatableNavigationController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Sets the background of the navigation bar to be transperant.
         self.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationBar.shadowImage = UIImage()
         self.navigationBar.isTranslucent = true

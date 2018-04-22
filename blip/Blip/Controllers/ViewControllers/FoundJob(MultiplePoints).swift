@@ -26,6 +26,8 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     @IBOutlet weak var map: MGLMapView!
     @IBOutlet weak var countDownView: SRCountdownTimer!
     
+    var fromIndex = 0
+    var toIndex = 1
     var job: Job!
     let service = ServiceCalls.instance
     var currentLocation: CLLocationCoordinate2D!
@@ -51,6 +53,14 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = true
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toNavigation"{
+            let dest = segue.destination as! NavigateVC
+            dest.job = self.job!
+            dest.waypoints = self.waypoints
+        }
     }
     
     fileprivate func setupTimer(){
@@ -128,7 +138,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     
     @IBAction func acceptJobPressed(_ sender: Any) {
         timer.invalidate()
-        calculateAndPresentNavigation(waypointList: self.waypoints)
+        self.performSegue(withIdentifier: "toNavigation", sender: self)
     }
 }
 
@@ -160,28 +170,6 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
     
     func navigationViewController(_ navigationViewController: NavigationViewController, didArriveAt waypoint: Waypoint) -> Bool {
         
-        print("name", waypoint.name, navigationViewController.routeController.routeProgress.remainingWaypoints.count)
-        navigationViewController.routeController.suspendLocationUpdates()
-        if let name = waypoint.name{
-            if name == "Pickup" || name == "Delivery"{
-                
-                let popup = PopupDialog(title: "Instructions", message: self.instructionsUponArrival(waypoint: waypoint), gestureDismissal: false)
-                navigationViewController.present(popup, animated: true, completion: nil)
-                let doneButton = PopupDialogButton(title: "Done") {
-                    if navigationViewController.routeController.routeProgress.remainingWaypoints.count == 0{
-                        navigationViewController.routeController.resume()
-                        popup.dismiss()
-                    }
-                    else{
-                        navigationViewController.routeController.routeProgress.legIndex += 1
-                        navigationViewController.routeController.resume()
-                        popup.dismiss()
-                    }
-                    
-                }
-                popup.addButton(doneButton)
-            }
-        }
         return false
     }
     
@@ -203,11 +191,6 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
         
         // DO THIS WHEN YOU CANCEL THE NAVIGATION IT HAS TO PUT BACK JOBS IN THE ALLJOBS REF AND REMOVE FROM USER REF
         self.navigationController?.popToRootViewController(animated: true)
-    }
-    
-    func navigationMapView(_ mapView: NavigationMapView, shapeFor waypoints: [Waypoint]) -> MGLShape? {
-        
-        return MGLPointAnnotation()
     }
 }
 
@@ -271,19 +254,21 @@ extension FoundJobVC{
         return self.waypoints[index]
     }
     
-    func calculateAndPresentNavigation(waypointList: [Waypoint]){
+    func calculateAndPresentNavigation(waypointList: [Waypoint], present: Bool){
         let options = NavigationRouteOptions(waypoints: waypointList, profileIdentifier: .automobile)
         _ = Directions.shared.calculate(options, completionHandler: { (waypoints, routes, error) in
             if error == nil{
-                let navigation = NavigationViewController(for: (routes?.first)!)
-                navigation.mapView?.styleURL = URL(string:"mapbox://styles/srikanthsrnvs/cjd6ciwwm54my2rms3052j5us")
-                let x = SimulatedLocationManager(route: (routes?.first)!)
-                x.speedMultiplier = 3.0
-                navigation.routeController.locationManager = x
-                navigation.delegate = self
-                navigation.showsEndOfRouteFeedback = false
-                
-                self.present(navigation, animated: true, completion: nil)
+                if present{
+                    let navigation = NavigationViewController(for: (routes?.first)!)
+                    navigation.mapView?.styleURL = URL(string:"mapbox://styles/srikanthsrnvs/cjd6ciwwm54my2rms3052j5us")
+                    let x = SimulatedLocationManager(route: (routes?.first)!)
+                    x.speedMultiplier = 3.0
+                    navigation.routeController.locationManager = x
+                    navigation.delegate = self
+                    navigation.showsEndOfRouteFeedback = false
+                    
+                    self.present(navigation, animated: true, completion: nil)
+                }
             }
             else{
                 print(error!)
@@ -291,8 +276,7 @@ extension FoundJobVC{
         })
     }
     
-
-    func instructionsUponArrival(waypoint: Waypoint) -> String{
+    func getDeliveryFor(waypoint: Waypoint) -> Delivery?{
         
         var dist: Double! = 20000
         var index: Int!
@@ -316,16 +300,24 @@ extension FoundJobVC{
             i += 1
         }
         if let index = index{
+            return job.deliveries[index]
+        }
+        return nil
+    }
+    
+    func instructionsUponArrivalAt(waypoint: Waypoint) -> [String]?{
+        
+        if let delivery = getDeliveryFor(waypoint: waypoint){
             if let name = waypoint.name{
                 if name == "Pickup"{
-                    return job.deliveries[index].instructions
+                    return [delivery.pickupMainInstruction, delivery.pickupSubInstruction]
                 }
                 else if name == "Delivery"{
-                    return "Deliver order \(job.deliveries[index].identifier!) to \(job.deliveries[index].recieverName!). Phone no. \(job.deliveries[index].receiverPhoneNumber!)"
+                    return [delivery.deliveryMainInstruction, delivery.deliverySubInstruction]
                 }
             }
         }
-        return ""
+        return nil
     }
     
     func parseRouteData(routeData: [String: AnyObject]){

@@ -57,7 +57,7 @@ class SearchForJobVC: UIViewController {
             let leftImageView = UIImageView()
             leftImageView.setIcon(icon: .googleMaterialDesign(.info), textColor: UIColor.white, backgroundColor: UIColor.clear, size: CGSize(size: 50))
             
-            let banner = NotificationBanner(title: "There are\(jobNumber)Job/s near you", subtitle: nil, leftView: leftImageView, rightView: nil, style: .info)
+            let banner = NotificationBanner(title: "There are\(jobNumber ?? 0)Job/s near you", subtitle: nil, leftView: leftImageView, rightView: nil, style: .info)
             banner.dismissOnSwipeUp = true
             banner.show()
         }
@@ -94,7 +94,7 @@ class SearchForJobVC: UIViewController {
     @IBAction func postTestJob(_ sender: Any) {
         service.getCurrentUserInfo { (user) in
             
-            self.service.addTestJob(deliveryLocation: (self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 2000)), pickupLocation: (self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 3000)), recieverName: "Srikanth Srinivas", recieverNumber: "6478229867", instructions: "Pickup from xyz")
+            self.service.addTestJob(deliveryLocation: (self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 2000)), pickupLocation: (self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 3000)), recieverName: "Srikanth Srinivas", recieverNumber: "6478229867", pickupMainInstruction: "Pickup from xyz", pickupSubInstruction: "Go to front entrance of xyz, order number 110021 is waiting for you", deliveryMainInstruction: "Deliver to Srikanth Srinivas", deliverySubInstruction: "Go to main entrace, and buzz code 2003")
         }
     }
     

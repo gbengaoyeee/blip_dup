@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="CenturyGothic.ttf">
+            <string>CenturyGothic</string>
+        </array>
+        <array key="CenturyGothicBold.ttf">
+            <string>CenturyGothic-Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="InstructionVC" customModule="Blip" customModuleProvider="target">
+            <connections>
+                <outlet property="callButton" destination="HF1-h2-Uj4" id="NLi-FC-BpO"/>
+                <outlet property="doneButton" destination="NVS-9k-Lgw" id="JA7-ng-Rlj"/>
+                <outlet property="gradientView" destination="i5M-Pr-FkT" id="cck-Kh-Z3U"/>
+                <outlet property="mainInstructionLabel" destination="xXa-TZ-jKL" id="c94-5o-cDI"/>
+                <outlet property="noShowButton" destination="dVg-zQ-DlS" id="nG9-di-JKc"/>
+                <outlet property="storeLogo" destination="ozB-9o-BEJ" id="mC7-wV-WGu"/>
+                <outlet property="subInstructionLabel" destination="r4f-ze-wqM" id="TFw-RR-xM9"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ozB-9o-BEJ">
+                    <rect key="frame" x="97.5" y="53" width="180" height="180"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="180" id="4Os-9X-hLD"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pickup at 123 john street" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="12" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="xXa-TZ-jKL">
+                    <rect key="frame" x="15" y="253" width="256.5" height="27"/>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="300" id="FHR-10-7qi"/>
+                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="80" id="Ofo-Hh-Qid"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="CenturyGothic-Bold" family="Century Gothic" pointSize="23"/>
+                    <color key="textColor" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time needed: 50 m" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r4f-ze-wqM">
+                    <rect key="frame" x="15" y="300" width="190" height="26"/>
+                    <constraints>
+                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="250" id="4Uj-J7-zYo"/>
+                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="60" id="5A9-Ue-ETe"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="22"/>
+                    <color key="textColor" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HF1-h2-Uj4" customClass="RaisedButton" customModule="Material">
+                    <rect key="frame" x="47" y="553" width="60" height="60"/>
+                    <color key="backgroundColor" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="60" id="gXe-Cp-Qmy"/>
+                        <constraint firstAttribute="height" constant="60" id="qQP-ds-g51"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
+                    <state key="normal">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="pulseColor">
+                            <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
+                            <color key="value" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
+                            <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="callPressed:" destination="-1" eventType="touchUpInside" id="wT9-hQ-JEf"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NVS-9k-Lgw" customClass="RaisedButton" customModule="Material">
+                    <rect key="frame" x="267" y="553" width="60" height="60"/>
+                    <color key="backgroundColor" red="0.079774440459999998" green="0.78299492390000003" blue="0.15149520429999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="60" id="H0S-Hh-oXr"/>
+                        <constraint firstAttribute="height" constant="60" id="KAc-0f-GhZ"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
+                    <state key="normal">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="pulseColor">
+                            <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
+                            <color key="value" red="0.079774440459999998" green="0.78299492390000003" blue="0.15149520429999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
+                            <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="donePressed:" destination="-1" eventType="touchUpInside" id="gtV-xq-zQw"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dVg-zQ-DlS" customClass="RaisedButton" customModule="Material">
+                    <rect key="frame" x="157" y="553" width="60" height="60"/>
+                    <color key="backgroundColor" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="60" id="MbB-8a-wJe"/>
+                        <constraint firstAttribute="height" constant="60" id="jMQ-sE-NJF"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
+                    <state key="normal">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="pulseColor">
+                            <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
+                            <color key="value" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
+                            <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="noShowPressed:" destination="-1" eventType="touchUpInside" id="76u-jw-XFd"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="ozB-9o-BEJ" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="20S-NY-qKd"/>
+                <constraint firstItem="HF1-h2-Uj4" firstAttribute="centerY" secondItem="dVg-zQ-DlS" secondAttribute="centerY" id="CPo-lF-TGz"/>
+                <constraint firstItem="dVg-zQ-DlS" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="Fxt-ic-m3s"/>
+                <constraint firstItem="xXa-TZ-jKL" firstAttribute="top" secondItem="ozB-9o-BEJ" secondAttribute="bottom" constant="20" id="L6m-kg-ZVj"/>
+                <constraint firstItem="ozB-9o-BEJ" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="33" id="RwL-i8-nv1"/>
+                <constraint firstItem="NVS-9k-Lgw" firstAttribute="leading" secondItem="dVg-zQ-DlS" secondAttribute="trailing" constant="50" id="T0B-Tt-bhG"/>
+                <constraint firstItem="xXa-TZ-jKL" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="15" id="ZT3-C2-Dnc"/>
+                <constraint firstItem="ozB-9o-BEJ" firstAttribute="height" secondItem="i5M-Pr-FkT" secondAttribute="height" multiplier="180/667" id="ieD-An-9Sn"/>
+                <constraint firstItem="dVg-zQ-DlS" firstAttribute="leading" secondItem="HF1-h2-Uj4" secondAttribute="trailing" constant="50" id="nVQ-fe-6bB"/>
+                <constraint firstItem="r4f-ze-wqM" firstAttribute="top" secondItem="xXa-TZ-jKL" secondAttribute="bottom" constant="20" id="oSR-Ua-5dM"/>
+                <constraint firstItem="r4f-ze-wqM" firstAttribute="leading" secondItem="xXa-TZ-jKL" secondAttribute="leading" id="rOQ-aH-Uf4"/>
+                <constraint firstItem="NVS-9k-Lgw" firstAttribute="centerY" secondItem="dVg-zQ-DlS" secondAttribute="centerY" id="uOm-MH-XPk"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="dVg-zQ-DlS" secondAttribute="bottom" constant="54" id="yDl-xP-PNI"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <point key="canvasLocation" x="33.5" y="53.5"/>
+        </view>
+    </objects>
+</document>
