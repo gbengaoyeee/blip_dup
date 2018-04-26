@@ -70,6 +70,32 @@ class ServiceCalls{
         }
     }
     
+    func loadMapAnnotations(map: MGLMapView){
+        
+        jobsRef.observeSingleEvent(of: .value) { (snap) in
+            
+            let snapDict = snap.value as? [String: AnyObject]
+            var x = 15
+            if let snapDict = snapDict{
+                for key in (snapDict.keys){
+                    if let delivery = Delivery(snapshot:
+                        snap.childSnapshot(forPath: key)){
+                        if x == 0{
+                            break
+                        }
+                        let annotation = MGLPointAnnotation()
+                        annotation.coordinate = delivery.deliveryLocation
+                        map.addAnnotation(annotation)
+                        x -= 1
+                    }
+                }
+                if let annotations = map.annotations{
+                    map.showAnnotations(annotations, animated: true)
+                }
+            }
+        }
+    }
+    
     /// Create User in Firebase Authentication and sends verification email
     ///
     /// - Parameters:

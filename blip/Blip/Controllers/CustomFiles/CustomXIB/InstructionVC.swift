@@ -13,6 +13,7 @@ import Material
 
 class InstructionVC: UIViewController {
 
+    @IBOutlet weak var subView: UIView!
     @IBOutlet weak var subInstructionLabel: UILabel!
     @IBOutlet weak var mainInstructionLabel: UILabel!
     @IBOutlet var gradientView: UIView!
@@ -31,7 +32,8 @@ class InstructionVC: UIViewController {
     }
     
     func prepareView(){
-
+        subView.ApplyCornerRadiusToView()
+        subView.ApplyOuterShadowToView()
     }
     
     func prepareButtons(){
