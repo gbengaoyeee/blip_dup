@@ -116,18 +116,16 @@ extension SearchForJobVC: MGLMapViewDelegate{
         map.showsUserLocation = true
         map.showsUserHeadingIndicator = true
         map.userTrackingMode = .followWithHeading
-        map.isZoomEnabled = true
-        map.isScrollEnabled = false
-        map.isPitchEnabled = false
-        map.isRotateEnabled = true
         map.compassView.isHidden = true
+        service.loadMapAnnotations(map: map)
     }
     
     func setMapCamera(){
-        let camera = MGLMapCamera(lookingAtCenter: map.centerCoordinate, fromDistance: 4500, pitch: 15, heading: 180)
+        let camera = MGLMapCamera(lookingAtCenter: map.centerCoordinate, fromDistance: 4500, pitch: 15, heading: 0)
         
-        // Animate the camera movement over 5 seconds.
-        map.setCamera(camera, withDuration: 5, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
+        // Animate the camera movement over 3 seconds.
+        map.setCamera(camera, withDuration: 3, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
+
     }
     
     func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
@@ -135,7 +133,9 @@ extension SearchForJobVC: MGLMapViewDelegate{
         if annotation is MGLUserLocation && mapView.userLocation != nil {
             return CustomUserLocationAnnotationView()
         }
-        return nil
+        else{
+            return CustomDropOffAnnotationView()
+        }
     }
 }
 
@@ -143,7 +143,7 @@ extension SearchForJobVC: CLLocationManagerDelegate{
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let locValue:CLLocationCoordinate2D = manager.location!.coordinate
-        map.setCenter(locValue, zoomLevel: 7, direction: 0, animated: false)
+        map.setCenter(locValue, zoomLevel: 5, direction: 0, animated: false)
         setMapCamera()
         currentLocation = locValue
         service.updateJobAccepterLocation(location: locValue)

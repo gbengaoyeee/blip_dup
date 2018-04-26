@@ -69,10 +69,10 @@ class CustomDropOffAnnotationView: MGLAnnotationView{
             
             // Use CALayer’s corner radius to turn this layer into a circle.
             dot.cornerRadius = size / 2
-            let color = #colorLiteral(red: 0.9574458003, green: 0.233445853, blue: 0.1455087066, alpha: 1)
-            dot.backgroundColor = color.cgColor
+            let color = #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1)
+            dot.backgroundColor = UIColor.white.cgColor
             dot.borderWidth = 2.5
-            dot.borderColor = UIColor.white.cgColor
+            dot.borderColor = color.cgColor
             layer.addSublayer(dot)
         }
     }

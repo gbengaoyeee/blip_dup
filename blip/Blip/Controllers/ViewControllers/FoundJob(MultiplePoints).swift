@@ -138,7 +138,8 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     
     @IBAction func acceptJobPressed(_ sender: Any) {
         timer.invalidate()
-        self.performSegue(withIdentifier: "toNavigation", sender: self)
+        calculateAndPresentNavigation(waypointList: self.waypoints, present: true)
+//        self.performSegue(withIdentifier: "toNavigation", sender: self)
     }
 }
 
@@ -170,6 +171,15 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
     
     func navigationViewController(_ navigationViewController: NavigationViewController, didArriveAt waypoint: Waypoint) -> Bool {
         
+        let x = PopupDialog(title: "arrived", message: "arrived at waypoint")
+        let button = PopupDialogButton(title: "done") {
+            x.dismiss()
+            navigationViewController.routeController.routeProgress.legIndex += 1
+            navigationViewController.routeController.resume()
+        }
+        x.addButton(button)
+        navigationViewController.routeController.suspendLocationUpdates()
+        navigationViewController.present(x, animated: true, completion: nil)
         return false
     }
     
@@ -186,6 +196,22 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
         }
         return nil
     }
+    
+    func navigationMapView(_ mapView: NavigationMapView, waypointStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer? {
+        let x = MGLCircleStyleLayer(identifier: identifier, source: source)
+        x.circleColor = MGLStyleValue.init(rawValue: .black)
+        x.circleRadius = MGLStyleValue.init(rawValue: 15)
+        return x
+        
+    }
+    
+    func navigationMapView(_ mapView: NavigationMapView, waypointSymbolStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer? {
+        let x = MGLSymbolStyleLayer.init(identifier: identifier, source: source)
+        x.text = MGLStyleValue.init(rawValue: "ya")
+        return x
+    }
+    
+    
     
     func navigationViewControllerDidCancelNavigation(_ navigationViewController: NavigationViewController) {
         
