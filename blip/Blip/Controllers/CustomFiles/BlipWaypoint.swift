@@ -15,9 +15,16 @@ class BlipWaypoint: Waypoint{
     var delivery: Delivery!
     
     override init(coordinate: CLLocationCoordinate2D, coordinateAccuracy: CLLocationAccuracy, name: String?) {
-        super.init(coordinate: coordinate)
-        super.name = name
+        super.init(coordinate: coordinate, coordinateAccuracy: coordinateAccuracy, name: name)
     }
+    override init(location: CLLocation, heading: CLHeading?, name: String?) {
+        super.init(location: location, heading: heading, name: name)
+    }
+    
+//    override init(coordinate: CLLocationCoordinate2D, coordinateAccuracy: CLLocationAccuracy, name: String?) {
+//        super.init(coordinate: coordinate)
+//        super.name = name
+//    }
     
     required init?(coder decoder: NSCoder) {
         super.init(coder: decoder)

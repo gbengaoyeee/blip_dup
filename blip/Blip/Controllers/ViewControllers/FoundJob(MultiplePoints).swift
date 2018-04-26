@@ -32,7 +32,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     let service = ServiceCalls.instance
     var currentLocation: CLLocationCoordinate2D!
     var locationManager = CLLocationManager()
-    var waypoints: [Waypoint]!
+    var waypoints: [BlipWaypoint]!
     var timer = Timer()
     
     override func viewDidLoad() {
@@ -170,6 +170,12 @@ extension FoundJobVC: CLLocationManagerDelegate{
 extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
     
     func navigationViewController(_ navigationViewController: NavigationViewController, didArriveAt waypoint: Waypoint) -> Bool {
+        for way in self.waypoints{
+            if waypoint.coordinate == way.coordinate{
+                print(way.delivery)
+                print(way.delivery.deliverySubInstruction)
+            }
+        }
         
         let x = PopupDialog(title: "arrived", message: "arrived at waypoint")
         let button = PopupDialogButton(title: "done") {
@@ -199,10 +205,9 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
     
     func navigationMapView(_ mapView: NavigationMapView, waypointStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer? {
         let x = MGLCircleStyleLayer(identifier: identifier, source: source)
-        x.circleColor = MGLStyleValue.init(rawValue: .black)
+        x.circleColor = MGLStyleValue.init(rawValue: .cyan)
         x.circleRadius = MGLStyleValue.init(rawValue: 15)
         return x
-        
     }
     
     func navigationMapView(_ mapView: NavigationMapView, waypointSymbolStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer? {
@@ -227,15 +232,20 @@ extension FoundJobVC{
         UIApplication.shared.open(url as URL, options: [:], completionHandler: nil)
     }
     
-    func parseDataFromOptimization(waypointData: [[String: AnyObject]]) -> [Waypoint]{
-        var waypointList = [Waypoint]()
+    func parseDataFromOptimization(waypointData: [[String: AnyObject]]) -> [BlipWaypoint]{
+        var waypointList = [BlipWaypoint]()
         var i = 0
         while waypointList.count < (waypointData.count){
             for element in waypointData{
-                let location = CLLocationCoordinate2D(latitude: (element["location"]! as! [Double])[1], longitude: (element["location"]! as! [Double])[0])
-                let waypoint = Waypoint(coordinate: location)
+//                let location = CLLocationCoordinate2D(latitude: (element["location"]! as! [Double])[1], longitude: (element["location"]! as! [Double])[0])
+                let location_one = CLLocationCoordinate2D(latitude: (element["location"]! as! [Double])[1], longitude: (element["location"]! as! [Double])[0])
+                let location_two = CLLocationCoordinate2D(latitude: (element["location"]! as! [Double])[1]+1, longitude: (element["location"]! as! [Double])[0]+2)
+//                let waypoint = Waypoint(coordinate: location)
+                let loc = CLLocation(latitude: (element["location"]! as! [Double])[1], longitude: (element["location"]! as! [Double])[0])
+                let way = BlipWaypoint(location: loc, heading: nil, name: nil)
+                way.delivery = Delivery(deliveryLocation: location_one, identifier: "identifier", origin: location_two, recieverName: "receiverName", recieverNumber: "receiverNumber", pickupMainInstruction: "pickupMainInstruction", pickupSubInstruction: "pickupSubInstruction", deliveryMainInstruction: "deliveryMainInstruction", deliverySubInstruction: "deliverySubInstruction")
                 if element["waypoint_index"] as? Int == i{
-                    waypointList.append(waypoint)
+                    waypointList.append(way)
                     i += 1
                 }
             }
@@ -260,12 +270,14 @@ extension FoundJobVC{
                 way.name = "Pickup"
             }
             print(way.name!)
+            print(way.delivery)
+            print(way.delivery.deliverySubInstruction)
         }
         return waypointList
     }
     
 
-    func getWaypointFor(coordinate: CLLocationCoordinate2D) -> Waypoint{
+    func getWaypointFor(coordinate: CLLocationCoordinate2D) -> BlipWaypoint{
         
         var dist: Double! = 20000
         var index: Int!
@@ -280,7 +292,7 @@ extension FoundJobVC{
         return self.waypoints[index]
     }
     
-    func calculateAndPresentNavigation(waypointList: [Waypoint], present: Bool){
+    func calculateAndPresentNavigation(waypointList: [BlipWaypoint], present: Bool){
         let options = NavigationRouteOptions(waypoints: waypointList, profileIdentifier: .automobile)
         _ = Directions.shared.calculate(options, completionHandler: { (waypoints, routes, error) in
             if error == nil{
