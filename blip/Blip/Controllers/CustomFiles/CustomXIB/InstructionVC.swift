@@ -24,6 +24,8 @@ class InstructionVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        prepareView()
+        prepareButtons()
     }
 
     override func didReceiveMemoryWarning() {

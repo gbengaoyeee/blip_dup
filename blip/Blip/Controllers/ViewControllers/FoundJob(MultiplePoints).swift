@@ -170,22 +170,12 @@ extension FoundJobVC: CLLocationManagerDelegate{
 extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
     
     func navigationViewController(_ navigationViewController: NavigationViewController, didArriveAt waypoint: Waypoint) -> Bool {
+        let vc = InstructionVC(nibName: "InstructionVC", bundle: nil)
         for way in self.waypoints{
             if waypoint.coordinate == way.coordinate{
-                print(way.delivery)
-                print(way.delivery.deliverySubInstruction)
+                navigationViewController.present(vc, animated: true, completion: nil)
             }
         }
-        
-        let x = PopupDialog(title: "arrived", message: "arrived at waypoint")
-        let button = PopupDialogButton(title: "done") {
-            x.dismiss()
-            navigationViewController.routeController.routeProgress.legIndex += 1
-            navigationViewController.routeController.resume()
-        }
-        x.addButton(button)
-        navigationViewController.routeController.suspendLocationUpdates()
-        navigationViewController.present(x, animated: true, completion: nil)
         return false
     }
     
