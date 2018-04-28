@@ -171,8 +171,20 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
     
     func navigationViewController(_ navigationViewController: NavigationViewController, didArriveAt waypoint: Waypoint) -> Bool {
         let vc = InstructionVC(nibName: "InstructionVC", bundle: nil)
+        navigationViewController.routeController.suspendLocationUpdates()
         for way in self.waypoints{
             if waypoint.coordinate == way.coordinate{
+                print("At waypoint")
+                if let name = way.name{
+                    if name == "Pickup"{
+                        vc.mainInstruction = way.delivery.pickupMainInstruction
+                        vc.subInstruction = way.delivery.pickupSubInstruction
+                    }
+                    else if name == "Delivery"{
+                        vc.mainInstruction = way.delivery.deliveryMainInstruction
+                        vc.subInstruction = way.delivery.deliverySubInstruction
+                    }
+                }
                 navigationViewController.present(vc, animated: true, completion: nil)
             }
         }

@@ -9,6 +9,8 @@
 import UIKit
 import Firebase
 import MapboxCoreNavigation
+import MapboxDirections
+import MapboxNavigation
 import Material
 
 class InstructionVC: UIViewController {
@@ -21,6 +23,9 @@ class InstructionVC: UIViewController {
     @IBOutlet weak var callButton: RaisedButton!
     @IBOutlet weak var noShowButton: RaisedButton!
     @IBOutlet weak var doneButton: RaisedButton!
+    
+    var subInstruction: String!
+    var mainInstruction: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +41,15 @@ class InstructionVC: UIViewController {
     func prepareView(){
         subView.ApplyCornerRadiusToView()
         subView.ApplyOuterShadowToView()
+    }
+    
+    func prepareLabels(){
+        if let text = mainInstruction{
+            mainInstructionLabel.text = text
+        }
+        if let text = subInstruction{
+            subInstructionLabel.text = text
+        }
     }
     
     func prepareButtons(){
@@ -54,6 +68,9 @@ class InstructionVC: UIViewController {
     }
     
     @IBAction func donePressed(_ sender: Any) {
+        let presentingVC = self.presentingViewController as? NavigationViewController
+        presentingVC?.routeController.routeProgress.legIndex += 1
+        presentingVC?.routeController.resume()
         self.dismiss(animated: true, completion: nil)
     }
 }

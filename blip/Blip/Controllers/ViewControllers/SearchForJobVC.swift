@@ -122,9 +122,8 @@ extension SearchForJobVC: MGLMapViewDelegate{
     
     func setMapCamera(){
         let camera = MGLMapCamera(lookingAtCenter: map.centerCoordinate, fromDistance: 4500, pitch: 15, heading: 0)
-        
         // Animate the camera movement over 3 seconds.
-        map.setCamera(camera, withDuration: 3, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
+        map.setCamera(camera, withDuration: 5, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
 
     }
     
@@ -143,7 +142,7 @@ extension SearchForJobVC: CLLocationManagerDelegate{
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let locValue:CLLocationCoordinate2D = manager.location!.coordinate
-        map.setCenter(locValue, zoomLevel: 5, direction: 0, animated: false)
+        map.setCenter(locValue, animated: true)
         setMapCamera()
         currentLocation = locValue
         service.updateJobAccepterLocation(location: locValue)
