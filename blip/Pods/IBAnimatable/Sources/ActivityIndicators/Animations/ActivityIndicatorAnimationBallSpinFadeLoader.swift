@@ -19,16 +19,16 @@ public class ActivityIndicatorAnimationBallSpinFadeLoader: ActivityIndicatorAnim
     let circleSize = (size.width - 4 * circleSpacing) / 5
     let x = (layer.bounds.size.width - size.width) / 2
     let y = (layer.bounds.size.height - size.height) / 2
-    let beginTime = CACurrentMediaTime()
+    let beginTime = layer.currentMediaTime
     let beginTimes: [CFTimeInterval] = [0, 0.12, 0.24, 0.36, 0.48, 0.6, 0.72, 0.84]
 
     // Draw circles
     for i in 0 ..< 8 {
       let circle = makeCircleLayer(angle: CGFloat.pi / 4 * CGFloat(i),
-                            size: circleSize,
-                            origin: CGPoint(x: x, y: y),
-                            containerSize: size,
-                            color: color)
+                                   size: circleSize,
+                                   origin: CGPoint(x: x, y: y),
+                                   containerSize: size,
+                                   color: color)
 
       animation.beginTime = beginTime + beginTimes[i]
       circle.add(animation, forKey: "animation")

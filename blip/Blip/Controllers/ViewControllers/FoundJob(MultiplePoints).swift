@@ -38,13 +38,16 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         useCurrentLocations()
-        prepareCenterView()
-        prepareMap()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         prepareDataForNavigation()
         setupTimer()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        prepareCenterView()
+        prepareMap()
     }
 
     override func didReceiveMemoryWarning() {
@@ -114,7 +117,6 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     
     func prepareMap(){
         map.makeCircular()
-        map.clipsToBounds = true
         let camera = MGLMapCamera(lookingAtCenter: (job.deliveries.first?.origin)!, fromDistance: 6000, pitch: 0, heading: 0)
         map.setCamera(camera, animated: true)
         let pickupAnnotation = MGLPointAnnotation()
@@ -124,7 +126,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     
     func prepareCenterView(){
         let pulsator = Pulsator()
-        pulsator.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        pulsator.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
         pulsator.numPulse = 4
         pulsator.animationDuration = 4
         pulsator.radius = 400
@@ -174,7 +176,8 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
         navigationViewController.routeController.suspendLocationUpdates()
         for way in self.waypoints{
             if waypoint.coordinate == way.coordinate{
-                print("At waypoint")
+                vc.isLastWaypoint = (self.waypoints.last == way)
+                print("Arrived at waypoint")
                 if let name = way.name{
                     if name == "Pickup"{
                         vc.mainInstruction = way.delivery.pickupMainInstruction

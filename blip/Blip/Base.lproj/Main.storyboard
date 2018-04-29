@@ -255,9 +255,6 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rVS-1F-aSB" customClass="MGLMapView">
                                         <rect key="frame" x="10" y="10.5" width="258.5" height="258.5"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" secondItem="rVS-1F-aSB" secondAttribute="height" multiplier="1:1" id="DfN-wk-NL2"/>
-                                        </constraints>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="string" keyPath="styleURL__" value="mapbox://styles/srikanthsrnvs/cjd6ciwwm54my2rms3052j5us"/>
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
@@ -271,6 +268,7 @@
                                     <constraint firstAttribute="width" secondItem="yb1-G9-67n" secondAttribute="height" multiplier="1:1" id="AVS-Cc-sf2"/>
                                     <constraint firstItem="1wn-A6-DYN" firstAttribute="centerY" secondItem="yb1-G9-67n" secondAttribute="centerY" id="Ko3-8K-v43"/>
                                     <constraint firstItem="rVS-1F-aSB" firstAttribute="centerY" secondItem="yb1-G9-67n" secondAttribute="centerY" id="RJi-BB-Vdb"/>
+                                    <constraint firstItem="rVS-1F-aSB" firstAttribute="width" secondItem="yb1-G9-67n" secondAttribute="width" multiplier="240/260" id="ddc-H3-Z5Y"/>
                                     <constraint firstItem="rVS-1F-aSB" firstAttribute="height" secondItem="yb1-G9-67n" secondAttribute="height" multiplier="240/260" id="nvA-tw-asT"/>
                                     <constraint firstItem="1wn-A6-DYN" firstAttribute="centerX" secondItem="yb1-G9-67n" secondAttribute="centerX" id="xTC-gO-Ia1"/>
                                 </constraints>

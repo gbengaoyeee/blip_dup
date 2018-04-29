@@ -26,6 +26,7 @@ class InstructionVC: UIViewController {
     
     var subInstruction: String!
     var mainInstruction: String!
+    var isLastWaypoint: Bool!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,8 +70,10 @@ class InstructionVC: UIViewController {
     
     @IBAction func donePressed(_ sender: Any) {
         let presentingVC = self.presentingViewController as? NavigationViewController
-        presentingVC?.routeController.routeProgress.legIndex += 1
-        presentingVC?.routeController.resume()
+        if !isLastWaypoint{
+            presentingVC?.routeController.routeProgress.legIndex += 1
+            presentingVC?.routeController.resume()
+        }
         self.dismiss(animated: true, completion: nil)
     }
 }

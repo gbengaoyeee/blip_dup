@@ -101,17 +101,6 @@
     return params;
 }
 
-+ (STPSourceParams *)bitcoinParamsWithAmount:(NSUInteger)amount
-                                    currency:(NSString *)currency
-                                       email:(NSString *)email {
-    STPSourceParams *params = [self new];
-    params.type = STPSourceTypeBitcoin;
-    params.amount = @(amount);
-    params.currency = currency;
-    params.owner = @{ @"email": email };
-    return params;
-}
-
 + (STPSourceParams *)cardParamsWithCard:(STPCardParams *)card {
     STPSourceParams *params = [self new];
     params.type = STPSourceTypeCard;
@@ -305,6 +294,21 @@
     STPSourceParams *params = [self new];
     params.type = STPSourceTypeCard;
     params.additionalAPIParameters = @{ @"card": @{ @"visa_checkout": @{ @"callid": callId } } };
+    return params;
+}
+
++ (STPSourceParams *)masterpassParamsWithCartId:(NSString *)cartId
+                                  transactionId:(NSString *)transactionId {
+    STPSourceParams *params = [self new];
+    params.type = STPSourceTypeCard;
+    params.additionalAPIParameters = @{ @"card": @{
+                                                @"masterpass": @{
+                                                        @"cart_id": cartId,
+                                                        @"transaction_id": transactionId,
+                                                        }
+                                                }
+
+                                        };
     return params;
 }
 

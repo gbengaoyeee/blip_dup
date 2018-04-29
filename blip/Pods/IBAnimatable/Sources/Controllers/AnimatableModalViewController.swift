@@ -9,9 +9,9 @@ import UIKit
 open class AnimatableModalViewController: UIViewController, PresentationDesignable {
 
   // MARK: - AnimatablePresentationController
-  public var contextFrameForPresentation: CGRect? {
+  public var contextFrameForPresentation: (() -> CGRect)? {
     didSet {
-      presenter?.presentationConfiguration?.contextFrameForPresentation = contextFrameForPresentation
+      configurePresenterFrameForPresentation()
     }
   }
 
@@ -32,7 +32,7 @@ open class AnimatableModalViewController: UIViewController, PresentationDesignab
 
   @IBInspectable var _dismissalAnimationType: String? {
     didSet {
-      if let animationType = PresentationAnimationType(string: _presentationAnimationType) {
+      if let animationType = PresentationAnimationType(string: _dismissalAnimationType) {
         dismissalAnimationType = animationType
       }
     }
@@ -179,4 +179,10 @@ open class AnimatableModalViewController: UIViewController, PresentationDesignab
     super.viewDidAppear(animated)
     configureDismissalTransition()
   }
+
+  open override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    configurePresenterFrameForPresentation()
+  }
+
 }
