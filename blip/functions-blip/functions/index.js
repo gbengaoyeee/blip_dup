@@ -140,7 +140,24 @@ exports.addNewPaymentSource = functions.https.onRequest((req,res) => {
     });
   });
 
+  //adds the store to firebase
+function addStore(storeName, storeLogo, storeBackground, storeDescription){
+  var store = {storeName, storeLogo, storeBackground, storeDescription};
+  admin.database().ref('stores/').update(store).then(() =>{
+    console.log('Update succeeded!');
+  });
+}
 
+function newDelivery(storeName, deliveryLat, deliveryLong, deliveryMainInstruction, deliverySubInstruction, originLat, originLong, pickupMainInstruction, pickupSubInstruction, recieverName, recieverNumber)
+{
+  var deliveryDetails = {storeName, deliveryLat, deliveryLong, deliveryMainInstruction, deliverySubInstruction, originLat, originLong, pickupMainInstruction, pickupSubInstruction, recieverName,recieverNumber};
+  
+  // Get a key for a new Post.
+  var newPostKey = firebase.database().ref().child('posts').push().key;
+  admin.database().ref('AllJobs/'+newPostKey).update(deliveryDetails).then(() =>{
+    console.log('Update succeeded!');
+  });
+}
 
 exports.getBestJob = functions.https.onRequest((req,res) => {
   var long = req.body.locationLong,
