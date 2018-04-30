@@ -14,17 +14,14 @@ class Store {
     var name: String!
     var storeLogo: URL!
     var storeBackground: URL!
-    var minOrder: Float!
     var description: String!
-    var category: String!
+
     
-    init(name: String, storeLogo: URL, storeBackground: URL, minOrder: Float, category: String, description: String) {
-        self.minOrder = minOrder
+    init(name: String, storeLogo: URL, storeBackground: URL, description: String) {
         self.name = name
         self.storeLogo = storeLogo
         self.storeBackground = storeBackground
         self.description = description
-        self.category = category
     }
     
 }

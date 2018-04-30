@@ -248,7 +248,14 @@ extension FoundJobVC{
 //                let waypoint = Waypoint(coordinate: location)
                 let loc = CLLocation(latitude: (element["location"]! as! [Double])[1], longitude: (element["location"]! as! [Double])[0])
                 let way = BlipWaypoint(location: loc, heading: nil, name: nil)
-                way.delivery = Delivery(deliveryLocation: location_one, identifier: "identifier", origin: location_two, recieverName: "receiverName", recieverNumber: "receiverNumber", pickupMainInstruction: "pickupMainInstruction", pickupSubInstruction: "pickupSubInstruction", deliveryMainInstruction: "deliveryMainInstruction", deliverySubInstruction: "deliverySubInstruction")
+                
+                //THIS HERE IS A SAMPLE DELIVERY OBJECT- STILL NEED TO ASSOCIATE ITS PROPER DELIVERY OBJECT
+                let store:[String:Any] = ["name":"Walmart",
+                                          "storeLogo":"https://www.mallmaverick.com/system/stores/store_fronts/000/017/759/original/walmart.jpg?1452743704",
+                                          "storeBackground":"https://themerkle.com/wp-content/uploads/2017/08/shutterstock_353631137.jpg",
+                                          "storeDescription":"THIS IS WALMART"]
+                way.delivery = Delivery(deliveryLocation: location_one, identifier: "identifier", origin: location_two, recieverName: "receiverName", recieverNumber: "receiverNumber", pickupMainInstruction: "pickupMainInstruction", pickupSubInstruction: "pickupSubInstruction", deliveryMainInstruction: "deliveryMainInstruction", deliverySubInstruction: "deliverySubInstruction", store: store)
+                
                 if element["waypoint_index"] as? Int == i{
                     waypointList.append(way)
                     i += 1
