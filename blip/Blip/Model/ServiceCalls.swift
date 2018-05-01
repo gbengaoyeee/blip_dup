@@ -70,6 +70,15 @@ class ServiceCalls{
         }
     }
     
+    func completeJob(completion: @escaping() -> ()){
+        userRef.child(emailHash).child("givenJob").observeSingleEvent(of: .value) { (snapshot) in
+            let deliveries = snapshot.value as? [String: AnyObject]
+            self.userRef.child(self.emailHash).updateChildValues(["completedDeliveries": deliveries])
+            self.userRef.child(self.emailHash).child("givenJob").removeValue()
+            completion()
+        }
+    }
+    
     func loadMapAnnotations(map: MGLMapView){
         
         jobsRef.observeSingleEvent(of: .value) { (snap) in

@@ -178,12 +178,15 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
             if waypoint.coordinate == way.coordinate{
                 vc.isLastWaypoint = (self.waypoints.last == way)
                 print("Arrived at waypoint")
+                vc.delivery = way.delivery
                 if let name = way.name{
                     if name == "Pickup"{
+                        vc.type = "Pickup"
                         vc.mainInstruction = way.delivery.pickupMainInstruction
                         vc.subInstruction = way.delivery.pickupSubInstruction
                     }
                     else if name == "Delivery"{
+                        vc.type = "Delivery"
                         vc.mainInstruction = way.delivery.deliveryMainInstruction
                         vc.subInstruction = way.delivery.deliverySubInstruction
                     }
@@ -225,7 +228,9 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
     
     func navigationMapView(_ mapView: NavigationMapView, waypointStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer? {
         let x = MGLCircleStyleLayer(identifier: identifier, source: source)
-        x.circleColor = MGLStyleValue.init(rawValue: .cyan)
+        x.circleColor = MGLStyleValue.init(rawValue: .white)
+        x.circleStrokeColor = MGLStyleValue(rawValue: .blue)
+        x.circleStrokeWidth = MGLStyleValue(rawValue: 2)
         x.circleRadius = MGLStyleValue.init(rawValue: 15)
         
         return x
@@ -233,17 +238,23 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
     
     func navigationMapView(_ mapView: NavigationMapView, waypointSymbolStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer? {
         let x = MGLSymbolStyleLayer.init(identifier: identifier, source: source)
-        print("Here1",x, "{type}")
-        print("Here2",source.identifier, identifier)
+        x.text = MGLStyleValue(rawValue: "{type}")
         return x
     }
     
-    
-    
     func navigationViewControllerDidCancelNavigation(_ navigationViewController: NavigationViewController) {
         
-        // DO THIS WHEN YOU CANCEL THE NAVIGATION IT HAS TO PUT BACK JOBS IN THE ALLJOBS REF AND REMOVE FROM USER REF
-        self.navigationController?.popToRootViewController(animated: true)
+        let alertPopup = PopupDialog(title: "Warning", message: "Are you sure you wish to cancel the job you are currently on? Taking a job and cancelling midway may result in a suspension of your account.")
+        let yesButton = PopupDialogButton(title: "Yes") {
+            alertPopup.dismiss()
+            self.navigationController?.popToRootViewController(animated: true)
+        }
+        let noButton = PopupDialogButton(title: "No") {
+            alertPopup.dismiss()
+            navigationViewController.routeController.resume()
+        }
+        alertPopup.addButtons([yesButton, noButton])
+        navigationViewController.present(alertPopup, animated: true, completion: nil)
     }
 }
 

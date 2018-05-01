@@ -24,6 +24,9 @@ class InstructionVC: UIViewController {
     @IBOutlet weak var noShowButton: RaisedButton!
     @IBOutlet weak var doneButton: RaisedButton!
     
+    var type: String!
+    var delivery: Delivery!
+    let service = ServiceCalls.instance
     var subInstruction: String!
     var mainInstruction: String!
     var isLastWaypoint: Bool!
@@ -68,9 +71,11 @@ class InstructionVC: UIViewController {
     }
 
     @IBAction func noShowPressed(_ sender: Any) {
+        // WHen you press this, set the delivery object this controller is associated with to noShow: True in firebase
     }
     
     @IBAction func callPressed(_ sender: Any) {
+        //CAll the number associated with this delivery object. First check type. If type is pickup, call delivery.pickupNumber, if type is delivery, call delivery.reciverNumber. Type is a string. self.type == Delivery or Pickup
     }
     
     @IBAction func donePressed(_ sender: Any) {
@@ -78,7 +83,14 @@ class InstructionVC: UIViewController {
         if !isLastWaypoint{
             presentingVC?.routeController.routeProgress.legIndex += 1
             presentingVC?.routeController.resume()
+            self.dismiss(animated: true, completion: nil)
         }
-        self.dismiss(animated: true, completion: nil)
+        else{
+            self.prepareAndAddBlurredLoader()
+            service.completeJob {
+                self.removedBlurredLoader()
+                self.presentingViewController?.presentingViewController?.navigationController?.popToRootViewController(animated: true)
+            }
+        }
     }
 }

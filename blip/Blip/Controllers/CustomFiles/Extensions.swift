@@ -129,9 +129,8 @@ extension UIView{
 
 extension UIViewController{
     
-    func removedBlurredLoader(animation: LOTAnimationView){
+    func removedBlurredLoader(){
         
-        animation.stop()
         if let loadingViewAfterStripe = self.view.viewWithTag(100){
             loadingViewAfterStripe.removeFromSuperview()
         }
