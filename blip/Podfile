@@ -12,7 +12,7 @@ target 'Blip' do
   pod 'Firebase/Auth'
   pod 'Firebase/Messaging'
   pod 'Pastel'
-  pod ‘IBAnimatable’
+  pod 'IBAnimatable'
   pod 'Material'
   pod 'Alamofire'
   pod 'FBSDKCoreKit'

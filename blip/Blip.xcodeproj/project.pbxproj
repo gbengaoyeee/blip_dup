@@ -57,6 +57,7 @@
 		3B53739D202EC2210020F3B1 /* BlipAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537390202EC2200020F3B1 /* BlipAnnotation.swift */; };
 		3BCD8444207416E70079B4D4 /* NewSignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCD8443207416E70079B4D4 /* NewSignUpVC.swift */; };
 		3BCD844620747C130079B4D4 /* ChoosePictureVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCD844520747C130079B4D4 /* ChoosePictureVC.swift */; };
+		3BF9F1272096F2D400BD7E6B /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF9F1262096F2D300BD7E6B /* Store.swift */; };
 		5F33377820332B0B00B83E01 /* RatingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F33377720332B0B00B83E01 /* RatingViewController.xib */; };
 		5F33377A20332B4600B83E01 /* RatingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F33377920332B4600B83E01 /* RatingViewController.swift */; };
 		5FDEF87F206B56DC00F33733 /* ViewMapOfJobsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FDEF87E206B56DC00F33733 /* ViewMapOfJobsVC.swift */; };
@@ -158,6 +159,7 @@
 		3B537390202EC2200020F3B1 /* BlipAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlipAnnotation.swift; sourceTree = "<group>"; };
 		3BCD8443207416E70079B4D4 /* NewSignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSignUpVC.swift; sourceTree = "<group>"; };
 		3BCD844520747C130079B4D4 /* ChoosePictureVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoosePictureVC.swift; sourceTree = "<group>"; };
+		3BF9F1262096F2D300BD7E6B /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		52A65DC4170733BA25C15CE1 /* Pods-Blip.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Blip.release.xcconfig"; path = "Pods/Target Support Files/Pods-Blip/Pods-Blip.release.xcconfig"; sourceTree = "<group>"; };
 		5F33377720332B0B00B83E01 /* RatingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RatingViewController.xib; sourceTree = "<group>"; };
 		5F33377920332B4600B83E01 /* RatingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingViewController.swift; sourceTree = "<group>"; };
@@ -293,6 +295,7 @@
 				3B53732D202EBA6B0020F3B1 /* LocationManager.swift */,
 				3B537326202EBA690020F3B1 /* ServiceCalls.swift */,
 				F30D60CA207B19930022F90D /* Delivery.swift */,
+				3BF9F1262096F2D300BD7E6B /* Store.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -422,7 +425,6 @@
 				3B5372F1202EB4320020F3B1 /* Frameworks */,
 				3B5372F2202EB4320020F3B1 /* Resources */,
 				24A37729C6A8CC773783BF58 /* [CP] Embed Pods Frameworks */,
-				194BA841F86F91D96B0F58D1 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -441,8 +443,6 @@
 				3B537304202EB4320020F3B1 /* Sources */,
 				3B537305202EB4320020F3B1 /* Frameworks */,
 				3B537306202EB4320020F3B1 /* Resources */,
-				2819C5AF73754511D07A3E38 /* [CP] Embed Pods Frameworks */,
-				1363A193920C719523EA00B6 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -462,8 +462,6 @@
 				3B53730F202EB4320020F3B1 /* Sources */,
 				3B537310202EB4320020F3B1 /* Frameworks */,
 				3B537311202EB4320020F3B1 /* Resources */,
-				60C936C3B650F5886BB23AEF /* [CP] Embed Pods Frameworks */,
-				0257CDC36316624A2671358C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -581,51 +579,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0257CDC36316624A2671358C /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BlipUITests/Pods-BlipUITests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		1363A193920C719523EA00B6 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BlipTests/Pods-BlipTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		194BA841F86F91D96B0F58D1 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Blip/Pods-Blip-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		24A37729C6A8CC773783BF58 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -728,21 +681,6 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Blip/Pods-Blip-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		2819C5AF73754511D07A3E38 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BlipTests/Pods-BlipTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		3A0CC076EA7B48EB8099BD65 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -759,21 +697,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		60C936C3B650F5886BB23AEF /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BlipUITests/Pods-BlipUITests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		88B3209FE857B20B2825F9AB /* [CP] Check Pods Manifest.lock */ = {
@@ -853,6 +776,7 @@
 				3B537379202EC0DC0020F3B1 /* SellVC.swift in Sources */,
 				3B537388202EC0DC0020F3B1 /* Lgsupage.swift in Sources */,
 				3B53739B202EC2210020F3B1 /* CustomAnnotationView.swift in Sources */,
+				3BF9F1272096F2D400BD7E6B /* Store.swift in Sources */,
 				3B537387202EC0DC0020F3B1 /* SplashViewController.swift in Sources */,
 				F3D21EE62087E9E000832544 /* NavigateVC.swift in Sources */,
 			);

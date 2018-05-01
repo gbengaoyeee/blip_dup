@@ -62,15 +62,16 @@ extension AppFABMenuController {
         fabButton.backgroundColor = #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1)
         fabButton.imageView?.makeCircular()
         fabButton.makeCircular()
-        if let pictureString = userDefaults.dictionary(forKey: "loginCredentials")!["picture"] as? String{
-            KingfisherManager.shared.retrieveImage(with: URL(string: pictureString)!, options: nil, progressBlock: nil) { (image, error, type, url) in
-                if let image = image {
-                    self.fabButton.setImage(image, for: .normal)
-                    self.fabButton.clipsToBounds = true
+        if let credentials = userDefaults.dictionary(forKey: "loginCredentials"){
+            if let pictureString = credentials["picture"] as? String{
+                KingfisherManager.shared.retrieveImage(with: URL(string: pictureString)!, options: nil, progressBlock: nil) { (image, error, type, url) in
+                    if let image = image {
+                        self.fabButton.setImage(image, for: .normal)
+                        self.fabButton.clipsToBounds = true
+                    }
                 }
             }
         }
-        
     }
     
     fileprivate func prepareLogoutFabMenuItem() {

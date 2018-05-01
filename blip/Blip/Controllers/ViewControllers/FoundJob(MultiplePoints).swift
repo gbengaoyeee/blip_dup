@@ -208,16 +208,33 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
         return nil
     }
     
+    func navigationMapView(_ mapView: NavigationMapView, shapeFor waypoints: [Waypoint]) -> MGLShape? {
+        
+        var features = [MGLPointFeature]()
+        
+        for waypoint in waypoints {
+            let feature = MGLPointFeature()
+            feature.coordinate = waypoint.coordinate
+            if let name = waypoint.name{
+                feature.attributes = ["type": name]
+            }
+            features.append(feature)
+        }
+        return MGLShapeCollection(shapes: features)
+    }
+    
     func navigationMapView(_ mapView: NavigationMapView, waypointStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer? {
         let x = MGLCircleStyleLayer(identifier: identifier, source: source)
         x.circleColor = MGLStyleValue.init(rawValue: .cyan)
         x.circleRadius = MGLStyleValue.init(rawValue: 15)
+        
         return x
     }
     
     func navigationMapView(_ mapView: NavigationMapView, waypointSymbolStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer? {
         let x = MGLSymbolStyleLayer.init(identifier: identifier, source: source)
-        x.text = MGLStyleValue.init(rawValue: "ya")
+        print("Here1",x, "{type}")
+        print("Here2",source.identifier, identifier)
         return x
     }
     
@@ -248,7 +265,14 @@ extension FoundJobVC{
 //                let waypoint = Waypoint(coordinate: location)
                 let loc = CLLocation(latitude: (element["location"]! as! [Double])[1], longitude: (element["location"]! as! [Double])[0])
                 let way = BlipWaypoint(location: loc, heading: nil, name: nil)
-                way.delivery = Delivery(deliveryLocation: location_one, identifier: "identifier", origin: location_two, recieverName: "receiverName", recieverNumber: "receiverNumber", pickupMainInstruction: "pickupMainInstruction", pickupSubInstruction: "pickupSubInstruction", deliveryMainInstruction: "deliveryMainInstruction", deliverySubInstruction: "deliverySubInstruction")
+                
+                //THIS HERE IS A SAMPLE DELIVERY OBJECT- STILL NEED TO ASSOCIATE ITS PROPER DELIVERY OBJECT
+                let store:[String:Any] = ["name":"Walmart",
+                                          "storeLogo":"https://www.mallmaverick.com/system/stores/store_fronts/000/017/759/original/walmart.jpg?1452743704",
+                                          "storeBackground":"https://themerkle.com/wp-content/uploads/2017/08/shutterstock_353631137.jpg",
+                                          "storeDescription":"THIS IS WALMART"]
+                way.delivery = Delivery(deliveryLocation: location_one, identifier: "identifier", origin: location_two, recieverName: "receiverName", recieverNumber: "receiverNumber", pickupMainInstruction: "pickupMainInstruction", pickupSubInstruction: "pickupSubInstruction", deliveryMainInstruction: "deliveryMainInstruction", deliverySubInstruction: "deliverySubInstruction", store: store)
+                
                 if element["waypoint_index"] as? Int == i{
                     waypointList.append(way)
                     i += 1

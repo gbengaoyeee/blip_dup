@@ -89,7 +89,10 @@ class ServiceCalls{
                         x -= 1
                     }
                 }
-                if let annotations = map.annotations{
+                if var annotations = map.annotations{
+                    if let user = map.userLocation{
+                        annotations.append(user)
+                    }
                     map.showAnnotations(annotations, animated: true)
                 }
             }
@@ -244,8 +247,15 @@ class ServiceCalls{
         let second = calendar.component(.second, from: date)
         _ = "\(day)-\(month)-\(year) \(hour):\(minute):\(second)"
         
-        let dict: [String: Any] = ["deliveryLat": deliveryLocation.latitude, "deliveryLong": deliveryLocation.longitude, "originLat": pickupLocation.latitude, "originLong": pickupLocation.longitude, "recieverName": recieverName,  "recieverNumber": recieverNumber,"pickupMainInstruction": pickupMainInstruction, "pickupSubInstruction": pickupSubInstruction, "deliveryMainInstruction": deliveryMainInstruction, "deliverySubInstruction": deliverySubInstruction]
-
+        let storeDict:[String:Any] = ["name":"Walmart",
+             "storeLogo":"https://www.mallmaverick.com/system/stores/store_fronts/000/017/759/original/walmart.jpg?1452743704",
+             "storeBackground":"https://themerkle.com/wp-content/uploads/2017/08/shutterstock_353631137.jpg",
+             "storeDescription":"THIS IS WALMART"]
+        
+        
+        var dict: [String: Any] = ["deliveryLat": deliveryLocation.latitude, "deliveryLong": deliveryLocation.longitude, "originLat": pickupLocation.latitude, "originLong": pickupLocation.longitude, "recieverName": recieverName,  "recieverNumber": recieverNumber,"pickupMainInstruction": pickupMainInstruction, "pickupSubInstruction": pickupSubInstruction, "deliveryMainInstruction": deliveryMainInstruction, "deliverySubInstruction": deliverySubInstruction]
+        dict["store"] = storeDict
+        
         self.jobsRef.child(newJobID).updateChildValues(dict)
 
     }

@@ -117,14 +117,14 @@ extension SearchForJobVC: MGLMapViewDelegate{
         map.showsUserHeadingIndicator = true
         map.userTrackingMode = .followWithHeading
         map.compassView.isHidden = true
-        service.loadMapAnnotations(map: map)
     }
     
     func setMapCamera(){
-        let camera = MGLMapCamera(lookingAtCenter: map.centerCoordinate, fromDistance: 4500, pitch: 15, heading: 0)
-        // Animate the camera movement over 3 seconds.
-        map.setCamera(camera, withDuration: 5, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
-
+        map.setCenter(currentLocation, zoomLevel: 7, direction: 0, animated: false)
+        let camera = MGLMapCamera(lookingAtCenter: currentLocation, fromDistance: 4500, pitch: 0, heading: 0)
+        map.setCamera(camera, withDuration: 3, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)) {
+            self.service.loadMapAnnotations(map: self.map)
+        }
     }
     
     func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
@@ -142,11 +142,10 @@ extension SearchForJobVC: CLLocationManagerDelegate{
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let locValue:CLLocationCoordinate2D = manager.location!.coordinate
-        map.setCenter(locValue, animated: true)
-        setMapCamera()
         currentLocation = locValue
         service.updateJobAccepterLocation(location: locValue)
         manager.stopUpdatingLocation()
+        setMapCamera()
     }
     
     func useCurrentLocations(){

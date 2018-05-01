@@ -27,6 +27,8 @@ class InstructionVC: UIViewController {
     var subInstruction: String!
     var mainInstruction: String!
     var isLastWaypoint: Bool!
+    var storeLogoURL: String!
+    var phoneNumber: URL!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,6 +52,9 @@ class InstructionVC: UIViewController {
         }
         if let text = subInstruction{
             subInstructionLabel.text = text
+        }
+        if let url = storeLogoURL{
+            storeLogo.kf.setImage(with: URL(string: url))
         }
     }
     
