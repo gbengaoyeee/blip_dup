@@ -46,9 +46,9 @@ class Job{
                 let deliverySubInstruction = deliveryValues!["deliverySubInstruction"] as! String
                 let pickupMainInstruction = deliveryValues!["pickupMainInstruction"] as! String
                 let pickupSubInstruction = deliveryValues!["pickupSubInstruction"] as! String
-                let store = deliveryValues!["store"] as! [String:Any]
+                let storeName = deliveryValues!["storeName"] as! String
                 
-                let delivery = Delivery(deliveryLocation: deliveryLocation, identifier: id, origin: origin, recieverName: recieverName, recieverNumber: recieverNumber, pickupMainInstruction: pickupMainInstruction, pickupSubInstruction: pickupSubInstruction, deliveryMainInstruction: deliveryMainInstruction, deliverySubInstruction: deliverySubInstruction, store: store)
+                let delivery = Delivery(deliveryLocation: deliveryLocation, identifier: id, origin: origin, recieverName: recieverName, recieverNumber: recieverNumber, pickupMainInstruction: pickupMainInstruction, pickupSubInstruction: pickupSubInstruction, deliveryMainInstruction: deliveryMainInstruction, deliverySubInstruction: deliverySubInstruction, storeName: storeName)
 
                 self.locList.append((delivery.origin)!)
                 self.locList.append((delivery.deliveryLocation)!)

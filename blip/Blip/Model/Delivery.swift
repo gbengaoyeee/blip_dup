@@ -26,7 +26,7 @@ class Delivery{
     var deliverySubInstruction: String!
     var store: Store!
     
-    init(deliveryLocation: CLLocationCoordinate2D, identifier: String, origin: CLLocationCoordinate2D, recieverName: String, recieverNumber: String, pickupMainInstruction: String, pickupSubInstruction: String, deliveryMainInstruction: String, deliverySubInstruction: String, store:[String:Any]) {
+    init(deliveryLocation: CLLocationCoordinate2D, identifier: String, origin: CLLocationCoordinate2D, recieverName: String, recieverNumber: String, pickupMainInstruction: String, pickupSubInstruction: String, deliveryMainInstruction: String, deliverySubInstruction: String, storeName:String) {
         self.deliveryLocation = deliveryLocation
         self.identifier = identifier
         self.origin = origin
@@ -38,11 +38,17 @@ class Delivery{
         self.deliverySubInstruction = deliverySubInstruction
         
         //setting the store
-        let storeName = store["name"] as! String
-        let storeLogo = store["storeLogo"] as! String
-        let storeBackground = store["storeBackground"] as! String
-        let storeDescription = store["storeDescription"] as! String
-        self.store = Store(name: storeName, storeLogo: URL(string: storeLogo)!, storeBackground: URL(string: storeBackground)!, description: storeDescription)
+        let storeRef = Database.database().reference().child("stores").child(storeName)
+        storeRef.observeSingleEvent(of: .value) { (snap) in
+            if let storeVal = snap.value as? [String:Any]{
+                let storeLogo = storeVal["storeLogo"] as! String
+                let storeBackground = storeVal["storeBackground"] as! String
+                let storeDescription = storeVal["storeDescription"] as! String
+                self.store = Store(name: storeName, storeLogo: URL(string: storeLogo)!, storeBackground: URL(string: storeBackground)!, description: storeDescription)
+            }
+        }
+        
+        
         
         let geocoder = CLGeocoder()
         geocoder.reverseGeocodeLocation(CLLocation(latitude: (deliveryLocation.latitude), longitude: (deliveryLocation.longitude)), completionHandler: { (placemarks, error) in
@@ -71,12 +77,16 @@ class Delivery{
         self.deliverySubInstruction = deliveryValues!["deliverySubInstruction"] as! String
         
         //setting the store
-        let storeDict = deliveryValues!["store"] as! [String:Any]
-        let storeName = storeDict["name"] as! String
-        let storeLogo = storeDict["storeLogo"] as! String
-        let storeBackground = storeDict["storeBackground"] as! String
-        let storeDescription = storeDict["storeDescription"] as! String
-        self.store = Store(name: storeName, storeLogo: URL(string: storeLogo)!, storeBackground: URL(string: storeBackground)!, description: storeDescription)
+        let storeName = deliveryValues!["storeName"] as! String
+        let storeRef = Database.database().reference().child("stores").child(storeName)
+        storeRef.observeSingleEvent(of: .value) { (snap) in
+            if let storeVal = snap.value as? [String:Any]{
+                let storeLogo = storeVal["storeLogo"] as! String
+                let storeBackground = storeVal["storeBackground"] as! String
+                let storeDescription = storeVal["storeDescription"] as! String
+                self.store = Store(name: storeName, storeLogo: URL(string: storeLogo)!, storeBackground: URL(string: storeBackground)!, description: storeDescription)
+            }
+        }
         
         let geocoder = CLGeocoder()
         geocoder.reverseGeocodeLocation(CLLocation(latitude: (deliveryLocation.latitude), longitude: (deliveryLocation.longitude)), completionHandler: { (placemarks, error) in
