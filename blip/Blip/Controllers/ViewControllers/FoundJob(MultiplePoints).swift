@@ -278,7 +278,7 @@ extension FoundJobVC{
                 let way = BlipWaypoint(location: loc, heading: nil, name: nil)
                 
                 //THIS HERE IS A SAMPLE DELIVERY OBJECT- STILL NEED TO ASSOCIATE ITS PROPER DELIVERY OBJECT
-                way.delivery = Delivery(deliveryLocation: location_one, identifier: "identifier", origin: location_two, recieverName: "receiverName", recieverNumber: "receiverNumber", pickupMainInstruction: "pickupMainInstruction", pickupSubInstruction: "pickupSubInstruction", deliveryMainInstruction: "deliveryMainInstruction", deliverySubInstruction: "deliverySubInstruction", storeName: "Walmart")
+                way.delivery = Delivery(deliveryLocation: location_one, identifier: "identifier", origin: location_two, recieverName: "receiverName", recieverNumber: "6474934430", pickupMainInstruction: "pickupMainInstruction", pickupSubInstruction: "pickupSubInstruction", deliveryMainInstruction: "deliveryMainInstruction", deliverySubInstruction: "deliverySubInstruction", storeName: "Walmart")
                 
                 if element["waypoint_index"] as? Int == i{
                     waypointList.append(way)

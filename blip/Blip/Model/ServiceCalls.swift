@@ -203,6 +203,12 @@ class ServiceCalls{
     
     
     
+    ///Add noShow to delivery reference
+    func addNoShow(id:String){
+        userRef.child(emailHash).child("givenJob/deliveries/\(id)").updateChildValues(["noShow":true])
+    }
+    
+    
     ///**
     //     doesn't load tasks that are taken
     // */
