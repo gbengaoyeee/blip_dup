@@ -74,11 +74,9 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
         service.putBackJobs()
         self.dismiss(animated: true, completion: nil)
         timer.invalidate()
-        
     }
     
     func prepareDataForNavigation(){
-
         if let job = self.job{
             var distributions = ""
             for i in stride(from: 0, to: 2*job.deliveries.count, by: 1) {
@@ -91,7 +89,6 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
                 }
                 
             }
-            
             distributions = String(distributions.dropLast())
             print(distributions)
             print(job.locList)
