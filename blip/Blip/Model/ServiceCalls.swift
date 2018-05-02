@@ -54,7 +54,7 @@ class ServiceCalls{
     
     ///Finds jobs based on this user's location
     func findJob(myLocation: CLLocationCoordinate2D, userHash: String, completion: @escaping(Job?) -> ()){
-        userRef.child(emailHash).observe(.childAdded) { (snap) in
+        self.userRefHandle = userRef.child(emailHash).observe(.childAdded, with: { (snap) in
             if snap.key == "givenJob"{
                 if let jobID = snap.value as? [String: AnyObject]{
                     let j = Job(snapshot: snap.childSnapshot(forPath: jobID.keys.first!), type: "delivery")
@@ -62,12 +62,27 @@ class ServiceCalls{
                     completion(j)
                 }
             }
-        }
+        })
+//        userRef.child(emailHash).observe(.childAdded) { (snap) in
+//            if snap.key == "givenJob"{
+//                if let jobID = snap.value as? [String: AnyObject]{
+//                    let j = Job(snapshot: snap.childSnapshot(forPath: jobID.keys.first!), type: "delivery")
+//                    j?.locList.insert(myLocation, at: 0)
+//                    completion(j)
+//                }
+//            }
+//        }
         MyAPIClient.sharedClient.getBestJobAt(location: myLocation, userHash: userHash) { (error) in
             if error != nil{
                 print(error!)
             }
         }
+    }
+    
+    ///REMOVE MORE AS YOU ADD MORE OBSERVERS
+    func removeFirebaseObservers(){
+        userRef.child(emailHash).removeAllObservers()
+        print("Observers Removed")
     }
     
     func completeJob(completion: @escaping() -> ()){

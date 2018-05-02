@@ -138,6 +138,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     @IBAction func acceptJobPressed(_ sender: Any) {
         timer.invalidate()
         calculateAndPresentNavigation(waypointList: self.waypoints, present: true)
+        
 //        self.performSegue(withIdentifier: "toNavigation", sender: self)
     }
 }
@@ -170,6 +171,7 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
     
     func navigationViewController(_ navigationViewController: NavigationViewController, didArriveAt waypoint: Waypoint) -> Bool {
         let vc = InstructionVC(nibName: "InstructionVC", bundle: nil)
+        vc.foundJobVC = self
         navigationViewController.routeController.suspendLocationUpdates()
         for way in self.waypoints{
             if waypoint.coordinate == way.coordinate{
@@ -188,6 +190,7 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
                         vc.subInstruction = way.delivery.deliverySubInstruction
                     }
                 }
+                vc.navViewController = navigationViewController
                 navigationViewController.present(vc, animated: true, completion: nil)
             }
         }
@@ -328,8 +331,7 @@ extension FoundJobVC{
                     navigation.routeController.locationManager = x
                     navigation.delegate = self
                     navigation.showsEndOfRouteFeedback = false
-                    
-                    self.present(navigation, animated: true, completion: nil)
+                    self.navigationController?.pushViewController(navigation, animated: true)
                 }
             }
             else{
@@ -339,12 +341,10 @@ extension FoundJobVC{
     }
     
     func getDeliveryFor(waypoint: Waypoint) -> Delivery?{
-        
         var dist: Double! = 20000
         var index: Int!
         var i = 0
         for delivery in job.deliveries{
-            
             if let name = waypoint.name{
                 if name == "Pickup"{
                     if dist > delivery.origin.distance(to: waypoint.coordinate){
@@ -368,7 +368,6 @@ extension FoundJobVC{
     }
     
     func instructionsUponArrivalAt(waypoint: Waypoint) -> [String]?{
-        
         if let delivery = getDeliveryFor(waypoint: waypoint){
             if let name = waypoint.name{
                 if name == "Pickup"{

@@ -32,11 +32,15 @@ class InstructionVC: UIViewController {
     var isLastWaypoint: Bool!
     var storeLogoURL: String!
     var phoneNumber: URL!
+    var foundJobVC:FoundJobVC!
+    var navViewController:NavigationViewController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         prepareView()
         prepareButtons()
+        print(foundJobVC)
+        print(foundJobVC.navigationController?.viewControllers)
     }
 
     override func didReceiveMemoryWarning() {
@@ -71,7 +75,6 @@ class InstructionVC: UIViewController {
     }
 
     @IBAction func noShowPressed(_ sender: Any) {
-        
         service.addNoShow(id: self.delivery.identifier)
     }
     
@@ -99,18 +102,18 @@ class InstructionVC: UIViewController {
     }
     
     @IBAction func donePressed(_ sender: Any) {
-        let presentingVC = self.presentingViewController as? NavigationViewController
         if !isLastWaypoint{
-            presentingVC?.routeController.routeProgress.legIndex += 1
-            presentingVC?.routeController.resume()
+            navViewController?.routeController.routeProgress.legIndex += 1
+            navViewController?.routeController.resume()
             self.dismiss(animated: true, completion: nil)
         }
         else{
             self.prepareAndAddBlurredLoader()
             service.completeJob {
                 self.removedBlurredLoader()
+                
                 self.dismiss(animated: true, completion: {
-                    self.presentingViewController?.presentingViewController?.navigationController?.popToRootViewController(animated: true)
+                    self.foundJobVC.navigationController?.popToRootViewController(animated: true)
                 })
             }
         }

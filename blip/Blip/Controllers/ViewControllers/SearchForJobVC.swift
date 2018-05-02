@@ -35,6 +35,10 @@ class SearchForJobVC: UIViewController {
         updateCurrentDevice()
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        service.removeFirebaseObservers()
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
 
@@ -45,12 +49,13 @@ class SearchForJobVC: UIViewController {
         service.updateCurrentDeviceToken()
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "foundJob"{
-            let dest = segue.destination as! FoundJobVC
-            dest.job = foundJob
-        }
-    }
+    //NOT NEEDED ANYMORE BECAUSE I PUSH INSTEAD OF SEGUE
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        if segue.identifier == "foundJob"{
+//            let dest = segue.destination as! FoundJobVC
+//            dest.job = foundJob
+//        }
+//    }
     
     func prepareJobsNearMe(){
         MyAPIClient.sharedClient.getNumberOfJobsNearMe(location: self.currentLocation) { (jobNumber) in
@@ -102,10 +107,14 @@ class SearchForJobVC: UIViewController {
         service.findJob(myLocation: self.currentLocation, userHash: userDefaults.dictionary(forKey: "loginCredentials")!["emailHash"] as! String) { (job) in
             if let job = job{
                 self.foundJob = job
-                self.performSegue(withIdentifier: "foundJob", sender: self)
+                let foundJobVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "FoundJob") as! FoundJobVC
+                foundJobVC.job = self.foundJob
+                self.navigationController?.pushViewController(foundJobVC, animated: true)
             }
         }
     }
+    
+    
 }
 
 extension SearchForJobVC: MGLMapViewDelegate{

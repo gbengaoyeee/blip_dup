@@ -51,7 +51,6 @@ class Delivery{
         }
         
         
-        
         let geocoder = CLGeocoder()
         geocoder.reverseGeocodeLocation(CLLocation(latitude: (deliveryLocation.latitude), longitude: (deliveryLocation.longitude)), completionHandler: { (placemarks, error) in
             if(error == nil){
