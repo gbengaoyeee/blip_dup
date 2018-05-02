@@ -71,20 +71,31 @@ class InstructionVC: UIViewController {
     }
 
     @IBAction func noShowPressed(_ sender: Any) {
-        // WHen you press this, set the delivery reference this controller is associated with to noShow: True in firebase
-        //it might be weird what u see in firebase but that happens because of the sample delivery object being set in FoundJobVC
+        
         service.addNoShow(id: self.delivery.identifier)
     }
     
     @IBAction func callPressed(_ sender: Any) {
-        //CAll the number associated with this delivery object. First check type. If type is pickup, call delivery.pickupNumber, if type is delivery, call delivery.reciverNumber. Type is a string. self.type == Delivery or Pickup
-        if let url:URL = URL(string: "tel://\(self.delivery.receiverPhoneNumber!)"), UIApplication.shared.canOpenURL(url){
-            if #available(iOS 10, *) {
-                UIApplication.shared.open(url)
-            } else {
-                UIApplication.shared.openURL(url)
+        
+        if type == "Pickup"{
+            if let url:URL = URL(string: "tel://\(self.delivery.pickupNumber!)"), UIApplication.shared.canOpenURL(url){
+                if #available(iOS 10, *) {
+                    UIApplication.shared.open(url)
+                } else {
+                    UIApplication.shared.openURL(url)
+                }
             }
         }
+        else{
+            if let url:URL = URL(string: "tel://\(self.delivery.receiverPhoneNumber!)"), UIApplication.shared.canOpenURL(url){
+                if #available(iOS 10, *) {
+                    UIApplication.shared.open(url)
+                } else {
+                    UIApplication.shared.openURL(url)
+                }
+            }
+        }
+        
     }
     
     @IBAction func donePressed(_ sender: Any) {
@@ -98,7 +109,9 @@ class InstructionVC: UIViewController {
             self.prepareAndAddBlurredLoader()
             service.completeJob {
                 self.removedBlurredLoader()
-                self.presentingViewController?.presentingViewController?.navigationController?.popToRootViewController(animated: true)
+                self.dismiss(animated: true, completion: {
+                    self.presentingViewController?.presentingViewController?.navigationController?.popToRootViewController(animated: true)
+                })
             }
         }
     }

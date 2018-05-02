@@ -267,7 +267,7 @@ extension FoundJobVC{
         var i = 0
         while waypointList.count < (waypointData.count){
             for element in waypointData{
-                
+
                 let loc = CLLocation(latitude: (element["location"]! as! [Double])[1], longitude: (element["location"]! as! [Double])[0])
                 let way = BlipWaypoint(location: loc, heading: nil, name: nil)
                 if element["waypoint_index"] as? Int == i{

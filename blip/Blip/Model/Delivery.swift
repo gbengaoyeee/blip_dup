@@ -25,8 +25,9 @@ class Delivery{
     var deliveryMainInstruction: String!
     var deliverySubInstruction: String!
     var store: Store!
+    var pickupNumber: String!
     
-    init(deliveryLocation: CLLocationCoordinate2D, identifier: String, origin: CLLocationCoordinate2D, recieverName: String, recieverNumber: String, pickupMainInstruction: String, pickupSubInstruction: String, deliveryMainInstruction: String, deliverySubInstruction: String, storeName:String) {
+    init(deliveryLocation: CLLocationCoordinate2D, identifier: String, origin: CLLocationCoordinate2D, recieverName: String, recieverNumber: String, pickupNumber: String, pickupMainInstruction: String, pickupSubInstruction: String, deliveryMainInstruction: String, deliverySubInstruction: String, storeName:String) {
         self.deliveryLocation = deliveryLocation
         self.identifier = identifier
         self.origin = origin
@@ -36,6 +37,7 @@ class Delivery{
         self.pickupSubInstruction = pickupSubInstruction
         self.deliveryMainInstruction = deliveryMainInstruction
         self.deliverySubInstruction = deliverySubInstruction
+        self.pickupNumber = pickupNumber
         
         //setting the store
         let storeRef = Database.database().reference().child("stores").child(storeName)
@@ -75,6 +77,7 @@ class Delivery{
         self.pickupSubInstruction = deliveryValues!["pickupSubInstruction"] as! String
         self.deliveryMainInstruction = deliveryValues!["deliveryMainInstruction"] as! String
         self.deliverySubInstruction = deliveryValues!["deliverySubInstruction"] as! String
+        self.pickupNumber = deliveryValues!["pickupNumber"] as! String
         
         //setting the store
         let storeName = deliveryValues!["storeName"] as! String
