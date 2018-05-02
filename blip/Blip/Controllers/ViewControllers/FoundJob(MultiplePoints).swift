@@ -74,11 +74,9 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
         service.putBackJobs()
         self.dismiss(animated: true, completion: nil)
         timer.invalidate()
-        
     }
     
     func prepareDataForNavigation(){
-
         if let job = self.job{
             var distributions = ""
             for i in stride(from: 0, to: 2*job.deliveries.count, by: 1) {
@@ -91,7 +89,6 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
                 }
                 
             }
-            
             distributions = String(distributions.dropLast())
             print(distributions)
             print(job.locList)
@@ -270,16 +267,9 @@ extension FoundJobVC{
         var i = 0
         while waypointList.count < (waypointData.count){
             for element in waypointData{
-//                let location = CLLocationCoordinate2D(latitude: (element["location"]! as! [Double])[1], longitude: (element["location"]! as! [Double])[0])
-                let location_one = CLLocationCoordinate2D(latitude: (element["location"]! as! [Double])[1], longitude: (element["location"]! as! [Double])[0])
-                let location_two = CLLocationCoordinate2D(latitude: (element["location"]! as! [Double])[1]+1, longitude: (element["location"]! as! [Double])[0]+2)
-//                let waypoint = Waypoint(coordinate: location)
+                
                 let loc = CLLocation(latitude: (element["location"]! as! [Double])[1], longitude: (element["location"]! as! [Double])[0])
                 let way = BlipWaypoint(location: loc, heading: nil, name: nil)
-                
-                //THIS HERE IS A SAMPLE DELIVERY OBJECT- STILL NEED TO ASSOCIATE ITS PROPER DELIVERY OBJECT
-                way.delivery = Delivery(deliveryLocation: location_one, identifier: "identifier", origin: location_two, recieverName: "receiverName", recieverNumber: "6474934430", pickupMainInstruction: "pickupMainInstruction", pickupSubInstruction: "pickupSubInstruction", deliveryMainInstruction: "deliveryMainInstruction", deliverySubInstruction: "deliverySubInstruction", storeName: "Walmart")
-                
                 if element["waypoint_index"] as? Int == i{
                     waypointList.append(way)
                     i += 1
@@ -305,9 +295,7 @@ extension FoundJobVC{
             else{
                 way.name = "Pickup"
             }
-            print(way.name!)
-            print(way.delivery)
-            print(way.delivery.deliverySubInstruction)
+            way.delivery = getDeliveryFor(waypoint: way)
         }
         return waypointList
     }
