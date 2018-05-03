@@ -190,8 +190,15 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
     
     func navigationMapView(_ mapView: NavigationMapView, shapeFor waypoints: [Waypoint]) -> MGLShape? {
         
+//
+//        return MGLShapeCollection(shapes: features)
+        print("SHAPE FOR")
+        return nil
+    }
+    
+    func navigationMapView(_ mapView: NavigationMapView, waypointStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer? {
+        //CODE FROM THE OTHER FUNCTION
         var features = [MGLPointFeature]()
-        
         for waypoint in self.waypoints {
             let feature = MGLPointFeature()
             feature.coordinate = waypoint.coordinate
@@ -202,15 +209,12 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
                 }
             }
         }
-        let x = MGLShapeSource(identifier: "waypointLayer", features: features, options: nil)
-        mglSource = x
+        let y = MGLShapeSource(identifier: "waypointLayer", features: features, options: nil)
+        mglSource = y
         mapView.style?.addSource(mglSource)
+
         
-        return MGLShapeCollection(shapes: features)
-    }
-    
-    func navigationMapView(_ mapView: NavigationMapView, waypointStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer? {
-        
+        //THIS FUNCTION'S REAL CODE
         let x = MGLCircleStyleLayer(identifier: "waypointLayer", source: mglSource)
         x.circleColor = NSExpression(format: "MGL_MATCH(type, 'Pickup', %@, 'Delivery', %@, %@)", UIColor.blue, UIColor.white, UIColor.white)
         x.circleStrokeColor = NSExpression(format: "MGL_MATCH(type, 'Pickup', %@, 'Delivery', %@, %@)", UIColor.white, UIColor.blue, UIColor.blue)

@@ -94,7 +94,6 @@ class InstructionVC: UIViewController {
     }
     
     @IBAction func callPressed(_ sender: Any) {
-        
         if type == "Pickup"{
             if let url:URL = URL(string: "tel://\(self.delivery.pickupNumber!)"), UIApplication.shared.canOpenURL(url){
                 if #available(iOS 10, *) {
@@ -128,7 +127,6 @@ class InstructionVC: UIViewController {
             self.prepareAndAddBlurredLoader()
             service.completeJob {
                 self.removedBlurredLoader()
-                
                 self.dismiss(animated: true, completion: {
                     self.foundJobVC.navigationController?.popToRootViewController(animated: true)
                 })

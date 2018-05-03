@@ -37,6 +37,7 @@ class SearchForJobVC: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         prepareGoButton()
+        updateCurrentDevice()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
