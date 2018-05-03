@@ -34,6 +34,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     var locationManager = CLLocationManager()
     var waypoints: [BlipWaypoint]!
     var timer = Timer()
+    var mglSource: MGLShapeSource!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,14 +57,6 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = true
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "toNavigation"{
-            let dest = segue.destination as! NavigateVC
-            dest.job = self.job!
-            dest.waypoints = self.waypoints
-        }
     }
     
     fileprivate func setupTimer(){
@@ -138,8 +131,6 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     @IBAction func acceptJobPressed(_ sender: Any) {
         timer.invalidate()
         calculateAndPresentNavigation(waypointList: self.waypoints, present: true)
-        
-//        self.performSegue(withIdentifier: "toNavigation", sender: self)
     }
 }
 
@@ -197,53 +188,43 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
         return false
     }
     
-    func navigationMapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
-        
-        let waypoint = self.getWaypointFor(coordinate: annotation.coordinate)
-        if let name = waypoint.name{
-            if name == "Pickup"{
-                return CustomPickupAnnotationView()
-            }
-            else if name == "Delivery"{
-                return CustomDropOffAnnotationView()
-            }
-        }
-        return nil
-    }
-    
     func navigationMapView(_ mapView: NavigationMapView, shapeFor waypoints: [Waypoint]) -> MGLShape? {
         
         var features = [MGLPointFeature]()
         
-        for waypoint in waypoints {
+        for waypoint in self.waypoints {
             let feature = MGLPointFeature()
             feature.coordinate = waypoint.coordinate
             if let name = waypoint.name{
-                feature.attributes = ["type": name]
+                if name == "Pickup" || name == "Delivery"{
+                    feature.attributes = ["type": name]
+                    features.append(feature)
+                }
             }
-            features.append(feature)
         }
+        let x = MGLShapeSource(identifier: "waypointLayer", features: features, options: nil)
+        mglSource = x
+        mapView.style?.addSource(mglSource)
+        
         return MGLShapeCollection(shapes: features)
     }
     
     func navigationMapView(_ mapView: NavigationMapView, waypointStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer? {
-        let x = MGLCircleStyleLayer(identifier: identifier, source: source)
-        x.circleColor = MGLStyleValue.init(rawValue: .white)
-        x.circleStrokeColor = MGLStyleValue(rawValue: .blue)
-        x.circleStrokeWidth = MGLStyleValue(rawValue: 2)
-        x.circleRadius = MGLStyleValue.init(rawValue: 15)
         
+        let x = MGLCircleStyleLayer(identifier: "waypointLayer", source: mglSource)
+        x.circleColor = NSExpression(format: "MGL_MATCH(type, 'Pickup', %@, 'Delivery', %@, %@)", UIColor.blue, UIColor.white, UIColor.white)
+        x.circleStrokeColor = NSExpression(format: "MGL_MATCH(type, 'Pickup', %@, 'Delivery', %@, %@)", UIColor.white, UIColor.blue, UIColor.blue)
+        x.circleStrokeWidth = NSExpression(forConstantValue: 2.5)
+        x.circleRadius = NSExpression(forConstantValue: 15)
         return x
     }
     
-    func navigationMapView(_ mapView: NavigationMapView, waypointSymbolStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer? {
-        let x = MGLSymbolStyleLayer.init(identifier: identifier, source: source)
-        x.text = MGLStyleValue(rawValue: "{type}")
-        return x
+    func navigationMapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
+        
+        return CustomDropOffAnnotationView()
     }
     
-    func navigationViewControllerDidCancelNavigation(_ navigationViewController: NavigationViewController) {
-        
+    func navigationViewControllerDidEndNavigation(_ navigationViewController: NavigationViewController, cancelled: Bool) {
         let alertPopup = PopupDialog(title: "Warning", message: "Are you sure you wish to cancel the job you are currently on? Taking a job and cancelling midway may result in a suspension of your account.")
         let yesButton = PopupDialogButton(title: "Yes") {
             alertPopup.dismiss()
@@ -280,6 +261,7 @@ extension FoundJobVC{
             }
         }
         for way in waypointList{
+            
             var dist: Double! = 20000
             var index: Int!
             for loc in job.locList{
@@ -384,6 +366,7 @@ extension FoundJobVC{
     func parseRouteData(routeData: [String: AnyObject]){
         let estimatedTime = routeData["duration"] as! NSNumber
         let minutes = estimatedTime.doubleValue/60
-        timeLabel.text = "Estimated time: \(minutes.rounded()) min"
+        timeLabel.text = "\(minutes.rounded()) min(s)"
+        pickupLabel.text = "\(job.deliveries.count) Delivery(s)"
     }
 }

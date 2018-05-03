@@ -12,6 +12,7 @@ import MapboxCoreNavigation
 import MapboxDirections
 import MapboxNavigation
 import Material
+import PopupDialog
 
 class InstructionVC: UIViewController {
 
@@ -34,21 +35,20 @@ class InstructionVC: UIViewController {
     var phoneNumber: URL!
     var foundJobVC:FoundJobVC!
     var navViewController:NavigationViewController!
+    var calls = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         prepareView()
         prepareButtons()
-        print(foundJobVC)
-        print(foundJobVC.navigationController?.viewControllers)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     func prepareView(){
+        storeLogo.makeCircular()
         subView.ApplyCornerRadiusToView()
         subView.ApplyOuterShadowToView()
     }
@@ -60,8 +60,8 @@ class InstructionVC: UIViewController {
         if let text = subInstruction{
             subInstructionLabel.text = text
         }
-        if let url = storeLogoURL{
-            storeLogo.kf.setImage(with: URL(string: url))
+        if let url = delivery.store.storeLogo{
+            storeLogo.kf.setImage(with: url)
         }
     }
     
@@ -75,7 +75,22 @@ class InstructionVC: UIViewController {
     }
 
     @IBAction func noShowPressed(_ sender: Any) {
-        service.addNoShow(id: self.delivery.identifier)
+        if type == "Delivery"{
+            let alert = PopupDialog(title: "No Show", message: "Press continue if you cannot contact the person to whom you are making a delivery. Please wait up to 5 mins before pressing this button. Doing so without waiting or making an effort to call/contact the person may result in a suspension of your account")
+            let cancel = PopupDialogButton(title: "Cancel") {
+                alert.dismiss()
+            }
+            let continueButton = PopupDialogButton(title: "Continue") {
+                if self.calls != 0{
+                    self.service.addNoShow(id: self.delivery.identifier)
+                }
+                else{
+                    self.service.addNoShow(id: self.delivery.identifier)
+                }
+            }
+            alert.addButtons([cancel, continueButton])
+            self.present(alert, animated: true, completion: nil)
+        }
     }
     
     @IBAction func callPressed(_ sender: Any) {
@@ -87,6 +102,7 @@ class InstructionVC: UIViewController {
                 } else {
                     UIApplication.shared.openURL(url)
                 }
+                calls += 1
             }
         }
         else{
@@ -96,6 +112,7 @@ class InstructionVC: UIViewController {
                 } else {
                     UIApplication.shared.openURL(url)
                 }
+                calls += 1
             }
         }
         
