@@ -52,9 +52,21 @@ class ServiceCalls{
 //        }
     }
     
+    //Checks if user is flagged
+    func checkUserFlagged(completion: @escaping (Bool)->()){
+        self.userRef.child(emailHash).child("flagged").observeSingleEvent(of: .value) { (snap) in
+            if snap.exists(){
+                completion(true)
+            }else{
+                completion(false)
+            }
+        }
+    }
+    
     ///Finds jobs based on this user's location
     func findJob(myLocation: CLLocationCoordinate2D, userHash: String, completion: @escaping(Job?) -> ()){
         self.userRefHandle = userRef.child(emailHash).observe(.childAdded, with: { (snap) in
+            
             if snap.key == "givenJob"{
                 if let jobID = snap.value as? [String: AnyObject]{
                     let j = Job(snapshot: snap.childSnapshot(forPath: jobID.keys.first!), type: "delivery")
@@ -256,6 +268,11 @@ class ServiceCalls{
             }
         }
         self.userRef.child(emailHash).child("givenJob/deliveries").removeValue()
+    }
+    
+    func userCancelledJob(){
+        self.userRef.child(emailHash).updateChildValues(["flagged":true])
+        self.putBackJobs()
     }
     
     /**

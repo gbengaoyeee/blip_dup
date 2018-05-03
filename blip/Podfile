@@ -6,7 +6,7 @@ target 'Blip' do
   use_frameworks!
 
   # Pods for Blip
-  pod ‘lottie-ios’
+  pod 'lottie-ios'
   pod 'Firebase/Core'
   pod 'Firebase/Database'
   pod 'Firebase/Auth'
@@ -32,9 +32,9 @@ target 'Blip' do
   pod 'AZDialogView'
   pod 'BSImagePicker'
   pod 'SwiftIcons'
-  pod "Hero"
+  pod 'Hero'
   pod 'SRCountdownTimer'
-  pod "Pulsator"
+  pod 'Pulsator'
 
   target 'BlipTests' do
     inherit! :search_paths
