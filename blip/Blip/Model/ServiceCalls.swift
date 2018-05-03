@@ -207,9 +207,12 @@ class ServiceCalls{
     }
     
     func updateCurrentDeviceToken(){
-        let currentDevice = self.userDefaults.dictionary(forKey: "loginCredentials")!["currentDevice"] as! String
-        let token = ["currentDevice": currentDevice]
-        userRef.child(emailHash).updateChildValues(token)
+        if let credentials = self.userDefaults.dictionary(forKey: "loginCredentials"){
+            if let device = credentials["currentDevice"] as? String{
+                let token = ["currentDevice": device]
+                userRef.child(emailHash).updateChildValues(token)
+            }
+        }
     }
     
     /// Signs in a user
