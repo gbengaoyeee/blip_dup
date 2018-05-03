@@ -158,10 +158,10 @@ class LoginVC: UIViewController {
                                 self.userCredDict["picture"] = user.photoURL?.absoluteString
                                 self.userCredDict["emailHash"] = user.userEmailHash
                                 self.userCredDict["password"] = self.passwordTF.text!
+                                self.userCredDict["currentDevice"] = AppDelegate.DEVICEID
                                 self.userDefault.setValue(self.userCredDict, forKey: self.loginCredentials)
                                 return
                             })
-                            
                         }
                     }//end
                     
@@ -172,6 +172,7 @@ class LoginVC: UIViewController {
                         self.userCredDict["picture"] = user.photoURL?.absoluteString
                         self.userCredDict["emailHash"] = user.userEmailHash
                         self.userCredDict["password"] = self.passwordTF.text!
+                        self.userCredDict["currentDevice"] = AppDelegate.DEVICEID
                         self.userDefault.set(user.photoURL, forKey: "photoURL")
                         self.userDefault.setValue(self.userCredDict, forKey: self.loginCredentials)
                     })

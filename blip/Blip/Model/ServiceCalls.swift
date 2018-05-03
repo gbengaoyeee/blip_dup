@@ -34,6 +34,8 @@ class ServiceCalls{
     private var userRef: DatabaseReference!{
         return Database.database().reference().child("Couriers")
     }
+    
+    let userDefaults = UserDefaults.standard
     var availableJobs: [Job] = []
     let helper = HelperFunctions()
     
@@ -205,7 +207,8 @@ class ServiceCalls{
     }
     
     func updateCurrentDeviceToken(){
-        let token = ["currentDevice": AppDelegate.DEVICEID]
+        let currentDevice = self.userDefaults.dictionary(forKey: "loginCredentials")!["currentDevice"] as! String
+        let token = ["currentDevice": currentDevice]
         userRef.child(emailHash).updateChildValues(token)
     }
     
