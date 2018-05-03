@@ -108,10 +108,22 @@ class SearchForJobVC: UIViewController {
     }
     
     @IBAction func searchForJob(_ sender: Any) {
-        service.findJob(myLocation: self.currentLocation, userHash: userDefaults.dictionary(forKey: "loginCredentials")!["emailHash"] as! String) { (job) in
-            if let job = job{
-                self.foundJob = job
-                self.performSegue(withIdentifier: "foundJob", sender: self)
+        service.checkUserFlagged { (exist) in
+            if exist{
+                let leftImageView = UIImageView()
+                leftImageView.setIcon(icon: .googleMaterialDesign(.info), textColor: UIColor.white, backgroundColor: UIColor.clear, size: CGSize(size: 50))
+                
+                let banner = NotificationBanner(title: "Error" , subtitle: "Your account has been suspended for leaving a job while it is in progress. Please contact us on how to get back on the road.", leftView: leftImageView, rightView: nil, style: .warning)
+                banner.dismissOnSwipeUp = true
+                banner.show()
+                self.service.removeFirebaseObservers()
+            }else{
+                self.service.findJob(myLocation: self.currentLocation, userHash: self.userDefaults.dictionary(forKey: "loginCredentials")!["emailHash"] as! String) { (job) in
+                    if let job = job{
+                        self.foundJob = job
+                        self.performSegue(withIdentifier: "foundJob", sender: self)
+                    }
+                }
             }
         }
     }

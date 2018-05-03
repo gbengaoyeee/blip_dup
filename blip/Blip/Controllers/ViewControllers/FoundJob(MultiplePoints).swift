@@ -231,7 +231,7 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
         let alertPopup = PopupDialog(title: "Warning", message: "Are you sure you wish to cancel the job you are currently on? Taking a job and cancelling midway may result in a suspension of your account.")
         let yesButton = PopupDialogButton(title: "Yes") {
             alertPopup.dismiss()
-            self.service.putBackJobs()
+            self.service.userCancelledJob()
             self.navigationController?.popToRootViewController(animated: true)
         }
         let noButton = PopupDialogButton(title: "No") {
