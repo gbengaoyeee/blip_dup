@@ -216,11 +216,9 @@ class ServiceCalls{
         }
     }
     
-    
-    
     ///Add noShow to delivery reference
-    func addNoShow(id:String){
-        userRef.child(emailHash).child("givenJob/deliveries/\(id)").updateChildValues(["noShow":true])
+    func addNoShow(id:String, call: Bool){
+        userRef.child(emailHash).child("givenJob/deliveries/\(id)").updateChildValues(["noShow":true, "called": call])
     }
     
     
