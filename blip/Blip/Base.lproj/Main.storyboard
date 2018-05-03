@@ -229,7 +229,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pickup(s)" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="12" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="yzd-d1-K1t">
-                                <rect key="frame" x="40" y="65" width="103.5" height="28.5"/>
+                                <rect key="frame" x="40" y="65" width="94.5" height="27"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="80" id="BCV-zi-Zjj"/>
@@ -240,7 +240,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yb1-G9-67n" customClass="SRCountdownTimer" customModule="SRCountdownTimer">
-                                <rect key="frame" x="48" y="123.5" width="279.5" height="280"/>
+                                <rect key="frame" x="48" y="122" width="279.5" height="280"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1wn-A6-DYN">
                                         <rect key="frame" x="140" y="140" width="0.0" height="0.0"/>
@@ -286,7 +286,7 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PQI-N9-SFv">
-                                <rect key="frame" x="40" y="113.5" width="0.0" height="0.0"/>
+                                <rect key="frame" x="40" y="112" width="0.0" height="0.0"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="60" id="bLG-8d-8nc"/>
                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="250" id="dxx-wu-XOt"/>

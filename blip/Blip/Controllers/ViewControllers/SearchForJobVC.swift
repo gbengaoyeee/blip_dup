@@ -12,6 +12,7 @@ import CoreLocation
 import Material
 import Pulsator
 import NotificationBannerSwift
+import Lottie
 
 class SearchForJobVC: UIViewController {
 
@@ -108,19 +109,34 @@ class SearchForJobVC: UIViewController {
     }
     
     @IBAction func searchForJob(_ sender: Any) {
+        
+        goButton.isUserInteractionEnabled = false
         service.checkUserFlagged { (exist) in
             if exist{
                 let leftImageView = UIImageView()
                 leftImageView.setIcon(icon: .googleMaterialDesign(.info), textColor: UIColor.white, backgroundColor: UIColor.clear, size: CGSize(size: 50))
                 
-                let banner = NotificationBanner(title: "Error" , subtitle: "Your account has been suspended for leaving a job while it is in progress. Please contact us on how to get back on the road.", leftView: leftImageView, rightView: nil, style: .warning)
+                let banner = NotificationBanner(title: "Error" , subtitle: "Your account has been suspended for cancelling a job", leftView: leftImageView, rightView: nil, style: .warning)
                 banner.dismissOnSwipeUp = true
                 banner.show()
                 self.service.removeFirebaseObservers()
+                self.goButton.isUserInteractionEnabled = true
             }else{
+                let leftImageView = UIView()
+                let loading = LOTAnimationView(name: "loading")
+                loading.loopAnimation = true
+                leftImageView.handledAnimation(Animation: loading, width: 1, height: 1)
+                let banner = NotificationBanner(title: "Please wait", subtitle: "Looking for job", leftView: leftImageView, rightView: nil, style: .info)
+                banner.dismissOnSwipeUp = false
+                banner.show()
+                loading.play()
+
                 self.service.findJob(myLocation: self.currentLocation, userHash: self.userDefaults.dictionary(forKey: "loginCredentials")!["emailHash"] as! String) { (job) in
                     if let job = job{
                         self.foundJob = job
+                        banner.dismiss()
+                        loading.stop()
+                        self.goButton.isUserInteractionEnabled = true
                         self.performSegue(withIdentifier: "foundJob", sender: self)
                     }
                 }

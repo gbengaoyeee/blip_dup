@@ -41,6 +41,7 @@ class InstructionVC: UIViewController {
         super.viewDidLoad()
         prepareView()
         prepareButtons()
+        prepareLabels()
     }
 
     override func didReceiveMemoryWarning() {
