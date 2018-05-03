@@ -82,10 +82,10 @@ class InstructionVC: UIViewController {
             }
             let continueButton = PopupDialogButton(title: "Continue") {
                 if self.calls != 0{
-                    self.service.addNoShow(id: self.delivery.identifier)
+                    self.service.addNoShow(id: self.delivery.identifier, call: true)
                 }
                 else{
-                    self.service.addNoShow(id: self.delivery.identifier)
+                    self.service.addNoShow(id: self.delivery.identifier, call: false)
                 }
             }
             alert.addButtons([cancel, continueButton])

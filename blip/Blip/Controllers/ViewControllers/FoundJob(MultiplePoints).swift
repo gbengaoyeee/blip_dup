@@ -21,7 +21,6 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
 
     @IBOutlet weak var pickupLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
-    @IBOutlet weak var payoutLabel: UILabel!
     @IBOutlet weak var pulseAnimationView: UIView!
     @IBOutlet weak var map: MGLMapView!
     @IBOutlet weak var countDownView: SRCountdownTimer!
@@ -228,6 +227,7 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
         let alertPopup = PopupDialog(title: "Warning", message: "Are you sure you wish to cancel the job you are currently on? Taking a job and cancelling midway may result in a suspension of your account.")
         let yesButton = PopupDialogButton(title: "Yes") {
             alertPopup.dismiss()
+            self.service.putBackJobs()
             self.navigationController?.popToRootViewController(animated: true)
         }
         let noButton = PopupDialogButton(title: "No") {
