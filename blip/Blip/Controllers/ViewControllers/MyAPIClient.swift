@@ -73,7 +73,7 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
         Alamofire.request(url, method: .post, parameters: params)
     }
     
-    func getBestJobAt(location: CLLocationCoordinate2D, userHash: String, completion: @escaping(Error?) -> ()){
+    func getBestJobAt(location: CLLocationCoordinate2D, userHash: String, completion: @escaping(Bool?) -> ()){
         let locationLat = Double(location.latitude)
         let locationLong = Double(location.longitude)
         let url = self.baseURL.appendingPathComponent("getBestJob")
@@ -82,7 +82,19 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
             "locationLong" : locationLong,
             "emailHash" : userHash
         ]
-        Alamofire.request(url, method: .post, parameters: params)
+        Alamofire.request(url, method: .post, parameters: params, headers: nil).responseJSON { (resp) in
+            let str = String(data: resp.data!, encoding: .utf8)
+            print("DATA IS:",resp.data!)
+            print("STRING IS:",str)
+            if (str! == ""){
+                completion(false)
+            }else{
+                completion(true)
+            }
+        }
+//        Alamofire.request(url, method: .get, parameters: params, encoding: JSONEncoding.default, headers: nil).responseJSON { (resp) in
+//            print("DATA IS:",resp)
+//        }
     }
     
     func stringify(json: Any, prettyPrinted: Bool = false) -> String {

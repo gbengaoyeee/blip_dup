@@ -77,18 +77,10 @@ class ServiceCalls{
                 }
             }
         })
-//        userRef.child(emailHash).observe(.childAdded) { (snap) in
-//            if snap.key == "givenJob"{
-//                if let jobID = snap.value as? [String: AnyObject]{
-//                    let j = Job(snapshot: snap.childSnapshot(forPath: jobID.keys.first!), type: "delivery")
-//                    j?.locList.insert(myLocation, at: 0)
-//                    completion(j)
-//                }
-//            }
-//        }
-        MyAPIClient.sharedClient.getBestJobAt(location: myLocation, userHash: userHash) { (error) in
-            if error != nil{
-                print(error!)
+        MyAPIClient.sharedClient.getBestJobAt(location: myLocation, userHash: userHash) { (found) in
+            if !(found!){//No job was found
+                print("NONE FOUND")
+                completion(nil)
             }
         }
     }

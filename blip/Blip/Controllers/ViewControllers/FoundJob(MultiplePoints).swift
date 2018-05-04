@@ -45,6 +45,11 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
         setupTimer()
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        service.removeFirebaseObservers()
+    }
+    
     override func viewDidLayoutSubviews() {
         prepareCenterView()
         prepareMap()
@@ -64,7 +69,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     
     @objc fileprivate func handleTimer(){
         service.putBackJobs()
-        self.dismiss(animated: true, completion: nil)
+        self.navigationController?.popViewController(animated: true)
         timer.invalidate()
     }
     

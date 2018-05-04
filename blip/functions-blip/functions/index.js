@@ -148,9 +148,9 @@ function addStore(storeName, storeLogo, storeBackground, storeDescription){
   });
 }
 
-function newDelivery(storeName, deliveryLat, deliveryLong, deliveryMainInstruction, deliverySubInstruction, originLat, originLong, pickupMainInstruction, pickupSubInstruction, recieverName, recieverNumber)
+function newDelivery(storeName, deliveryLat, deliveryLong, deliveryMainInstruction, deliverySubInstruction, originLat, originLong, pickupMainInstruction, pickupSubInstruction, recieverName, recieverNumber, pickupNumber)
 {
-  var deliveryDetails = {storeName, deliveryLat, deliveryLong, deliveryMainInstruction, deliverySubInstruction, originLat, originLong, pickupMainInstruction, pickupSubInstruction, recieverName,recieverNumber};
+  var deliveryDetails = {storeName, deliveryLat, deliveryLong, deliveryMainInstruction, deliverySubInstruction, originLat, originLong, pickupMainInstruction, pickupSubInstruction, recieverName, recieverNumber, pickupNumber};
   
   // Get a key for a new Post.
   var newPostKey = firebase.database().ref().child('posts').push().key;
@@ -169,6 +169,8 @@ exports.getBestJob = functions.https.onRequest((req,res) => {
   getClosestJobIdAndDistance(lat, long, function(err, data){
     if(err){
       console.log("Found an Error");
+      // res.send(204,"Nothing found");
+      res.send(null);
     }else{
       var maxDist = 20000;
       const closestJobIdDict = data[0];//This is a dictionary
@@ -213,9 +215,11 @@ exports.getBestJob = functions.https.onRequest((req,res) => {
 
           admin.database().ref('Couriers/'+emailHash+'/givenJob/deliveries').update(jobBundle).then(() =>{
             console.log('Update succeeded!');
+            res.send(200, "OK It Gave Back Jobs");
           });
         }else{
           //No jobs in the AllJobs Reference
+          res.send(204,"Nothing found");
         }
       }, gotError);//End of observe single event
     }
@@ -259,7 +263,7 @@ function getClosestJobIdAndDistance(lat, long, callback){
         // return [closestJobId, totalDistance];
       }else{
         console.log('Found Nothing!');
-        var noJobError = new Error("Found Nothing");
+        var noJobError = new Error("No Jobs Available");
         callback(noJobError, null);
         //found no close jobs
       }//end of if-statements
