@@ -30,13 +30,13 @@ class SearchForJobVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        prepareMap()
         prepareBlur()
         updateCurrentDevice()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        prepareMap()
         prepareGoButton()
         updateCurrentDevice()
     }
@@ -133,11 +133,13 @@ class SearchForJobVC: UIViewController {
 
                 self.service.findJob(myLocation: self.currentLocation, userHash: self.userDefaults.dictionary(forKey: "loginCredentials")!["emailHash"] as! String) { (job) in
                     if let job = job{
-                        self.foundJob = job
-                        banner.dismiss()
-                        loading.stop()
-                        self.goButton.isUserInteractionEnabled = true
-                        self.performSegue(withIdentifier: "foundJob", sender: self)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
+                            self.foundJob = job
+                            banner.dismiss()
+                            loading.stop()
+                            self.goButton.isUserInteractionEnabled = true
+                            self.performSegue(withIdentifier: "foundJob", sender: self)
+                        })
                     }
                 }
             }
@@ -169,9 +171,16 @@ extension SearchForJobVC: MGLMapViewDelegate{
         if annotation is MGLUserLocation && mapView.userLocation != nil {
             return CustomUserLocationAnnotationView()
         }
-        else{
-            return CustomDropOffAnnotationView()
+        return nil
+    }
+    
+    func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
+        
+        let delivery = UIImage(named: "delivery")
+        if let delivery = delivery{
+            return MGLAnnotationImage(image: delivery.resizeImage(targetSize: CGSize(size: 40)), reuseIdentifier: "delivery")
         }
+        return nil
     }
 }
 

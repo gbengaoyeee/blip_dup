@@ -43,9 +43,6 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     override func viewDidAppear(_ animated: Bool) {
         prepareDataForNavigation()
         setupTimer()
-    }
-    
-    override func viewDidLayoutSubviews() {
         prepareCenterView()
         prepareMap()
     }
@@ -64,8 +61,8 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     
     @objc fileprivate func handleTimer(){
         service.putBackJobs()
-        self.dismiss(animated: true, completion: nil)
         timer.invalidate()
+        self.navigationController?.popViewController(animated: true)
     }
     
     func prepareDataForNavigation(){
@@ -133,6 +130,18 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     }
 }
 
+extension FoundJobVC: MGLMapViewDelegate{
+    
+    func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
+        
+        let delivery = UIImage(named: "delivery")
+        if let delivery = delivery{
+            return MGLAnnotationImage(image: delivery.resizeImage(targetSize: CGSize(size: 40)), reuseIdentifier: "delivery")
+        }
+        return nil
+    }
+}
+
 extension FoundJobVC: CLLocationManagerDelegate{
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -187,44 +196,42 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
         return false
     }
     
-    func navigationMapView(_ mapView: NavigationMapView, shapeFor waypoints: [Waypoint]) -> MGLShape? {
-        
-//
-//        return MGLShapeCollection(shapes: features)
-        print("SHAPE FOR")
-        return nil
-    }
-    
-    func navigationMapView(_ mapView: NavigationMapView, waypointStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer? {
-        //CODE FROM THE OTHER FUNCTION
+    func navigationMapView(_ mapView: NavigationMapView, waypointSymbolStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer? {
+
         var features = [MGLPointFeature]()
         for waypoint in self.waypoints {
             let feature = MGLPointFeature()
             feature.coordinate = waypoint.coordinate
             if let name = waypoint.name{
                 if name == "Pickup" || name == "Delivery"{
-                    feature.attributes = ["type": name]
+                    feature.attributes = ["type": name.lowercased()]
                     features.append(feature)
                 }
             }
         }
+        
+        let deliveryImage = UIImage(named: "delivery")
+        let pickupImage = UIImage(named: "pickup")
         let y = MGLShapeSource(identifier: "waypointLayer", features: features, options: nil)
         mglSource = y
         mapView.style?.addSource(mglSource)
+        mapView.style?.setImage(deliveryImage!.resizeImage(targetSize: CGSize(size: 40)), forName: "delivery")
+        mapView.style?.setImage(pickupImage!.resizeImage(targetSize: CGSize(size: 40)), forName: "pickup")
+        let x = MGLSymbolStyleLayer(identifier: "waypointLayer", source: mglSource)
+        x.iconImageName = NSExpression(forKeyPath: "type")
+        x.iconAllowsOverlap = NSExpression(forConstantValue: true)
+        x.iconIgnoresPlacement = NSExpression(forConstantValue: true)
 
-        
-        //THIS FUNCTION'S REAL CODE
-        let x = MGLCircleStyleLayer(identifier: "waypointLayer", source: mglSource)
-        x.circleColor = NSExpression(format: "MGL_MATCH(type, 'Pickup', %@, 'Delivery', %@, %@)", UIColor.blue, UIColor.white, UIColor.white)
-        x.circleStrokeColor = NSExpression(format: "MGL_MATCH(type, 'Pickup', %@, 'Delivery', %@, %@)", UIColor.white, UIColor.blue, UIColor.blue)
-        x.circleStrokeWidth = NSExpression(forConstantValue: 2.5)
-        x.circleRadius = NSExpression(forConstantValue: 15)
         return x
     }
     
-    func navigationMapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
+    func navigationMapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
         
-        return CustomDropOffAnnotationView()
+        let delivery = UIImage(named: "delivery")
+        if let delivery = delivery{
+            return MGLAnnotationImage(image: delivery.resizeImage(targetSize: CGSize(size: 40)), reuseIdentifier: "delivery")
+        }
+        return nil
     }
     
     func navigationViewControllerDidEndNavigation(_ navigationViewController: NavigationViewController, cancelled: Bool) {

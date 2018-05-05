@@ -17,7 +17,6 @@
 		3B4B92CC20797EA90075BE98 /* DeliveryAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4B92CB20797EA90075BE98 /* DeliveryAnnotation.swift */; };
 		3B5372F8202EB4320020F3B1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5372F7202EB4320020F3B1 /* AppDelegate.swift */; };
 		3B5372FD202EB4320020F3B1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B5372FB202EB4320020F3B1 /* Main.storyboard */; };
-		3B5372FF202EB4320020F3B1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B5372FE202EB4320020F3B1 /* Assets.xcassets */; };
 		3B537302202EB4320020F3B1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B537300202EB4320020F3B1 /* LaunchScreen.storyboard */; };
 		3B53730D202EB4320020F3B1 /* BlipTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53730C202EB4320020F3B1 /* BlipTests.swift */; };
 		3B537318202EB4320020F3B1 /* BlipUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537317202EB4320020F3B1 /* BlipUITests.swift */; };
@@ -66,6 +65,7 @@
 		F30D60CB207B19930022F90D /* Delivery.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30D60CA207B19930022F90D /* Delivery.swift */; };
 		F347473E207FC40D00F9A603 /* SearchForJobVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F347473D207FC40D00F9A603 /* SearchForJobVC.swift */; };
 		F38E5A6D208119B400128D46 /* FoundJob(MultiplePoints).swift in Sources */ = {isa = PBXBuildFile; fileRef = F38E5A6C208119B400128D46 /* FoundJob(MultiplePoints).swift */; };
+		F39C6556209D5430002BCCF5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F39C6555209D5430002BCCF5 /* Assets.xcassets */; };
 		F3D21EE420857E2100832544 /* BlipWaypoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D21EE320857E2100832544 /* BlipWaypoint.swift */; };
 		F3D21EE9208AE39500832544 /* InstructionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D21EE7208AE39500832544 /* InstructionVC.swift */; };
 		F3D21EEA208AE39500832544 /* InstructionVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3D21EE8208AE39500832544 /* InstructionVC.xib */; };
@@ -110,7 +110,6 @@
 		3B5372F4202EB4320020F3B1 /* Blip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Blip.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B5372F7202EB4320020F3B1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3B5372FC202EB4320020F3B1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		3B5372FE202EB4320020F3B1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3B537301202EB4320020F3B1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3B537303202EB4320020F3B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3B537308202EB4320020F3B1 /* BlipTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BlipTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -170,6 +169,7 @@
 		F30D60CA207B19930022F90D /* Delivery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Delivery.swift; sourceTree = "<group>"; };
 		F347473D207FC40D00F9A603 /* SearchForJobVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchForJobVC.swift; sourceTree = "<group>"; };
 		F38E5A6C208119B400128D46 /* FoundJob(MultiplePoints).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FoundJob(MultiplePoints).swift"; sourceTree = "<group>"; };
+		F39C6555209D5430002BCCF5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F3D21EE320857E2100832544 /* BlipWaypoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlipWaypoint.swift; sourceTree = "<group>"; };
 		F3D21EE7208AE39500832544 /* InstructionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionVC.swift; sourceTree = "<group>"; };
 		F3D21EE8208AE39500832544 /* InstructionVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InstructionVC.xib; sourceTree = "<group>"; };
@@ -244,7 +244,7 @@
 				3B5372FB202EB4320020F3B1 /* Main.storyboard */,
 				3B537300202EB4320020F3B1 /* LaunchScreen.storyboard */,
 				3B5372F7202EB4320020F3B1 /* AppDelegate.swift */,
-				3B5372FE202EB4320020F3B1 /* Assets.xcassets */,
+				F39C6555209D5430002BCCF5 /* Assets.xcassets */,
 				3B14B53F202F55E100B1C015 /* lgsu.mp4 */,
 				3B537303202EB4320020F3B1 /* Info.plist */,
 				3B14B532202ED1EA00B1C015 /* GoogleService-Info.plist */,
@@ -548,9 +548,9 @@
 				3B537354202EBE310020F3B1 /* 5_stars.json in Resources */,
 				3B537357202EBE310020F3B1 /* menu.json in Resources */,
 				3B537355202EBE310020F3B1 /* loading.json in Resources */,
-				3B5372FF202EB4320020F3B1 /* Assets.xcassets in Resources */,
 				3B5372FD202EB4320020F3B1 /* Main.storyboard in Resources */,
 				3B537358202EBE310020F3B1 /* outline_user.json in Resources */,
+				F39C6556209D5430002BCCF5 /* Assets.xcassets in Resources */,
 				3B537351202EBE310020F3B1 /* onboarding.json in Resources */,
 				3B537352202EBE310020F3B1 /* clock.json in Resources */,
 				3B537350202EBE310020F3B1 /* simple_outline_lock_.json in Resources */,
