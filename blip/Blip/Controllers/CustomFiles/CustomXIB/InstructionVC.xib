@@ -61,7 +61,7 @@
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Go to front door and pickup stuff from the main entrance" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r4f-ze-wqM">
                             <rect key="frame" x="20" y="188" width="238" height="42"/>
                             <constraints>
-                                <constraint firstAttribute="height" relation="lessThanOrEqual" constant="60" id="5A9-Ue-ETe"/>
+                                <constraint firstAttribute="height" relation="lessThanOrEqual" constant="270" id="5A9-Ue-ETe"/>
                                 <constraint firstAttribute="width" relation="lessThanOrEqual" constant="250" id="8eZ-Ca-AAo"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>

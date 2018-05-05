@@ -30,13 +30,13 @@ class SearchForJobVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        prepareMap()
         prepareBlur()
 //        updateCurrentDevice()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        prepareMap()
         prepareGoButton()
         updateCurrentDevice()
     }
@@ -195,9 +195,16 @@ extension SearchForJobVC: MGLMapViewDelegate{
         if annotation is MGLUserLocation && mapView.userLocation != nil {
             return CustomUserLocationAnnotationView()
         }
-        else{
-            return CustomDropOffAnnotationView()
+        return nil
+    }
+    
+    func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
+        
+        let delivery = UIImage(named: "delivery")
+        if let delivery = delivery{
+            return MGLAnnotationImage(image: delivery.resizeImage(targetSize: CGSize(size: 40)), reuseIdentifier: "delivery")
         }
+        return nil
     }
 }
 
