@@ -159,6 +159,29 @@ function newDelivery(storeName, deliveryLat, deliveryLong, deliveryMainInstructi
   });
 }
 
+function checkUserVerifiedOrFlagged(emailHash, callback){
+  admin.database().ref('Couriers/'+emailHash).once('value', function(snapshot){
+    var userValues = snapshot.val();
+    if(userValues != null){
+      const flagged = userValues.flagged;
+      const verified = userValues.verified;
+      if (!(verified)){
+        var notVerifiedError = new Error("User needs to verify their background check");
+        callback(notVerifiedError, null);
+      }
+      else if (flagged != null){
+        var flaggedError = new Error("User account has been flagged due to leaving a job");
+        callback(flaggedError, null);
+      }
+      else{
+        callback(null, true);
+      }
+    }else{
+      //SOME WEIRD THING HAPPEN
+    }
+  });
+}
+
 exports.getBestJob = functions.https.onRequest((req,res) => {
   var long = req.body.locationLong,
       lat = req.body.locationLat,
@@ -166,64 +189,75 @@ exports.getBestJob = functions.https.onRequest((req,res) => {
   var minDist = 20000,
       currentDist = 0,
       jobKey;
-  getClosestJobIdAndDistance(lat, long, function(err, data){
-    if(err){
-      console.log("Found an Error");
-      // res.send(204,"Nothing found");
-      res.send(null);
+
+  checkUserVerifiedOrFlagged(emailHash, function(error, checked){
+    if (error){
+      console.log(error.message, req.body);
+      res.status(401).send(error);
     }else{
-      var maxDist = 20000;
-      const closestJobIdDict = data[0];//This is a dictionary
-      const closestJobId = Object.keys(closestJobIdDict)[0];
-      console.log("Initial MaxDist is: "+maxDist);
-      console.log("Dict: "+closestJobIdDict+" ID: "+closestJobId);
-      const totalDistance = data[1];
-      var jobBundle = closestJobIdDict;
-      maxDist = maxDist - totalDistance;
-
-      var allJobsref = admin.database().ref('AllJobs');
-      allJobsref.once('value', function(snapshot){
-        var allJobsValues = snapshot.val();
-        if(allJobsValues != null){
-          for (const jobId in allJobsValues){
-            if(jobId != closestJobId){//So skip it sees the same job as the closest it already found
-              const pickupLat = allJobsValues[jobId].originLat;
-              const pickupLong = allJobsValues[jobId].originLong;
-              const deliveryLat = allJobsValues[jobId].deliveryLat;
-              const deliveryLong = allJobsValues[jobId].deliveryLong;
-              var x = geo.getDistance({latitude: pickupLat, longitude: pickupLong}, {latitude: lat, longitude: long});
-              var y = geo.getDistance({latitude: pickupLat, longitude: pickupLong}, {latitude: closestJobIdDict[closestJobId].originLat, longitude: closestJobIdDict[closestJobId].originLong});
-              var m = geo.getDistance({latitude: pickupLat, longitude: pickupLong}, {latitude: deliveryLat, longitude: deliveryLong});
-              var n = Math.min(...[x,y]);
-
-              if (maxDist >= (m+n)){
-                var jobDict = {};
-                // jobDict[jobId] = allJobsValues[jobId];
-                jobBundle[jobId] = allJobsValues[jobId];
-                maxDist = maxDist - (m+n);
-                admin.database().ref('AllJobs/'+jobId).remove().then(() =>{
-                  console.log("Removed job from AllJobs reference successfully");
-                }, () =>{console.log("Cannot remove job from AllJobs reference")});
-                console.log("MaxDist is: "+maxDist);
-              }
-            }else{
-              admin.database().ref('AllJobs/'+jobId).remove().then(() =>{
-                console.log("Removed job from AllJobs reference successfully");
-              }, () =>{console.log("Cannot remove job from AllJobs reference")});
-            }
-          }//End of For loop
-
-          admin.database().ref('Couriers/'+emailHash+'/givenJob/deliveries').update(jobBundle).then(() =>{
-            console.log('Update succeeded!');
-            res.send(200, "OK It Gave Back Jobs");
-          });
+      getClosestJobIdAndDistance(lat, long, function(err, data){
+        if(err){
+          console.log("Found an Error");
+          res.send(200,"No job found");
+          // res.send(null);
         }else{
-          //No jobs in the AllJobs Reference
-          res.send(204,"Nothing found");
+          var maxDist = 20000;
+          const closestJobIdDict = data[0];//This is a dictionary
+          const closestJobId = Object.keys(closestJobIdDict)[0];
+          console.log("Initial MaxDist is: "+maxDist);
+          console.log("Dict: "+closestJobIdDict+" ID: "+closestJobId);
+          const totalDistance = data[1];
+          var jobBundle = closestJobIdDict;
+          maxDist = maxDist - totalDistance;
+    
+          var allJobsref = admin.database().ref('AllJobs');
+          allJobsref.once('value', function(snapshot){
+            var allJobsValues = snapshot.val();
+            if(allJobsValues != null){
+              for (const jobId in allJobsValues){
+                if(jobId != closestJobId){//So skip if it sees the same job as the closest it already found
+                  const pickupLat = allJobsValues[jobId].originLat;
+                  const pickupLong = allJobsValues[jobId].originLong;
+                  const deliveryLat = allJobsValues[jobId].deliveryLat;
+                  const deliveryLong = allJobsValues[jobId].deliveryLong;
+                  var x = geo.getDistance({latitude: pickupLat, longitude: pickupLong}, {latitude: lat, longitude: long});
+                  var y = geo.getDistance({latitude: pickupLat, longitude: pickupLong}, {latitude: closestJobIdDict[closestJobId].originLat, longitude: closestJobIdDict[closestJobId].originLong});
+                  var m = geo.getDistance({latitude: pickupLat, longitude: pickupLong}, {latitude: deliveryLat, longitude: deliveryLong});
+                  var n = Math.min(...[x,y]);
+    
+                  if (maxDist >= (m+n)){
+                    var jobDict = {};
+                    // jobDict[jobId] = allJobsValues[jobId];
+                    jobBundle[jobId] = allJobsValues[jobId];
+                    maxDist = maxDist - (m+n);
+                    admin.database().ref('AllJobs/'+jobId).remove().then(() =>{
+                      console.log("Removed job from AllJobs reference successfully");
+                    }, () =>{console.log("Cannot remove job from AllJobs reference")});
+                    console.log("MaxDist is: "+maxDist);
+                  }
+                }else{
+                  admin.database().ref('AllJobs/'+jobId).remove().then(() =>{
+                    console.log("Removed job from AllJobs reference successfully");
+                  }, () =>{console.log("Cannot remove job from AllJobs reference")});
+                }
+              }//End of For loop
+    
+              admin.database().ref('Couriers/'+emailHash+'/givenJob/deliveries').update(jobBundle).then(() =>{
+                console.log('Update succeeded!');
+                res.status(200).send("OK It Gave Back Jobs");
+              });
+            }else{
+              //No more jobs in the AllJobs Reference, so put the closestJob found in helper in user's reference
+              admin.database().ref('Couriers/'+emailHash+'/givenJob/deliveries').update(jobBundle).then(() =>{
+                console.log('Update succeeded!');
+                res.status(200).send("OK It Gave Back Jobs");
+              });
+            }
+          });//End of observe single event
         }
-      }, gotError);//End of observe single event
-    }
-  });
+      });
+    }// End of first if statement
+  });//End of is flagged or verified function
 });//End of Function
   
 function gotError(err){
@@ -241,7 +275,8 @@ function getClosestJobIdAndDistance(lat, long, callback){
       var keysArr = Object.keys(allJobsValues);// this gives an array of keys of JobIDs
       var minimumDistance = 20000;
       var totalDistance = 20000;
-      var closestJobId = {};    //should hold the closest job available
+      var closestJobId;
+      var closestJobDict = {};    //should hold the closest job available
       for (const jobId in allJobsValues){
         const pickupLat = allJobsValues[jobId].originLat;
         const pickupLong = allJobsValues[jobId].originLong;
@@ -250,17 +285,21 @@ function getClosestJobIdAndDistance(lat, long, callback){
         const distanceFromCurrentLocationToPickup = geo.getDistance({latitude: lat, longitude: long}, {latitude: pickupLat, longitude: pickupLong});
         const distanceFromPickupToDelivery = geo.getDistance({latitude: pickupLat, longitude: pickupLong}, {latitude: deliveryLat, longitude: deliveryLong});
         if(distanceFromCurrentLocationToPickup+distanceFromPickupToDelivery < totalDistance){
-          closestJobId = {};
-          closestJobId[jobId] = allJobsValues[jobId];
+          closestJobDict = {};
+          closestJobDict[jobId] = allJobsValues[jobId];
+          closestJobId = jobId;
           totalDistance = (distanceFromCurrentLocationToPickup+distanceFromPickupToDelivery);
         }
       }//end of for loop
-      console.log(closestJobId);
-      if (Object.keys(closestJobId).length > 0){
-        var result = [closestJobId, totalDistance];
-        console.log('Found 1: '+closestJobId+" "+result);
+      console.log(closestJobDict);
+      if (Object.keys(closestJobDict).length > 0){
+        var result = [closestJobDict, totalDistance];
+        console.log('Found 1: '+closestJobDict+" "+result);
+        admin.database().ref('AllJobs/'+closestJobId).remove().then(() =>{
+          console.log("Removed job from AllJobs reference successfully");
+        }, () =>{console.log("Cannot remove job from AllJobs reference")});
+        //Closure Function below
         callback(null,result);
-        // return [closestJobId, totalDistance];
       }else{
         console.log('Found Nothing!');
         var noJobError = new Error("No Jobs Available");
@@ -272,7 +311,7 @@ function getClosestJobIdAndDistance(lat, long, callback){
       var emptyRefError = new Error("No Jobs Available");
       callback(emptyRefError, null);
     }
-  }, gotError);//end of observe
+  });//end of observe
 }
 
 exports.deleteUserFromDatabase = functions.auth.user().onDelete(event =>{

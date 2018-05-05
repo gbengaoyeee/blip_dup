@@ -73,7 +73,7 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
         Alamofire.request(url, method: .post, parameters: params)
     }
     
-    func getBestJobAt(location: CLLocationCoordinate2D, userHash: String, completion: @escaping(Bool?) -> ()){
+    func getBestJobAt(location: CLLocationCoordinate2D, userHash: String, completion: @escaping(Error?,Bool?) -> ()){
         let locationLat = Double(location.latitude)
         let locationLong = Double(location.longitude)
         let url = self.baseURL.appendingPathComponent("getBestJob")
@@ -82,15 +82,20 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
             "locationLong" : locationLong,
             "emailHash" : userHash
         ]
-        Alamofire.request(url, method: .post, parameters: params, headers: nil).responseJSON { (resp) in
-            let str = String(data: resp.data!, encoding: .utf8)
-            print("DATA IS:",resp.data!)
-            print("STRING IS:",str)
-            if (str! == ""){
-                completion(false)
-            }else{
-                completion(true)
-            }
+        Alamofire.request(url, method: .post, parameters: params, headers: nil).validate(statusCode: 200..<300)
+            .responseString { (resp) in
+                switch resp.result{
+                case .success:
+                    if resp.result.value != "No job found"{
+                        print("Result:", resp.result.value)
+                        completion(nil, true)
+                    }else{
+                        print("Result:", resp.result.value)
+                        completion(nil, false)
+                    }
+                case .failure(let error):
+                    completion(error, nil)
+                }
         }
 //        Alamofire.request(url, method: .get, parameters: params, encoding: JSONEncoding.default, headers: nil).responseJSON { (resp) in
 //            print("DATA IS:",resp)
