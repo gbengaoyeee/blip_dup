@@ -44,39 +44,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         STPPaymentConfiguration.shared().publishableKey = "pk_test_K45gbx2IXkVSg4pfmoq9SIa9"
         STPPaymentConfiguration.shared().appleMerchantIdentifier = "merchant.online.intima"
         
-        
-        if(Auth.auth().currentUser != nil && Auth.auth().currentUser?.photoURL == nil){
-            
-            if let user = Auth.auth().currentUser{
-                let hash = MD5(string: user.email!)
-                self.lastUserHash = hash
-                self.dbRef.child("Couriers").child(hash).removeValue()
-                user.delete(completion: { (error) in
-                    if let err = error{
-                        print(err.localizedDescription)
-                        return
-                    }
-                })
+        _ = Auth.auth().addStateDidChangeListener { (auth, user) in
+            if auth.currentUser != nil && auth.currentUser?.photoURL == nil{
+                if let user = Auth.auth().currentUser{
+                    let hash = self.MD5(string: user.email!)
+                    self.lastUserHash = hash
+                    self.dbRef.child("Couriers").child(hash).removeValue()
+                    user.delete(completion: { (error) in
+                        if let err = error{
+                            print(err.localizedDescription)
+                            return
+                        }
+                    })
+                }
             }
-        }
-            
-        else if (Auth.auth().currentUser != nil && (Auth.auth().currentUser?.isEmailVerified)!){
-            self.goHome()
-        }
-            
-        else{
-            let providerData = Auth.auth().currentUser?.providerData
-            if providerData != nil{
-                for userInfo in providerData! {
-                    if userInfo.providerID == "facebook.com" {
-                        self.goHome()
-                    }
-                    else{
-                        self.setLogoutAsRoot()
+            else if auth.currentUser != nil && (auth.currentUser?.isEmailVerified)!{
+                self.goHome()
+            }
+            else{
+                let providerData = Auth.auth().currentUser?.providerData
+                if providerData != nil{
+                    for userInfo in providerData! {
+                        if userInfo.providerID == "facebook.com" {
+                            self.goHome()
+                        }
+                        else{
+                            self.setLogoutAsRoot()
+                        }
                     }
                 }
             }
         }
+        
         if #available(iOS 10.0, *){
             UNUserNotificationCenter.current().delegate = self
             let option : UNAuthorizationOptions = [.alert, .badge, .sound]

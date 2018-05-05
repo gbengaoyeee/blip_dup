@@ -349,103 +349,6 @@
             </objects>
             <point key="canvasLocation" x="-604" y="-101"/>
         </scene>
-        <!--MapOfJobs-->
-        <scene sceneID="qBQ-H6-THN">
-            <objects>
-                <viewController storyboardIdentifier="MapOfJobs" title="MapOfJobs" useStoryboardIdentifierAsRestorationIdentifier="YES" id="e6i-Zq-4L0" customClass="ViewMapOfJobsVC" customModule="Blip" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Fax-FL-YwO"/>
-                        <viewControllerLayoutGuide type="bottom" id="wOl-lD-vZy"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="CgQ-Il-ro5">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OyW-R3-gLA">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Wl-l6-Soe" customClass="MGLMapView">
-                                        <rect key="frame" x="-0.5" y="-0.5" width="375" height="667"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jcq-bN-Gic" customClass="RaisedButton" customModule="Material">
-                                                <rect key="frame" x="152.5" y="557" width="70" height="70"/>
-                                                <color key="backgroundColor" red="1" green="0.50962010619999998" blue="0.44240797749999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="70" id="Vj0-sW-Hwm"/>
-                                                    <constraint firstAttribute="height" constant="70" id="liz-Qd-k8l"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
-                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <state key="normal">
-                                                    <color key="titleColor" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                </state>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                                        <real key="value" value="0.0"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="color" keyPath="pulseColor">
-                                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
-                                                        <color key="value" red="0.87196621190000001" green="0.44680542820000002" blue="0.38951410959999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
-                                                        <color key="value" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                                <connections>
-                                                    <action selector="testPost:" destination="e6i-Zq-4L0" eventType="touchUpInside" id="qnx-qM-fNb"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="bottom" secondItem="jcq-bN-Gic" secondAttribute="bottom" constant="40" id="NqM-QG-02B"/>
-                                            <constraint firstItem="jcq-bN-Gic" firstAttribute="centerX" secondItem="6Wl-l6-Soe" secondAttribute="centerX" id="ita-MI-HdI"/>
-                                        </constraints>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="minimumZoomLevel">
-                                                <real key="value" value="2"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="styleURL__" value="mapbox://styles/srikanthsrnvs/cjd6ciwwm54my2rms3052j5us"/>
-                                        </userDefinedRuntimeAttributes>
-                                    </view>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstItem="6Wl-l6-Soe" firstAttribute="height" secondItem="OyW-R3-gLA" secondAttribute="height" id="JID-0l-iE7"/>
-                                    <constraint firstItem="6Wl-l6-Soe" firstAttribute="centerX" secondItem="OyW-R3-gLA" secondAttribute="centerX" id="TOl-cd-CQZ"/>
-                                    <constraint firstItem="6Wl-l6-Soe" firstAttribute="width" secondItem="OyW-R3-gLA" secondAttribute="width" id="awv-BR-kys"/>
-                                    <constraint firstItem="6Wl-l6-Soe" firstAttribute="centerY" secondItem="OyW-R3-gLA" secondAttribute="centerY" id="hWY-yR-MoS"/>
-                                </constraints>
-                            </view>
-                        </subviews>
-                        <color key="backgroundColor" red="0.87196621190000001" green="0.44680542820000002" blue="0.38951410959999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                        <constraints>
-                            <constraint firstItem="OyW-R3-gLA" firstAttribute="height" secondItem="CgQ-Il-ro5" secondAttribute="height" id="fu9-uP-Hy2"/>
-                            <constraint firstItem="OyW-R3-gLA" firstAttribute="centerX" secondItem="CgQ-Il-ro5" secondAttribute="centerX" id="kdy-F3-KZI"/>
-                            <constraint firstItem="OyW-R3-gLA" firstAttribute="width" secondItem="CgQ-Il-ro5" secondAttribute="width" id="mO8-Ut-ykh"/>
-                            <constraint firstItem="OyW-R3-gLA" firstAttribute="centerY" secondItem="CgQ-Il-ro5" secondAttribute="centerY" id="waX-YC-eaK"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="gfT-Ho-qd0"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="Sell Time" image="Sell Time" id="eYK-cd-Exe"/>
-                    <navigationItem key="navigationItem" id="qth-8L-YoO"/>
-                    <nil key="simulatedTopBarMetrics"/>
-                    <nil key="simulatedBottomBarMetrics"/>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
-                    </userDefinedRuntimeAttributes>
-                    <connections>
-                        <outlet property="map" destination="6Wl-l6-Soe" id="Gk3-L6-S8X"/>
-                        <outlet property="postTestJobButton" destination="jcq-bN-Gic" id="Fpv-60-MQN"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Xm5-W0-Sl0" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="953" y="793"/>
-        </scene>
         <!--LoginVC-->
         <scene sceneID="d0L-8V-apV">
             <objects>
@@ -1084,7 +987,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ETA-Xo-tF0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3930.4000000000001" y="676.91154422788611"/>
+            <point key="canvasLocation" x="-3931" y="839"/>
         </scene>
         <!--Choose PictureVC-->
         <scene sceneID="dex-lz-2Rn">
@@ -1171,7 +1074,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fru-De-JpS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3162.4000000000001" y="676.91154422788611"/>
+            <point key="canvasLocation" x="-3053" y="839"/>
         </scene>
         <!--feedbackController-->
         <scene sceneID="5Sg-Uy-Eog">
@@ -1193,7 +1096,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="q00-yV-jn7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2524" y="-844"/>
+            <point key="canvasLocation" x="108" y="-542"/>
         </scene>
         <!--DisputeVC-->
         <scene sceneID="UIg-cc-LLA">
@@ -1292,15 +1195,11 @@
                     <connections>
                         <outlet property="disputeDescription" destination="xUB-L1-s6F" id="Y5M-rW-cLk"/>
                         <outlet property="pictureCollection" destination="yiH-qh-c2d" id="BiY-LH-7KG"/>
-                        <segue destination="e6i-Zq-4L0" kind="show" identifier="goToSellFromDispute" id="Wrg-kj-ten"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZHl-1v-73w" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2524" y="-101.19940029985008"/>
+            <point key="canvasLocation" x="108" y="202"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="Sell Time" width="29" height="29"/>
-    </resources>
 </document>
