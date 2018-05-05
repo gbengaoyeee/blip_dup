@@ -93,11 +93,11 @@ class ServiceCalls{
         
         MyAPIClient.sharedClient.getBestJobAt(location: myLocation, userHash: userHash) { (error, found) in
             if error != nil{
-                print("ERROR",error?.localizedDescription)
+                print("An error occured",error?.localizedDescription as Any)
                 return
             }
-            if !(found!){//No job was found
-                print("NONE FOUND")
+            if !(found!){
+                print("No job found from backend")
                 completion(nil)
             }
         }
@@ -113,7 +113,7 @@ class ServiceCalls{
     func completeJob(completion: @escaping() -> ()){
         userRef.child(emailHash).child("givenJob").observeSingleEvent(of: .value) { (snapshot) in
             let deliveries = snapshot.value as? [String: AnyObject]
-            self.userRef.child(self.emailHash).updateChildValues(["completedDeliveries": deliveries])
+            self.userRef.child(self.emailHash).updateChildValues(["completedDeliveries": deliveries as Any])
             self.userRef.child(self.emailHash).child("givenJob").removeValue()
             completion()
         }

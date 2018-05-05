@@ -29,7 +29,7 @@ target 'Blip' do
   pod 'CHIPageControl/Fresno'
   pod 'NotificationBannerSwift'
   pod 'Cosmos'
-  pod 'AZDialogView'
+#  pod 'AZDialogView'
   pod 'BSImagePicker'
   pod 'SwiftIcons'
   pod 'Hero'

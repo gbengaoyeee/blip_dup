@@ -31,7 +31,6 @@ class SearchForJobVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         prepareBlur()
-//        updateCurrentDevice()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -43,14 +42,14 @@ class SearchForJobVC: UIViewController {
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        
+        service.removeFirebaseObservers()
     }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
 
     }
     
-    ///Update the device token when they enter this VC 
     fileprivate func updateCurrentDevice(){
         service.updateCurrentDeviceToken()
     }
@@ -68,12 +67,6 @@ class SearchForJobVC: UIViewController {
         let banner = NotificationBanner(title: title, subtitle: subtitle, leftView: leftImageView, rightView: nil, style: style)
         banner.dismissOnSwipeUp = true
         banner.show()
-    }
-    
-    func prepareJobsNearMe(){
-        MyAPIClient.sharedClient.getNumberOfJobsNearMe(location: self.currentLocation) { (jobNumber) in
-            self.showBanner(title: "There are\(jobNumber ?? 0)Job/s near you", subtitle: nil, style: .info)
-        }
     }
     
     func prepareBlur(){
@@ -110,8 +103,8 @@ class SearchForJobVC: UIViewController {
     }
     
     @IBAction func searchForJob(_ sender: Any) {
-//        goButton.isUserInteractionEnabled = false
-        //DONT REALLY LIKE THIS
+        
+        goButton.isUserInteractionEnabled = false
         let leftImageView = UIView()
         let loading = LOTAnimationView(name: "loading")
         loading.loopAnimation = true
@@ -122,52 +115,24 @@ class SearchForJobVC: UIViewController {
         loading.play()
         
         self.service.findJob(myLocation: self.currentLocation, userHash: self.userDefaults.dictionary(forKey: "loginCredentials")!["emailHash"] as! String) { (job) in
-            if let job = job{
-                self.foundJob = job
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
                 banner.dismiss()
                 loading.stop()
+                if let job = job{
+                    self.foundJob = job
+                    self.performSegue(withIdentifier: "foundJob", sender: self)
+                }else{
+                    let newBanner = NotificationBanner(title: "Error", subtitle: "No job found at this time", style: .info)
+                    newBanner.autoDismiss = true
+                    newBanner.show()
+                    newBanner.dismissOnSwipeUp = true
+                    newBanner.dismissOnTap = true
+                    print("No job found")
+                }
                 self.goButton.isUserInteractionEnabled = true
-                self.performSegue(withIdentifier: "foundJob", sender: self)
-            }else{
-                self.goButton.isUserInteractionEnabled = true
-                print("COULDNT FIND JOB")
-            }
+            })
         }
-//        service.checkUserVerifiedOrFlagged { (code) in
-//            if (code == 1){//Not verified
-//                self.showBanner(title: "Attention!", subtitle: "Your account is not verified. Please contact us for more information on how to verify your account.", style: .warning)
-//                self.service.removeFirebaseObservers()
-//                self.goButton.isUserInteractionEnabled = true
-//            }
-//            else if (code == 2){//Flagged
-//                self.showBanner(title: "Attention!", subtitle: "Your account has been suspended for cancelling a job", style: .warning)
-//                self.service.removeFirebaseObservers()
-//                self.goButton.isUserInteractionEnabled = true
-//            }else{
-//                //DONT REALLY LIKE THIS
-//                let leftImageView = UIView()
-//                let loading = LOTAnimationView(name: "loading")
-//                loading.loopAnimation = true
-//                leftImageView.handledAnimation(Animation: loading, width: 1, height: 1)
-//                let banner = NotificationBanner(title: "Please wait", subtitle: "Looking for job", leftView: leftImageView, rightView: nil, style: .info)
-//                banner.dismissOnSwipeUp = false
-//                banner.show()
-//                loading.play()
-//
-//                self.service.findJob(myLocation: self.currentLocation, userHash: self.userDefaults.dictionary(forKey: "loginCredentials")!["emailHash"] as! String) { (job) in
-//                    if let job = job{
-//                        self.foundJob = job
-//                        banner.dismiss()
-//                        loading.stop()
-//                        self.goButton.isUserInteractionEnabled = true
-//                        self.performSegue(withIdentifier: "foundJob", sender: self)
-//                    }else{
-//                        self.goButton.isUserInteractionEnabled = true
-//                        print("COULDNT FIND JOB")
-//                    }
-//                }
-//            }
-//        }
     }
 }
 
