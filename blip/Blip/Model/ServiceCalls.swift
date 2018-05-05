@@ -90,12 +90,18 @@ class ServiceCalls{
                 }
             }
         })
-        MyAPIClient.sharedClient.getBestJobAt(location: myLocation, userHash: userHash) { (found) in
+        
+        MyAPIClient.sharedClient.getBestJobAt(location: myLocation, userHash: userHash) { (error, found) in
+            if error != nil{
+                print("ERROR",error?.localizedDescription)
+                return
+            }
             if !(found!){//No job was found
                 print("NONE FOUND")
                 completion(nil)
             }
         }
+        
     }
     
     ///REMOVE MORE AS YOU ADD MORE OBSERVERS
