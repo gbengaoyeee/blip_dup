@@ -43,7 +43,7 @@ class SearchForJobVC: UIViewController {
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        service.removeFirebaseObservers()
+        
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -62,19 +62,21 @@ class SearchForJobVC: UIViewController {
         }
     }
     
+    fileprivate func showBanner(title: String, subtitle: String?, style:BannerStyle){
+        let leftImageView = UIImageView()
+        leftImageView.setIcon(icon: .googleMaterialDesign(.info), textColor: UIColor.white, backgroundColor: UIColor.clear, size: CGSize(size: 50))
+        let banner = NotificationBanner(title: title, subtitle: subtitle, leftView: leftImageView, rightView: nil, style: style)
+        banner.dismissOnSwipeUp = true
+        banner.show()
+    }
+    
     func prepareJobsNearMe(){
         MyAPIClient.sharedClient.getNumberOfJobsNearMe(location: self.currentLocation) { (jobNumber) in
-            let leftImageView = UIImageView()
-            leftImageView.setIcon(icon: .googleMaterialDesign(.info), textColor: UIColor.white, backgroundColor: UIColor.clear, size: CGSize(size: 50))
-            
-            let banner = NotificationBanner(title: "There are\(jobNumber ?? 0)Job/s near you", subtitle: nil, leftView: leftImageView, rightView: nil, style: .info)
-            banner.dismissOnSwipeUp = true
-            banner.show()
+            self.showBanner(title: "There are\(jobNumber ?? 0)Job/s near you", subtitle: nil, style: .info)
         }
     }
     
     func prepareBlur(){
-        
         gradient = CAGradientLayer()
         gradient.frame = map.bounds
         gradient.colors = [UIColor.clear.cgColor, UIColor.black.cgColor, UIColor.black.cgColor, UIColor.clear.cgColor]
@@ -83,7 +85,6 @@ class SearchForJobVC: UIViewController {
     }
     
     func prepareGoButton(){
-        
         pulsator.backgroundColor = #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1)
         pulsator.numPulse = 2
         pulsator.animationDuration = 3.0
@@ -109,19 +110,14 @@ class SearchForJobVC: UIViewController {
     }
     
     @IBAction func searchForJob(_ sender: Any) {
-        
         goButton.isUserInteractionEnabled = false
         service.checkUserFlagged { (exist) in
             if exist{
-                let leftImageView = UIImageView()
-                leftImageView.setIcon(icon: .googleMaterialDesign(.info), textColor: UIColor.white, backgroundColor: UIColor.clear, size: CGSize(size: 50))
-                
-                let banner = NotificationBanner(title: "Error" , subtitle: "Your account has been suspended for cancelling a job", leftView: leftImageView, rightView: nil, style: .warning)
-                banner.dismissOnSwipeUp = true
-                banner.show()
+                self.showBanner(title: "Attention!", subtitle: "Your account has been suspended for cancelling a job", style: .warning)
                 self.service.removeFirebaseObservers()
                 self.goButton.isUserInteractionEnabled = true
             }else{
+                //DONT REALLY LIKE THIS
                 let leftImageView = UIView()
                 let loading = LOTAnimationView(name: "loading")
                 loading.loopAnimation = true

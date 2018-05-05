@@ -58,7 +58,6 @@
 		3BF9F1272096F2D400BD7E6B /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF9F1262096F2D300BD7E6B /* Store.swift */; };
 		5F33377820332B0B00B83E01 /* RatingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F33377720332B0B00B83E01 /* RatingViewController.xib */; };
 		5F33377A20332B4600B83E01 /* RatingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F33377920332B4600B83E01 /* RatingViewController.swift */; };
-		5FDEF87F206B56DC00F33733 /* ViewMapOfJobsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FDEF87E206B56DC00F33733 /* ViewMapOfJobsVC.swift */; };
 		9386003A7F4DF664CFE4B273 /* Pods_BlipTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0955C2EBB0480CDAC21F69EA /* Pods_BlipTests.framework */; };
 		D2AFD91630288F27B050C92C /* Pods_Blip.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F17503340FF2DF7A45CD03F1 /* Pods_Blip.framework */; };
 		DD72AAE625CF15AC4CF40392 /* Pods_BlipUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1E4C90BBD8A603818B54420 /* Pods_BlipUITests.framework */; };
@@ -160,7 +159,6 @@
 		5B61F37AD2E9BDE0191F14EA /* Pods-Blip.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Blip.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Blip/Pods-Blip.debug.xcconfig"; sourceTree = "<group>"; };
 		5F33377720332B0B00B83E01 /* RatingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RatingViewController.xib; sourceTree = "<group>"; };
 		5F33377920332B4600B83E01 /* RatingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingViewController.swift; sourceTree = "<group>"; };
-		5FDEF87E206B56DC00F33733 /* ViewMapOfJobsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMapOfJobsVC.swift; sourceTree = "<group>"; };
 		7882D3387DF72D6C89FCBAF9 /* Pods-BlipUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlipUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BlipUITests/Pods-BlipUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		A283DE755C308C685D319AA9 /* Pods-BlipTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlipTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BlipTests/Pods-BlipTests.release.xcconfig"; sourceTree = "<group>"; };
 		C1E4C90BBD8A603818B54420 /* Pods_BlipUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BlipUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -345,7 +343,6 @@
 				3B537362202EC0D90020F3B1 /* SellVC.swift */,
 				3B53736B202EC0DA0020F3B1 /* SellVC+.swift */,
 				3B537370202EC0DB0020F3B1 /* SplashViewController.swift */,
-				5FDEF87E206B56DC00F33733 /* ViewMapOfJobsVC.swift */,
 				3BCD8443207416E70079B4D4 /* NewSignUpVC.swift */,
 				3BCD844520747C130079B4D4 /* ChoosePictureVC.swift */,
 				F347473D207FC40D00F9A603 /* SearchForJobVC.swift */,
@@ -766,7 +763,6 @@
 				3B53732E202EBA6B0020F3B1 /* ServiceCalls.swift in Sources */,
 				3B53732F202EBA6B0020F3B1 /* Job.swift in Sources */,
 				3B53737E202EC0DC0020F3B1 /* MyAPIClient.swift in Sources */,
-				5FDEF87F206B56DC00F33733 /* ViewMapOfJobsVC.swift in Sources */,
 				F38E5A6D208119B400128D46 /* FoundJob(MultiplePoints).swift in Sources */,
 				3B537374202EC0DC0020F3B1 /* NavigationBarViewController.swift in Sources */,
 				3B537331202EBA6B0020F3B1 /* HelperFunctions.swift in Sources */,

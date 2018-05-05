@@ -43,6 +43,14 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     override func viewDidAppear(_ animated: Bool) {
         prepareDataForNavigation()
         setupTimer()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        service.removeFirebaseObservers()
+    }
+    
+    override func viewDidLayoutSubviews() {
         prepareCenterView()
         prepareMap()
     }
@@ -76,7 +84,6 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
                 else{
                     distributions = distributions + "\(i+1),"
                 }
-                
             }
             distributions = String(distributions.dropLast())
             print(distributions)
