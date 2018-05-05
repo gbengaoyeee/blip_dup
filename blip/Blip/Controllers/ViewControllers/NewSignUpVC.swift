@@ -51,11 +51,9 @@ class NewSignUpVC: UIViewController {
     }
     
     fileprivate func setupProperConstraints(){
-    
         firstnameLeadingConstraint.constant = (self.view.frame.size.width - 220)/2
         correctLeadingConstraint = firstnameLeadingConstraint.constant
         lastnameLeadingConstraint.constant = correctLeadingConstraint
-        
     }
     
     ///Setup TextFields
@@ -85,7 +83,6 @@ class NewSignUpVC: UIViewController {
     @objc fileprivate func handleContinueButton(){
         let isTextfieldsEmpty = firstNameTF.isEmpty && lastNameTF.isEmpty && emailTF.isEmpty && passwordTF.isEmpty
         
-        
         if (isTextfieldsEmpty){// there is empty field(s)
             self.present(popupForEmptyField(), animated: true, completion: nil)
         }
@@ -104,8 +101,6 @@ class NewSignUpVC: UIViewController {
                 self.view.layoutIfNeeded()
             }
         }
-        //REMEMBER TO UNCOMMENT AFTER DONE SIGN UP
-            
         else if !firstNameTF.isEmpty && !lastNameTF.isEmpty && !emailTF.isEmpty && !passwordTF.isEmpty{
             if validateEmail(enteredEmail: emailTF.text!){
                 self.performSegue(withIdentifier: "choosePicture", sender: nil)
@@ -117,7 +112,6 @@ class NewSignUpVC: UIViewController {
     }
     
     @IBAction func nextOnLastName(_ sender: Any) {
-        
         if firstNameTF.isEmpty || lastNameTF.isEmpty{
             self.present(popupForEmptyField(), animated: true, completion: nil)
         }
@@ -135,7 +129,6 @@ class NewSignUpVC: UIViewController {
     }
     
     @IBAction func nextOnPassword(_ sender: Any) {
-        
         if !firstNameTF.isEmpty && !lastNameTF.isEmpty && !emailTF.isEmpty && !passwordTF.isEmpty{
             if validateEmail(enteredEmail: emailTF.text!){
                 self.performSegue(withIdentifier: "choosePicture", sender: nil)

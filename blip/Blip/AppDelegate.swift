@@ -122,7 +122,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func setLogoutAsRoot(){
-        
         window = UIWindow(frame: Screen.bounds)
         var options = UIWindow.TransitionOptions()
         options.direction = .toTop
@@ -130,11 +129,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         options.style = .easeOut
         window!.setRootViewController((UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "rootViewController")), options: options)
         window?.makeKeyAndVisible()
-        
     }
     
     func setLoginAsRoot(){
-        
         var options = UIWindow.TransitionOptions()
         options.direction = .toBottom
         options.duration = 0.8
@@ -155,6 +152,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
         return true
     }
+    
+    func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
+        return true
+    }
+    
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

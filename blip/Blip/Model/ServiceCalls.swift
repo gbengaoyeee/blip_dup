@@ -55,13 +55,26 @@ class ServiceCalls{
     }
     
     //Checks if user is flagged
-    func checkUserFlagged(completion: @escaping (Bool)->()){
-        self.userRef.child(emailHash).child("flagged").observeSingleEvent(of: .value) { (snap) in
-            if snap.exists(){
-                completion(true)
-            }else{
-                completion(false)
+    func checkUserVerifiedOrFlagged(completion: @escaping (Int)->()){
+        self.userRef.child(emailHash).observeSingleEvent(of: .value) { (snap) in
+            if let userValues = snap.value as? [String:Any]{
+                let flagged = userValues["flagged"] as? Bool
+                let verified = userValues["verified"] as? Bool
+                if !(verified!){
+                    completion(1)
+                }
+                else if (flagged != nil){
+                    completion(2)
+                }else{
+                    completion(0)
+                }
+                
             }
+//            if snap.exists(){
+//                completion(true)
+//            }else{
+//                completion(false)
+//            }
         }
     }
     
@@ -163,7 +176,7 @@ class ServiceCalls{
     
     ///Add the new user's info into Database
     func addUserToDatabase(uid:String, name:String, email:String){
-        let dict:[String:Any] = ["uid":uid ,"name":name ,"email":email ,"rating":5.0 ,"customer_id":"" ,"currentDevice":AppDelegate.DEVICEID]
+        let dict:[String:Any] = ["uid":uid ,"name":name ,"email":email ,"rating":5.0 ,"customer_id":"" ,"currentDevice":AppDelegate.DEVICEID, "verified":false]
         userRef.child(self.emailHash).updateChildValues(dict)
     }
     
@@ -201,6 +214,7 @@ class ServiceCalls{
     func updateCurrentDeviceToken(){
         if let credentials = self.userDefaults.dictionary(forKey: "loginCredentials"){
             if let device = credentials["currentDevice"] as? String{
+                print("TOKEN", device)
                 let token = ["currentDevice": device]
                 userRef.child(emailHash).updateChildValues(token)
             }

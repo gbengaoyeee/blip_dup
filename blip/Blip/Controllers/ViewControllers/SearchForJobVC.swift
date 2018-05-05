@@ -32,7 +32,7 @@ class SearchForJobVC: UIViewController {
         super.viewDidLoad()
         prepareMap()
         prepareBlur()
-        updateCurrentDevice()
+//        updateCurrentDevice()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -111,8 +111,13 @@ class SearchForJobVC: UIViewController {
     
     @IBAction func searchForJob(_ sender: Any) {
         goButton.isUserInteractionEnabled = false
-        service.checkUserFlagged { (exist) in
-            if exist{
+        service.checkUserVerifiedOrFlagged { (code) in
+            if (code == 1){//Not verified
+                self.showBanner(title: "Attention!", subtitle: "Your account is not verified. Please contact us for more information on how to verify your account.", style: .warning)
+                self.service.removeFirebaseObservers()
+                self.goButton.isUserInteractionEnabled = true
+            }
+            else if (code == 2){//Flagged
                 self.showBanner(title: "Attention!", subtitle: "Your account has been suspended for cancelling a job", style: .warning)
                 self.service.removeFirebaseObservers()
                 self.goButton.isUserInteractionEnabled = true
