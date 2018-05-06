@@ -102,6 +102,7 @@ class SearchForJobVC: UIViewController {
     }
     
     @IBAction func searchForJob(_ sender: Any) {
+        //YOU MIGHT GET CONFLICTS, THIS IS WHERE THE NEW SEARCH BEGINS
         goButton.isUserInteractionEnabled = false
         let leftImageView = UIView()
         let loading = LOTAnimationView(name: "loading")
@@ -146,7 +147,7 @@ class SearchForJobVC: UIViewController {
                 }
             })
         }
-    }
+    }//YOU MIGHT GET CONFLICTS, THIS IS WHERE THE NEW SEARCH ENDS
 }
 
 extension SearchForJobVC: MGLMapViewDelegate{
