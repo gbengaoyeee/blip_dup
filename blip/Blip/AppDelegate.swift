@@ -66,12 +66,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 if providerData != nil{
                     for userInfo in providerData! {
                         if userInfo.providerID == "facebook.com" {
-                            self.goHome()
+                            self.setLoginAsRoot()
                         }
                         else{
                             self.setLogoutAsRoot()
                         }
                     }
+                }
+                else{
+                    self.setLogoutAsRoot()
                 }
             }
         }

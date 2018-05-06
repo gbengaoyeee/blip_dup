@@ -24,12 +24,6 @@ class NavigationBarViewController: AnimatableNavigationController {
         
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        if appDelegate.isLaunched {
-            prepareSplash()
-        }
-    }
-    
     func prepareSplash(){
         
         let splash = RevealingSplashView(iconImage: UIImage(icon: .googleMaterialDesign(.accountCircle), size: CGSize(size: 15)), iconInitialSize: CGSize(width: 112, height: 100), backgroundColor: #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1))

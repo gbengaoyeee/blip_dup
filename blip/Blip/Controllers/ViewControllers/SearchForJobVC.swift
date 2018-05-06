@@ -33,10 +33,14 @@ class SearchForJobVC: UIViewController {
         prepareBlur()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillAppear(_ animated: Bool) {
         prepareMap()
         prepareGoButton()
+        super.viewWillAppear(animated)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         updateCurrentDevice()
     }
 
@@ -102,7 +106,7 @@ class SearchForJobVC: UIViewController {
     }
     
     @IBAction func searchForJob(_ sender: Any) {
-        //YOU MIGHT GET CONFLICTS, THIS IS WHERE THE NEW SEARCH BEGINS
+
         goButton.isUserInteractionEnabled = false
         let leftImageView = UIView()
         let loading = LOTAnimationView(name: "loading")
@@ -114,28 +118,6 @@ class SearchForJobVC: UIViewController {
         loading.play()
         
         self.service.findJob(myLocation: self.currentLocation, userHash: self.userDefaults.dictionary(forKey: "loginCredentials")!["emailHash"] as! String) { (errorCode, job) in
-            if errorCode != nil{
-                if errorCode == 400{
-                    //Not verified
-                    self.showBanner(title: "Account Not Verified", subtitle: "Please contact us to verify your account", style: .warning)
-                    print("Not verified")
-                }
-                else if errorCode == 500{
-                    //Flagged
-                    self.showBanner(title: "Account has been disabled", subtitle: "Your account has been disabled due to leaving a job. Please contact us to unlock your account", style: .warning)
-                    print("Flagged")
-                }else{
-                   // No job Found
-                    let newBanner = NotificationBanner(title: "Error", subtitle: "No job found at this time", style: .info)
-                    newBanner.autoDismiss = true
-                    newBanner.show()
-                    newBanner.dismissOnSwipeUp = true
-                    newBanner.dismissOnTap = true
-                    print("No job Found")
-                }
-                self.goButton.isUserInteractionEnabled = true
-                return
-            }
             
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
                 banner.dismiss()
@@ -145,9 +127,31 @@ class SearchForJobVC: UIViewController {
                     self.goButton.isUserInteractionEnabled = true
                     self.performSegue(withIdentifier: "foundJob", sender: self)
                 }
+                if errorCode != nil{
+                    if errorCode == 400{
+                        //Not verified
+                        self.showBanner(title: "Account Not Verified", subtitle: "Please contact us to verify your account", style: .warning)
+                        print("Not verified")
+                    }
+                    else if errorCode == 500{
+                        //Flagged
+                        self.showBanner(title: "Error", subtitle: "Your account has been disabled due to leaving a job. Please contact us to unlock your account", style: .warning)
+                        print("Flagged")
+                    }else{
+                        // No job Found
+                        let newBanner = NotificationBanner(title: "Error", subtitle: "No job found at this time", style: .info)
+                        newBanner.autoDismiss = true
+                        newBanner.show()
+                        newBanner.dismissOnSwipeUp = true
+                        newBanner.dismissOnTap = true
+                        print("No job Found")
+                    }
+                    self.goButton.isUserInteractionEnabled = true
+                    return
+                }
             })
         }
-    }//YOU MIGHT GET CONFLICTS, THIS IS WHERE THE NEW SEARCH ENDS
+    }
 }
 
 extension SearchForJobVC: MGLMapViewDelegate{
@@ -190,10 +194,12 @@ extension SearchForJobVC: MGLMapViewDelegate{
 extension SearchForJobVC: CLLocationManagerDelegate{
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let locValue:CLLocationCoordinate2D = manager.location!.coordinate
+        let locValue:CLLocationCoordinate2D? = manager.location!.coordinate
         currentLocation = locValue
-        service.updateJobAccepterLocation(location: locValue)
-        manager.stopUpdatingLocation()
+        if let loc = locValue{
+            service.updateJobAccepterLocation(location: loc)
+            manager.stopUpdatingLocation()
+        }
         setMapCamera()
     }
     
