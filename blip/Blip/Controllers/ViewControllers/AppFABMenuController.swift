@@ -63,7 +63,7 @@ extension AppFABMenuController {
         fabButton.imageView?.makeCircular()
         fabButton.makeCircular()
         if let credentials = userDefaults.dictionary(forKey: "loginCredentials"){
-            if let pictureString = credentials["picture"] as? String{
+            if let pictureString = credentials["photoURL"] as? String{
                 KingfisherManager.shared.retrieveImage(with: URL(string: pictureString)!, options: nil, progressBlock: nil) { (image, error, type, url) in
                     if let image = image {
                         self.fabButton.setImage(image, for: .normal)

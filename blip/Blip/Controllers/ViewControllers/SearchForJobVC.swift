@@ -47,7 +47,6 @@ class SearchForJobVC: UIViewController {
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-
     }
     
     ///Update the device token when they enter this VC 
@@ -110,7 +109,7 @@ class SearchForJobVC: UIViewController {
     }
     
     @IBAction func searchForJob(_ sender: Any) {
-//        goButton.isUserInteractionEnabled = false
+        goButton.isUserInteractionEnabled = false
         //DONT REALLY LIKE THIS
         let leftImageView = UIView()
         let loading = LOTAnimationView(name: "loading")
@@ -121,18 +120,44 @@ class SearchForJobVC: UIViewController {
         banner.show()
         loading.play()
         
-        self.service.findJob(myLocation: self.currentLocation, userHash: self.userDefaults.dictionary(forKey: "loginCredentials")!["emailHash"] as! String) { (job) in
+        self.service.findJob(myLocation: self.currentLocation, userHash: self.userDefaults.dictionary(forKey: "loginCredentials")!["emailHash"] as! String) { (errorCode, job) in
+            if errorCode != nil{
+                if errorCode == 400{
+                    //Not verified
+                    print("Not verified")
+                }
+                else if errorCode == 500{
+                    //Flagged
+                    print("Flagged")
+                }else{
+                   // No job Found
+                    print("No job Found")
+                }
+                self.goButton.isUserInteractionEnabled = true
+                return
+            }
+            
             if let job = job{
                 self.foundJob = job
                 banner.dismiss()
                 loading.stop()
                 self.goButton.isUserInteractionEnabled = true
                 self.performSegue(withIdentifier: "foundJob", sender: self)
-            }else{
-                self.goButton.isUserInteractionEnabled = true
-                print("COULDNT FIND JOB")
             }
         }
+        
+//        self.service.findJob(myLocation: self.currentLocation, userHash: self.userDefaults.dictionary(forKey: "loginCredentials")!["emailHash"] as! String) { (job) in
+//            if let job = job{
+//                self.foundJob = job
+//                banner.dismiss()
+//                loading.stop()
+//                self.goButton.isUserInteractionEnabled = true
+//                self.performSegue(withIdentifier: "foundJob", sender: self)
+//            }else{
+//                self.goButton.isUserInteractionEnabled = true
+//                print("COULDNT FIND JOB")
+//            }
+//        }
 //        service.checkUserVerifiedOrFlagged { (code) in
 //            if (code == 1){//Not verified
 //                self.showBanner(title: "Attention!", subtitle: "Your account is not verified. Please contact us for more information on how to verify your account.", style: .warning)

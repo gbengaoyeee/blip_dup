@@ -12,6 +12,7 @@ import UIKit
 import CoreLocation
 import Firebase
 import Mapbox
+import Alamofire
 
 typealias CreateUserCompletion = (_ errorMsg: String?, _ data: AnyObject?) ->Void
 
@@ -79,27 +80,37 @@ class ServiceCalls{
     }
     
     ///Finds jobs based on this user's location
-    func findJob(myLocation: CLLocationCoordinate2D, userHash: String, completion: @escaping(Job?) -> ()){
+    func findJob(myLocation: CLLocationCoordinate2D, userHash: String, completion: @escaping(Int?, Job?) -> ()){
         self.userRefHandle = userRef.child(emailHash).observe(.childAdded, with: { (snap) in
             
             if snap.key == "givenJob"{
                 if let jobID = snap.value as? [String: AnyObject]{
                     let j = Job(snapshot: snap.childSnapshot(forPath: jobID.keys.first!), type: "delivery")
                     j?.locList.insert(myLocation, at: 0)
-                    completion(j)
+                    completion(nil, j)
                 }
             }
         })
         
         MyAPIClient.sharedClient.getBestJobAt(location: myLocation, userHash: userHash) { (error, found) in
-            if error != nil{
-                print("ERROR",error?.localizedDescription)
+            if let err = error as? AFError{
+                if err.responseCode! == 400{
+                    completion(400, nil)//Not verified
+                }
+                else if err.responseCode! == 500{
+                    completion(500, nil)//Flagged
+                }else{
+                    completion(600, nil)// No job Found
+                }
+                self.removeFirebaseObservers()
                 return
             }
-            if !(found!){//No job was found
-                print("NONE FOUND")
-                completion(nil)
-            }
+
+//            if !(found!){//No job was found
+//                print("NONE FOUND")
+//                self.removeFirebaseObservers()
+//                completion(nil)
+//            }
         }
         
     }

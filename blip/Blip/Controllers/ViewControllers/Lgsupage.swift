@@ -29,7 +29,10 @@ class Lgsupage: UIViewController {
 
     var dbRef: DatabaseReference!
     let logoAnimation = LOTAnimationView(name: "clock")
-    let userDefaults = UserDefaults.standard
+    let userDefault = UserDefaults.standard
+    var userCredDict:[String:String]!
+    let loginCredentials = "loginCredentials"
+    let service = ServiceCalls.instance
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = true
@@ -108,7 +111,7 @@ class Lgsupage: UIViewController {
                 if(fbloginresult.grantedPermissions.contains("email"))
                 {
                     self.getFBUserData()
-                    self.userDefaults.removeObject(forKey: "loginCredentials")
+                    self.userDefault.removeObject(forKey: "loginCredentials")
                 }
             }
         }
@@ -141,6 +144,7 @@ class Lgsupage: UIViewController {
                         print("Signed in with Facebook")
                         let data = result as! [String: AnyObject]
                         let FBid = data["id"] as? String
+                        
                         let url = URL(string: "https://graph.facebook.com/\(FBid!)/picture?type=large&return_ssl_resources=1")
                         let profile = user?.createProfileChangeRequest()
                         profile?.photoURL = url
@@ -150,12 +154,13 @@ class Lgsupage: UIViewController {
                             }else{
                                 let emailHash = self.MD5(string: (user?.email)!)
                                 self.dbRef.child("Couriers").child(emailHash).child("photoURL").setValue(url?.absoluteString)
+                                self.service.addUserToDatabase(uid: (user?.uid)!, name: (user?.displayName)!, email: (user?.email)!)
+                                self.saveInfoInUserDefault(picture: url?.absoluteString, emailHash: emailHash)
+                                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                                appDelegate.setLoginAsRoot()
                             }
                         })
                         
-                        self.addNewUserToDBJson(user: user!)
-                        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                        appDelegate.setLoginAsRoot()
                     }
                 }
                 else{
@@ -166,6 +171,16 @@ class Lgsupage: UIViewController {
         }
     }
     
+    fileprivate func saveInfoInUserDefault(picture:String?, emailHash:String){
+        self.userCredDict = [:]
+        self.userCredDict["email"] = nil
+        self.userCredDict["password"] = nil
+        self.userCredDict["photoURL"] = picture
+        self.userCredDict["emailHash"] = emailHash
+        self.userCredDict["currentDevice"] = AppDelegate.DEVICEID
+        self.userDefault.setValue(self.userCredDict, forKey: self.loginCredentials)
+        return
+    }
     
     func MD5(string: String) -> String {
         let messageData = string.data(using:.utf8)!
@@ -180,18 +195,6 @@ class Lgsupage: UIViewController {
         return digestData.map { String(format: "%02hhx", $0) }.joined()
     }
     
-    func addNewUserToDBJson(user: User){
-        
-        let rating: Float = 5.0
-        let emailHash = MD5(string: user.email!)
-        let token = ["currentDevice" : AppDelegate.DEVICEID]
-        dbRef.child("Couriers").child(emailHash).child("uid").setValue(user.uid)
-        dbRef.child("Couriers").child(emailHash).child("Name").setValue("\(user.displayName!)")
-        dbRef.child("Couriers").child(emailHash).child("Email").setValue(user.email)
-        dbRef.child("Couriers").child(emailHash).child("Rating").setValue(rating)
-        dbRef.child("Couriers").child(emailHash).child("ratingSum").setValue(5.0)
-        dbRef.child("Couriers").child(emailHash).updateChildValues(token)
-    }
     
 }
 

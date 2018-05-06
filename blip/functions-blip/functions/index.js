@@ -91,8 +91,8 @@ exports.createNewStripeCustomer = functions.auth.user().onCreate(event => {
     return stripe.customers.create({
       email: data.email
     }).then(customer => {
-      return admin.database().ref(`/Users/${emailHash}/customer_id`).set(customer.id);
-      console.log(admin.database().ref(`/Users/${emailHash}/customer_id`))
+      return admin.database().ref(`/Couriers/${emailHash}/customer_id`).set(customer.id);
+      console.log(admin.database().ref(`/Couriers/${emailHash}/customer_id`))
     });
   });
 
@@ -193,13 +193,17 @@ exports.getBestJob = functions.https.onRequest((req,res) => {
   checkUserVerifiedOrFlagged(emailHash, function(error, checked){
     if (error){
       console.log(error.message, req.body);
-      res.status(401).send(error);
+      if (error.message === "User needs to verify their background check"){
+        res.status(400).send(error);
+      }else{
+        res.status(500).send(error);
+      }
+      
     }else{
       getClosestJobIdAndDistance(lat, long, function(err, data){
         if(err){
           console.log("Found an Error");
-          res.send(200,"No job found");
-          // res.send(null);
+          res.status(600).send(err);
         }else{
           var maxDist = 20000;
           const closestJobIdDict = data[0];//This is a dictionary
@@ -318,7 +322,7 @@ exports.deleteUserFromDatabase = functions.auth.user().onDelete(event =>{
     const data = event.data;
     const emailHash = crypto.createHash('md5').update(data.email).digest('hex');
     console.log('Deleting user from database');
-    return admin.database().ref(`/Users/${emailHash}`).remove();
+    return admin.database().ref(`/Couriers/${emailHash}`).remove();
     console.log('Deleted user from database');
 });
 
