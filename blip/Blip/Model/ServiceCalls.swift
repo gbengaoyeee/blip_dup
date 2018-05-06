@@ -105,12 +105,6 @@ class ServiceCalls{
                 self.removeFirebaseObservers()
                 return
             }
-
-//            if !(found!){//No job was found
-//                print("NONE FOUND")
-//                self.removeFirebaseObservers()
-//                completion(nil)
-//            }
         }
         
     }
@@ -124,7 +118,7 @@ class ServiceCalls{
     func completeJob(completion: @escaping() -> ()){
         userRef.child(emailHash).child("givenJob").observeSingleEvent(of: .value) { (snapshot) in
             let deliveries = snapshot.value as? [String: AnyObject]
-            self.userRef.child(self.emailHash).updateChildValues(["completedDeliveries": deliveries])
+            self.userRef.child(self.emailHash).updateChildValues(["completedDeliveries": deliveries as Any])
             self.userRef.child(self.emailHash).child("givenJob").removeValue()
             completion()
         }
