@@ -36,13 +36,10 @@ class Lgsupage: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = true
-
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//        Player.play()
-        
     }
     
     override func viewDidLoad() {
@@ -116,6 +113,7 @@ class Lgsupage: UIViewController {
             }
         }
     }
+    
     @objc func appWillEnterForegroundNotification() {
         Player.play()
     }
@@ -156,8 +154,6 @@ class Lgsupage: UIViewController {
                                 self.dbRef.child("Couriers").child(emailHash).child("photoURL").setValue(url?.absoluteString)
                                 self.service.addUserToDatabase(uid: (user?.uid)!, name: (user?.displayName)!, email: (user?.email)!)
                                 self.saveInfoInUserDefault(picture: url?.absoluteString, emailHash: emailHash)
-                                let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                                appDelegate.setLoginAsRoot()
                             }
                         })
                         

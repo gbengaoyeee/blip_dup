@@ -42,7 +42,6 @@ class AppFABMenuController: FABMenuController, STPPaymentContextDelegate{
         MyAPIClient.sharedClient.addPaymentSource(id: source, completion: { (error) in })
     }
     
-    
     open override func prepare() {
         super.prepare()
         view.backgroundColor = .white
@@ -62,12 +61,19 @@ extension AppFABMenuController {
         fabButton.backgroundColor = #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1)
         fabButton.imageView?.makeCircular()
         fabButton.makeCircular()
-        if let credentials = userDefaults.dictionary(forKey: "loginCredentials"){
-            if let pictureString = credentials["photoURL"] as? String{
-                KingfisherManager.shared.retrieveImage(with: URL(string: pictureString)!, options: nil, progressBlock: nil) { (image, error, type, url) in
-                    if let image = image {
-                        self.fabButton.setImage(image, for: .normal)
-                        self.fabButton.clipsToBounds = true
+        setImageToButton()
+    }
+    
+    func setImageToButton(){
+        
+        if self.fabButton.image == nil{
+            if let credentials = userDefaults.dictionary(forKey: "loginCredentials"){
+                if let pictureString = credentials["photoURL"] as? String{
+                    KingfisherManager.shared.retrieveImage(with: URL(string: pictureString)!, options: nil, progressBlock: nil) { (image, error, type, url) in
+                        if let image = image {
+                            self.fabButton.setImage(image, for: .normal)
+                            self.fabButton.clipsToBounds = true
+                        }
                     }
                 }
             }
@@ -138,9 +144,6 @@ extension AppFABMenuController {
             let facebookLoginManager = FBSDKLoginManager()
             facebookLoginManager.logOut()
             print("Logged out")
-            self.navigationController?.popToRootViewController(animated: true)
-            let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            appDelegate.setLogoutAsRoot()
         } catch let signOutError as NSError {
             let signOutErrorPopup = PopupDialog(title: "Error", message: "Error signing you out, try again later" + signOutError.localizedDescription )
             self.present(signOutErrorPopup, animated: true, completion: nil)
