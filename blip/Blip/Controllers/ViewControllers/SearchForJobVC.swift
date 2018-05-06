@@ -42,7 +42,7 @@ class SearchForJobVC: UIViewController {
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        service.removeFirebaseObservers()
+        //ERASE YOUR service.removeFirebaseObservers HERE IF IT STILL HERE
     }
     
     override func didReceiveMemoryWarning() {

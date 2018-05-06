@@ -47,6 +47,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        service.removeFirebaseObservers()
     }
     
     override func viewDidLayoutSubviews() {

@@ -122,6 +122,12 @@ class InstructionVC: UIViewController {
         if !isLastWaypoint{
             navViewController?.routeController.routeProgress.legIndex += 1
             navViewController?.routeController.resume()
+            let ref = Database.database().reference(withPath: "/Couriers/\(service.emailHash!)/givenJob/deliveries/\(delivery.identifier!)")
+            if type == "Pickup"{
+                ref.updateChildValues(["state":"pickup"])
+            }else{
+                ref.updateChildValues(["state":"delivery"])
+            }
             self.dismiss(animated: true, completion: nil)
         }
         else{
