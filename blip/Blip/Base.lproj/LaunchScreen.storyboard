@@ -21,7 +21,21 @@
                     <view key="view" contentMode="scaleToFill" id="49E-iT-i10">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="temporaryLogo" translatesAutoresizingMaskIntoConstraints="NO" id="jMR-hZ-cCH">
+                                <rect key="frame" x="112" y="268.5" width="150" height="150"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="150" id="0hM-Eg-IO7"/>
+                                    <constraint firstAttribute="width" constant="150" id="en5-dX-9jd"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.31764705882352939" green="0.61960784313725492" blue="0.80392156862745101" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="jMR-hZ-cCH" firstAttribute="centerY" secondItem="Uyn-Hb-fIM" secondAttribute="centerY" id="49a-EN-SoQ"/>
+                            <constraint firstItem="jMR-hZ-cCH" firstAttribute="centerX" secondItem="Uyn-Hb-fIM" secondAttribute="centerX" id="CpN-ZY-1dM"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="Uyn-Hb-fIM"/>
                     </view>
                 </viewController>
@@ -30,4 +44,7 @@
             <point key="canvasLocation" x="52" y="374.66266866566718"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="temporaryLogo" width="390" height="400"/>
+    </resources>
 </document>

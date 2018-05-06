@@ -61,13 +61,16 @@ extension AppFABMenuController {
         fabButton.backgroundColor = #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1)
         fabButton.imageView?.makeCircular()
         fabButton.makeCircular()
-        setImageToButton()
+        // Not good way to do it
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(4), execute: {
+            self.setImageToButton()
+        })
     }
     
     func setImageToButton(){
-        
         if self.fabButton.image == nil{
             if let credentials = userDefaults.dictionary(forKey: "loginCredentials"){
+                print(credentials)
                 if let pictureString = credentials["photoURL"] as? String{
                     KingfisherManager.shared.retrieveImage(with: URL(string: pictureString)!, options: nil, progressBlock: nil) { (image, error, type, url) in
                         if let image = image {
