@@ -49,6 +49,7 @@ class SearchForJobVC: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         updateCurrentDevice()
+        
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -203,6 +204,12 @@ extension SearchForJobVC: CLLocationManagerDelegate{
         currentLocation = locValue
         if let loc = locValue{
             service.updateJobAccepterLocation(location: loc)
+            service.checkIncompleteJobs(myLocation: self.currentLocation) { (exist, job) in
+                if exist{
+                    self.foundJob = job
+                    self.performSegue(withIdentifier: "foundJob", sender: self)
+                }
+            }
             manager.stopUpdatingLocation()
         }
         setMapCamera()
