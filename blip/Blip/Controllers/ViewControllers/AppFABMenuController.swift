@@ -180,5 +180,15 @@ extension AppFABMenuController {
         print("fabMenuDidClose")
     }
     
+    override func encodeRestorableState(with coder: NSCoder) {
+//        coder.encode(service, forKey: "service")
+        super.encodeRestorableState(with: coder)
+        print("Saved")
+    }
+    
+    override func decodeRestorableState(with coder: NSCoder) {
+//        service = coder.decodeObject(forKey: "service") as! ServiceCalls
+        print("Restored")
+    }
 }
 

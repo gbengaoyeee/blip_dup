@@ -127,12 +127,13 @@ class InstructionVC: UIViewController {
                 ref.updateChildValues(["state":"pickup"])
             }else{
                 ref.updateChildValues(["state":"delivery"])
+                service.completedJob(id: self.delivery.identifier)
             }
             self.dismiss(animated: true, completion: nil)
         }
         else{
             self.prepareAndAddBlurredLoader()
-            service.completeJob {
+            service.completedAllJobs {
                 self.removedBlurredLoader()
                 self.dismiss(animated: true, completion: {
                     self.foundJobVC.navigationController?.popToRootViewController(animated: true)

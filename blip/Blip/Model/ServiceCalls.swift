@@ -16,10 +16,15 @@ import Alamofire
 
 typealias CreateUserCompletion = (_ errorMsg: String?, _ data: AnyObject?) ->Void
 
-class ServiceCalls{
+class ServiceCalls:NSObject, NSCoding{
     
-    private static let _instance = ServiceCalls()
     
+    
+//    private static let _instance:ServiceCalls = ServiceCalls()
+    private static var _instance:ServiceCalls{
+        return ServiceCalls()
+    }
+    let test = "TEST"
     static var instance: ServiceCalls{
         return _instance
     }
@@ -45,14 +50,20 @@ class ServiceCalls{
     var childHandle: DatabaseHandle!
     var currentBlipUser: BlipUser?
     
-    init() {
+    override init() {
+        super.init()
         if let currentUser = Auth.auth().currentUser{
             self.emailHash = MD5(string: (currentUser.email)!)
         }
-        //Trying to create a BlipUser Object to access user values
-//        userRef.child(emailHash).observeSingleEvent(of: .value) { (snap) in
-//            self.currentBlipUser = BlipUser(snapshot: snap)
-//        }
+    }
+    
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(emailHash, forKey: "emailHash")
+    }
+    
+    required convenience init?(coder aDecoder: NSCoder) {
+//        self.emailHash = aDecoder.decodeObject(forKey: "emailHash") as! String
+        self.init()
     }
     
     //Checks if user is flagged
@@ -115,12 +126,20 @@ class ServiceCalls{
         print("Observers Removed")
     }
     
-    func completeJob(completion: @escaping() -> ()){
+    func completedAllJobs(completion: @escaping() -> ()){
         userRef.child(emailHash).child("givenJob").observeSingleEvent(of: .value) { (snapshot) in
             let deliveries = snapshot.value as? [String: AnyObject]
             self.userRef.child(self.emailHash).updateChildValues(["completedDeliveries": deliveries as Any])
             self.userRef.child(self.emailHash).child("givenJob").removeValue()
             completion()
+        }
+    }
+    
+    func completedJob(id:String){
+        userRef.child(emailHash).child("givenJob/deliveries").child(id).observeSingleEvent(of: .value) { (snapshot) in
+            let values = snapshot.value as? [String:Any]
+            self.userRef.child(self.emailHash).child("completedDeliveries").child("deliveries").updateChildValues([id:values as Any])
+            self.userRef.child(self.emailHash).child("givenJob/deliveries").child(id).removeValue()
         }
     }
     

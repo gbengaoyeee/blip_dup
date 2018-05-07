@@ -28,7 +28,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     var fromIndex = 0
     var toIndex = 1
     var job: Job!
-    let service = ServiceCalls.instance
+    var service:ServiceCalls! = ServiceCalls.instance
     var currentLocation: CLLocationCoordinate2D!
     var locationManager = CLLocationManager()
     var waypoints: [BlipWaypoint]!
@@ -387,3 +387,8 @@ extension FoundJobVC{
         pickupLabel.text = "\(job.deliveries.count) Delivery(s)"
     }
 }
+
+
+
+
+
