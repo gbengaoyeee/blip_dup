@@ -71,11 +71,11 @@
 		<string>MKDirectionsModeTrain</string>
 	</array>
 	<key>NSCameraUsageDescription</key>
-	<string>To Choose Profile Picture</string>
+	<string>We require a profile picture to verify your identity</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>To Know Where You Need Your Tasks Done</string>
+	<string>Your location is used to set you up with appropriate delivery jobs around your area, and get your status while on a job</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>To Choose Profile Picture</string>
+	<string>We require you to select a picture of yourself to verify your identity</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>

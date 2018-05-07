@@ -30,13 +30,17 @@ class SearchForJobVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("View loaded")
+        locationManager.delegate = self
         prepareBlur()
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        print("View appeared")
+        locationManager.startUpdatingLocation()
         prepareMap()
         prepareGoButton()
-        super.viewWillAppear(animated)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -46,7 +50,6 @@ class SearchForJobVC: UIViewController {
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        //ERASE YOUR service.removeFirebaseObservers HERE IF IT STILL HERE
     }
     
     override func didReceiveMemoryWarning() {
@@ -157,7 +160,6 @@ class SearchForJobVC: UIViewController {
 extension SearchForJobVC: MGLMapViewDelegate{
     
     func prepareMap(){
-        useCurrentLocations()
         self.map.delegate = self
         map.showsUserLocation = true
         map.showsUserHeadingIndicator = true
@@ -201,19 +203,5 @@ extension SearchForJobVC: CLLocationManagerDelegate{
             manager.stopUpdatingLocation()
         }
         setMapCamera()
-    }
-    
-    func useCurrentLocations(){
-        // Ask for Authorisation from the User.
-        self.locationManager.requestAlwaysAuthorization()
-        
-        // For use in foreground
-        self.locationManager.requestWhenInUseAuthorization()
-        
-        if CLLocationManager.locationServicesEnabled() {
-            locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
-            locationManager.startUpdatingLocation()
-        }
     }
 }

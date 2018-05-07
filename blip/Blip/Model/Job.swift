@@ -18,6 +18,7 @@ class Job{
     var deliveries = [Delivery]()
     var ref: DatabaseReference!
     var locList = [CLLocationCoordinate2D]()
+    var unfinishedLocList = [CLLocationCoordinate2D]()
     var name: String!
     var description: String!
     var earnings: Double!
@@ -36,25 +37,21 @@ class Job{
         if type == "delivery"{
             let jobValues = snapshot.value as? [String:AnyObject]
             for value in jobValues!{
-                let deliveryValues = value.value as? [String: AnyObject]
                 let id = value.key
-                let deliveryLocation = CLLocationCoordinate2D(latitude: deliveryValues!["deliveryLat"] as! Double, longitude: deliveryValues!["deliveryLong"] as! Double)
-                let origin = CLLocationCoordinate2D(latitude: deliveryValues!["originLat"] as! Double, longitude: deliveryValues!["originLong"] as! Double)
-                let recieverName = deliveryValues!["recieverName"] as! String
-                let recieverNumber = deliveryValues!["recieverNumber"] as! String
-                let pickupNumber = deliveryValues!["pickupNumber"] as! String
-                let deliveryMainInstruction = deliveryValues!["deliveryMainInstruction"] as! String
-                let deliverySubInstruction = deliveryValues!["deliverySubInstruction"] as! String
-                let pickupMainInstruction = deliveryValues!["pickupMainInstruction"] as! String
-                let pickupSubInstruction = deliveryValues!["pickupSubInstruction"] as! String
-                let storeName = deliveryValues!["storeName"] as! String
-
-                
-                let delivery  = Delivery(deliveryLocation: deliveryLocation, identifier: id, origin: origin, recieverName: recieverName, recieverNumber: recieverNumber, pickupNumber: pickupNumber, pickupMainInstruction: pickupMainInstruction, pickupSubInstruction: pickupSubInstruction, deliveryMainInstruction: deliveryMainInstruction, deliverySubInstruction: deliverySubInstruction, storeName: storeName)
-
-                self.locList.append((delivery.origin)!)
-                self.locList.append((delivery.deliveryLocation)!)
-                self.deliveries.append(delivery)
+                let delivery = Delivery(snapshot: snapshot.childSnapshot(forPath: id))
+                if let delivery = delivery{
+                    if delivery.state != nil{
+                        self.unfinishedLocList.append(delivery.deliveryLocation)
+                    }
+                    else{
+                        self.locList.append(delivery.origin)
+                        self.locList.append(delivery.deliveryLocation)
+                    }
+                    self.deliveries.append(delivery)
+                }
+            }
+            for location in unfinishedLocList{
+                locList.append(location)
             }
         }
         
@@ -77,6 +74,17 @@ class Job{
         }
     
         self.ref = snapshot.ref
+    }
+    
+    func getUnfinishedDeliveries() -> [Delivery]{
+        
+        var unfinishedDeliveries = [Delivery]()
+        for delivery in self.deliveries{
+            if delivery.state != nil{
+                unfinishedDeliveries.append(delivery)
+            }
+        }
+        return unfinishedDeliveries
     }
 }
 

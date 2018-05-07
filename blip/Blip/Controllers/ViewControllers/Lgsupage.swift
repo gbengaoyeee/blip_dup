@@ -138,7 +138,6 @@ class Lgsupage: UIViewController {
                             print(error as Any)
                             return
                         }
-                        
                         print("Signed in with Facebook")
                         let data = result as! [String: AnyObject]
                         let FBid = data["id"] as? String

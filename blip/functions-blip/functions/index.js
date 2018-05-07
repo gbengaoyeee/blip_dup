@@ -96,6 +96,18 @@ exports.createNewStripeCustomer = functions.auth.user().onCreate(event => {
     });
   });
 
+exports.createNewStripeAccount = functions.auth.user().onCreate(event => {
+  const data = event.data;
+  const emailHash = crypto.createHash('md5').update(data.email).digest('hex');
+  return stripe.accounts.create({
+    country: "CA",
+    type: "custom"
+  }).then(function(acct){
+    return admin.database().ref(`/Couriers/${emailHash}/account_ID`).set(acct.id)
+    console.log(acct)
+  })
+})  
+
 exports.updateStripeCustomerDefaultSource = functions.https.onRequest((req,res) => {
   var customer = req.body.customerID,
     source = req.body.source;

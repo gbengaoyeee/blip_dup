@@ -62,9 +62,8 @@ extension AppFABMenuController {
         fabButton.imageView?.makeCircular()
         fabButton.makeCircular()
         // Not good way to do it
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(4), execute: {
-            self.setImageToButton()
-        })
+        self.setImageToButton()
+
     }
     
     func setImageToButton(){

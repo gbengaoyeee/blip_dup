@@ -59,7 +59,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 }
             }
             else if auth.currentUser != nil && (auth.currentUser?.isEmailVerified)!{
-                self.goHome()
+                self.setLoginAsRoot()
             }
             else{
                 let providerData = Auth.auth().currentUser?.providerData
@@ -126,7 +126,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func setLogoutAsRoot(){
         window = UIWindow(frame: Screen.bounds)
         var options = UIWindow.TransitionOptions()
-        options.direction = .toTop
+        options.direction = .fade
         options.duration = 0.8
         options.style = .easeOut
         window!.setRootViewController((UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "rootViewController")), options: options)
@@ -135,7 +135,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     func setLoginAsRoot(){
         var options = UIWindow.TransitionOptions()
-        options.direction = .toBottom
+        options.direction = .fade
         options.duration = 0.8
         options.style = .easeIn
         self.window = UIWindow(frame: Screen.bounds)
