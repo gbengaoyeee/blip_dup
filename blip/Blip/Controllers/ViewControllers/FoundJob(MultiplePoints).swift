@@ -98,6 +98,9 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
                 }
                 else{
                     print(error!)
+                    self.service.putBackJobs()
+                    self.navigationController?.popViewController(animated: true)
+                    //Show error by way of a popup
                 }
             }
         }
@@ -181,7 +184,6 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
         for way in self.waypoints{
             if waypoint.coordinate == way.coordinate{
                 vc.isLastWaypoint = (self.waypoints.last == way)
-                print("Arrived at waypoint")
                 vc.delivery = way.delivery
                 if let name = way.name{
                     if name == "Pickup"{
@@ -288,16 +290,21 @@ extension FoundJobVC{
                     index = job.locList.index(of: loc)
                 }
             }
-            if index == 0{
-                way.name = "Origin"
-            }
-            else if index%2 == 0{
+            way.delivery = getDeliveryFor(waypoint: way)
+            if way.delivery.state != nil{
                 way.name = "Delivery"
             }
             else{
-                way.name = "Pickup"
+                if index == 0{
+                    way.name = "Origin"
+                }
+                else if index%2 == 0{
+                    way.name = "Delivery"
+                }
+                else{
+                    way.name = "Pickup"
+                }
             }
-            way.delivery = getDeliveryFor(waypoint: way)
         }
         return waypointList
     }
@@ -344,19 +351,10 @@ extension FoundJobVC{
         var index: Int!
         var i = 0
         for delivery in job.deliveries{
-            if let name = waypoint.name{
-                if name == "Pickup"{
-                    if dist > delivery.origin.distance(to: waypoint.coordinate){
-                        dist = delivery.origin.distance(to: waypoint.coordinate)
-                        index = i
-                    }
-                }
-                else if name == "Delivery"{
-                    if dist > delivery.deliveryLocation.distance(to: waypoint.coordinate){
-                        dist = delivery.deliveryLocation.distance(to: waypoint.coordinate)
-                        index = i
-                    }
-                }
+            
+            if dist > min(delivery.origin.distance(to: waypoint.coordinate), (delivery.origin.distance(to: waypoint.coordinate))){
+                dist = min(delivery.origin.distance(to: waypoint.coordinate), (delivery.origin.distance(to: waypoint.coordinate)))
+                index = i
             }
             i += 1
         }
