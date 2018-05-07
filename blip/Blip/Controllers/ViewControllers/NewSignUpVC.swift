@@ -198,7 +198,6 @@ class NewSignUpVC: UIViewController {
     
 }
 
-
 extension UIColor{
     
     convenience init(r: CGFloat, g: CGFloat, b: CGFloat){

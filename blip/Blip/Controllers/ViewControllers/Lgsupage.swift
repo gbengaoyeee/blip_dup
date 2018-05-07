@@ -32,7 +32,7 @@ class Lgsupage: UIViewController {
     let userDefault = UserDefaults.standard
     var userCredDict:[String:String]!
     let loginCredentials = "loginCredentials"
-    let service = ServiceCalls.instance
+    var service:ServiceCalls! = ServiceCalls.instance
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = true
@@ -152,6 +152,7 @@ class Lgsupage: UIViewController {
                             }else{
                                 let emailHash = self.MD5(string: (user?.email)!)
                                 self.dbRef.child("Couriers").child(emailHash).child("photoURL").setValue(url?.absoluteString)
+                                self.service.emailHash = emailHash //MIGHT WANT TO REMOVE THIS LATER ON
                                 self.service.addUserToDatabase(uid: (user?.uid)!, name: (user?.displayName)!, email: (user?.email)!)
                                 self.saveInfoInUserDefault(picture: url?.absoluteString, emailHash: emailHash)
                             }
@@ -191,8 +192,5 @@ class Lgsupage: UIViewController {
         return digestData.map { String(format: "%02hhx", $0) }.joined()
     }
     
-    
 }
-
-
 

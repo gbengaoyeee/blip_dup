@@ -13,6 +13,10 @@ import Material
 import Pulsator
 import NotificationBannerSwift
 import Lottie
+//REMOVE ALL BELOW
+import PopupDialog
+import FBSDKLoginKit
+import Firebase
 
 class SearchForJobVC: UIViewController {
 
@@ -24,7 +28,7 @@ class SearchForJobVC: UIViewController {
     var gradient: CAGradientLayer!
     var locationManager = CLLocationManager()
     var currentLocation: CLLocationCoordinate2D!
-    let service = ServiceCalls.instance
+    var service = ServiceCalls.instance
     let userDefaults = UserDefaults.standard
     var foundJob: Job!
     
@@ -34,13 +38,13 @@ class SearchForJobVC: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        prepareMap()
         prepareGoButton()
         super.viewWillAppear(animated)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        prepareMap()
         updateCurrentDevice()
     }
 
@@ -56,7 +60,7 @@ class SearchForJobVC: UIViewController {
     fileprivate func updateCurrentDevice(){
         service.updateCurrentDeviceToken()
     }
-    
+ 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "foundJob"{
             let dest = segue.destination as! FoundJobVC
@@ -217,3 +221,5 @@ extension SearchForJobVC: CLLocationManagerDelegate{
         }
     }
 }
+
+
