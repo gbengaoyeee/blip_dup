@@ -10,6 +10,8 @@ import UIKit
 import Lottie
 import Pastel
 import CHIPageControl
+import CoreLocation
+import PopupDialog
 
 class OnboardingVC: UIViewController, UIScrollViewDelegate {
 
@@ -18,8 +20,9 @@ class OnboardingVC: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var serviceAnimationView: UIView!
 
+    var locationManager = CLLocationManager()
     let serviceAnimation = LOTAnimationView(name: "onboarding")
-    let serviceArray = ["Welcome to Blip, the worlds first marketplace for free time","Post jobs at custom locations that you need completed","Need a painter? Someone to move your boxes? Or just someone to pick up ice cream from the closest store for you? Hire other users to complete your tasks","Pay and get paid instantaneously, freelancing your free time to complete other users jobs","Hit get started to begin with a free account"]
+    let serviceArray = ["Welcome to Blip, the worlds first marketplace for free time","Take delivery jobs from around your location","Choose the type of delivery you'd be willing to make","Get paid instantaneously, turning your free time into cash","Hit get started to begin with a free account"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,7 +59,7 @@ class OnboardingVC: UIViewController, UIScrollViewDelegate {
     }
     
     @IBAction func GoToLGSU(_ sender: Any) {
-        self.performSegue(withIdentifier: "goToLGSU", sender: self)
+        useCurrentLocations()
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -74,5 +77,29 @@ class OnboardingVC: UIViewController, UIScrollViewDelegate {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+}
+
+extension OnboardingVC: CLLocationManagerDelegate{
+    
+    func useCurrentLocations(){
+        // Ask for Authorisation from the User.
+        self.locationManager.requestAlwaysAuthorization()
+        
+        // For use in foreground
+        self.locationManager.requestWhenInUseAuthorization()
+        
+        if CLLocationManager.locationServicesEnabled() {
+            
+            switch CLLocationManager.authorizationStatus() {
+            case .notDetermined, .restricted, .denied:
+                let locationError = PopupDialog(title: "Location permission denied", message: "blip needs permission to access your location information, or we cannot match you with jobs around your area. Please go to settings; Privacy; Location services; and turn on location services for blip")
+                self.present(locationError, animated: true, completion: nil)
+            case .authorizedAlways, .authorizedWhenInUse:
+                locationManager.delegate = self
+                locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+                self.performSegue(withIdentifier: "goToLGSU", sender: self)
+            }
+        }
     }
 }

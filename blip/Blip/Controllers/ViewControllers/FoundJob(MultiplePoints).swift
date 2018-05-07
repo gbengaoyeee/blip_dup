@@ -75,8 +75,9 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     
     func prepareDataForNavigation(){
         if let job = self.job{
+
             var distributions = ""
-            for i in stride(from: 0, to: 2*job.deliveries.count, by: 1) {
+            for i in stride(from: 0, to: 2*(job.deliveries.count - job.getUnfinishedDeliveries().count), by: 1) {
                 
                 if i%2 != 0{
                     distributions = distributions + "\(i+1);"
@@ -86,8 +87,6 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
                 }
             }
             distributions = String(distributions.dropLast())
-            print(distributions)
-            print(job.locList)
             MyAPIClient.sharedClient.optimizeRoute(locations: job.locList, distributions: distributions) { (waypointData, routeData, error) in
                 if error == nil{
                     if let waypointData = waypointData{

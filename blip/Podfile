@@ -35,6 +35,7 @@ target 'Blip' do
   pod 'Hero'
   pod 'SRCountdownTimer'
   pod 'Pulsator'
+  pod 'Eureka'
 
   target 'BlipTests' do
     inherit! :search_paths

@@ -69,6 +69,8 @@
 		F3D21EE9208AE39500832544 /* InstructionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D21EE7208AE39500832544 /* InstructionVC.swift */; };
 		F3D21EEA208AE39500832544 /* InstructionVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3D21EE8208AE39500832544 /* InstructionVC.xib */; };
 		F3E330B42075A38100F19CF8 /* camera.json in Resources */ = {isa = PBXBuildFile; fileRef = F3E330B32075A38000F19CF8 /* camera.json */; };
+		F3EC0E6A209FDD5500E08668 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EC0E69209FDD5400E08668 /* SettingsVC.swift */; };
+		F3EC0E6D209FE13400E08668 /* BankFormVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EC0E6B209FE13400E08668 /* BankFormVC.swift */; };
 		F3F5081E2031F77E00252E65 /* CenturyGothic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B537340202EBD4C0020F3B1 /* CenturyGothic.ttf */; };
 		F3F5081F2031F78300252E65 /* CenturyGothicBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B53733F202EBD4C0020F3B1 /* CenturyGothicBold.ttf */; };
 		F3F508202031F78C00252E65 /* lgsu.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 3B14B53F202F55E100B1C015 /* lgsu.mp4 */; };
@@ -172,6 +174,8 @@
 		F3D21EE7208AE39500832544 /* InstructionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionVC.swift; sourceTree = "<group>"; };
 		F3D21EE8208AE39500832544 /* InstructionVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InstructionVC.xib; sourceTree = "<group>"; };
 		F3E330B32075A38000F19CF8 /* camera.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = camera.json; sourceTree = "<group>"; };
+		F3EC0E69209FDD5400E08668 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
+		F3EC0E6B209FE13400E08668 /* BankFormVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankFormVC.swift; sourceTree = "<group>"; };
 		F3F508212032085600252E65 /* Blip-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Blip-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -331,6 +335,7 @@
 		3B53733A202EBBDC0020F3B1 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				F3EC0E6B209FE13400E08668 /* BankFormVC.swift */,
 				3B53736C202EC0DB0020F3B1 /* AppFABMenuController.swift */,
 				3B537360202EC0D80020F3B1 /* ProfilePage.swift */,
 				3B537371202EC0DC0020F3B1 /* Lgsupage.swift */,
@@ -347,6 +352,7 @@
 				3BCD844520747C130079B4D4 /* ChoosePictureVC.swift */,
 				F347473D207FC40D00F9A603 /* SearchForJobVC.swift */,
 				F38E5A6C208119B400128D46 /* FoundJob(MultiplePoints).swift */,
+				F3EC0E69209FDD5400E08668 /* SettingsVC.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -714,7 +720,6 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Blip/Pods-Blip-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/AZDialogView/AZDialogView.framework",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/BSGridCollectionViewLayout/BSGridCollectionViewLayout.framework",
 				"${BUILT_PRODUCTS_DIR}/BSImagePicker/BSImagePicker.framework",
@@ -722,6 +727,7 @@
 				"${BUILT_PRODUCTS_DIR}/CHIPageControl/CHIPageControl.framework",
 				"${BUILT_PRODUCTS_DIR}/Cosmos/Cosmos.framework",
 				"${BUILT_PRODUCTS_DIR}/DynamicBlurView/DynamicBlurView.framework",
+				"${BUILT_PRODUCTS_DIR}/Eureka/Eureka.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKShareKit/FBSDKShareKit.framework",
@@ -760,7 +766,6 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AZDialogView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BSGridCollectionViewLayout.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BSImagePicker.framework",
@@ -768,6 +773,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CHIPageControl.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Cosmos.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DynamicBlurView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Eureka.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKShareKit.framework",
@@ -828,11 +834,13 @@
 				3B537382202EC0DC0020F3B1 /* SellVC+.swift in Sources */,
 				3B5372F8202EB4320020F3B1 /* AppDelegate.swift in Sources */,
 				F3D21EE420857E2100832544 /* BlipWaypoint.swift in Sources */,
+				F3EC0E6D209FE13400E08668 /* BankFormVC.swift in Sources */,
 				3B537330202EBA6B0020F3B1 /* AppError.swift in Sources */,
 				F347473E207FC40D00F9A603 /* SearchForJobVC.swift in Sources */,
 				3B537381202EC0DC0020F3B1 /* ProfilePicture.swift in Sources */,
 				F30D60CB207B19930022F90D /* Delivery.swift in Sources */,
 				3B537397202EC2210020F3B1 /* Extensions.swift in Sources */,
+				F3EC0E6A209FDD5500E08668 /* SettingsVC.swift in Sources */,
 				3B4B92CC20797EA90075BE98 /* DeliveryAnnotation.swift in Sources */,
 				3B537334202EBA6B0020F3B1 /* BlipUser.swift in Sources */,
 				3B537375202EC0DC0020F3B1 /* PasswordReset.swift in Sources */,

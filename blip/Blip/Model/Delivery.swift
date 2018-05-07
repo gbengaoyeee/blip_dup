@@ -26,6 +26,7 @@ class Delivery{
     var deliverySubInstruction: String!
     var store: Store!
     var pickupNumber: String!
+    var state: String?
     
     init(deliveryLocation: CLLocationCoordinate2D, identifier: String, origin: CLLocationCoordinate2D, recieverName: String, recieverNumber: String, pickupNumber: String, pickupMainInstruction: String, pickupSubInstruction: String, deliveryMainInstruction: String, deliverySubInstruction: String, storeName:String) {
         self.deliveryLocation = deliveryLocation
@@ -69,6 +70,9 @@ class Delivery{
         let deliveryValues = snapshot.value as? [String: AnyObject]
         self.deliveryLocation = CLLocationCoordinate2D(latitude: (deliveryValues!["deliveryLat"] as? Double)!, longitude: (deliveryValues!["deliveryLong"] as? Double)!)
         self.identifier = snapshot.key
+        if let state = deliveryValues!["state"] as? String{
+            self.state = state
+        }
         self.origin = CLLocationCoordinate2D(latitude: (deliveryValues!["originLat"] as? Double)!, longitude: (deliveryValues!["originLong"] as? Double)!)
         self.recieverName = deliveryValues!["recieverName"] as! String
         self.receiverPhoneNumber = deliveryValues!["recieverNumber"] as! String
