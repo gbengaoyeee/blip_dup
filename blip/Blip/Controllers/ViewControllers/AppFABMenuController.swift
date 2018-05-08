@@ -129,12 +129,9 @@ extension AppFABMenuController {
         fabMenu.fabButton?.animate(.rotate(0))
         fabMenu.close()
         let sb = UIStoryboard.init(name: "Main", bundle: nil)
-        if let profilepage = sb.instantiateViewController(withIdentifier: "profilePage") as? ProfilePage{
-            profilepage.currUser = currUser
-            self.present(profilepage, animated: true, completion: nil)
-        }else{
-            print("Something is Wrong: No profile page")
-        }
+        let settingsPage = sb.instantiateViewController(withIdentifier: "settings") as! SettingsVC
+        self.present(settingsPage, animated: true, completion: nil)
+
     }
     
     @objc fileprivate func handleLogout(button: UIButton) {

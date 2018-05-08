@@ -183,7 +183,7 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
         navigationViewController.routeController.suspendLocationUpdates()
         for way in self.waypoints{
             if waypoint.coordinate == way.coordinate{
-                vc.isLastWaypoint = (self.waypoints.last == way)
+                vc.isLastWaypoint = (self.waypoints.last?.coordinate == way.coordinate)
                 vc.delivery = way.delivery
                 if let name = way.name{
                     if name == "Pickup"{
