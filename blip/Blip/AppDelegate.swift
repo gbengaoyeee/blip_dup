@@ -61,7 +61,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     })
                 }
             }
-            else if auth.currentUser != nil && (auth.currentUser?.isEmailVerified)!{
+            else if auth.currentUser != nil && (auth.currentUser?.isEmailVerified)! && (auth.currentUser?.photoURL != nil){
                 self.setLoginAsRoot()
                 self.sessionTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true, block: { (timer) in
                     self.checkUserAgainstDatabase(completion: { (bool, error) in

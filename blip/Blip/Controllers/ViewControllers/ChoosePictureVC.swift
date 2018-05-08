@@ -59,37 +59,45 @@ class ChoosePictureVC: UIViewController, UIImagePickerControllerDelegate, UINavi
     }
     
     @objc fileprivate func handleContinuePressed(){
-        if continuePressed_num < 1{
-            service.createUser(email: userInfoDict["email"]!, password: userInfoDict["password"]!, image: profileImageView.image) { (errMsg, user) in
-                if errMsg != nil{
-                    let errorPopup = PopupDialog(title: "Upload a profile picture", message: "We require our users to verify their identity for safety reasons. Please upload a photo of yourself")
-                    self.present(errorPopup, animated: true, completion: nil)
-                    return
-                }
-                if let FIRuser = user as? User{
-                    print("CREATED SUCCESS")
-                    self.newUser = FIRuser
-                    self.present(self.prepareEmailVerifyPopup(user: FIRuser), animated: true, completion: nil)
-                    self.continuePressed_num += 1
-                }
+        service.createUser(name: userInfoDict["name"]!, email: userInfoDict["email"]!, password: userInfoDict["password"]!, image: nil) { (errMsg, user) in
+            if errMsg != nil{
+                print(errMsg!)
+                return
             }
-        }else{
-            if let FIRuser = newUser{
-                FIRuser.reload(completion: { (err) in
-                    if let error = err{
-                        print(error.localizedDescription)
-                        return
-                    }
-                    if !(FIRuser.isEmailVerified){
-                        self.present(self.prepareEmailVerifyPopup(user: FIRuser), animated: true, completion: nil)
-                    }else{
-                        //perform segue
-                        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                        appDelegate.setLoginAsRoot()
-                    }
-                })
-            }
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            appDelegate.setLoginAsRoot()
         }
+//        if continuePressed_num < 1{
+//            service.createUser(email: userInfoDict["email"]!, password: userInfoDict["password"]!, image: profileImageView.image) { (errMsg, user) in
+//                if errMsg != nil{
+//                    let errorPopup = PopupDialog(title: "Upload a profile picture", message: "We require our users to verify their identity for safety reasons. Please upload a photo of yourself")
+//                    self.present(errorPopup, animated: true, completion: nil)
+//                    return
+//                }
+//                if let FIRuser = user as? User{
+//                    print("CREATED SUCCESS")
+//                    self.newUser = FIRuser
+//                    self.present(self.prepareEmailVerifyPopup(user: FIRuser), animated: true, completion: nil)
+//                    self.continuePressed_num += 1
+//                }
+//            }
+//        }else{
+//            if let FIRuser = newUser{
+//                FIRuser.reload(completion: { (err) in
+//                    if let error = err{
+//                        print(error.localizedDescription)
+//                        return
+//                    }
+//                    if !(FIRuser.isEmailVerified){
+//                        self.present(self.prepareEmailVerifyPopup(user: FIRuser), animated: true, completion: nil)
+//                    }else{
+//                        //perform segue
+//                        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+//                        appDelegate.setLoginAsRoot()
+//                    }
+//                })
+//            }
+//        }
         
     }
     

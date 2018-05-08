@@ -184,12 +184,7 @@ class ServiceCalls:NSObject, NSCoding{
     ///   - email: user email
     ///   - password: user password
     ///   - completion: returns upon completion of user object creation in firebase
-    func createUser(email: String, password:String, image:UIImage?, completion: CreateUserCompletion?){
-        if image == nil{// imageview has no image
-            let error = NSError()
-            self.handleFirebaseError(error: error, completion: completion)
-            return
-        }
+    func createUser(name:String, email: String, password:String, image:UIImage?, completion: CreateUserCompletion?){
         Auth.auth().createUser(withEmail: email, password: password, completion: { (user, error) in
             if error != nil{
                 //Handling Firebase Errors
@@ -198,15 +193,34 @@ class ServiceCalls:NSObject, NSCoding{
             }
             //No errors
             //Do whatever is needed
-            self.emailHash = self.MD5(string: (user?.email)!)
-            //Send Email verification
-            user?.sendEmailVerification(completion: { (error) in
-                if error != nil{
-                    print(error!.localizedDescription)
+            
+            let profile = user?.createProfileChangeRequest()
+            profile?.displayName = name
+            profile?.commitChanges(completion: { (err) in
+                if err != nil{
+                    print("ERROR:",err!.localizedDescription)
+                    self.handleFirebaseError(error: (err as NSError?)!, completion: completion)
                     return
                 }
-                completion?(nil, user)
+                self.emailHash = self.MD5(string: (user?.email)!)
+                self.addUserToDatabase(uid: (user?.uid)!, name: name, email: email, provider: nil)
+                self.uploadProfileImage(image: image, completion: { (errMsg, uploaded) in   //uploaded is always nil
+                    if errMsg != nil{
+                        print("ERROR:",errMsg!)
+                        return
+                    }
+                    //Send Email verification
+                    user?.sendEmailVerification(completion: { (error) in
+                        if error != nil{
+                            print(error!.localizedDescription)
+                            self.handleFirebaseError(error: (error as NSError?)!, completion: completion)
+                            return
+                        }
+                        completion?(nil, user)
+                    })
+                })
             })
+            
         })
     }
     
@@ -233,18 +247,18 @@ class ServiceCalls:NSObject, NSCoding{
     
     
     ///upload profile image to firebase storage
-    func uploadProfileImage(image:UIImage, completion: CreateUserCompletion?){
+    func uploadProfileImage(image:UIImage?, completion: CreateUserCompletion?){
         let storageRef = Storage.storage().reference(forURL: "gs://blip-c1e83.appspot.com/").child("profile_image").child(emailHash)
-        if let imageData = UIImageJPEGRepresentation(image, 0.1){
+        if let imageData = UIImageJPEGRepresentation(image!, 0.1){
             storageRef.putData(imageData, metadata: nil, completion: { (metadata, error) in
                 if error != nil{
-                    completion?("error: Couldn't store image",nil)
+                    self.handleFirebaseError(error: (error as NSError?)!, completion: completion)
                     return
                 }
-//                let profileImgURL = metadata?.downloadURL()?.absoluteString
+                
                 metadata?.storageReference?.downloadURL(completion: { (profileImgURL, error) in
                     if error != nil{
-                        completion?("error: Couldn't store image",nil)
+                       self.handleFirebaseError(error: (error as NSError?)!, completion: completion)
                         return
                     }
                     let profile = Auth.auth().currentUser?.createProfileChangeRequest()
@@ -859,6 +873,19 @@ class ServiceCalls:NSObject, NSCoding{
      Handles all Firebase Errors
      */
     func handleFirebaseError(error: NSError, completion: CreateUserCompletion?){
+        if let errorCode = StorageErrorCode(rawValue: error.code){
+            switch (errorCode){
+            case .downloadSizeExceeded:
+                completion?("File is too large",nil)
+                break
+            case .unauthenticated:
+                completion?("You are not authenticated",nil)
+                break
+            default:
+                completion?("There is a problem storing image", nil)
+            }
+        }
+        
         if let errorCode = AuthErrorCode(rawValue: error.code){
             switch (errorCode){
             case .invalidEmail:
