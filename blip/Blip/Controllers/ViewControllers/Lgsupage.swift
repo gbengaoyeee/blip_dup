@@ -29,9 +29,6 @@ class Lgsupage: UIViewController {
 
     var dbRef: DatabaseReference!
     let logoAnimation = LOTAnimationView(name: "clock")
-    let userDefault = UserDefaults.standard
-    var userCredDict:[String:String]!
-    let loginCredentials = "loginCredentials"
     var service:ServiceCalls! = ServiceCalls.instance
     
     override func viewWillAppear(_ animated: Bool) {
@@ -91,9 +88,7 @@ class Lgsupage: UIViewController {
         NotificationCenter.default.addObserver(self,selector: #selector(appWillEnterForegroundNotification),name: .UIApplicationWillEnterForeground, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(playerItemReachEnd(notification:)), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: Player.currentItem)
     }
-    
-    //Handle the swipes
-    
+
     
     @IBAction func loginWithFacebookClicked(_ sender: Any) {
         
@@ -107,8 +102,7 @@ class Lgsupage: UIViewController {
                 }
                 if(fbloginresult.grantedPermissions.contains("email"))
                 {
-                    self.getFBUserData()
-                    self.userDefault.removeObject(forKey: "loginCredentials")
+                    self.service.getFBUserData()
                 }
             }
         }
@@ -126,57 +120,6 @@ class Lgsupage: UIViewController {
         super.didReceiveMemoryWarning()
     }
     
-    func getFBUserData(){
-        if((FBSDKAccessToken.current()) != nil){
-            FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, name, first_name, last_name, picture.type(large), email"]).start(completionHandler: { (connection, result, error) -> Void in
-                if (error == nil){
-                    //everything works
-                    
-                    let credential = FacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
-                    Auth.auth().signIn(with: credential) { (user, error) in
-                        if error != nil {
-                            print(error as Any)
-                            return
-                        }
-                        print("Signed in with Facebook")
-                        let data = result as! [String: AnyObject]
-                        let FBid = data["id"] as? String
-                        
-                        let url = URL(string: "https://graph.facebook.com/\(FBid!)/picture?type=large&return_ssl_resources=1")
-                        let profile = user?.createProfileChangeRequest()
-                        profile?.photoURL = url
-                        profile?.commitChanges(completion: { (err) in
-                            if err != nil{
-                                print(err?.localizedDescription ?? "")
-                            }else{
-                                let emailHash = self.MD5(string: (user?.email)!)
-                                self.dbRef.child("Couriers").child(emailHash).child("photoURL").setValue(url?.absoluteString)
-                                self.service.emailHash = emailHash //MIGHT WANT TO REMOVE THIS LATER ON
-                                self.service.addUserToDatabase(uid: (user?.uid)!, name: (user?.displayName)!, email: (user?.email)!)
-                                self.saveInfoInUserDefault(picture: url?.absoluteString, emailHash: emailHash)
-                            }
-                        })
-                        
-                    }
-                }
-                else{
-                    print(error?.localizedDescription ?? "")
-                    return
-                }
-            })
-        }
-    }
-    
-    fileprivate func saveInfoInUserDefault(picture:String?, emailHash:String){
-        self.userCredDict = [:]
-        self.userCredDict["email"] = nil
-        self.userCredDict["password"] = nil
-        self.userCredDict["photoURL"] = picture
-        self.userCredDict["emailHash"] = emailHash
-        self.userCredDict["currentDevice"] = AppDelegate.DEVICEID
-        self.userDefault.setValue(self.userCredDict, forKey: self.loginCredentials)
-        return
-    }
     
     func MD5(string: String) -> String {
         let messageData = string.data(using:.utf8)!
@@ -187,7 +130,6 @@ class Lgsupage: UIViewController {
                 CC_MD5(messageBytes, CC_LONG(messageData.count), digestBytes)
             }
         }
-        
         return digestData.map { String(format: "%02hhx", $0) }.joined()
     }
     

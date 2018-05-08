@@ -36,6 +36,7 @@ class SearchForJobVC: UIViewController {
         super.viewDidLoad()
         print("View loaded")
         locationManager.delegate = self
+        locationManager.startUpdatingLocation()
         prepareBlur()
     }
     
@@ -49,6 +50,14 @@ class SearchForJobVC: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         updateCurrentDevice()
+        service.checkIncompleteJobs(myLocation: self.currentLocation) { (exist, job) in
+            if exist{
+                self.foundJob = job
+                print("1")
+                self.performSegue(withIdentifier: "foundJob", sender: self)
+            }
+        }
+        
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -131,6 +140,7 @@ class SearchForJobVC: UIViewController {
                 if let job = job{
                     self.foundJob = job
                     self.goButton.isUserInteractionEnabled = true
+                    print("2")
                     self.performSegue(withIdentifier: "foundJob", sender: self)
                 }
                 if errorCode != nil{
@@ -203,6 +213,7 @@ extension SearchForJobVC: CLLocationManagerDelegate{
         currentLocation = locValue
         if let loc = locValue{
             service.updateJobAccepterLocation(location: loc)
+            
             manager.stopUpdatingLocation()
         }
         setMapCamera()

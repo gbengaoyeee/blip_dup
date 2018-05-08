@@ -146,7 +146,7 @@ class ChoosePictureVC: UIViewController, UIImagePickerControllerDelegate, UINavi
                             return
                         }
                         else{
-                            self.service.addUserToDatabase(uid: user.uid, name: self.userInfoDict["name"]!, email: self.userInfoDict["email"]!)
+                            self.service.addUserToDatabase(uid: user.uid, name: self.userInfoDict["name"]!, email: self.userInfoDict["email"]!, provider: nil)
                             self.service.uploadProfileImage(image: self.profileImageView.image!, completion: { (errMsg, any) in
                                 if errMsg != nil{
                                     print(errMsg!)

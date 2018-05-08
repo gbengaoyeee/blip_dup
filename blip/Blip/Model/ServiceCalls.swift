@@ -13,6 +13,8 @@ import CoreLocation
 import Firebase
 import Mapbox
 import Alamofire
+import FBSDKLoginKit
+import FBSDKCoreKit
 
 typealias CreateUserCompletion = (_ errorMsg: String?, _ data: AnyObject?) ->Void
 
@@ -49,6 +51,9 @@ class ServiceCalls:NSObject, NSCoding{
     var userRefHandle: DatabaseHandle!
     var childHandle: DatabaseHandle!
     var currentBlipUser: BlipUser?
+    var userCredDict:[String:String]!
+    let loginCredentials = "loginCredentials"
+    let userDefault = UserDefaults.standard
     
     override init() {
         super.init()
@@ -123,6 +128,7 @@ class ServiceCalls:NSObject, NSCoding{
     ///REMOVE MORE AS YOU ADD MORE OBSERVERS
     func removeFirebaseObservers(){
         userRef.child(emailHash).removeAllObservers()
+        self.userRef.child(emailHash).child("givenJob/deliveries").removeAllObservers()
         print("Observers Removed")
     }
     
@@ -205,11 +211,28 @@ class ServiceCalls:NSObject, NSCoding{
     }
     
     ///Add the new user's info into Database
-    func addUserToDatabase(uid:String, name:String, email:String){
-        let dict:[String:Any] = ["uid":uid ,"name":name ,"email":email ,"rating":5.0 ,"customer_id":"" ,"currentDevice":AppDelegate.DEVICEID, "verified":false]
-        userRef.child(self.emailHash).updateChildValues(dict)
+    func addUserToDatabase(uid:String, name:String, email:String, provider: String?){
+        if provider! == "facebook"{
+            userRef.child(MD5(string: email)).observeSingleEvent(of: .value) { (snapshot) in
+                if let values = snapshot.value as? [String:Any]{
+                    let granted = values["granted"] as? Bool
+                    if granted == true{
+                        let dict:[String:Any] = ["granted":true, "uid":uid, "name":name, "email":email, "rating":5.0, "customer_id":"", "currentDevice":AppDelegate.DEVICEID]
+                        self.userRef.child(self.emailHash).updateChildValues(dict)
+                        return
+                    }
+                    let dict:[String:Any] = ["granted":true, "uid":uid, "name":name, "email":email, "rating":5.0, "customer_id":"", "currentDevice":AppDelegate.DEVICEID, "verified":false]
+                    self.userRef.child(self.emailHash).updateChildValues(dict)
+                }
+            }
+        }else{
+            let dict:[String:Any] = ["uid":uid ,"name":name ,"email":email ,"rating":5.0 ,"customer_id":"" ,"currentDevice":AppDelegate.DEVICEID, "verified":false]
+            userRef.child(self.emailHash).updateChildValues(dict)
+        }
     }
     
+    
+    ///upload profile image to firebase storage
     func uploadProfileImage(image:UIImage, completion: CreateUserCompletion?){
         let storageRef = Storage.storage().reference(forURL: "gs://blip-c1e83.appspot.com/").child("profile_image").child(emailHash)
         if let imageData = UIImageJPEGRepresentation(image, 0.1){
@@ -270,6 +293,59 @@ class ServiceCalls:NSObject, NSCoding{
         }
     }
     
+    ///Get facebook user data
+    func getFBUserData(){
+        if((FBSDKAccessToken.current()) != nil){
+            FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, name, first_name, last_name, picture.type(large), email"]).start(completionHandler: { (connection, result, error) -> Void in
+                if (error == nil){
+                    //everything works
+                    let credential = FacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
+                    Auth.auth().signIn(with: credential) { (user, error) in
+                        if error != nil {
+                            print(error as Any)
+                            return
+                        }
+                        print("Signed in with Facebook")
+                        let data = result as! [String: AnyObject]
+                        let FBid = data["id"] as? String
+                        
+                        let url = URL(string: "https://graph.facebook.com/\(FBid!)/picture?type=large&return_ssl_resources=1")
+                        let profile = user?.createProfileChangeRequest()
+                        profile?.photoURL = url
+                        profile?.commitChanges(completion: { (err) in
+                            if err != nil{
+                                print(err?.localizedDescription ?? "")
+                            }else{
+                                let emailHash = self.MD5(string: (user?.email)!)
+                                self.dbRef.child("Couriers").child(emailHash).child("photoURL").setValue(url?.absoluteString)
+                                self.emailHash = emailHash //MIGHT WANT TO REMOVE THIS LATER ON
+                                self.addUserToDatabase(uid: (user?.uid)!, name: (user?.displayName)!, email: (user?.email)!, provider: "facebook")
+                                self.saveFBUserInfoInUserDefault(picture: url?.absoluteString, emailHash: emailHash)
+                            }
+                        })
+                    }
+                }
+                else{
+                    print(error?.localizedDescription ?? "")
+                    return
+                }
+            })
+        }
+    }
+    
+    
+    fileprivate func saveFBUserInfoInUserDefault(picture:String?, emailHash:String){
+        self.userCredDict = [:]
+        self.userCredDict["email"] = nil
+        self.userCredDict["password"] = nil
+        self.userCredDict["photoURL"] = picture
+        self.userCredDict["emailHash"] = emailHash
+        self.userCredDict["currentDevice"] = AppDelegate.DEVICEID
+        self.userDefault.setValue(self.userCredDict, forKey: self.loginCredentials)
+        return
+    }
+    
+    
     ///Add noShow to delivery reference
     func addNoShow(id:String, call: Bool){
         userRef.child(emailHash).child("givenJob/deliveries/\(id)").updateChildValues(["noShow":true, "called": call])
@@ -304,13 +380,41 @@ class ServiceCalls:NSObject, NSCoding{
     
     ///Puts the collection of jobs back in AllJobs reference if this user does not accept within 30 seconds
     func putBackJobs(){
-        self.userRef.child(emailHash).child("givenJob").observeSingleEvent(of: .childRemoved) { (snapshot) in
-            if snapshot.key == "deliveries"{
-                self.jobsRef.updateChildValues(snapshot.value as! [String:Any])
+//        self.userRef.child(emailHash).child("givenJob").observeSingleEvent(of: .childRemoved) { (snapshot) in
+//            if snapshot.key == "deliveries"{
+//                self.jobsRef.updateChildValues(snapshot.value as! [String:Any])
+//            }
+//        }
+        self.userRef.child(emailHash).child("givenJob/deliveries").observe(.childAdded) { (snapshot) in
+            let values = snapshot.value as? [String:Any]
+            let state = values!["state"] as? String
+            if (state == "delivery") || (state == nil){
+                self.jobsRef.updateChildValues([snapshot.key:values as Any])
+                self.userRef.child(self.emailHash).child("givenJob/deliveries/\(snapshot.key)").removeValue()
             }
         }
-        self.userRef.child(emailHash).child("givenJob/deliveries").removeValue()
+        
     }
+    
+    
+    func checkIncompleteJobs(myLocation: CLLocationCoordinate2D, completion: @escaping (Bool, Job?)->()){
+        userRef.child(emailHash).child("givenJob").observeSingleEvent(of: .value) { (snapshot) in
+            if snapshot.exists(){
+                print(snapshot)
+                if snapshot.key == "givenJob"{
+                    if let jobID = snapshot.value as? [String: AnyObject]{
+                        let j = Job(snapshot: snapshot.childSnapshot(forPath: jobID.keys.first!), type: "delivery")
+                        j?.locList.insert(myLocation, at: 0)
+                        completion(true, j)
+                    }
+                }
+                
+            }else{
+                completion(false,nil)
+            }
+        }
+    }
+    
     
     func userCancelledJob(){
         self.userRef.child(emailHash).updateChildValues(["flagged":true])
