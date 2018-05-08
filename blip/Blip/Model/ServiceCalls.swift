@@ -217,16 +217,16 @@ class ServiceCalls:NSObject, NSCoding{
                 if let values = snapshot.value as? [String:Any]{
                     let granted = values["granted"] as? Bool
                     if granted == true{
-                        let dict:[String:Any] = ["granted":true, "uid":uid, "name":name, "email":email, "rating":5.0, "customer_id":"", "currentDevice":AppDelegate.DEVICEID]
+                        let dict:[String:Any] = ["granted":true, "uid":uid, "name":name, "email":email, "rating":5.0, "currentDevice":AppDelegate.DEVICEID]
                         self.userRef.child(self.emailHash).updateChildValues(dict)
                         return
                     }
-                    let dict:[String:Any] = ["granted":true, "uid":uid, "name":name, "email":email, "rating":5.0, "customer_id":"", "currentDevice":AppDelegate.DEVICEID, "verified":false]
+                    let dict:[String:Any] = ["granted":true, "uid":uid, "name":name, "email":email, "rating":5.0, "currentDevice":AppDelegate.DEVICEID, "verified":false]
                     self.userRef.child(self.emailHash).updateChildValues(dict)
                 }
             }
         }else{
-            let dict:[String:Any] = ["uid":uid ,"name":name ,"email":email ,"rating":5.0 ,"customer_id":"" ,"currentDevice":AppDelegate.DEVICEID, "verified":false]
+            let dict:[String:Any] = ["uid":uid ,"name":name ,"email":email ,"rating":5.0 , "currentDevice":AppDelegate.DEVICEID, "verified":false]
             userRef.child(self.emailHash).updateChildValues(dict)
         }
     }
@@ -741,6 +741,15 @@ class ServiceCalls:NSObject, NSCoding{
     //        }
     //    }
     //
+    
+    func getAccountID(completion: @escaping (String) -> ()){
+        userRef.observe(.value, with: { (snapshot) in
+            let userDict = snapshot.value as! [String: AnyObject]
+            let account = userDict[self.emailHash]!["account_ID"]! as! String
+            completion(account)
+        })
+    }
+    
     func getCustomerID(completion: @escaping (String) -> ()){
         userRef.observe(.value, with: { (snapshot) in
             let userDict = snapshot.value as! [String: AnyObject]

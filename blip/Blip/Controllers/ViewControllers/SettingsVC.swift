@@ -69,8 +69,17 @@ class SettingsVC: FormViewController {
                 $0.value = Date(timeIntervalSinceReferenceDate: 0)
             }
             <<< TextRow(){ row in
-                row.title = "Social insurance number"
+                row.title = "SIN no."
                 row.placeholder = "Your data is used for KYC in connecting your bank account"
+            }
+        form +++ Section()
+            <<< ButtonRow() {
+                $0.title = "Done"
+                $0.cell.backgroundColor = #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1)
+                $0.cell.tintColor = UIColor.white
+                }
+                .onCellSelection { cell, row in
+                    self.dismiss(animated: true, completion: nil)
             }
     }
 }

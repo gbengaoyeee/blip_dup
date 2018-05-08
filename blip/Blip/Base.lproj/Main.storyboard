@@ -229,7 +229,6 @@
                         <outlet property="goButtonPulseAnimation" destination="F1g-OS-zCz" id="hVu-7L-nHF"/>
                         <outlet property="map" destination="k1b-e6-YiJ" id="IyO-MK-efC"/>
                         <segue destination="H07-W2-WS5" kind="show" identifier="foundJob" id="pBq-Ls-F0d"/>
-                        <segue destination="f1L-T0-1e8" kind="show" id="oXz-gS-xEl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fpp-hs-Po5" userLabel="First Responder" sceneMemberID="firstResponder"/>
