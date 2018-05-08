@@ -25,6 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     var isLaunched = false
     var window: UIWindow?
+    var sessionTimer: Timer!
 
     var counter = 60
     static let NOTIFICATION_URL = "https://fcm.googleapis.com/fcm/send"
@@ -47,42 +48,52 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         _ = Auth.auth().addStateDidChangeListener { (auth, user) in
             
-            self.checkUserAgainstDatabase(completion: { (bool, error) in
-                if true{
-                    if auth.currentUser != nil && auth.currentUser?.photoURL == nil{
-                        if let user = Auth.auth().currentUser{
-                            let hash = self.MD5(string: user.email!)
-                            self.lastUserHash = hash
-                            self.dbRef.child("Couriers").child(hash).removeValue()
-                            user.delete(completion: { (error) in
-                                if let err = error{
-                                    print(err.localizedDescription)
-                                    return
-                                }
-                            })
+            if auth.currentUser != nil && auth.currentUser?.photoURL == nil{
+                if let user = Auth.auth().currentUser{
+                    let hash = self.MD5(string: user.email!)
+                    self.lastUserHash = hash
+                    self.dbRef.child("Couriers").child(hash).removeValue()
+                    user.delete(completion: { (error) in
+                        if let err = error{
+                            print(err.localizedDescription)
+                            return
                         }
-                    }
-                    else if auth.currentUser != nil && (auth.currentUser?.isEmailVerified)!{
-                        self.setLoginAsRoot()
-                    }
-                    else{
-                        let providerData = Auth.auth().currentUser?.providerData
-                        if providerData != nil{
-                            for userInfo in providerData! {
-                                if userInfo.providerID == "facebook.com" {
-                                    self.setLoginAsRoot()
-                                }
-                                else{
-                                    self.setLogoutAsRoot()
-                                }
-                            }
+                    })
+                }
+            }
+            else if auth.currentUser != nil && (auth.currentUser?.isEmailVerified)!{
+                self.setLoginAsRoot()
+                self.sessionTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true, block: { (timer) in
+                    self.checkUserAgainstDatabase(completion: { (bool, error) in
+                        if error != nil{
+                            print(error!)
+                        }
+                    })
+                })
+            }
+            else{
+                let providerData = Auth.auth().currentUser?.providerData
+                if providerData != nil{
+                    for userInfo in providerData! {
+                        if userInfo.providerID == "facebook.com" {
+                            self.setLoginAsRoot()
+                            self.sessionTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true, block: { (timer) in
+                                self.checkUserAgainstDatabase(completion: { (bool, error) in
+                                    if error != nil{
+                                        print(error!)
+                                    }
+                                })
+                            })
                         }
                         else{
                             self.setLogoutAsRoot()
                         }
                     }
                 }
-            })
+                else{
+                    self.setLogoutAsRoot()
+                }
+            }
         }
         
         if #available(iOS 10.0, *){
@@ -123,7 +134,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         return true
     }
     
-    fileprivate func checkUserAgainstDatabase(completion: @escaping (_ success: Bool, _ error: NSError?) -> Void) {
+    
+    @objc fileprivate func checkUserAgainstDatabase(completion: @escaping (_ success: Bool, _ error: NSError?) -> Void) {
+        
         guard let currentUser = Auth.auth().currentUser else { return }
         currentUser.getIDTokenForcingRefresh(true) { (idToken, error) in
             if let error = error {
@@ -143,6 +156,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func setLogoutAsRoot(){
+        if sessionTimer != nil{
+            self.sessionTimer.invalidate()
+        }
         window = UIWindow(frame: Screen.bounds)
         var options = UIWindow.TransitionOptions()
         options.direction = .fade
