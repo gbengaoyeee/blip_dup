@@ -136,93 +136,9 @@
                     <view key="view" contentMode="scaleToFill" id="MNo-Xp-PW0">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SqR-pV-bhF">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="oHf-y4-TAw">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                </view>
-                                <blurEffect style="light"/>
-                            </visualEffectView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7QS-Fp-qTz">
-                                <rect key="frame" x="137" y="50" width="100" height="100"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="7QS-Fp-qTz" secondAttribute="height" multiplier="1:1" id="xkg-3Y-Dte"/>
-                                </constraints>
-                            </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7IV-bR-aPM" customClass="RaisedButton" customModule="Material">
-                                <rect key="frame" x="37" y="230" width="300" height="50"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
-                                <color key="tintColor" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                <state key="normal" title="Update Bank details">
-                                    <color key="titleColor" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="pulseColor">
-                                        <color key="value" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
-                                        <color key="value" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
-                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="title" value="Update Bank details"/>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="updateBankDetails:" destination="f1L-T0-1e8" eventType="touchUpInside" id="xO0-gc-dre"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rxb-1T-UM4" customClass="RaisedButton" customModule="Material">
-                                <rect key="frame" x="37" y="310" width="300" height="50"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
-                                <color key="tintColor" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                <state key="normal" title="Log out">
-                                    <color key="titleColor" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="pulseColor">
-                                        <color key="value" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
-                                        <color key="value" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
-                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="title" value="Log out"/>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="logout:" destination="f1L-T0-1e8" eventType="touchUpInside" id="ea5-zy-yrr"/>
-                                </connections>
-                            </button>
-                        </subviews>
                         <color key="backgroundColor" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                        <constraints>
-                            <constraint firstItem="rxb-1T-UM4" firstAttribute="centerX" secondItem="7IV-bR-aPM" secondAttribute="centerX" id="9b1-Hx-pot"/>
-                            <constraint firstItem="SqR-pV-bhF" firstAttribute="height" secondItem="MNo-Xp-PW0" secondAttribute="height" multiplier="0.3" id="CpL-Xs-S6R"/>
-                            <constraint firstItem="rxb-1T-UM4" firstAttribute="top" secondItem="7IV-bR-aPM" secondAttribute="bottom" constant="30" id="HCR-SU-syO"/>
-                            <constraint firstItem="RXY-yQ-wnC" firstAttribute="top" secondItem="SqR-pV-bhF" secondAttribute="top" constant="20" id="Hto-p5-1NX"/>
-                            <constraint firstItem="SqR-pV-bhF" firstAttribute="centerX" secondItem="RXY-yQ-wnC" secondAttribute="centerX" id="LVQ-hb-nsr"/>
-                            <constraint firstItem="rxb-1T-UM4" firstAttribute="height" secondItem="7IV-bR-aPM" secondAttribute="height" id="Qky-eb-gRi"/>
-                            <constraint firstItem="7QS-Fp-qTz" firstAttribute="centerX" secondItem="RXY-yQ-wnC" secondAttribute="centerX" id="XeV-fx-YJa"/>
-                            <constraint firstItem="rxb-1T-UM4" firstAttribute="width" secondItem="7IV-bR-aPM" secondAttribute="width" id="Yfj-HT-LAo"/>
-                            <constraint firstItem="7IV-bR-aPM" firstAttribute="height" secondItem="MNo-Xp-PW0" secondAttribute="height" multiplier="0.075" id="brX-j3-utk"/>
-                            <constraint firstItem="7IV-bR-aPM" firstAttribute="width" secondItem="MNo-Xp-PW0" secondAttribute="width" multiplier="0.8" id="cg9-zs-aR3"/>
-                            <constraint firstItem="7QS-Fp-qTz" firstAttribute="centerY" secondItem="SqR-pV-bhF" secondAttribute="centerY" id="dXK-JO-63p"/>
-                            <constraint firstItem="SqR-pV-bhF" firstAttribute="width" secondItem="MNo-Xp-PW0" secondAttribute="width" id="eb5-hw-meN"/>
-                            <constraint firstItem="7IV-bR-aPM" firstAttribute="centerX" secondItem="RXY-yQ-wnC" secondAttribute="centerX" id="mLd-7l-vgc"/>
-                            <constraint firstItem="7IV-bR-aPM" firstAttribute="top" secondItem="SqR-pV-bhF" secondAttribute="bottom" constant="30" id="osI-sS-AI6"/>
-                            <constraint firstItem="7QS-Fp-qTz" firstAttribute="height" secondItem="MNo-Xp-PW0" secondAttribute="height" multiplier="0.15" id="yRS-72-VFV"/>
-                        </constraints>
                         <viewLayoutGuide key="safeArea" id="RXY-yQ-wnC"/>
                     </view>
-                    <connections>
-                        <outlet property="profilePictureView" destination="7QS-Fp-qTz" id="CY4-N1-U8P"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uSg-oY-6p8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -328,7 +244,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pickup(s)" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="12" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="yzd-d1-K1t">
-                                <rect key="frame" x="40" y="65" width="94.5" height="27"/>
+                                <rect key="frame" x="40" y="65" width="103.5" height="28.5"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="80" id="BCV-zi-Zjj"/>
@@ -339,7 +255,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yb1-G9-67n" customClass="SRCountdownTimer" customModule="SRCountdownTimer">
-                                <rect key="frame" x="48" y="122" width="279.5" height="280"/>
+                                <rect key="frame" x="48" y="123.5" width="279.5" height="280"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1wn-A6-DYN">
                                         <rect key="frame" x="140" y="140" width="0.0" height="0.0"/>
@@ -385,7 +301,7 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PQI-N9-SFv">
-                                <rect key="frame" x="40" y="112" width="0.0" height="0.0"/>
+                                <rect key="frame" x="40" y="113.5" width="0.0" height="0.0"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="60" id="bLG-8d-8nc"/>
                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="250" id="dxx-wu-XOt"/>

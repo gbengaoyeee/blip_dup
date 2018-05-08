@@ -34,9 +34,7 @@ class SearchForJobVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("View loaded")
         locationManager.delegate = self
-        locationManager.startUpdatingLocation()
         prepareBlur()
     }
     
@@ -50,14 +48,15 @@ class SearchForJobVC: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         updateCurrentDevice()
-        service.checkIncompleteJobs(myLocation: self.currentLocation) { (exist, job) in
-            if exist{
-                self.foundJob = job
-                print("1")
-                self.performSegue(withIdentifier: "foundJob", sender: self)
-            }
+    }
+    
+    func showUnfinishedBanner(){
+        let banner = NotificationBanner(title: "Unfinished delivery", subtitle: "Tap to continue your unfinished delivery",style: .info)
+        banner.onTap = {
+            self.performSegue(withIdentifier: "foundJob", sender: self)
         }
-        
+        banner.autoDismiss = false
+        banner.show()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -106,6 +105,19 @@ class SearchForJobVC: UIViewController {
         goButton.makeCircular()
         goButton.borderColor = UIColor.white
         goButton.layer.borderWidth = 2.5
+        goButton.isUserInteractionEnabled = false
+    }
+    
+    func checkForUnfinishedJobs(){
+        service.checkIncompleteJobs(myLocation: self.currentLocation) { (exist, job) in
+            if exist{
+                self.foundJob = job
+                self.showUnfinishedBanner()
+            }
+            else{
+                self.goButton.isUserInteractionEnabled = true
+            }
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -211,12 +223,11 @@ extension SearchForJobVC: CLLocationManagerDelegate{
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let locValue:CLLocationCoordinate2D? = manager.location!.coordinate
         currentLocation = locValue
-        if let loc = locValue{
-            service.updateJobAccepterLocation(location: loc)
-            
-            manager.stopUpdatingLocation()
-        }
+        service.updateJobAccepterLocation(location: locValue!)
+        manager.stopUpdatingLocation()
+        checkForUnfinishedJobs()
         setMapCamera()
+        
     }
 }
 

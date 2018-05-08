@@ -13,44 +13,74 @@ import Material
 import Firebase
 import FBSDKLoginKit
 import PopupDialog
+import Eureka
 
-class SettingsVC: UIViewController {
+class SettingsVC: FormViewController {
 
-    @IBOutlet weak var profilePictureView: UIImageView!
-    
-    var profilePicture: UIImage!
+    let provinces = [
+        "Alberta",
+        "British Columbia",
+        "Manitoba",
+        "New Brunswick",
+        "Newfoundland and Labrador",
+        "Northwest Territories",
+        "Nova Scotia",
+        "Nunavut",
+        "Ontario",
+        "Prince Edward Island",
+        "Quebec",
+        "Saskatchewan",
+        "Yukon"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        prepareProfileImage()
+        buildForm()
     }
     
-    func prepareProfileImage(){
-        profilePictureView.makeCircular()
-        profilePictureView.ApplyOuterShadowToView()
-        profilePictureView.image = profilePicture
-    }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    @IBAction func updateBankDetails(_ sender: Any) {
-        
-    }
     
-    @IBAction func logout(_ sender: Any) {
-        
-        let firebaseAuth = Auth.auth()
-        do {
-            try firebaseAuth.signOut()
-            let facebookLoginManager = FBSDKLoginManager()
-            facebookLoginManager.logOut()
-            print("Logged out")
-        } catch let signOutError as NSError {
-            let signOutErrorPopup = PopupDialog(title: "Error", message: "Error signing you out, try again later" + signOutError.localizedDescription )
-            self.present(signOutErrorPopup, animated: true, completion: nil)
-            print ("Error signing out: %@", signOutError)
+    func buildForm(){
+        form +++ Section("Address")
+            <<< TextRow(){ row in
+                row.title = "Street"
+                row.placeholder = "Enter your Street address"
+            }
+            <<< TextRow(){ row in
+                row.title = "City"
+                row.placeholder = "Eg. Toronto"
+            }
+            <<< TextRow(){ row in
+                row.title = "Postal code"
+                row.placeholder = "Eg. L5L6A2"
+            }
+        form +++ SelectableSection<ListCheckRow<String>>("Select a province", selectionType: .singleSelection(enableDeselection: false))
+        for option in provinces {
+            form.last! <<< ListCheckRow<String>(option){ listRow in
+                listRow.title = option
+                listRow.selectableValue = option
+                listRow.value = nil
+            }
         }
+        form +++ Section("Identity verification")
+            <<< DateRow(){
+                $0.title = "Date of birth"
+                $0.value = Date(timeIntervalSinceReferenceDate: 0)
+            }
+            <<< TextRow(){ row in
+                row.title = "SIN no."
+                row.placeholder = "Your data is used for KYC in connecting your bank account"
+            }
+        form +++ Section()
+            <<< ButtonRow() {
+                $0.title = "Done"
+                $0.cell.backgroundColor = #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1)
+                $0.cell.tintColor = UIColor.white
+                }
+                .onCellSelection { cell, row in
+                    self.dismiss(animated: true, completion: nil)
+            }
     }
 }
 

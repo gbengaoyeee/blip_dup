@@ -46,38 +46,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         STPPaymentConfiguration.shared().appleMerchantIdentifier = "merchant.online.intima"
         
         _ = Auth.auth().addStateDidChangeListener { (auth, user) in
-            if auth.currentUser != nil && auth.currentUser?.photoURL == nil{
-                if let user = Auth.auth().currentUser{
-                    let hash = self.MD5(string: user.email!)
-                    self.lastUserHash = hash
-                    self.dbRef.child("Couriers").child(hash).removeValue()
-                    user.delete(completion: { (error) in
-                        if let err = error{
-                            print(err.localizedDescription)
-                            return
+            
+            self.checkUserAgainstDatabase(completion: { (bool, error) in
+                if true{
+                    if auth.currentUser != nil && auth.currentUser?.photoURL == nil{
+                        if let user = Auth.auth().currentUser{
+                            let hash = self.MD5(string: user.email!)
+                            self.lastUserHash = hash
+                            self.dbRef.child("Couriers").child(hash).removeValue()
+                            user.delete(completion: { (error) in
+                                if let err = error{
+                                    print(err.localizedDescription)
+                                    return
+                                }
+                            })
                         }
-                    })
-                }
-            }
-            else if auth.currentUser != nil && (auth.currentUser?.isEmailVerified)!{
-                self.setLoginAsRoot()
-            }
-            else{
-                let providerData = Auth.auth().currentUser?.providerData
-                if providerData != nil{
-                    for userInfo in providerData! {
-                        if userInfo.providerID == "facebook.com" {
-                            self.setLoginAsRoot()
+                    }
+                    else if auth.currentUser != nil && (auth.currentUser?.isEmailVerified)!{
+                        self.setLoginAsRoot()
+                    }
+                    else{
+                        let providerData = Auth.auth().currentUser?.providerData
+                        if providerData != nil{
+                            for userInfo in providerData! {
+                                if userInfo.providerID == "facebook.com" {
+                                    self.setLoginAsRoot()
+                                }
+                                else{
+                                    self.setLogoutAsRoot()
+                                }
+                            }
                         }
                         else{
                             self.setLogoutAsRoot()
                         }
                     }
                 }
-                else{
-                    self.setLogoutAsRoot()
-                }
-            }
+            })
         }
         
         if #available(iOS 10.0, *){
@@ -116,6 +121,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         
         return true
+    }
+    
+    fileprivate func checkUserAgainstDatabase(completion: @escaping (_ success: Bool, _ error: NSError?) -> Void) {
+        guard let currentUser = Auth.auth().currentUser else { return }
+        currentUser.getIDTokenForcingRefresh(true) { (idToken, error) in
+            if let error = error {
+                completion(false, error as NSError?)
+                print(error.localizedDescription)
+                self.setLogoutAsRoot()
+            } else {
+                completion(true, nil)
+            }
+        }
     }
     
     fileprivate func goHome(){
