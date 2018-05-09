@@ -24,6 +24,9 @@ class ChoosePictureVC: UIViewController, UIImagePickerControllerDelegate, UINavi
     var userUploadedPicture = false
     var continuePressed_num = 0
     var newUser: User?
+    let userDefault = UserDefaults.standard
+    var userCredDict:[String:String]!
+    let loginCredentials = "loginCredentials"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,43 +57,33 @@ class ChoosePictureVC: UIViewController, UIImagePickerControllerDelegate, UINavi
         profileImageView.layer.masksToBounds = true
     }
     
+    fileprivate func saveInfoInUserDefault(email: String, picture:String?, emailHash:String){
+        self.userCredDict = [:]
+        self.userCredDict["email"] = email
+        self.userCredDict["photoURL"] = picture ?? ""
+        self.userCredDict["emailHash"] = emailHash
+        self.userCredDict["currentDevice"] = AppDelegate.DEVICEID
+        self.userDefault.setValue(self.userCredDict, forKey: self.loginCredentials)
+        return
+    }
+    
     fileprivate func setupGoButton(){
         goButton.addTarget(self, action: #selector(handleContinuePressed), for: .touchUpInside)
     }
     
+    
     @objc fileprivate func handleContinuePressed(){
-        if continuePressed_num < 1{
-            service.createUser(email: userInfoDict["email"]!, password: userInfoDict["password"]!, image: profileImageView.image) { (errMsg, user) in
-                if errMsg != nil{
-                    let errorPopup = PopupDialog(title: "Upload a profile picture", message: "We require our users to verify their identity for safety reasons. Please upload a photo of yourself")
-                    self.present(errorPopup, animated: true, completion: nil)
-                    return
-                }
-                if let FIRuser = user as? User{
-                    print("CREATED SUCCESS")
-                    self.newUser = FIRuser
-                    self.present(self.prepareEmailVerifyPopup(user: FIRuser), animated: true, completion: nil)
-                    self.continuePressed_num += 1
-                }
+        service.createUser(name: userInfoDict["name"]!, email: userInfoDict["email"]!, password: userInfoDict["password"]!, image: profileImageView.image) { (errMsg, user) in
+            if errMsg != nil{
+                print(errMsg!)
+                return
             }
-        }else{
-            if let FIRuser = newUser{
-                FIRuser.reload(completion: { (err) in
-                    if let error = err{
-                        print(error.localizedDescription)
-                        return
-                    }
-                    if !(FIRuser.isEmailVerified){
-                        self.present(self.prepareEmailVerifyPopup(user: FIRuser), animated: true, completion: nil)
-                    }else{
-                        //perform segue
-                        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                        appDelegate.setLoginAsRoot()
-                    }
-                })
+            if let user = user as? User{
+                self.saveInfoInUserDefault(email: self.userInfoDict["email"]!, picture: user.photoURL?.absoluteString, emailHash: self.service.emailHash)
+//                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+//                appDelegate.setLoginAsRoot()
             }
         }
-        
     }
     
     @objc fileprivate func handleImageTap(){
@@ -118,56 +111,56 @@ class ChoosePictureVC: UIViewController, UIImagePickerControllerDelegate, UINavi
     }
     
     
-    func prepareEmailVerifyPopup(user: User) -> PopupDialog{
-        let title = "Verify your email"
-        let message = "Please check your email for a verification link, then press continue after verifying"
-        let emailVerifyPopup = PopupDialog(title: title, message: message)
-        let resendButton = DefaultButton(title: "Resend verification Email", dismissOnTap: false) {
-            user.sendEmailVerification(completion: { (error) in
-                if error != nil{
-                    print(error!.localizedDescription)
-                    return
-                }
-            })
-        }
-        let continueButton = DefaultButton(title: "Continue", dismissOnTap: false){
-            user.reload(completion: { (err) in
-                if let error = err{
-                    print(error.localizedDescription)
-                    return
-                }
-                if user.isEmailVerified{
-                    emailVerifyPopup.dismiss()
-                    let profile = user.createProfileChangeRequest()
-                    profile.displayName = self.userInfoDict["name"]
-                    profile.commitChanges(completion: { (error2) in
-                        if (error2 != nil){
-                            print(error2!.localizedDescription)
-                            return
-                        }
-                        else{
-                            self.service.addUserToDatabase(uid: user.uid, name: self.userInfoDict["name"]!, email: self.userInfoDict["email"]!, provider: nil)
-                            self.service.uploadProfileImage(image: self.profileImageView.image!, completion: { (errMsg, any) in
-                                if errMsg != nil{
-                                    print(errMsg!)
-                                    return
-                                }
-                                else{
-                                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                                    appDelegate.setLoginAsRoot()
-                                }
-                            })
-                        }
-                    })
-                }
-                else{   // if user has not verified email
-                    emailVerifyPopup.shake()
-                }
-            })
-        }
-        emailVerifyPopup.addButtons([continueButton, resendButton])
-        return emailVerifyPopup
-    }
+//    func prepareEmailVerifyPopup(user: User) -> PopupDialog{
+//        let title = "Verify your email"
+//        let message = "Please check your email for a verification link, then press continue after verifying"
+//        let emailVerifyPopup = PopupDialog(title: title, message: message)
+//        let resendButton = DefaultButton(title: "Resend verification Email", dismissOnTap: false) {
+//            user.sendEmailVerification(completion: { (error) in
+//                if error != nil{
+//                    print(error!.localizedDescription)
+//                    return
+//                }
+//            })
+//        }
+//        let continueButton = DefaultButton(title: "Continue", dismissOnTap: false){
+//            user.reload(completion: { (err) in
+//                if let error = err{
+//                    print(error.localizedDescription)
+//                    return
+//                }
+//                if user.isEmailVerified{
+//                    emailVerifyPopup.dismiss()
+//                    let profile = user.createProfileChangeRequest()
+//                    profile.displayName = self.userInfoDict["name"]
+//                    profile.commitChanges(completion: { (error2) in
+//                        if (error2 != nil){
+//                            print(error2!.localizedDescription)
+//                            return
+//                        }
+//                        else{
+//                            self.service.addUserToDatabase(uid: user.uid, name: self.userInfoDict["name"]!, email: self.userInfoDict["email"]!, provider: nil)
+//                            self.service.uploadProfileImage(image: self.profileImageView.image!, completion: { (errMsg, any) in
+//                                if errMsg != nil{
+//                                    print(errMsg!)
+//                                    return
+//                                }
+//                                else{
+//                                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+//                                    appDelegate.setLoginAsRoot()
+//                                }
+//                            })
+//                        }
+//                    })
+//                }
+//                else{   // if user has not verified email
+//                    emailVerifyPopup.shake()
+//                }
+//            })
+//        }
+//        emailVerifyPopup.addButtons([continueButton, resendButton])
+//        return emailVerifyPopup
+//    }
     
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {

@@ -48,6 +48,7 @@ class SearchForJobVC: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         updateCurrentDevice()
+        self.fabMenuController?.prepare()
     }
     
     func showUnfinishedBanner(){

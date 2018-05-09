@@ -47,7 +47,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         STPPaymentConfiguration.shared().appleMerchantIdentifier = "merchant.online.intima"
         
         _ = Auth.auth().addStateDidChangeListener { (auth, user) in
-            
             if auth.currentUser != nil {
                 self.setLoginAsRoot()
             }

@@ -57,7 +57,6 @@ class LoginVC: UIViewController {
         gradientViewLogin.startAnimation()
         if let userCred = userDefault.value(forKey: self.loginCredentials) as? [String:String]{
             self.emailTF.text = userCred["email"]
-            self.passwordTF.text = userCred["photoURL"]
         }
     }
     
@@ -153,26 +152,25 @@ class LoginVC: UIViewController {
                         if(prevCred["email"] == self.emailTF.text && prevCred["password"] == self.passwordTF.text){
                             // save user credentials into UserDefaults
                             self.service.getCurrentUserInfo(completion: { (user) in
-                                self.saveInfoInUserDefault(email: self.emailTF.text!, picture: user.photoURL?.absoluteString, emailHash: user.userEmailHash!, password: self.passwordTF.text!)
+                                self.saveInfoInUserDefault(email: self.emailTF.text!, picture: user.photoURL?.absoluteString, emailHash: user.userEmailHash!)
                             })
                         }
                     }//end
                     
                     // save user credentials into UserDefaults for the first time
                     self.service.getCurrentUserInfo(completion: { (user) in
-                        self.saveInfoInUserDefault(email: self.emailTF.text!, picture: user.photoURL?.absoluteString, emailHash: user.userEmailHash!, password: self.passwordTF.text!)
+                        self.saveInfoInUserDefault(email: self.emailTF.text!, picture: user.photoURL?.absoluteString, emailHash: user.userEmailHash!)
                     })
                 }
             })
         }
     }
     
-    fileprivate func saveInfoInUserDefault(email: String, picture:String?, emailHash:String, password:String){
+    fileprivate func saveInfoInUserDefault(email: String, picture:String?, emailHash:String){
         self.userCredDict = [:]
         self.userCredDict["email"] = email
         self.userCredDict["photoURL"] = picture
         self.userCredDict["emailHash"] = emailHash
-        self.userCredDict["password"] = password
         self.userCredDict["currentDevice"] = AppDelegate.DEVICEID
         self.userDefault.setValue(self.userCredDict, forKey: self.loginCredentials)
         return
