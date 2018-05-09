@@ -238,6 +238,17 @@ class ServiceCalls:NSObject, NSCoding{
         }
     }
     
+    func retrieveStripeAccount(completion: @escaping(String?) -> ()){
+        userRef.child(emailHash).child("account_ID").observeSingleEvent(of: .value) { (snapshot) in
+            if let accountID = snapshot.value as? String{
+                completion(accountID)
+            }
+            else{
+                completion(nil)
+            }
+        }
+    }
+    
     
     ///upload profile image to firebase storage
     func uploadProfileImage(name:String, image:UIImage?, completion: CreateUserCompletion?){

@@ -61,29 +61,37 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
         }
     }
     
-    func verifyStripeAccount(routingNumber: String, accountNumber: String, city: String, streetAdd: String, postalCode: String, province: String, dobDay: String, dobMonth: String, dobYear: String, firstName: String, lastName: String, sin: String, completion: @escaping([String: AnyObject]?, Error?) -> ()){
+    func verifyStripeAccount(routingNumber: String!, accountNumber: String!, city: String!, streetAdd: String!, postalCode: String!, province: String!, dobDay: String!, dobMonth: String!, dobYear: String!, firstName: String!, lastName: String!, sin: String!, completion: @escaping([String: AnyObject]?, Error?) -> ()){
         let url = self.baseURL.appendingPathComponent("updateStripeAccount")
-        let params = ["emailHash": self.service.emailHash,
-                      "routing_number": routingNumber,
-                      "account_number": accountNumber,
-                      "city": city, "line1": streetAdd,
-                      "postal_code": postalCode,
-                      "state": province,
-                      "dob_day": dobDay,
-                      "dob_month": dobMonth,
-                      "dob_year": dobYear,
-                      "first_name": firstName,
-                      "last_name": lastName,
-                      "sin": sin,
-                      "tos_time": "\(NSDate().timeIntervalSince1970)"]
-        Alamofire.request(url, method: .post, parameters: params, headers: nil).responseJSON { (response) in
-            switch response.result {
-            case .success(let json):
-                print(json)
-            case .failure(let error):
-                print(error)
+        service.retrieveStripeAccount { (account) in
+            if let account = account{
+                let params: [String: Any] = [
+                    "emailHash": self.service.emailHash!,
+                    "account_ID": account,
+                    "routing_number": routingNumber!,
+                    "account_number": accountNumber!,
+                    "city": city!, "line1": streetAdd!,
+                    "postal_code": postalCode!,
+                    "state": province!,
+                    "dob_day": dobDay!,
+                    "dob_month": dobMonth!,
+                    "dob_year": dobYear!,
+                    "first_name": firstName!,
+                    "last_name": lastName!,
+                    "sin": sin!,
+                    "tos_time": "\(NSDate().timeIntervalSince1970)"]
+                Alamofire.request(url, method: .post, parameters: params, headers: nil).responseJSON { (response) in
+                    switch response.result {
+                    case .success(let json):
+                        print(json)
+                    case .failure(let error):
+                        print(error)
+                    }
+                }
             }
+            
         }
+        
     }
     
     func getNumberOfJobsNearMe(location: CLLocationCoordinate2D, completion: @escaping(Int?) -> ()){

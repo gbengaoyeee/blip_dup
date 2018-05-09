@@ -103,8 +103,7 @@ exports.updateStripeAccount = functions.https.onRequest((req,res) => {
     const tos_time = req.body.tos_time;
     const accountID = req.body.account_ID;
 
-    stripe.accounts.update()
-    stripe.accounts.update(`${accountID}`, {
+    stripe.accounts.update(accountID, {
       "external_accounts": {
         "object": "bank_account",
         "country": "CA",
@@ -128,15 +127,15 @@ exports.updateStripeAccount = functions.https.onRequest((req,res) => {
         "first_name": first_name,
         "last_name": last_name,
         "personal_id_number": sin,
-        "type": "indivudual", 
+        "type": "individual", 
       },
       "tos_acceptance": {
         "date": tos_time,
         "ip": "99.250.237.232"
       }
-    }, function(err, theresponse) {
-      console.log(err, theresponse)
     })
+    console.log(res);
+
 })
 
 exports.createNewStripeAccount = functions.auth.user().onCreate(event => {
