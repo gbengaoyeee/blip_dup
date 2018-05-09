@@ -63,6 +63,7 @@ class SettingsVC: FormViewController {
                 listRow.value = nil
             }
         }
+        
         form +++ Section("Identity verification")
             <<< DateRow(){
                 $0.title = "Date of birth"
@@ -70,8 +71,19 @@ class SettingsVC: FormViewController {
             }
             <<< TextRow(){ row in
                 row.title = "SIN no."
-                row.placeholder = "Your data is used for KYC in connecting your bank account"
+                row.placeholder = "9 digit SIN number"
             }
+        
+        form +++ Section("Bank account deposits")
+            <<< TextRow(){ row in
+                row.title = "Routing number"
+                row.placeholder = " eg. 0AAABBBBB"
+            }
+            <<< TextRow(){ row in
+                row.title = "Account number"
+                row.placeholder = "Chequing account number"
+            }
+        
         form +++ Section()
             <<< ButtonRow() {
                 $0.title = "Done"
