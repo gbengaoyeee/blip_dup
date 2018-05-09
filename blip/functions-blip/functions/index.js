@@ -102,9 +102,8 @@ exports.updateStripeAccount = functions.https.onRequest((req,res) => {
     const sin = req.body.sin;
     const tos_time = req.body.tos_time;
     const accountID = req.body.account_ID;
-
     stripe.accounts.update(accountID, {
-      "external_accounts": {
+      "external_account": {
         "object": "bank_account",
         "country": "CA",
         "currency": "cad",
@@ -135,7 +134,7 @@ exports.updateStripeAccount = functions.https.onRequest((req,res) => {
       }
     })
     console.log(res);
-
+    res.status(200).send();
 })
 
 exports.createNewStripeAccount = functions.auth.user().onCreate(event => {
