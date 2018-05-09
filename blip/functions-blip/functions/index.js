@@ -85,57 +85,65 @@ exports.createNewStripeCustomer = functions.auth.user().onCreate(event => {
     });
   });
 
-exports.updateStripeAccount = functions.https.onRequest((req,res) => {
-  console.log(req.body);
-  const routing_number = req.body.routing_number;
-    const emailHash = req.body.emailHash;
-    const account_number = req.body.account_number;
-    const city = req.body.city;
-    const line1 = req.body.line1;
-    const postal_code = req.body.postal_code;
-    const state = req.body.state;
-    const dob_day = req.body.dob_day;
-    const dob_month = req.body.dob_month;
-    const dob_year = req.body.dob_year;
-    const first_name = req.body.first_name;
-    const last_name = req.body.last_name;
-    const sin = req.body.sin;
-    const tos_time = req.body.tos_time;
-    const accountID = req.body.account_ID;
-    stripe.accounts.update(accountID, {
-      "external_account": {
-        "object": "bank_account",
-        "country": "CA",
-        "currency": "cad",
-        "routing_number": routing_number,
-        "account_number": account_number
-      },
-      "legal_entity": {
-        "address": {
-          "city": city,
+  exports.updateStripeAccount = functions.https.onRequest((req,res) => {
+    console.log(req.body);
+    const routing_number = req.body.routing_number;
+      const emailHash = req.body.emailHash;
+      const account_number = req.body.account_number;
+      const city = req.body.city;
+      const line1 = req.body.line1;
+      const postal_code = req.body.postal_code;
+      const state = req.body.state;
+      const dob_day = req.body.dob_day;
+      const dob_month = req.body.dob_month;
+      const dob_year = req.body.dob_year;
+      const first_name = req.body.first_name;
+      const last_name = req.body.last_name;
+      const sin = req.body.sin;
+      const tos_time = req.body.tos_time;
+      const accountID = req.body.account_ID;
+  
+      stripe.accounts.update(accountID, {
+        "external_account": {
+          "object": "bank_account",
           "country": "CA",
-          "line1": line1,
-          "postal_code": postal_code,
-          "state": state
+          "currency": "cad",
+          "routing_number": routing_number,
+          "account_number": account_number
         },
-        "dob": {
-          "day": dob_day,
-          "month": dob_month,
-          "year": dob_year
+        "legal_entity": {
+          "address": {
+            "city": city,
+            "country": "CA",
+            "line1": line1,
+            "postal_code": postal_code,
+            "state": state
+          },
+          "dob": {
+            "day": dob_day,
+            "month": dob_month,
+            "year": dob_year
+          },
+          "first_name": first_name,
+          "last_name": last_name,
+          "personal_id_number": sin,
+          "type": "individual", 
         },
-        "first_name": first_name,
-        "last_name": last_name,
-        "personal_id_number": sin,
-        "type": "individual", 
-      },
-      "tos_acceptance": {
-        "date": tos_time,
-        "ip": "99.250.237.232"
-      }
-    })
-    console.log(res);
-    res.status(200).send();
-})
+        "tos_acceptance": {
+          "date": tos_time,
+          "ip": "99.250.237.232"
+        }
+      }, function(err, account) {
+        if (err){
+          console.log(err)
+          res.end()
+        }
+        else{
+          console.log(account)
+          res.send(account)
+        }
+      });
+  })
 
 exports.createNewStripeAccount = functions.auth.user().onCreate(event => {
   const data = event.data;
