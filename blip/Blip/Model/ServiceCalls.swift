@@ -194,31 +194,24 @@ class ServiceCalls:NSObject, NSCoding{
             //No errors
             //Do whatever is needed
             
-            let profile = user?.createProfileChangeRequest()
-            profile?.displayName = name
-            profile?.commitChanges(completion: { (err) in
-                if err != nil{
-                    print("ERROR:",err!.localizedDescription)
-                    self.handleFirebaseError(error: (err as NSError?)!, completion: completion)
+            self.emailHash = self.MD5(string: (user?.email)!)
+            self.addUserToDatabase(uid: (user?.uid)!, name: name, email: email, provider: nil)
+            //Send Email verification
+            user?.sendEmailVerification(completion: { (error) in
+                if error != nil{
+                    print(error!.localizedDescription)
+                    self.handleFirebaseError(error: (error as NSError?)!, completion: completion)
                     return
                 }
-                self.emailHash = self.MD5(string: (user?.email)!)
-                self.addUserToDatabase(uid: (user?.uid)!, name: name, email: email, provider: nil)
-                self.uploadProfileImage(image: image, completion: { (errMsg, uploaded) in   //uploaded is always nil
+                print("SENT VERIFICATION")
+                self.uploadProfileImage(name: name, image: image, completion: { (errMsg, uploaded) in
                     if errMsg != nil{
                         print("ERROR:",errMsg!)
                         return
                     }
-                    //Send Email verification
-                    user?.sendEmailVerification(completion: { (error) in
-                        if error != nil{
-                            print(error!.localizedDescription)
-                            self.handleFirebaseError(error: (error as NSError?)!, completion: completion)
-                            return
-                        }
-                        completion?(nil, user)
-                    })
+                    completion?(nil, user)
                 })
+                
             })
             
         })
@@ -226,12 +219,12 @@ class ServiceCalls:NSObject, NSCoding{
     
     ///Add the new user's info into Database
     func addUserToDatabase(uid:String, name:String, email:String, provider: String?){
-        if provider! == "facebook"{
+        if provider != nil{
             userRef.child(MD5(string: email)).observeSingleEvent(of: .value) { (snapshot) in
                 if let values = snapshot.value as? [String:Any]{
                     let granted = values["granted"] as? Bool
                     if granted == true{
-                        let dict:[String:Any] = ["granted":true, "uid":uid, "name":name, "email":email, "rating":5.0, "currentDevice":AppDelegate.DEVICEID]
+                        let dict:[String:Any] = ["granted":true, "uid":uid, "name":name, "email":email, "rating":5.0, "currentDevice":AppDelegate.DEVICEID, "verified":false]
                         self.userRef.child(self.emailHash).updateChildValues(dict)
                         return
                     }
@@ -247,34 +240,45 @@ class ServiceCalls:NSObject, NSCoding{
     
     
     ///upload profile image to firebase storage
-    func uploadProfileImage(image:UIImage?, completion: CreateUserCompletion?){
-        let storageRef = Storage.storage().reference(forURL: "gs://blip-c1e83.appspot.com/").child("profile_image").child(emailHash)
-        if let imageData = UIImageJPEGRepresentation(image!, 0.1){
-            storageRef.putData(imageData, metadata: nil, completion: { (metadata, error) in
-                if error != nil{
-                    self.handleFirebaseError(error: (error as NSError?)!, completion: completion)
+    func uploadProfileImage(name:String, image:UIImage?, completion: CreateUserCompletion?){
+        let storageRef = Storage.storage().reference(forURL: "gs://blip-c1e83.appspot.com/")
+        let profileImgRef = storageRef.child("profile_image").child(emailHash)
+        
+        if let image = image, let imageData = UIImageJPEGRepresentation(image, 0.1){
+            let uploadTask = profileImgRef.putData(imageData, metadata: nil) { (metadata, error) in
+                guard let metadata = metadata else {
+                    // Uh-oh, an error occurred!
+                    print("MetaUh-oh, an error occurred!")
                     return
                 }
-                
-                metadata?.storageReference?.downloadURL(completion: { (profileImgURL, error) in
-                    if error != nil{
-                       self.handleFirebaseError(error: (error as NSError?)!, completion: completion)
+                profileImgRef.downloadURL(completion: { (profileImgURL, error) in
+                    guard let profileImgURL = profileImgURL else {
+                        // Uh-oh, an error occurred!
+                        print("OtherUh-oh, an error occurred!")
                         return
                     }
+                    print("profileurl",profileImgURL.absoluteString)
                     let profile = Auth.auth().currentUser?.createProfileChangeRequest()
                     profile?.photoURL = profileImgURL
+                    profile?.displayName = name
+                    print("HERE 1")
                     profile?.commitChanges(completion: { (err) in
+                        print("HERE 2")
                         if err != nil{
-                            completion?(err?.localizedDescription, nil)
+                            completion?(err!.localizedDescription, nil)
                             return
                         }
-                        let imgValues:[String:Any] = ["photoURL":profileImgURL!]
+                        print("HERE 3")
+                        let imgValues:[String:String] = ["photoURL":profileImgURL.absoluteString]
                         self.userRef.child(self.emailHash).updateChildValues(imgValues)
                         completion?(nil, nil)
                     })
                 })
-            })
-            
+            }
+        }
+        else{
+            let imgValues:[String:String] = ["photoURL":""]
+            self.userRef.child(self.emailHash).updateChildValues(imgValues)
         }
     }
     

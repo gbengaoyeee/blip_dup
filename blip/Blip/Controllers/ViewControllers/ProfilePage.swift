@@ -155,18 +155,20 @@ class ProfilePage: UIViewController, UIImagePickerControllerDelegate, UINavigati
     }
     
     @IBAction func dismissButton(_ sender: UIButton) {
-        let helper = HelperFunctions()
-        self.userRef = Database.database().reference().child("Couriers").child(helper.MD5(string: (Auth.auth().currentUser?.email)!))
-        if (userChangedProfilePic){
-            if let image = self.profilePic.image{
-                service.uploadProfileImage(image: image) { (error, any) in
-                    if error != nil{
-                        print(error!)
-                        return
-                    }
-                    self.dismiss(animated: true, completion: nil)
-                }
-            }
+//        let helper = HelperFunctions()
+//        self.userRef = Database.database().reference().child("Couriers").child(helper.MD5(string: (Auth.auth().currentUser?.email)!))
+//        if (userChangedProfilePic){
+//            if let image = self.profilePic.image{
+//                service.uploadProfileImage(image: image) { (error, any) in
+//                    if error != nil{
+//                        print(error!)
+//                        return
+//                    }
+//                    self.dismiss(animated: true, completion: nil)
+//                }
+//            }
+        
+        
 //            let storageRef = Storage.storage().reference(forURL: "gs://blip-c1e83.appspot.com/").child("profile_image").child(helper.MD5(string: (Auth.auth().currentUser?.email)!))
 //            let imageData = UIImageJPEGRepresentation((profilePic.image)!, 0.1)
 //
@@ -190,9 +192,9 @@ class ProfilePage: UIViewController, UIImagePickerControllerDelegate, UINavigati
 //
 //            })
             
-        }else{
-            self.dismiss(animated: true, completion: nil)
-        }
+//        }else{
+//            self.dismiss(animated: true, completion: nil)
+//        }
     }
     
     //Delegate Methods for uiimagepicker

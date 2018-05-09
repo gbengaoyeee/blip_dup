@@ -22,6 +22,8 @@ class AppFABMenuController: FABMenuController, STPPaymentContextDelegate{
     var currUser: BlipUser?
     let service = ServiceCalls.instance
     let userDefaults = UserDefaults.standard
+    var userCredDict:[String:String]!
+    let loginCredentials = "loginCredentials"
     
     
     func paymentContext(_ paymentContext: STPPaymentContext, didFailToLoadWithError error: Error) {
@@ -149,6 +151,8 @@ extension AppFABMenuController {
             print ("Error signing out: %@", signOutError)
         }
     }
+    
+
     
     @objc fileprivate func handlePaymentMethods(button: UIButton) {
         self.paymentContext = STPPaymentContext(apiAdapter: CustomAPIAdapter())

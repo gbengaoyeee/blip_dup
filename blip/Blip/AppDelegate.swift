@@ -47,52 +47,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         STPPaymentConfiguration.shared().appleMerchantIdentifier = "merchant.online.intima"
         
         _ = Auth.auth().addStateDidChangeListener { (auth, user) in
-            
-            if auth.currentUser != nil && auth.currentUser?.photoURL == nil{
-                if let user = Auth.auth().currentUser{
-                    let hash = self.MD5(string: user.email!)
-                    self.lastUserHash = hash
-                    self.dbRef.child("Couriers").child(hash).removeValue()
-                    user.delete(completion: { (error) in
-                        if let err = error{
-                            print(err.localizedDescription)
-                            return
-                        }
-                    })
-                }
-            }
-            else if auth.currentUser != nil && (auth.currentUser?.isEmailVerified)! && (auth.currentUser?.photoURL != nil){
+            if auth.currentUser != nil {
                 self.setLoginAsRoot()
-                self.sessionTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true, block: { (timer) in
-                    self.checkUserAgainstDatabase(completion: { (bool, error) in
-                        if error != nil{
-                            print(error!)
-                        }
-                    })
-                })
             }
             else{
-                let providerData = Auth.auth().currentUser?.providerData
-                if providerData != nil{
-                    for userInfo in providerData! {
-                        if userInfo.providerID == "facebook.com" {
-                            self.setLoginAsRoot()
-                            self.sessionTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true, block: { (timer) in
-                                self.checkUserAgainstDatabase(completion: { (bool, error) in
-                                    if error != nil{
-                                        print(error!)
-                                    }
-                                })
-                            })
-                        }
-                        else{
-                            self.setLogoutAsRoot()
-                        }
-                    }
-                }
-                else{
-                    self.setLogoutAsRoot()
-                }
+                self.setLogoutAsRoot()
+            
             }
         }
         
