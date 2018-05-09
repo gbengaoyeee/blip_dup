@@ -79,7 +79,7 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
                     "first_name": firstName!,
                     "last_name": lastName!,
                     "sin": sin!,
-                    "tos_time": "\(NSDate().timeIntervalSince1970)"]
+                    "tos_time": "\(Int(NSDate().timeIntervalSince1970.rounded()))"]
                 Alamofire.request(url, method: .post, parameters: params, headers: nil).responseJSON { (response) in
                     switch response.result {
                     case .success(let json):
