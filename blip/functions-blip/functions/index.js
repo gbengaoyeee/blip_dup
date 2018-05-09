@@ -34,17 +34,6 @@ exports.ephemeral_keys = functions.https.onRequest((req, res) => {
       res.status(500).end();
     });
   });
-      
-exports.findItemInWalmart = functions.https.onRequest((req,res) => {
-    var item = req.body.item,
-        store = req.body.store;
-    console.log(item, store);
-    walmart.stores.search(
-      store, item).then(function(items){
-       console.log(items);
-       res.send(items)
-      })
-})
 
 exports.charges = functions.https.onRequest((req,res) => {
   var customer = req.body.customerID,
@@ -95,6 +84,59 @@ exports.createNewStripeCustomer = functions.auth.user().onCreate(event => {
       console.log(admin.database().ref(`/Couriers/${emailHash}/customer_id`))
     });
   });
+
+exports.updateStripeAccount = functions.https.onRequest((req,res) => {
+  admin.database().ref(`/Couriers/${emailHash}/account_ID`).once("value", function(snapshot){
+    const routing_number = req.body.routing_number,
+        emailHash = req.body.emailHash
+        account_number = req.body.account_number,
+        city = req.body.city,
+        line1 = req.body.line1,
+        postal_code = req.body.postal_code,
+        state = req.body.state,
+        dob_day = req.body.dob_day,
+        dob_month = req.body.dob_month,
+        dob_year = req.body.dob_year,
+        first_name = req.body.first_name,
+        last_name = req.body.last_name,
+        sin = req.body.sin,
+        tos_time = req.body.tos_time,
+        accountID = snapshot.val();
+    stripe.accounts.update({accountID}, {
+      "external_accounts": {
+        "object": "bank_account",
+        "country": "CA",
+        "currency": "cad",
+        "routing_number": routing_number,
+        "account_number": account_number
+      },
+      "legal_entity": {
+        "address": {
+          "city": city,
+          "country": "CA",
+          "line1": line1,
+          "postal_code": postal_code,
+          "state": state
+        },
+        "dob": {
+          "day": dob_day,
+          "month": dob_month,
+          "year": dob_year
+        },
+        "first_name": first_name,
+        "last_name": last_name,
+        "personal_id_number": sin,
+        "type": "indivudual", 
+      },
+      "tos_acceptance": {
+        "date": tos_time,
+        "ip": "99.250.237.232"
+      }
+    }, function(err, theresponse) {
+      console.log(err, theresponse)
+    })
+  })
+})
 
 exports.createNewStripeAccount = functions.auth.user().onCreate(event => {
   const data = event.data;

@@ -44,42 +44,47 @@ class SettingsVC: FormViewController {
     func buildForm(){
         form +++ Section("Address")
             <<< TextRow(){ row in
+                row.tag = "address"
                 row.title = "Street"
                 row.placeholder = "Enter your Street address"
             }
             <<< TextRow(){ row in
+                row.tag = "city"
                 row.title = "City"
                 row.placeholder = "Eg. Toronto"
             }
             <<< TextRow(){ row in
+                row.tag = "postalCode"
                 row.title = "Postal code"
                 row.placeholder = "Eg. L5L6A2"
             }
-        form +++ SelectableSection<ListCheckRow<String>>("Select a province", selectionType: .singleSelection(enableDeselection: false))
-        for option in provinces {
-            form.last! <<< ListCheckRow<String>(option){ listRow in
-                listRow.title = option
-                listRow.selectableValue = option
-                listRow.value = nil
+            <<< TextRow(){ row in
+                row.tag = "province"
+                row.title = "Province"
+                row.placeholder = "Eg. Ontario"
             }
-        }
+        
         
         form +++ Section("Identity verification")
             <<< DateRow(){
+                $0.tag = "date"
                 $0.title = "Date of birth"
                 $0.value = Date(timeIntervalSinceReferenceDate: 0)
             }
             <<< TextRow(){ row in
+                row.tag = "sin"
                 row.title = "SIN no."
                 row.placeholder = "9 digit SIN number"
             }
         
         form +++ Section("Bank account deposits")
             <<< TextRow(){ row in
+                row.tag = "routingNumber"
                 row.title = "Routing number"
                 row.placeholder = " eg. 0AAABBBBB"
             }
             <<< TextRow(){ row in
+                row.tag = "accountNumber"
                 row.title = "Account number"
                 row.placeholder = "Chequing account number"
             }
@@ -91,7 +96,12 @@ class SettingsVC: FormViewController {
                 $0.cell.tintColor = UIColor.white
                 }
                 .onCellSelection { cell, row in
-                    self.dismiss(animated: true, completion: nil)
+                    
+                    MyAPIClient.sharedClient.verifyStripeAccount(routingNumber: self.form.values()["routingNumber"] as! String, accountNumber: self.form.values()["accountNumber"] as! String, city: self.form.values()["city"] as! String, streetAdd: self.form.values()["address"] as! String, postalCode: self.form.values()["postalCode"] as! String, province: self.form.values()["province"] as! String, dobDay: "01", dobMonth: "05", dobYear: "1996", firstName: "Srikanth", lastName: "Srinivas", sin: self.form.values()["sin"] as! String, completion: { (json, error) in
+                        if error == nil{
+                            self.dismiss(animated: true, completion: nil)
+                        }
+                    })
             }
     }
 }
