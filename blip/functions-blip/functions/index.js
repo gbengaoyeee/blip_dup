@@ -86,23 +86,25 @@ exports.createNewStripeCustomer = functions.auth.user().onCreate(event => {
   });
 
 exports.updateStripeAccount = functions.https.onRequest((req,res) => {
-  admin.database().ref(`/Couriers/${emailHash}/account_ID`).once("value", function(snapshot){
-    const routing_number = req.body.routing_number,
-        emailHash = req.body.emailHash
-        account_number = req.body.account_number,
-        city = req.body.city,
-        line1 = req.body.line1,
-        postal_code = req.body.postal_code,
-        state = req.body.state,
-        dob_day = req.body.dob_day,
-        dob_month = req.body.dob_month,
-        dob_year = req.body.dob_year,
-        first_name = req.body.first_name,
-        last_name = req.body.last_name,
-        sin = req.body.sin,
-        tos_time = req.body.tos_time,
-        accountID = snapshot.val();
-    stripe.accounts.update({accountID}, {
+  console.log(req.body);
+  const routing_number = req.body.routing_number;
+    const emailHash = req.body.emailHash;
+    const account_number = req.body.account_number;
+    const city = req.body.city;
+    const line1 = req.body.line1;
+    const postal_code = req.body.postal_code;
+    const state = req.body.state;
+    const dob_day = req.body.dob_day;
+    const dob_month = req.body.dob_month;
+    const dob_year = req.body.dob_year;
+    const first_name = req.body.first_name;
+    const last_name = req.body.last_name;
+    const sin = req.body.sin;
+    const tos_time = req.body.tos_time;
+    const accountID = req.body.account_ID;
+
+    stripe.accounts.update()
+    stripe.accounts.update(`${accountID}`, {
       "external_accounts": {
         "object": "bank_account",
         "country": "CA",
@@ -135,7 +137,6 @@ exports.updateStripeAccount = functions.https.onRequest((req,res) => {
     }, function(err, theresponse) {
       console.log(err, theresponse)
     })
-  })
 })
 
 exports.createNewStripeAccount = functions.auth.user().onCreate(event => {
