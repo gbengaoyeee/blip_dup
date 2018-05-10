@@ -71,20 +71,6 @@ exports.captureCharge = functions.https.onRequest((req, res) => {
   })
 });
 
-
-// When a user is created, register them with Stripe
-exports.createNewStripeCustomer = functions.auth.user().onCreate(event => {
-    const data = event.data;
-    const emailHash = crypto.createHash('md5').update(data.email).digest('hex');
-    console.log(emailHash);
-    return stripe.customers.create({
-      email: data.email
-    }).then(customer => {
-      return admin.database().ref(`/Couriers/${emailHash}/customer_id`).set(customer.id);
-      console.log(admin.database().ref(`/Couriers/${emailHash}/customer_id`))
-    });
-  });
-
   exports.updateStripeAccount = functions.https.onRequest((req,res) => {
     console.log(req.body);
     const routing_number = req.body.routing_number;
@@ -119,13 +105,6 @@ exports.createNewStripeCustomer = functions.auth.user().onCreate(event => {
             "postal_code": postal_code,
             "state": state
           },
-          "dob": {
-            "day": dob_day,
-            "month": dob_month,
-            "year": dob_year
-          },
-          "first_name": first_name,
-          "last_name": last_name,
           "personal_id_number": sin,
           "type": "individual", 
         },
@@ -145,15 +124,42 @@ exports.createNewStripeCustomer = functions.auth.user().onCreate(event => {
       });
   })
 
-exports.createNewStripeAccount = functions.auth.user().onCreate(event => {
-  const data = event.data;
-  const emailHash = crypto.createHash('md5').update(data.email).digest('hex');
+exports.createNewStripeAccount = functions.https.onRequest((req,res) => {
+  const email = req.body.email;
+  const emailHash = crypto.createHash('md5').update(email).digest('hex');
+  const firstName = req.body.firstName;
+  const lastName = req.body.lastName;
+  const dobDay = req.body.dobDay;
+  const dobMonth = req.body.dobMonth;
+  const dobYear = req.body.dobYear;
   return stripe.accounts.create({
     country: "CA",
-    type: "custom"
-  }).then(function(acct){
-    return admin.database().ref(`/Couriers/${emailHash}/account_ID`).set(acct.id)
-    console.log(acct)
+    default_currency: "cad",
+    type: "custom",
+    email: email,
+    legal_entity: {
+      type: "individual",
+      dob: {
+        day: dobDay,
+        month: dobMonth,
+        year: dobYear
+      },
+      first_name: firstName,
+      last_name: lastName
+    },
+    payout_schedule: {
+      interval: "weekly",
+      weekly_anchor: "wednesday"
+    },
+    payout_statement_descript: "BlipDeliveries"
+  },function(err, account){
+    if (err){
+      console.log(err)
+    }
+    else{
+      admin.database().ref(`/Couriers/${emailHash}/stripeAccount`).set(account)
+      console.log(account)
+    }
   })
 })  
 

@@ -18,19 +18,19 @@ import Eureka
 class SettingsVC: FormViewController {
 
     let provinces = [
-        "Alberta",
-        "British Columbia",
-        "Manitoba",
-        "New Brunswick",
-        "Newfoundland and Labrador",
-        "Northwest Territories",
-        "Nova Scotia",
-        "Nunavut",
-        "Ontario",
-        "Prince Edward Island",
-        "Quebec",
-        "Saskatchewan",
-        "Yukon"]
+        "Alberta": "AB",
+        "British Columbia": "BC",
+        "Manitoba": "MB",
+        "New Brunswick": "NB",
+        "Newfoundland and Labrador": "NL",
+        "Northwest Territories": "NT",
+        "Nova Scotia": "NS",
+        "Nunavut": "NU",
+        "Ontario": "ON",
+        "Prince Edward Island": "PE",
+        "Quebec": "QC",
+        "Saskatchewan": "SK",
+        "Yukon": "YT"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -115,6 +115,7 @@ class SettingsVC: FormViewController {
                         self.present(popup, animated: true, completion: nil)
                         return
                     }
+                    
                     
                     MyAPIClient.sharedClient.verifyStripeAccount(routingNumber: self.form.values()["routingNumber"] as! String, accountNumber: self.form.values()["accountNumber"] as! String, city: self.form.values()["city"] as! String, streetAdd: self.form.values()["address"] as! String, postalCode: self.form.values()["postalCode"] as! String, province: self.form.values()["province"] as! String, dobDay: "01", dobMonth: "05", dobYear: "1996", firstName: "Srikanth", lastName: "Srinivas", sin: self.form.values()["sin"] as! String, completion: { (json, error) in
                         if error == nil{
@@ -223,6 +224,17 @@ class SettingsVC: FormViewController {
             return false
         }
         
+        return true
+    }
+    
+    func validateProvince(province: String?) -> Bool{
+        
+        if province == nil{
+            return false
+        }
+        if self.provinces[(province?.capitalized)!] == nil{
+            return false
+        }
         return true
     }
     
