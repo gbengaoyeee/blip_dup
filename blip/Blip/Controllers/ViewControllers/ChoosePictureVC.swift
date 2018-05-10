@@ -80,8 +80,6 @@ class ChoosePictureVC: UIViewController, UIImagePickerControllerDelegate, UINavi
             }
             if let user = user as? User{
                 self.saveInfoInUserDefault(email: self.userInfoDict["email"]!, picture: user.photoURL?.absoluteString, emailHash: self.service.emailHash)
-//                let appDelegate = UIApplication.shared.delegate as! AppDelegate
-//                appDelegate.setLoginAsRoot()
             }
         }
     }
