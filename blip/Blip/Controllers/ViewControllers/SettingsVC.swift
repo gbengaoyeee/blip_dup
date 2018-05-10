@@ -97,6 +97,7 @@ class SettingsVC: FormViewController {
                 }
                 .onCellSelection { cell, row in
                     
+                    let date = self.form.values()["date"] as! Date
                     MyAPIClient.sharedClient.verifyStripeAccount(routingNumber: self.form.values()["routingNumber"] as! String, accountNumber: self.form.values()["accountNumber"] as! String, city: self.form.values()["city"] as! String, streetAdd: self.form.values()["address"] as! String, postalCode: self.form.values()["postalCode"] as! String, province: self.form.values()["province"] as! String, dobDay: "01", dobMonth: "05", dobYear: "1996", firstName: "Srikanth", lastName: "Srinivas", sin: self.form.values()["sin"] as! String, completion: { (json, error) in
                         if error == nil{
                             self.dismiss(animated: true, completion: nil)
