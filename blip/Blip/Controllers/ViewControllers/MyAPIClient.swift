@@ -68,19 +68,21 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
                 let params: [String: Any] = [
                     "emailHash": self.service.emailHash!,
                     "account_ID": account,
-                    "routing_number": routingNumber!,
-                    "account_number": accountNumber!,
-                    "city": city!, "line1": streetAdd!,
-                    "postal_code": postalCode!,
-                    "state": province!,
-                    "dob_day": dobDay!,
-                    "dob_month": dobMonth!,
-                    "dob_year": dobYear!,
-                    "first_name": firstName!,
-                    "last_name": lastName!,
-                    "sin": sin!,
+                    "routing_number": "11000-000",
+                    "account_number": "000123456789",
+                    "city": "Mississauga", "line1": "156 enfield",
+                    "postal_code": "l5b4l8",
+                    "state": "ON",
+                    "dob_day": "01",
+                    "dob_month": "01",
+                    "dob_year": "1996",
+                    "first_name": "srikanth",
+                    "last_name": "srinivas",
+                    "sin": "000000000",
                     "tos_time": "\(Int(NSDate().timeIntervalSince1970.rounded()))"]
+            
                 Alamofire.request(url, method: .post, parameters: params, headers: nil).responseJSON { (response) in
+                    print("response", response)
                     switch response.result {
                     case .success(let json):
                         print(json)
