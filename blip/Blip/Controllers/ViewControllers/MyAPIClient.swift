@@ -177,9 +177,27 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
         case invalidResponse
     }
     
-    func authorizeCharge(amount: Int,
-                        completion: @escaping (String?) -> ()) {
-        
+    func createNewStripeAccount(email:String, firstName:String, lastName:String, completion:@escaping (String?, Error?)->()){
+        let url = self.baseURL.appendingPathComponent("createNewStripeAccount")
+        let params:[String:Any] = [
+            "email":email,
+            "firstName":firstName,
+            "lastName":lastName
+        ]
+        Alamofire.request(url, method: .post, parameters: params, headers: nil).validate(statusCode: 200..<300)
+            .responseString { (response) in
+                switch response.result{
+                case .success:
+                    completion(response.value, nil)
+                    break
+                case .failure(let error):
+                    completion(nil, error)
+                    break
+                }
+        }
+    }
+    
+    func authorizeCharge(amount: Int, completion: @escaping (String?) -> ()) {
         service.getCustomerID { (customer) in
             let email = Auth.auth().currentUser?.email
             self.customer_id = customer

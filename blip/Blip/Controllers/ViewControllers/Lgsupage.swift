@@ -14,6 +14,7 @@ import FBSDKCoreKit
 import Material
 import Firebase
 import RevealingSplashView
+import Alamofire
 
 
 class Lgsupage: UIViewController {
@@ -102,7 +103,19 @@ class Lgsupage: UIViewController {
                 }
                 if(fbloginresult.grantedPermissions.contains("email"))
                 {
-                    self.service.getFBUserData()
+                    self.service.getFBUserData(completion: { (email, firstName, lastName) in
+                        guard let email = email, let firstName = firstName, let lastName = lastName else{
+                            print("Facebook got weird")
+                            return
+                        }
+                        MyAPIClient.sharedClient.createNewStripeAccount(email: email, firstName: firstName, lastName: lastName, completion: { (responseVal, error) in
+                            if let error = error as? AFError{
+                                print(error.errorDescription!)
+                                return
+                            }
+                            print("RESPONSE VALUE", responseVal)
+                        })
+                    })
                 }
             }
         }
