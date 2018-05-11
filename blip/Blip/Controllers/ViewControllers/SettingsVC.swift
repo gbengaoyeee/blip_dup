@@ -61,7 +61,7 @@ class SettingsVC: FormViewController {
             <<< TextRow(){ row in
                 row.tag = "province"
                 row.title = "Province"
-                row.placeholder = "Eg. ON"
+                row.placeholder = "Eg. Ontario"
             }
         
         
@@ -115,9 +115,14 @@ class SettingsVC: FormViewController {
                         self.present(popup, animated: true, completion: nil)
                         return
                     }
+                    else if !self.validateProvince(province: self.form.values()["province"] as? String){
+                        //Invalid province
+                        let popup = self.errorField(title: "Invalid province", message: "Please check your province and make sure it is correct")
+                        self.present(popup, animated: true, completion: nil)
+                        return
+                    }
                     
-                    
-                    MyAPIClient.sharedClient.verifyStripeAccount(routingNumber: self.form.values()["routingNumber"] as! String, accountNumber: self.form.values()["accountNumber"] as! String, city: self.form.values()["city"] as! String, streetAdd: self.form.values()["address"] as! String, postalCode: self.form.values()["postalCode"] as! String, province: self.form.values()["province"] as! String, dobDay: "01", dobMonth: "05", dobYear: "1996", firstName: "Srikanth", lastName: "Srinivas", sin: self.form.values()["sin"] as! String, completion: { (json, error) in
+                    MyAPIClient.sharedClient.verifyStripeAccount(routingNumber: self.form.values()["routingNumber"] as! String, accountNumber: self.form.values()["accountNumber"] as! String, city: self.form.values()["city"] as! String, streetAdd: self.form.values()["address"] as! String, postalCode: self.form.values()["postalCode"] as! String, province: self.form.values()["province"] as! String, sin: self.form.values()["sin"] as! String, completion: { (json, error) in
                         if error == nil{
                             self.dismiss(animated: true, completion: nil)
                         }
@@ -127,11 +132,7 @@ class SettingsVC: FormViewController {
     
     
     func errorField(title:String, message:String)->PopupDialog{
-        let okButton = CancelButton(title: "OK") {
-            return
-        }
         let popup = PopupDialog(title: title, message: message)
-        popup.addButton(okButton)
         return popup
     }
     

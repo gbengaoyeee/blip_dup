@@ -131,7 +131,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func setLoginAsRoot(){
         var options = UIWindow.TransitionOptions()
         options.direction = .fade
-        options.duration = 0.8
+        options.duration = 0
         options.style = .easeIn
         self.window = UIWindow(frame: Screen.bounds)
         self.window!.setRootViewController(AppFABMenuController(rootViewController: UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "rootAfterLogin")), options: options)
