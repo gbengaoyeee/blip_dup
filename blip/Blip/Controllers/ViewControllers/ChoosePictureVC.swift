@@ -12,6 +12,7 @@ import Pastel
 import Lottie
 import PopupDialog
 import Firebase
+import Alamofire
 
 class ChoosePictureVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
@@ -73,13 +74,21 @@ class ChoosePictureVC: UIViewController, UIImagePickerControllerDelegate, UINavi
     
     
     @objc fileprivate func handleContinuePressed(){
-        service.createUser(name: userInfoDict["name"]!, email: userInfoDict["email"]!, password: userInfoDict["password"]!, image: profileImageView.image) { (errMsg, user) in
+        service.createUser(firstName: userInfoDict["firstName"]!, lastName: userInfoDict["lastName"]!, email: userInfoDict["email"]!, password: userInfoDict["password"]!, image: profileImageView.image) { (errMsg, user) in
             if errMsg != nil{
                 print(errMsg!)
                 return
             }
             if let user = user as? User{
-                self.saveInfoInUserDefault(email: self.userInfoDict["email"]!, picture: user.photoURL?.absoluteString, emailHash: self.service.emailHash)
+                MyAPIClient.sharedClient.createNewStripeAccount(email: self.userInfoDict["email"]!, firstName: self.userInfoDict["firstName"]!, lastName: self.userInfoDict["lastName"]!, completion: { (responseVal, error) in
+                    if let error = error as? AFError{
+                        print(error.errorDescription!)
+                        return
+                    }
+                    self.saveInfoInUserDefault(email: self.userInfoDict["email"]!, picture: user.photoURL?.absoluteString, emailHash: self.service.emailHash)
+                    print("RESPONSE VALUE", responseVal)
+                })
+                
             }
         }
     }

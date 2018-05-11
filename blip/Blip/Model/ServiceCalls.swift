@@ -184,7 +184,7 @@ class ServiceCalls:NSObject, NSCoding{
     ///   - email: user email
     ///   - password: user password
     ///   - completion: returns upon completion of user object creation in firebase
-    func createUser(name:String, email: String, password:String, image:UIImage?, completion: CreateUserCompletion?){
+    func createUser(firstName:String, lastName:String, email: String, password:String, image:UIImage?, completion: CreateUserCompletion?){
         Auth.auth().createUser(withEmail: email, password: password, completion: { (user, error) in
             if error != nil{
                 //Handling Firebase Errors
@@ -195,7 +195,7 @@ class ServiceCalls:NSObject, NSCoding{
             //Do whatever is needed
             
             self.emailHash = self.MD5(string: (user?.email)!)
-            self.addUserToDatabase(uid: (user?.uid)!, name: name, email: email, provider: nil)
+            self.addUserToDatabase(uid: (user?.uid)!, firstName: firstName, lastName: lastName, email: email, provider: nil)
             //Send Email verification
             user?.sendEmailVerification(completion: { (error) in
                 if error != nil{
@@ -204,7 +204,7 @@ class ServiceCalls:NSObject, NSCoding{
                     return
                 }
                 print("SENT VERIFICATION")
-                self.uploadProfileImage(name: name, image: image, completion: { (errMsg, uploaded) in
+                self.uploadProfileImage(name: "\(firstName) \(lastName)", image: image, completion: { (errMsg, uploaded) in
                     if errMsg != nil{
                         print("ERROR:",errMsg!)
                         return
@@ -218,22 +218,22 @@ class ServiceCalls:NSObject, NSCoding{
     }
     
     ///Add the new user's info into Database
-    func addUserToDatabase(uid:String, name:String, email:String, provider: String?){
+    func addUserToDatabase(uid:String, firstName:String, lastName:String, email:String, provider: String?){
         if provider != nil{
             userRef.child(MD5(string: email)).observeSingleEvent(of: .value) { (snapshot) in
                 if let values = snapshot.value as? [String:Any]{
                     let granted = values["granted"] as? Bool
                     if granted == true{
-                        let dict:[String:Any] = ["granted":true, "uid":uid, "name":name, "email":email, "rating":5.0, "currentDevice":AppDelegate.DEVICEID, "verified":false]
+                        let dict:[String:Any] = ["granted":true, "uid":uid, "firstName":firstName, "lastName":lastName, "email":email, "rating":5.0, "currentDevice":AppDelegate.DEVICEID, "verified":false]
                         self.userRef.child(self.emailHash).updateChildValues(dict)
                         return
                     }
-                    let dict:[String:Any] = ["granted":true, "uid":uid, "name":name, "email":email, "rating":5.0, "currentDevice":AppDelegate.DEVICEID, "verified":false]
+                    let dict:[String:Any] = ["granted":true, "uid":uid, "firstName":firstName, "lastName":lastName, "email":email, "rating":5.0, "currentDevice":AppDelegate.DEVICEID, "verified":false]
                     self.userRef.child(self.emailHash).updateChildValues(dict)
                 }
             }
         }else{
-            let dict:[String:Any] = ["uid":uid ,"name":name ,"email":email ,"rating":5.0 , "currentDevice":AppDelegate.DEVICEID, "verified":false]
+            let dict:[String:Any] = ["uid":uid, "firstName":firstName, "lastName":lastName, "email":email, "rating":5.0, "currentDevice":AppDelegate.DEVICEID, "verified":false]
             userRef.child(self.emailHash).updateChildValues(dict)
         }
     }
@@ -323,7 +323,7 @@ class ServiceCalls:NSObject, NSCoding{
     }
     
     ///Get facebook user data
-    func getFBUserData(){
+    func getFBUserData(completion: @escaping (String?,String?,String?)->()){
         if((FBSDKAccessToken.current()) != nil){
             FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, name, first_name, last_name, picture.type(large), email"]).start(completionHandler: { (connection, result, error) -> Void in
                 if (error == nil){
@@ -337,6 +337,9 @@ class ServiceCalls:NSObject, NSCoding{
                         print("Signed in with Facebook")
                         let data = result as! [String: AnyObject]
                         let FBid = data["id"] as? String
+                        let firstName:String = data["first_name"] as! String
+                        let lastName:String = data["last_name"] as! String
+                        let email:String = data["email"] as! String
                         
                         let url = URL(string: "https://graph.facebook.com/\(FBid!)/picture?type=large&return_ssl_resources=1")
                         let profile = user?.createProfileChangeRequest()
@@ -348,8 +351,10 @@ class ServiceCalls:NSObject, NSCoding{
                                 let emailHash = self.MD5(string: (user?.email)!)
                                 self.dbRef.child("Couriers").child(emailHash).child("photoURL").setValue(url?.absoluteString)
                                 self.emailHash = emailHash //MIGHT WANT TO REMOVE THIS LATER ON
-                                self.addUserToDatabase(uid: (user?.uid)!, name: (user?.displayName)!, email: (user?.email)!, provider: "facebook")
+                                self.addUserToDatabase(uid: (user?.uid)!, firstName: firstName, lastName: lastName, email: (user?.email)!, provider: "facebook")
                                 self.saveFBUserInfoInUserDefault(picture: url?.absoluteString, emailHash: emailHash)
+                                //Add completion
+                                completion(email,firstName,lastName)
                             }
                         })
                     }

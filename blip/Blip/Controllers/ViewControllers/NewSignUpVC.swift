@@ -142,7 +142,7 @@ class NewSignUpVC: UIViewController {
     ///Sends the textfield information to the choose profile VC
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "choosePicture"{
-            let userInfoDict = ["name":"\(self.firstNameTF.text!) \(self.lastNameTF.text!)", "email":self.emailTF.text!, "password":self.passwordTF.text!]
+            let userInfoDict = ["name":"\(self.firstNameTF.text!) \(self.lastNameTF.text!)", "firstName":"\(self.firstNameTF.text!)", "lastName":"\(self.lastNameTF.text!)", "email":self.emailTF.text!, "password":self.passwordTF.text!]
             let destination = segue.destination as! ChoosePictureVC
             destination.userInfoDict = userInfoDict
         }
@@ -150,11 +150,9 @@ class NewSignUpVC: UIViewController {
 
     
     fileprivate func validateEmail(enteredEmail:String) -> Bool {
-        
         let emailFormat = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
         let emailPredicate = NSPredicate(format:"SELF MATCHES %@", emailFormat)
         return emailPredicate.evaluate(with: enteredEmail)
-        
     }
     
     fileprivate func validatePassword(enteredPassword:String) ->Bool{

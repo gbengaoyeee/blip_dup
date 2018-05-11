@@ -129,9 +129,7 @@ exports.createNewStripeAccount = functions.https.onRequest((req,res) => {
   const emailHash = crypto.createHash('md5').update(email).digest('hex');
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
-  const dobDay = req.body.dobDay;
-  const dobMonth = req.body.dobMonth;
-  const dobYear = req.body.dobYear;
+
   return stripe.accounts.create({
     country: "CA",
     default_currency: "cad",
@@ -139,29 +137,25 @@ exports.createNewStripeAccount = functions.https.onRequest((req,res) => {
     email: email,
     legal_entity: {
       type: "individual",
-      dob: {
-        day: dobDay,
-        month: dobMonth,
-        year: dobYear
-      },
       first_name: firstName,
       last_name: lastName
     },
     payout_schedule: {
       interval: "weekly",
       weekly_anchor: "wednesday"
-    },
-    payout_statement_descript: "BlipDeliveries"
+    }
   },function(err, account){
     if (err){
-      console.log(err)
+      console.log(err);
+      res.end();
     }
     else{
       admin.database().ref(`/Couriers/${emailHash}/stripeAccount`).set(account)
-      console.log(account)
+      console.log(account);
+      res.send(200, account);
     }
-  })
-})  
+  });
+});
 
 exports.updateStripeCustomerDefaultSource = functions.https.onRequest((req,res) => {
   var customer = req.body.customerID,
