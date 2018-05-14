@@ -223,12 +223,10 @@ class SettingsVC: FormViewController {
             //Invalid SIN
             return false
         }
-        
         return true
     }
     
     func validateProvince(province: String?) -> Bool{
-        
         if province == nil{
             return false
         }

@@ -144,15 +144,22 @@ class ServiceCalls:NSObject, NSCoding{
     func completedJob(id:String){
         userRef.child(emailHash).child("givenJob/deliveries").child(id).observeSingleEvent(of: .value) { (snapshot) in
             let values = snapshot.value as? [String:Any]
-            self.userRef.child(self.emailHash).child("completedDeliveries").child("deliveries").updateChildValues([id:values as Any])
+            self.userRef.child(self.emailHash).child("completedDeliveries").child("deliveries/\(id)").updateChildValues(values!)
             self.userRef.child(self.emailHash).child("givenJob/deliveries").child(id).removeValue()
         }
     }
     
+    func setIsTakenOnGivenJobsAndStore(waypointList:[BlipWaypoint]){
+        let ref = Database.database().reference(withPath: "Couriers/\(self.emailHash!)/givenJob/deliveries")
+        let storesRef = Database.database().reference(withPath: "stores)")
+        for way in waypointList{
+            ref.child(way.delivery.identifier).updateChildValues(["isTaken":true])
+            storesRef.child("\(way.delivery.store.name!)/deliveries/\(way.delivery.identifier!)").updateChildValues(["isTaken":true, "jobTaker":self.emailHash!])
+        }
+    }
+    
     func loadMapAnnotations(map: MGLMapView){
-        
         jobsRef.observeSingleEvent(of: .value) { (snap) in
-            
             let snapDict = snap.value as? [String: AnyObject]
             var x = 15
             if let snapDict = snapDict{
