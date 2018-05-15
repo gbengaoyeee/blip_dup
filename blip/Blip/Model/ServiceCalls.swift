@@ -144,15 +144,22 @@ class ServiceCalls:NSObject, NSCoding{
     func completedJob(id:String){
         userRef.child(emailHash).child("givenJob/deliveries").child(id).observeSingleEvent(of: .value) { (snapshot) in
             let values = snapshot.value as? [String:Any]
-            self.userRef.child(self.emailHash).child("completedDeliveries").child("deliveries").updateChildValues([id:values as Any])
+            self.userRef.child(self.emailHash).child("completedDeliveries").child("deliveries/\(id)").updateChildValues(values!)
             self.userRef.child(self.emailHash).child("givenJob/deliveries").child(id).removeValue()
         }
     }
     
+    func setIsTakenOnGivenJobsAndStore(waypointList:[BlipWaypoint]){
+        let ref = Database.database().reference(withPath: "Couriers/\(self.emailHash!)/givenJob/deliveries")
+        let storesRef = Database.database().reference(withPath: "stores)")
+        for way in waypointList{
+            ref.child(way.delivery.identifier).updateChildValues(["isTaken":true])
+            storesRef.child("\(way.delivery.store.name!)/deliveries/\(way.delivery.identifier!)").updateChildValues(["isTaken":true, "jobTaker":self.emailHash!])
+        }
+    }
+    
     func loadMapAnnotations(map: MGLMapView){
-        
         jobsRef.observeSingleEvent(of: .value) { (snap) in
-            
             let snapDict = snap.value as? [String: AnyObject]
             var x = 15
             if let snapDict = snapDict{
@@ -222,9 +229,9 @@ class ServiceCalls:NSObject, NSCoding{
         if provider != nil{
             userRef.child(MD5(string: email)).observeSingleEvent(of: .value) { (snapshot) in
                 if let values = snapshot.value as? [String:Any]{
-                    let granted = values["granted"] as? Bool
+                    let granted = values["granted"] as! Bool
                     if granted == true{
-                        let dict:[String:Any] = ["granted":true, "uid":uid, "firstName":firstName, "lastName":lastName, "email":email, "rating":5.0, "currentDevice":AppDelegate.DEVICEID, "verified":false]
+                        let dict:[String:Any] = ["granted":true, "uid":uid, "firstName":firstName, "lastName":lastName, "email":email, "rating":5.0, "currentDevice":AppDelegate.DEVICEID]
                         self.userRef.child(self.emailHash).updateChildValues(dict)
                         return
                     }

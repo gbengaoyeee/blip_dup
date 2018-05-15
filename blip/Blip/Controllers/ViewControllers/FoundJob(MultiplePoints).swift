@@ -326,6 +326,7 @@ extension FoundJobVC{
     }
     
     func calculateAndPresentNavigation(waypointList: [BlipWaypoint], present: Bool){
+        
         let options = NavigationRouteOptions(waypoints: waypointList, profileIdentifier: .automobile)
         _ = Directions.shared.calculate(options, completionHandler: { (waypoints, routes, error) in
             if error == nil{
@@ -337,6 +338,7 @@ extension FoundJobVC{
                     navigation.routeController.locationManager = x
                     navigation.delegate = self
                     navigation.showsEndOfRouteFeedback = false
+                    self.service.setIsTakenOnGivenJobsAndStore(waypointList: waypointList)
                     self.navigationController?.pushViewController(navigation, animated: true)
                 }
             }

@@ -169,12 +169,41 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
                     }
             }
         }
-        
     }
     
     enum CustomerKeyError: Error {
         case missingBaseURL
         case invalidResponse
+    }
+    
+    func postTestJob(storeName:String, deliveryLat:Double, deliveryLong:Double, deliveryMainInstruction:String, deliverySubInstruction:String, originLat:Double, originLong:Double, pickupMainInstruction:String, pickupSubInstruction:String, recieverName:String, recieverNumber:String, pickupNumber:String){
+        
+        let url = self.baseURL.appendingPathComponent("postTestJob")
+        let params:[String:Any] = [
+            "storeName":storeName,
+            "deliveryLat":deliveryLat,
+            "deliveryLong":deliveryLong,
+            "deliveryMainInstruction":deliveryMainInstruction,
+            "deliverySubInstruction":deliverySubInstruction,
+            "originLat":originLat,
+            "originLong":originLong,
+            "pickupMainInstruction":pickupMainInstruction,
+            "pickupSubInstruction":pickupSubInstruction,
+            "recieverName":recieverName,
+            "recieverNumber":recieverNumber,
+            "pickupNumber":pickupNumber
+        ]
+        Alamofire.request(url, method: .post, parameters: params, headers: nil).validate(statusCode: 200...200)
+            .responseString { (response) in
+                switch response.result{
+                case .success:
+                    print(response.result)
+                    break
+                case .failure:
+                    print(response.result)
+                    break
+                }
+        }
     }
     
     func createNewStripeAccount(email:String, firstName:String, lastName:String, completion:@escaping (String?, Error?)->()){

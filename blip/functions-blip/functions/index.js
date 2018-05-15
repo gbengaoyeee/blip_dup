@@ -209,16 +209,6 @@ function addStore(storeName, storeLogo, storeBackground, storeDescription){
   });
 }
 
-function newDelivery(storeName, deliveryLat, deliveryLong, deliveryMainInstruction, deliverySubInstruction, originLat, originLong, pickupMainInstruction, pickupSubInstruction, recieverName, recieverNumber, pickupNumber)
-{
-  var deliveryDetails = {storeName, deliveryLat, deliveryLong, deliveryMainInstruction, deliverySubInstruction, originLat, originLong, pickupMainInstruction, pickupSubInstruction, recieverName, recieverNumber, pickupNumber};
-  
-  // Get a key for a new Post.
-  var newPostKey = firebase.database().ref().child('posts').push().key;
-  admin.database().ref('AllJobs/'+newPostKey).update(deliveryDetails).then(() =>{
-    console.log('Update succeeded!');
-  });
-}
 
 function checkUserVerifiedOrFlagged(emailHash, callback){
   admin.database().ref('Couriers/'+emailHash).once('value', function(snapshot){
@@ -242,6 +232,30 @@ function checkUserVerifiedOrFlagged(emailHash, callback){
     }
   });
 }
+
+exports.postTestJob = functions.https.onRequest((req,res) => {
+  //storeName, deliveryLat, deliveryLong, deliveryMainInstruction, deliverySubInstruction, originLat, originLong, pickupMainInstruction, pickupSubInstruction, recieverName, recieverNumber, pickupNumber
+  var storeName = req.body.storeName,
+      deliveryLat = req.body.deliveryLat,
+      deliveryLong = req.body.deliveryLong,
+      deliveryMainInstruction = req.body.deliveryMainInstruction,
+      deliverySubInstruction = req.body.deliverySubInstruction,
+      originLat = req.body.originLat,
+      originLong = req.body.originLong,
+      pickupMainInstruction = req.body.pickupMainInstruction,
+      pickupSubInstruction = req.body.pickupSubInstruction,
+      recieverName = req.body.recieverName,
+      recieverNumber = req.body.recieverNumber,
+      pickupNumber = req.body.pickupNumber;
+    
+  const call = newDelivery(storeName,deliveryLat,deliveryLong,deliveryMainInstruction,deliverySubInstruction,originLat,originLong,pickupMainInstruction,pickupSubInstruction,recieverName,recieverNumber,pickupNumber);
+  if (call === 500){
+    const error = new Error('Error Posting job');
+    res.status(500).send(error);
+  }else{
+    res.status(200).send();
+  }
+});
 
 exports.getBestJob = functions.https.onRequest((req,res) => {
   var long = req.body.locationLong,
@@ -430,4 +444,49 @@ function reportError(err, context = {}) {
 // Sanitize the error message for the user
 function userFacingMessage(error) {
   return error.type ? error.message : 'An error occurred, developers have been alerted';
+}
+
+
+
+
+
+//API STARTS HERE
+function newDelivery(storeName, deliveryLat, deliveryLong, deliveryMainInstruction, deliverySubInstruction, originLat, originLong, pickupMainInstruction, pickupSubInstruction, recieverName, recieverNumber, pickupNumber)
+{
+
+  getStore(storeName, function(storeValues, error){
+    if (error){
+      alert(error.message);
+      console.log(error);
+      return 500;
+    }else{
+      var deliveryDetails = {storeName, deliveryLat, deliveryLong, deliveryMainInstruction, deliverySubInstruction, originLat, originLong, pickupMainInstruction, pickupSubInstruction, recieverName, recieverNumber, pickupNumber};
+      // deliveryDetails[storeName] = storeValues;
+      deliveryDetails.isTaken = false;
+      deliveryDetails.isCompleted = false;
+      // Get a key for a new Post.
+      var newPostKey = admin.database().ref().child('AllJobs').push().key;
+      admin.database().ref('stores/'+storeName+'/deliveries/'+newPostKey).update(deliveryDetails).then(() =>{
+        console.log('Update succeeded: stores')
+      });
+
+      admin.database().ref('AllJobs/'+newPostKey).update(deliveryDetails).then(() =>{
+        console.log('Update succeeded: alljobs');
+      });
+    }
+  })
+}
+
+function getStore(storeName, callback){
+  var storesRef = admin.database().ref('stores/'+storeName);
+  storesRef.once('value',function(snapshot){
+    if (snapshot.exists()){
+      const storeValues = snapshot.val();
+      callback(storeValues,null);
+    }else{
+      const error = new Error("No such store availablie");
+      callback(null,error);
+    }
+    
+  });
 }
