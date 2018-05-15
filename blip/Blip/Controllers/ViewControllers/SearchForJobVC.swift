@@ -23,6 +23,7 @@ class SearchForJobVC: UIViewController {
     @IBOutlet weak var goButtonPulseAnimation: UIView!
     @IBOutlet weak var goButton: RaisedButton!
     @IBOutlet var map: MGLMapView!
+    @IBOutlet weak var testJobPost: UIButton!
     let pulsator = Pulsator()
     
     var gradient: CAGradientLayer!
@@ -36,6 +37,7 @@ class SearchForJobVC: UIViewController {
         super.viewDidLoad()
         locationManager.delegate = self
         prepareBlur()
+        testJobPost.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {

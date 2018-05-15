@@ -86,7 +86,6 @@ class ChoosePictureVC: UIViewController, UIImagePickerControllerDelegate, UINavi
                         return
                     }
                     self.saveInfoInUserDefault(email: self.userInfoDict["email"]!, picture: user.photoURL?.absoluteString, emailHash: self.service.emailHash)
-                    print("RESPONSE VALUE", responseVal)
                 })
                 
             }
