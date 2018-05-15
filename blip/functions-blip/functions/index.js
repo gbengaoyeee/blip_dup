@@ -71,6 +71,70 @@ exports.captureCharge = functions.https.onRequest((req, res) => {
   })
 });
 
+
+exports.testStoreCreation =  functions.https.onRequest((req, res) =>{
+  var storeName = "Nike";
+  var storeLogo = "https://qph.fs.quoracdn.net/main-qimg-18d801a88c5d4fefd289642da0d074d9";
+  var storeBackground = "https://cdn.filepicker.io/api/file/b7KpCA7bSzqq4IhV0CCQ";
+  var locationLat = "19.36124";
+  var locationLong = "126.10425";
+  var routing_number = "11000-000";
+  var account_number = "000123456789";
+  var email = req.body.email;
+
+  stripe.accounts.create({
+    "country":"CA",
+    "email":email,
+    "type":"custom",
+    "external_account": {
+      "object": "bank_account",
+      "country": "CA",
+      "currency": "cad",
+      "routing_number": routing_number,
+      "account_number": account_number
+    },
+    "legal_entity": {
+      "address": {
+        "city": "Toronto",
+        "country": "CA",
+        "line1": "line1",
+        "postal_code": "M6M4V8",
+        "state": "ON"
+      },
+      "business_name":"Nike",
+      "business_tax_id":"000000000",
+      "dob":{
+        "day":"01",
+        "month":"01",
+        "year":"1990"
+      },
+      "first_name":"kamran",
+      "last_name":"deep",
+      "personal_id_number":"000000000",
+      "type": "company"
+    },
+    "tos_acceptance":{
+      "date":"1526339698",
+      "ip":"138.51.250.201"
+    }
+  }, function(err, account){
+    if(err){
+      console.log(err);
+      res.status(400).end();
+      return
+    }else{
+      var storeDetails = {storeLogo, storeBackground, locationLat, locationLong};
+      storeDetails.stripeAccount = account;
+      admin.database().ref('stores/'+storeName).update(storeDetails).then(() =>{
+        console.log('Created successfully')
+      });
+
+      res.status(200).send(account);
+    }
+  });
+});
+
+
   exports.updateStripeAccount = functions.https.onRequest((req,res) => {
     console.log(req.body);
     const routing_number = req.body.routing_number;
@@ -88,7 +152,7 @@ exports.captureCharge = functions.https.onRequest((req, res) => {
       const sin = req.body.sin;
       const tos_time = req.body.tos_time;
       const accountID = req.body.account_ID;
-  
+
       stripe.accounts.update(accountID, {
         "external_account": {
           "object": "bank_account",

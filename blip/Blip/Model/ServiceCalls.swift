@@ -151,7 +151,7 @@ class ServiceCalls:NSObject, NSCoding{
     
     func setIsTakenOnGivenJobsAndStore(waypointList:[BlipWaypoint]){
         let ref = Database.database().reference(withPath: "Couriers/\(self.emailHash!)/givenJob/deliveries")
-        let storesRef = Database.database().reference(withPath: "stores)")
+        let storesRef = Database.database().reference(withPath: "stores")
         for way in waypointList{
             ref.child(way.delivery.identifier).updateChildValues(["isTaken":true])
             storesRef.child("\(way.delivery.store.name!)/deliveries/\(way.delivery.identifier!)").updateChildValues(["isTaken":true, "jobTaker":self.emailHash!])

@@ -176,6 +176,10 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
         case invalidResponse
     }
     
+    func testStoreCreation(){
+        
+    }
+    
     func postTestJob(storeName:String, deliveryLat:Double, deliveryLong:Double, deliveryMainInstruction:String, deliverySubInstruction:String, originLat:Double, originLong:Double, pickupMainInstruction:String, pickupSubInstruction:String, recieverName:String, recieverNumber:String, pickupNumber:String){
         
         let url = self.baseURL.appendingPathComponent("postTestJob")
