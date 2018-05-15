@@ -26,6 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     var isLaunched = false
     var window: UIWindow?
     var sessionTimer: Timer!
+    var isWaiting = false
 
     var counter = 60
     static let NOTIFICATION_URL = "https://fcm.googleapis.com/fcm/send"
@@ -48,6 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         _ = Auth.auth().addStateDidChangeListener { (auth, user) in
             if auth.currentUser != nil {
+                
                 self.setLoginAsRoot()
             }
             else{
@@ -131,7 +133,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func setLoginAsRoot(){
         var options = UIWindow.TransitionOptions()
         options.direction = .fade
-        options.duration = 0.8
+        options.duration = 0
         options.style = .easeIn
         self.window = UIWindow(frame: Screen.bounds)
         self.window!.setRootViewController(AppFABMenuController(rootViewController: UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "rootAfterLogin")), options: options)

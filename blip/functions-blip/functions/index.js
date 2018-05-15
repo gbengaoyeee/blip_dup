@@ -59,6 +59,7 @@ exports.charges = functions.https.onRequest((req,res) => {
 
 exports.captureCharge = functions.https.onRequest((req, res) => {
   var chargeID = req.body.chargeID;
+  var accountID = req.body.accountID;
   console.log(chargeID);
   stripe.charges.capture(chargeID, function(err, charge){
     console.log(charge);
@@ -73,14 +74,28 @@ exports.captureCharge = functions.https.onRequest((req, res) => {
 
 
 exports.createStore =  functions.https.onRequest((req, res) =>{
-  var storeName = "Nike";
-  var storeLogo = "https://qph.fs.quoracdn.net/main-qimg-18d801a88c5d4fefd289642da0d074d9";
-  var storeBackground = "https://cdn.filepicker.io/api/file/b7KpCA7bSzqq4IhV0CCQ";
-  var description = "Get all the latest shoes here at Nike including the 23s"
-  var locationLat = "19.36124";
-  var locationLong = "126.10425";
-  var routing_number = "11000-000";
-  var account_number = "000123456789";
+  var storeName = req.body.storeName;
+  var storeLogo = req.body.storeLogo;
+  var storeBackground = req.body.storeBackground;
+  var locationLat = req.body.locationLat;
+  var locationLong = req.body.locationLong;
+  var routing_number = req.body.routingNumber;
+  var account_number = req.body.accountNumber;
+  var city = req.body.city;
+  var country = req.body.country;
+  var line1 = req.body.line1;
+  var postal_code = req.body.postalCode;
+  var province = req.body.province;
+  var business_name = req.body.businessName;
+  var business_tax_id = req.body.businessTaxId;
+  var first_name = req.body.firstName;
+  var last_name = req.body.lastName;
+  var personal_id_number = req.body.personalIdNumber;
+  var dob_day = req.body.dobDay;
+  var dob_month = req.body.dobMonth;
+  var dob_year = req.body.dob_year;
+  var date = Math.floor(new Date() / 1000);
+
   var email = req.body.email;
 
   stripe.accounts.create({
@@ -96,11 +111,11 @@ exports.createStore =  functions.https.onRequest((req, res) =>{
     },
     "legal_entity": {
       "address": {
-        "city": "Toronto",
-        "country": "CA",
-        "line1": "line1",
-        "postal_code": "M6M4V8",
-        "state": "ON"
+        "city": city,
+        "country": country,
+        "line1": line1,
+        "postal_code": postal_code,
+        "state": province
       },
       "business_name":"Nike",
       "business_tax_id":"000000000",
@@ -109,28 +124,44 @@ exports.createStore =  functions.https.onRequest((req, res) =>{
         "month":"01",
         "year":"1990"
       },
-      "first_name":"kamran",
-      "last_name":"deep",
-      "personal_id_number":"000000000",
+      "first_name":first_name,
+      "last_name":last_name,
+      "personal_id_number":personal_id_number,
       "type": "company"
     },
     "tos_acceptance":{
-      "date":"1526339698",
+      "date":date.toString,
       "ip":"138.51.250.201"
     }
   }, function(err, account){
     if(err){
       console.log(err);
       res.status(400).end();
-      return
     }else{
-      var storeDetails = {storeName, storeLogo, storeBackground, locationLat, locationLong, description};
-      storeDetails.stripeAccount = account;
-      var storeID = admin.database().ref().child('stores').push().key;
-      admin.database().ref('stores/'+storeID).update(storeDetails).then(() =>{
-        console.log('Created successfully')
+      stripe.tokens.create({
+        bank_account: {
+          country: 'CA',
+          currency: 'cad',
+          account_holder_name: business_name,
+          account_holder_type: 'company',
+          routing_number: routing_number,
+          account_number: account_number
+        }
+      }, function(err, token) {
+        if (err){
+          console.log("Could not create store due to;"+err);
+          res.status(450).end
+        }else{
+          var storeDetails = {storeName, storeLogo, storeBackground, locationLat, locationLong};
+          storeDetails.stripeAccount = account;
+          storeDetails.strpeAccount.token = token.id;
+          var storeID = admin.database().ref().child('stores').push().key;
+          admin.database().ref('stores/'+storeID).update(storeDetails).then(() =>{
+            console.log('Created store successfully')
+          });
+          res.status(200).send(storeID);
+        }
       });
-      res.status(200).send(account);
     }
   });
 });
@@ -222,58 +253,12 @@ exports.createNewStripeAccount = functions.https.onRequest((req,res) => {
   });
 });
 
-exports.updateStripeCustomerDefaultSource = functions.https.onRequest((req,res) => {
-  var customer = req.body.customerID,
-    source = req.body.source;
-  
-  stripe.customers.update(customer, {
-      default_source: source
-  }, function(err, customer) {
-      if (err) {
-          console.log(err,req.body)
-          res.status(500).end()
-      } else {
-          res.status(200).send()
-      }
-    });
-  });
-
-exports.getCustomer = functions.https.onRequest((req,res) => {
-  stripe.customers.retrieve(req.body.customerID,
-    function(err, customer) {
-    // asynchronously called
-      if (err) {
-          console.log(err,req.body)
-          res.status(500).end()
-      } else {
-          res.status(200).json(customer)
-      }
-    });
-  });
-  
-  // Add a payment source (card) for a user by writing a stripe payment source token to Realtime database
-exports.addNewPaymentSource = functions.https.onRequest((req,res) => {
-  stripe.customers.createSource(req.body.customerID,
-    {source: req.body.sourceID},
-    function(err, source) {
-    // asynchronously called
-      if (err) {
-        console.log(err,req.body)
-          res.status(500).end()
-      } else {
-          res.status(200).send()
-      }
-    });
-  });
-
-  //adds the store to firebase
 function addStore(storeName, storeLogo, storeBackground, storeDescription){
   var store = {storeName, storeLogo, storeBackground, storeDescription};
   admin.database().ref('stores/').update(store).then(() =>{
     console.log('Update succeeded!');
   });
 }
-
 
 function checkUserVerifiedOrFlagged(emailHash, callback){
   admin.database().ref('Couriers/'+emailHash).once('value', function(snapshot){
@@ -298,28 +283,63 @@ function checkUserVerifiedOrFlagged(emailHash, callback){
   });
 }
 
-exports.postTestJob = functions.https.onRequest((req,res) => {
-  //storeName, deliveryLat, deliveryLong, deliveryMainInstruction, deliverySubInstruction, originLat, originLong, pickupMainInstruction, pickupSubInstruction, recieverName, recieverNumber, pickupNumber
-  var storeID = req.body.storeID,
-      deliveryLat = req.body.deliveryLat,
-      deliveryLong = req.body.deliveryLong,
-      deliveryMainInstruction = req.body.deliveryMainInstruction,
-      deliverySubInstruction = req.body.deliverySubInstruction,
-      originLat = req.body.originLat,
-      originLong = req.body.originLong,
-      pickupMainInstruction = req.body.pickupMainInstruction,
-      pickupSubInstruction = req.body.pickupSubInstruction,
-      recieverName = req.body.recieverName,
-      recieverNumber = req.body.recieverNumber,
-      pickupNumber = req.body.pickupNumber;
-    
-  const call = newDelivery(storeID,deliveryLat,deliveryLong,deliveryMainInstruction,deliverySubInstruction,originLat,originLong,pickupMainInstruction,pickupSubInstruction,recieverName,recieverNumber,pickupNumber);
-  if (call === 500){
-    const error = new Error('Error Posting job');
-    res.status(500).send(error);
-  }else{
-    res.status(200).send();
-  }
+function getChargeAmount(deliveryLat, deliveryLong, pickupLat, pickupLong){
+  const distanceBtw = geo.getDistance({latitude: deliveryLat, longitude: deliveryLong}, {latitude: pickupLat, longitude: pickupLong});
+  const price = (distanceBtw/10) + 450 + 1 + 3.5;
+  return price*100;
+}
+
+exports.makeDeliveryRequest = functions.https.onRequest((req,res) => {
+  //storeName, deliveryLat, deliveryLong, deliveryMainInstruction, deliverySubInstruction, originLat, originLong, pickupMainInstruction, pickupSubInstruction, recieverName, recieverNumber, pickupNumber  
+  var storeID = req.body.storeID;
+  admin.database().ref(`/stores/${storeID}`).once("value", function(snapshot){
+    if (snapshot.exists){
+      var deliveryLat = req.body.deliveryLat,
+          deliveryLong = req.body.deliveryLong,
+          deliveryMainInstruction = req.body.deliveryMainInstruction,
+          deliverySubInstruction = req.body.deliverySubInstruction,
+          originLat = req.body.originLat,
+          originLong = req.body.originLong,
+          pickupMainInstruction = req.body.pickupMainInstruction,
+          pickupSubInstruction = req.body.pickupSubInstruction,
+          recieverName = req.body.recieverName,
+          recieverNumber = req.body.recieverNumber,
+          pickupNumber = req.body.pickupNumber,
+          stripeAccountKey = snapshot.child(`/stripeAccount/keys/secret`).val(),
+          stripeAccount = require("stripe")(stripeAccountKey);
+          chargeAmount = getChargeAmount(deliveryLat,deliveryLong, originLat,originLong);
+          // @TODO: You have to calculate amount using a function. First get the delivery location from above, then pickup location
+                  // Calculate the distance between teh pickup point, and delivery point, divide that answer by 10, then add 450. this will be the 
+                  // amount we charge the company (remember: 1 dollar per KM plus 1 for pickup, 3.5 for delivery, Then you must
+                  // convert all that to cents because stripe works only with cents not dollars)
+
+      stripe.charges.create({
+        amount: chargeAmount,
+        currency: "cad",
+        application_fee: 100,
+        capture: false,
+        description: "Delivery Charge",
+        source: snapshot.child(`/stripeAccount/token`).val()
+      }).then(function(err, charge) {
+        if (err){
+          console.log(err);
+          res.status(450).end
+        }else{
+          const call = newDelivery(charge.id,storeID,deliveryLat,deliveryLong,deliveryMainInstruction,deliverySubInstruction,originLat,originLong,pickupMainInstruction,pickupSubInstruction,recieverName,recieverNumber,pickupNumber);
+          if (call === 500){
+            console.log("Incorrect storeID")
+            res.status(400).end();
+          }else{
+            console.log("Created delivery")
+            res.status(200).send();
+          }
+        }
+      });
+    }else{
+      console.log("No such storeID");
+      res.status(500).end()
+    }
+  })
 });
 
 exports.getBestJob = functions.https.onRequest((req,res) => {

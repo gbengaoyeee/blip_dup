@@ -61,7 +61,7 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
         }
     }
     
-    func verifyStripeAccount(routingNumber: String!, accountNumber: String!, city: String!, streetAdd: String!, postalCode: String!, province: String!, dobDay: String!, dobMonth: String!, dobYear: String!, firstName: String!, lastName: String!, sin: String!, completion: @escaping([String: AnyObject]?, Error?) -> ()){
+    func verifyStripeAccount(routingNumber: String!, accountNumber: String!, city: String!, streetAdd: String!, postalCode: String!, province: String!, sin: String!, completion: @escaping([String: AnyObject]?, Error?) -> ()){
         let url = self.baseURL.appendingPathComponent("updateStripeAccount")
         service.retrieveStripeAccount { (account) in
             if let account = account{
@@ -73,11 +73,6 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
                     "city": "Mississauga", "line1": "156 enfield",
                     "postal_code": "l5b4l8",
                     "state": "ON",
-                    "dob_day": "01",
-                    "dob_month": "01",
-                    "dob_year": "1996",
-                    "first_name": "srikanth",
-                    "last_name": "srinivas",
                     "sin": "000000000",
                     "tos_time": "\(Int(NSDate().timeIntervalSince1970.rounded()))"]
             
