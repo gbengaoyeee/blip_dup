@@ -181,15 +181,31 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
         case invalidResponse
     }
     
-    func testStoreCreation(){
-        
+    func getStore(storeID:String, completion:@escaping ([String:Any]?,Error?)->()){
+        let url = self.baseURL.appendingPathComponent("ephemeral_keys")
+        let params = [
+            "storeID":storeID
+        ]
+        Alamofire.request(url, method: .get, parameters: params, encoding: JSONEncoding.default, headers: nil)
+            .validate(statusCode: 200...200)
+            .responseJSON { (response) in
+                switch response.result{
+                case .success(let json):
+                    let result = json as! [String:Any]
+                    completion(result, nil)
+                    break
+                case .failure(let error):
+                    completion(nil, error)
+                    break
+                }
+        }
     }
     
-    func postTestJob(storeName:String, deliveryLat:Double, deliveryLong:Double, deliveryMainInstruction:String, deliverySubInstruction:String, originLat:Double, originLong:Double, pickupMainInstruction:String, pickupSubInstruction:String, recieverName:String, recieverNumber:String, pickupNumber:String){
+    func postTestJob(storeID:String, deliveryLat:Double, deliveryLong:Double, deliveryMainInstruction:String, deliverySubInstruction:String, originLat:Double, originLong:Double, pickupMainInstruction:String, pickupSubInstruction:String, recieverName:String, recieverNumber:String, pickupNumber:String){
         
         let url = self.baseURL.appendingPathComponent("postTestJob")
         let params:[String:Any] = [
-            "storeName":storeName,
+            "storeID":storeID,
             "deliveryLat":deliveryLat,
             "deliveryLong":deliveryLong,
             "deliveryMainInstruction":deliveryMainInstruction,

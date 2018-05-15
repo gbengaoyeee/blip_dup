@@ -76,6 +76,7 @@ exports.createStore =  functions.https.onRequest((req, res) =>{
   var storeName = "Nike";
   var storeLogo = "https://qph.fs.quoracdn.net/main-qimg-18d801a88c5d4fefd289642da0d074d9";
   var storeBackground = "https://cdn.filepicker.io/api/file/b7KpCA7bSzqq4IhV0CCQ";
+  var description = "Get all the latest shoes here at Nike including the 23s"
   var locationLat = "19.36124";
   var locationLong = "126.10425";
   var routing_number = "11000-000";
@@ -123,7 +124,7 @@ exports.createStore =  functions.https.onRequest((req, res) =>{
       res.status(400).end();
       return
     }else{
-      var storeDetails = {storeName, storeLogo, storeBackground, locationLat, locationLong};
+      var storeDetails = {storeName, storeLogo, storeBackground, locationLat, locationLong, description};
       storeDetails.stripeAccount = account;
       var storeID = admin.database().ref().child('stores').push().key;
       admin.database().ref('stores/'+storeID).update(storeDetails).then(() =>{
@@ -299,7 +300,7 @@ function checkUserVerifiedOrFlagged(emailHash, callback){
 
 exports.postTestJob = functions.https.onRequest((req,res) => {
   //storeName, deliveryLat, deliveryLong, deliveryMainInstruction, deliverySubInstruction, originLat, originLong, pickupMainInstruction, pickupSubInstruction, recieverName, recieverNumber, pickupNumber
-  var storeName = req.body.storeName,
+  var storeID = req.body.storeID,
       deliveryLat = req.body.deliveryLat,
       deliveryLong = req.body.deliveryLong,
       deliveryMainInstruction = req.body.deliveryMainInstruction,
@@ -312,7 +313,7 @@ exports.postTestJob = functions.https.onRequest((req,res) => {
       recieverNumber = req.body.recieverNumber,
       pickupNumber = req.body.pickupNumber;
     
-  const call = newDelivery(storeName,deliveryLat,deliveryLong,deliveryMainInstruction,deliverySubInstruction,originLat,originLong,pickupMainInstruction,pickupSubInstruction,recieverName,recieverNumber,pickupNumber);
+  const call = newDelivery(storeID,deliveryLat,deliveryLong,deliveryMainInstruction,deliverySubInstruction,originLat,originLong,pickupMainInstruction,pickupSubInstruction,recieverName,recieverNumber,pickupNumber);
   if (call === 500){
     const error = new Error('Error Posting job');
     res.status(500).send(error);
@@ -515,22 +516,22 @@ function userFacingMessage(error) {
 
 
 //API STARTS HERE
-function newDelivery(storeName, deliveryLat, deliveryLong, deliveryMainInstruction, deliverySubInstruction, originLat, originLong, pickupMainInstruction, pickupSubInstruction, recieverName, recieverNumber, pickupNumber)
+function newDelivery(storeID, deliveryLat, deliveryLong, deliveryMainInstruction, deliverySubInstruction, originLat, originLong, pickupMainInstruction, pickupSubInstruction, recieverName, recieverNumber, pickupNumber)
 {
 
-  getStore(storeName, function(storeValues, error){
+  getStore(storeID, function(storeValues, error){
     if (error){
       alert(error.message);
       console.log(error);
       return 500;
     }else{
-      var deliveryDetails = {storeName, deliveryLat, deliveryLong, deliveryMainInstruction, deliverySubInstruction, originLat, originLong, pickupMainInstruction, pickupSubInstruction, recieverName, recieverNumber, pickupNumber};
+      var deliveryDetails = {storeID, deliveryLat, deliveryLong, deliveryMainInstruction, deliverySubInstruction, originLat, originLong, pickupMainInstruction, pickupSubInstruction, recieverName, recieverNumber, pickupNumber};
       // deliveryDetails[storeName] = storeValues;
       deliveryDetails.isTaken = false;
       deliveryDetails.isCompleted = false;
       // Get a key for a new Post.
       var newPostKey = admin.database().ref().child('AllJobs').push().key;
-      admin.database().ref('stores/'+storeName+'/deliveries/'+newPostKey).update(deliveryDetails).then(() =>{
+      admin.database().ref('stores/'+storeID+'/deliveries/'+newPostKey).update(deliveryDetails).then(() =>{
         console.log('Update succeeded: stores')
       });
 
@@ -541,8 +542,8 @@ function newDelivery(storeName, deliveryLat, deliveryLong, deliveryMainInstructi
   })
 }
 
-function getStore(storeName, callback){
-  var storesRef = admin.database().ref('stores/'+storeName);
+function getStore(storeID, callback){
+  var storesRef = admin.database().ref('stores/'+storeID);
   storesRef.once('value',function(snapshot){
     if (snapshot.exists()){
       const storeValues = snapshot.val();

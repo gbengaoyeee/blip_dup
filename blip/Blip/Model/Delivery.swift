@@ -28,7 +28,7 @@ class Delivery{
     var pickupNumber: String!
     var state: String?
     
-    init(deliveryLocation: CLLocationCoordinate2D, identifier: String, origin: CLLocationCoordinate2D, recieverName: String, recieverNumber: String, pickupNumber: String, pickupMainInstruction: String, pickupSubInstruction: String, deliveryMainInstruction: String, deliverySubInstruction: String, storeName:String) {
+    init(deliveryLocation: CLLocationCoordinate2D, identifier: String, origin: CLLocationCoordinate2D, recieverName: String, recieverNumber: String, pickupNumber: String, pickupMainInstruction: String, pickupSubInstruction: String, deliveryMainInstruction: String, deliverySubInstruction: String, storeID:String) {
         self.deliveryLocation = deliveryLocation
         self.identifier = identifier
         self.origin = origin
@@ -41,13 +41,16 @@ class Delivery{
         self.pickupNumber = pickupNumber
         
         //setting the store
-        let storeRef = Database.database().reference().child("stores").child(storeName)
+        let storeRef = Database.database().reference().child("stores").child(storeID)
         storeRef.observeSingleEvent(of: .value) { (snap) in
             if let storeVal = snap.value as? [String:Any]{
                 let storeLogo = storeVal["storeLogo"] as! String
                 let storeBackground = storeVal["storeBackground"] as! String
-                let storeDescription = storeVal["storeDescription"] as! String
-                self.store = Store(name: storeName, storeLogo: URL(string: storeLogo)!, storeBackground: URL(string: storeBackground)!, description: storeDescription)
+                let storeDescription = storeVal["description"] as! String
+                let latitude = storeVal["locationLat"] as! Double
+                let longitude = storeVal["locationLat"] as! Double
+                let storeName = storeVal["storeName"] as! String
+                self.store = Store(storeID: storeID, name: storeName, storeLogo: URL(string: storeLogo)!, storeBackground: URL(string: storeBackground)!, description: storeDescription, latitude: latitude, longitude: longitude)
             }
         }
         
@@ -87,14 +90,17 @@ class Delivery{
         self.pickupNumber = deliveryValues!["pickupNumber"] as! String
         
         //setting the store
-        let storeName = deliveryValues!["storeName"] as! String
-        let storeRef = Database.database().reference().child("stores").child(storeName)
+        let storeID = deliveryValues!["storeID"] as! String
+        let storeRef = Database.database().reference().child("stores").child(storeID)
         storeRef.observeSingleEvent(of: .value) { (snap) in
             if let storeVal = snap.value as? [String:Any]{
                 let storeLogo = storeVal["storeLogo"] as! String
                 let storeBackground = storeVal["storeBackground"] as! String
-                let storeDescription = storeVal["storeDescription"] as! String
-                self.store = Store(name: storeName, storeLogo: URL(string: storeLogo)!, storeBackground: URL(string: storeBackground)!, description: storeDescription)
+                let storeDescription = storeVal["description"] as! String
+                let latitude = storeVal["locationLat"] as! Double
+                let longitude = storeVal["locationLat"] as! Double
+                let storeName = storeVal["storeName"] as! String
+                self.store = Store(storeID: storeID, name: storeName, storeLogo: URL(string: storeLogo)!, storeBackground: URL(string: storeBackground)!, description: storeDescription, latitude: latitude, longitude: longitude)
             }
         }
         
