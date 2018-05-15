@@ -123,12 +123,12 @@ exports.testStoreCreation =  functions.https.onRequest((req, res) =>{
       res.status(400).end();
       return
     }else{
-      var storeDetails = {storeLogo, storeBackground, locationLat, locationLong};
+      var storeDetails = {storeName, storeLogo, storeBackground, locationLat, locationLong};
       storeDetails.stripeAccount = account;
-      admin.database().ref('stores/'+storeName).update(storeDetails).then(() =>{
+      var storeID = admin.database().ref().child('stores').push().key;
+      admin.database().ref('stores/'+storeID).update(storeDetails).then(() =>{
         console.log('Created successfully')
       });
-
       res.status(200).send(account);
     }
   });
