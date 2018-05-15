@@ -37,7 +37,6 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        useCurrentLocations()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -105,7 +104,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
             }
         }
         else{
-            print("Error occured. Job was nil")
+            print("An Error occured. No Job was passed")
             self.navigationController?.popViewController(animated: true)
         }
     }
@@ -148,30 +147,6 @@ extension FoundJobVC: MGLMapViewDelegate{
             return MGLAnnotationImage(image: delivery.resizeImage(targetSize: CGSize(size: 40)), reuseIdentifier: "delivery")
         }
         return nil
-    }
-}
-
-extension FoundJobVC: CLLocationManagerDelegate{
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let locValue:CLLocationCoordinate2D = manager.location!.coordinate
-        currentLocation = locValue
-        service.updateJobAccepterLocation(location: locValue)
-        manager.stopUpdatingLocation()
-    }
-    
-    func useCurrentLocations(){
-        // Ask for Authorisation from the User.
-        self.locationManager.requestAlwaysAuthorization()
-        
-        // For use in foreground
-        self.locationManager.requestWhenInUseAuthorization()
-        
-        if CLLocationManager.locationServicesEnabled() {
-            locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
-            locationManager.startUpdatingLocation()
-        }
     }
 }
 
@@ -259,11 +234,6 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
 }
 
 extension FoundJobVC{
-    
-    func call(number: String!)  {
-        let url: NSURL = URL(string: "Tel:\(number)")! as NSURL
-        UIApplication.shared.open(url as URL, options: [:], completionHandler: nil)
-    }
     
     func parseDataFromOptimization(waypointData: [[String: AnyObject]]) -> [BlipWaypoint]{
         var waypointList = [BlipWaypoint]()

@@ -37,7 +37,6 @@ class SearchForJobVC: UIViewController {
         super.viewDidLoad()
         locationManager.delegate = self
         prepareBlur()
-        testJobPost.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -157,10 +156,10 @@ class SearchForJobVC: UIViewController {
                 if let job = job{
                     self.foundJob = job
                     self.goButton.isUserInteractionEnabled = true
-                    print("2")
+                    print("Found job")
                     self.performSegue(withIdentifier: "foundJob", sender: self)
                 }
-                if errorCode != nil{
+                else if errorCode != nil{
                     if errorCode == 400{
                         //Not verified
                         self.showBanner(title: "Account Not Verified", subtitle: "Please contact us to verify your account", style: .warning)
@@ -179,10 +178,9 @@ class SearchForJobVC: UIViewController {
                         newBanner.dismissOnTap = true
                         print("No job Found")
                     }
-                    self.goButton.isUserInteractionEnabled = true
-                    return
                 }
             })
+            self.goButton.isUserInteractionEnabled = true
         }
     }
 }
