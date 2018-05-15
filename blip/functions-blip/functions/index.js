@@ -72,7 +72,7 @@ exports.captureCharge = functions.https.onRequest((req, res) => {
 });
 
 
-exports.testStoreCreation =  functions.https.onRequest((req, res) =>{
+exports.createStore =  functions.https.onRequest((req, res) =>{
   var storeName = "Nike";
   var storeLogo = "https://qph.fs.quoracdn.net/main-qimg-18d801a88c5d4fefd289642da0d074d9";
   var storeBackground = "https://cdn.filepicker.io/api/file/b7KpCA7bSzqq4IhV0CCQ";
@@ -123,12 +123,12 @@ exports.testStoreCreation =  functions.https.onRequest((req, res) =>{
       res.status(400).end();
       return
     }else{
-      var storeDetails = {storeLogo, storeBackground, locationLat, locationLong};
+      var storeDetails = {storeName, storeLogo, storeBackground, locationLat, locationLong};
       storeDetails.stripeAccount = account;
-      admin.database().ref('stores/'+storeName).update(storeDetails).then(() =>{
+      var storeID = admin.database().ref().child('stores').push().key;
+      admin.database().ref('stores/'+storeID).update(storeDetails).then(() =>{
         console.log('Created successfully')
       });
-
       res.status(200).send(account);
     }
   });
