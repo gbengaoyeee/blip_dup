@@ -72,7 +72,7 @@ exports.captureCharge = functions.https.onRequest((req, res) => {
 });
 
 
-exports.testStoreCreation =  functions.https.onRequest((req, res) =>{
+exports.createStore =  functions.https.onRequest((req, res) =>{
   var storeName = "Nike";
   var storeLogo = "https://qph.fs.quoracdn.net/main-qimg-18d801a88c5d4fefd289642da0d074d9";
   var storeBackground = "https://cdn.filepicker.io/api/file/b7KpCA7bSzqq4IhV0CCQ";
