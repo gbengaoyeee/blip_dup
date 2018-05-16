@@ -80,8 +80,6 @@ exports.createStore =  functions.https.onRequest((req, res) =>{
   var storeBackground = req.body.storeBackground;
   var locationLat = req.body.locationLat;
   var locationLong = req.body.locationLong;
-  var routing_number = req.body.routingNumber;
-  var account_number = req.body.accountNumber;
   var city = req.body.city;
   var country = req.body.country;
   var line1 = req.body.line1;
@@ -91,10 +89,6 @@ exports.createStore =  functions.https.onRequest((req, res) =>{
   var business_tax_id = req.body.businessTaxId;
   var first_name = req.body.firstName;
   var last_name = req.body.lastName;
-  var personal_id_number = req.body.personalIdNumber;
-  var dob_day = req.body.dobDay;
-  var dob_month = req.body.dobMonth;
-  var dob_year = req.body.dob_year;
   var date = Math.floor(new Date() / 1000);
   var email = req.body.email;
 
@@ -136,6 +130,11 @@ exports.createStore =  functions.https.onRequest((req, res) =>{
   });
 });
 
+request('https://us-central1-blip-c1e83.cloudfunctions.net/createStore', function (error, response, body) {
+  if (!error && response.statusCode == 200) {
+    console.log(body);
+  }
+});
 
   exports.updateStripeAccount = functions.https.onRequest((req,res) => {
     console.log(req.body);
