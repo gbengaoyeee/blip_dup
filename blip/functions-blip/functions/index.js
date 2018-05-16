@@ -72,7 +72,6 @@ exports.captureCharge = functions.https.onRequest((req, res) => {
   })
 });
 
-
 exports.createStore =  functions.https.onRequest((req, res) =>{
   var storeName = req.body.storeName;
   var storeLogo = req.body.storeLogo;
@@ -131,12 +130,12 @@ exports.createStore =  functions.https.onRequest((req, res) =>{
     },
     "tos_acceptance":{
       "date":date.toString,
-      "ip":"138.51.250.201"
+      "ip":"99.250.237.232"
     }
   }, function(err, account){
     if(err){
       console.log(err);
-      res.status(400).end();
+      res.status(400).end(); // COULD NOT CREATE ACCOUNT ERROR
     }else{
       stripe.tokens.create({
         bank_account: {
@@ -150,7 +149,7 @@ exports.createStore =  functions.https.onRequest((req, res) =>{
       }, function(err, token) {
         if (err){
           console.log("Could not create store due to;"+err);
-          res.status(450).end
+          res.status(420).end // COULD NOT CREATE TOKEN ERROR
         }else{
           var storeDetails = {storeName, storeLogo, storeBackground, locationLat, locationLong};
           storeDetails.stripeAccount = account;
@@ -159,7 +158,7 @@ exports.createStore =  functions.https.onRequest((req, res) =>{
           admin.database().ref('stores/'+storeID).update(storeDetails).then(() =>{
             console.log('Created store successfully')
           });
-          res.status(200).send(storeID);
+          res.status(200).send(storeID); // OK
         }
       });
     }
@@ -253,13 +252,6 @@ exports.createNewStripeAccount = functions.https.onRequest((req,res) => {
   });
 });
 
-function addStore(storeName, storeLogo, storeBackground, storeDescription){
-  var store = {storeName, storeLogo, storeBackground, storeDescription};
-  admin.database().ref('stores/').update(store).then(() =>{
-    console.log('Update succeeded!');
-  });
-}
-
 function checkUserVerifiedOrFlagged(emailHash, callback){
   admin.database().ref('Couriers/'+emailHash).once('value', function(snapshot){
     var userValues = snapshot.val();
@@ -305,39 +297,45 @@ exports.makeDeliveryRequest = functions.https.onRequest((req,res) => {
           recieverName = req.body.recieverName,
           recieverNumber = req.body.recieverNumber,
           pickupNumber = req.body.pickupNumber,
+          newPostKey = admin.database().ref().child('AllJobs').push().key,
           stripeAccountKey = snapshot.child(`/stripeAccount/keys/secret`).val(),
-          stripeAccount = require("stripe")(stripeAccountKey);
-          chargeAmount = getChargeAmount(deliveryLat,deliveryLong, originLat,originLong);
-          // @TODO: You have to calculate amount using a function. First get the delivery location from above, then pickup location
-                  // Calculate the distance between teh pickup point, and delivery point, divide that answer by 10, then add 450. this will be the 
-                  // amount we charge the company (remember: 1 dollar per KM plus 1 for pickup, 3.5 for delivery, Then you must
-                  // convert all that to cents because stripe works only with cents not dollars)
+          stripeAccount = require("stripe")(stripeAccountKey),
+          chargeAmount = getChargeAmount(deliveryLat,deliveryLong, originLat,originLong)
 
+      if (!snapshot.child(`/stripeAccount/token`).val()){
+        console.log("Cannot create a delivery. No token returned by stripe");
+        res.status(420).end(); // NO TOKEN ERROR
+        return
+      }
       stripe.charges.create({
         amount: chargeAmount,
         currency: "cad",
         application_fee: 100,
-        capture: false,
         description: "Delivery Charge",
-        source: snapshot.child(`/stripeAccount/token`).val()
+        source: snapshot.child(`/stripeAccount/token`).val(),
+        transfer_group: newPostKey,
       }).then(function(err, charge) {
         if (err){
           console.log(err);
-          res.status(450).end
+          res.status(450).end // CANNOT CHARGE ERROR
         }else{
-          const call = newDelivery(charge.id,storeID,deliveryLat,deliveryLong,deliveryMainInstruction,deliverySubInstruction,originLat,originLong,pickupMainInstruction,pickupSubInstruction,recieverName,recieverNumber,pickupNumber);
-          if (call === 500){
-            console.log("Incorrect storeID")
-            res.status(400).end();
-          }else{
-            console.log("Created delivery")
-            res.status(200).send();
-          }
+          var deliveryDetails = {storeID, deliveryLat, deliveryLong, deliveryMainInstruction, deliverySubInstruction, originLat, originLong, pickupMainInstruction, pickupSubInstruction, recieverName, recieverNumber, pickupNumber};
+          // deliveryDetails[storeName] = storeValues;
+          deliveryDetails.isTaken = false;
+          deliveryDetails.isCompleted = false;
+          deliveryDetails.chargeID = charge.id;
+          admin.database().ref('stores/'+storeID+'/deliveries/'+newPostKey).update(deliveryDetails).then(() =>{
+            console.log('Update succeeded: stores')
+          });
+          admin.database().ref('AllJobs/'+newPostKey).update(deliveryDetails).then(() =>{
+            console.log('Update succeeded: alljobs');
+            res.status(200).send(newPostKey); // OK
+          });
         }
       });
     }else{
       console.log("No such storeID");
-      res.status(500).end()
+      res.status(500).end(); // INCORRECT STOREID ERROR
     }
   })
 });
