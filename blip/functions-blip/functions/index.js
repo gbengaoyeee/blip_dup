@@ -80,21 +80,17 @@ exports.createStore =  functions.https.onRequest((req, res) =>{
   var storeBackground = req.body.storeBackground;
   var locationLat = req.body.locationLat;
   var locationLong = req.body.locationLong;
-  var routing_number = req.body.routingNumber;
-  var account_number = req.body.accountNumber;
-  var city = req.body.city;
-  var country = req.body.country;
-  var line1 = req.body.line1;
-  var postal_code = req.body.postalCode;
-  var province = req.body.province;
+  var card_number = req.body.cardNumber;
+  var exp_month = req.body.expMonth;
+  var address_city = req.body.city;
+  var address_country = req.body.country;
+  var address_line1 = req.body.line1;
+  var address_zip = req.body.postalCode;
+  var address_state = req.body.province;
   var business_name = req.body.businessName;
   var business_tax_id = req.body.businessTaxId;
   var first_name = req.body.firstName;
   var last_name = req.body.lastName;
-  var personal_id_number = req.body.personalIdNumber;
-  var dob_day = req.body.dobDay;
-  var dob_month = req.body.dobMonth;
-  var dob_year = req.body.dob_year;
   var date = Math.floor(new Date() / 1000);
   var email = req.body.email;
 
@@ -137,8 +133,8 @@ exports.createStore =  functions.https.onRequest((req, res) =>{
 
 
   exports.updateStripeAccount = functions.https.onRequest((req,res) => {
-    console.log(req.body);
-    const routing_number = req.body.routing_number;
+      console.log(req.body);
+      const routing_number = req.body.routing_number;
       const emailHash = req.body.emailHash;
       const account_number = req.body.account_number;
       const city = req.body.city;
