@@ -1,3 +1,5 @@
+import { request } from 'http';
+
 'use strict';
 
 const functions = require('firebase-functions'),
@@ -94,73 +96,42 @@ exports.createStore =  functions.https.onRequest((req, res) =>{
   var dob_month = req.body.dobMonth;
   var dob_year = req.body.dob_year;
   var date = Math.floor(new Date() / 1000);
-
   var email = req.body.email;
 
-  stripe.accounts.create({
-    "country":"CA",
+  stripe.customers.create({
+    "business_vat_id":business_tax_id,
+    "description": business_name,
     "email":email,
-    "type":"custom",
-    "external_account": {
-      "object": "bank_account",
-      "country": "CA",
-      "currency": "cad",
-      "routing_number": routing_number,
-      "account_number": account_number
+    "metadata":{
+      rep_first_name: first_name,
+      rep_last_name: last_name,
+      signup_date: date
     },
-    "legal_entity": {
-      "address": {
-        "city": city,
-        "country": country,
-        "line1": line1,
-        "postal_code": postal_code,
-        "state": province
-      },
-      "business_name":"Nike",
-      "business_tax_id":"000000000",
-      "dob":{
-        "day":"01",
-        "month":"01",
-        "year":"1990"
-      },
-      "first_name":first_name,
-      "last_name":last_name,
-      "personal_id_number":personal_id_number,
-      "type": "company"
-    },
-    "tos_acceptance":{
-      "date":date.toString,
-      "ip":"99.250.237.232"
+    "source": {
+      "object": "card",
+      "number": card_number,
+      "exp_month": exp_month,
+      "exp_year": exp_year,
+      "cvc": cvc,
+      "address_line1": line1,
+      "address_city": address_city,
+      "address_state": address_state,
+      "address_zip": address_zip,
+      "address_country": address_country
     }
-  }, function(err, account){
+  }, function(err, customer){
     if(err){
       console.log(err);
-      res.status(400).end(); // COULD NOT CREATE ACCOUNT ERROR
+      res.status(400).end(); // COULD NOT CREATE CUSTOMER ERROR
     }else{
-      stripe.tokens.create({
-        bank_account: {
-          country: 'CA',
-          currency: 'cad',
-          account_holder_name: business_name,
-          account_holder_type: 'company',
-          routing_number: routing_number,
-          account_number: account_number
-        }
-      }, function(err, token) {
-        if (err){
-          console.log("Could not create store due to;"+err);
-          res.status(420).end // COULD NOT CREATE TOKEN ERROR
-        }else{
-          var storeDetails = {storeName, storeLogo, storeBackground, locationLat, locationLong};
-          storeDetails.stripeAccount = account;
-          storeDetails.strpeAccount.token = token.id;
-          var storeID = admin.database().ref().child('stores').push().key;
-          admin.database().ref('stores/'+storeID).update(storeDetails).then(() =>{
-            console.log('Created store successfully')
-          });
-          res.status(200).send(storeID); // OK
-        }
+      var storeDetails = {storeName, storeLogo, storeBackground, locationLat, locationLong};
+      storeDetails.stripeAccount = account;
+      storeDetails.stripeAccount.token = token.id;
+      var storeID = admin.database().ref().child('stores').push().key;
+      admin.database().ref('stores/'+storeID).update(storeDetails).then(() =>{
+        console.log('Created store successfully')
       });
+      res.status(200).send(storeID); // OK
     }
   });
 });
