@@ -342,9 +342,9 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
                 description: "Delivery;" + newPostKey,
                 customer: snapshot.child(`/customer/id`).val(),
                 transfer_group: newPostKey,
-            }).then(function(err, charge) {
+            }, function(err, charge) {
                 if (err) {
-                    console.log("error occured",err);
+                    console.log(err);
                     res.status(450).end // CANNOT CHARGE ERROR
                 } else {
                     var deliveryDetails = {
