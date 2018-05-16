@@ -337,15 +337,14 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
                 return
             }
             stripe.charges.create({
-                amount: chargeAmount,
+                amount: chargeAmount+100,
                 currency: "cad",
-                application_fee: 100,
                 description: "Delivery;" + newPostKey,
                 customer: snapshot.child(`/customer/id`).val(),
                 transfer_group: newPostKey,
             }).then(function(err, charge) {
                 if (err) {
-                    console.log(err);
+                    console.log("error occured",err);
                     res.status(450).end // CANNOT CHARGE ERROR
                 } else {
                     var deliveryDetails = {
@@ -366,6 +365,7 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
                     deliveryDetails.isTaken = false;
                     deliveryDetails.isCompleted = false;
                     deliveryDetails.chargeID = charge;
+                    console.log("Charge succeeded", deliveryDetails);
                     admin.database().ref('stores/' + storeID + '/deliveries/' + newPostKey).update(deliveryDetails).then(() => {
                         console.log('Update succeeded: stores')
                     });
@@ -383,9 +383,9 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
 });
 
 exports.getPaidForDelivery = functions.https.onRequest((req, res) => {
-    var deliveryID = req.deliveryID;
-    var amount = req.amount;
-    var emailHash = req.emailHash;
+    var deliveryID = req.body.deliveryID;
+    var amount = req.body.amount;
+    var emailHash = req.body.emailHash;
     admin.database().ref(`/Couriers/${emailHash}/stripeAccount/id`).once("value", function(snapshot){
         var accountID = snapshot.val();
         if (!accountID){
