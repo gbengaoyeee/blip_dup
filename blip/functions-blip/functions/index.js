@@ -11,7 +11,7 @@ var bodyParser = require('body-parser');
 var walmart = require('walmart')("qeq7xghhtkb8ate7x59px7yk");
 const app = express();
 const geo = require('geolib');
-const stripe = require('stripe')("sk_test_pHrsE3Th44nSEbFbUXvlpC6X"),
+const stripe = require('stripe')("sk_test_4I0ubK7NduuV6dhJouhEAqtu"),
     currency = "CAD";
 
 exports.ephemeral_keys = functions.https.onRequest((req, res) => {
@@ -398,7 +398,7 @@ exports.getPaidForDelivery = functions.https.onRequest((req, res) => {
             currency: "cad",
             destination: accountID,
             transfer_group: deliveryID
-        }).then(function(err, transfer) {
+        }, function(err, transfer) {
           if (err) {
               console.log(err);
               res.status(420).end(); // COULD NOT TRANSFER ERROR
