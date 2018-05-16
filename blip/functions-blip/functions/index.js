@@ -1,10 +1,9 @@
-import { request } from 'http';
-
 'use strict';
 
 const functions = require('firebase-functions'),
       admin = require('firebase-admin'),
-      logging = require('@google-cloud/logging')();
+      logging = require('@google-cloud/logging')(),
+      request = require('request');
 var crypto = require('crypto');
 admin.initializeApp(functions.config().firebase);
 var express = require('express');
@@ -80,11 +79,15 @@ exports.createStore =  functions.https.onRequest((req, res) =>{
   var storeBackground = req.body.storeBackground;
   var locationLat = req.body.locationLat;
   var locationLong = req.body.locationLong;
-  var city = req.body.city;
-  var country = req.body.country;
-  var line1 = req.body.line1;
-  var postal_code = req.body.postalCode;
-  var province = req.body.province;
+  var card_number = req.body.cardNumber;
+  var exp_month = req.body.expMonth;
+  var exp_year = req.body.expYear;
+  var cvc = req.body.cvc;
+  var address_city = req.body.city;
+  var address_country = req.body.country;
+  var address_line1 = req.body.line1;
+  var address_zip = req.body.postalCode;
+  var address_state = req.body.province;
   var business_name = req.body.businessName;
   var business_tax_id = req.body.businessTaxId;
   var first_name = req.body.firstName;
@@ -119,26 +122,19 @@ exports.createStore =  functions.https.onRequest((req, res) =>{
       res.status(400).end(); // COULD NOT CREATE CUSTOMER ERROR
     }else{
       var storeDetails = {storeName, storeLogo, storeBackground, locationLat, locationLong};
-      storeDetails.stripeAccount = account;
-      storeDetails.stripeAccount.token = token.id;
+      storeDetails.customer = customer;
       var storeID = admin.database().ref().child('stores').push().key;
       admin.database().ref('stores/'+storeID).update(storeDetails).then(() =>{
         console.log('Created store successfully')
+        res.status(200).send(storeID); // OK
       });
-      res.status(200).send(storeID); // OK
     }
   });
 });
 
-request('https://us-central1-blip-c1e83.cloudfunctions.net/createStore', function (error, response, body) {
-  if (!error && response.statusCode == 200) {
-    console.log(body);
-  }
-});
-
   exports.updateStripeAccount = functions.https.onRequest((req,res) => {
-    console.log(req.body);
-    const routing_number = req.body.routing_number;
+      console.log(req.body);
+      const routing_number = req.body.routing_number;
       const emailHash = req.body.emailHash;
       const account_number = req.body.account_number;
       const city = req.body.city;
@@ -272,17 +268,17 @@ exports.makeDeliveryRequest = functions.https.onRequest((req,res) => {
           stripeAccount = require("stripe")(stripeAccountKey),
           chargeAmount = getChargeAmount(deliveryLat,deliveryLong, originLat,originLong)
 
-      if (!snapshot.child(`/stripeAccount/token`).val()){
-        console.log("Cannot create a delivery. No token returned by stripe");
-        res.status(420).end(); // NO TOKEN ERROR
+      if (!snapshot.child(`/customer`).val()){
+        console.log("Cannot create a delivery. No customer returned by stripe");
+        res.status(400).end(); // NO CUSTOMER ERROR
         return
       }
       stripe.charges.create({
         amount: chargeAmount,
         currency: "cad",
         application_fee: 100,
-        description: "Delivery Charge",
-        source: snapshot.child(`/stripeAccount/token`).val(),
+        description: "Delivery;"+newPostKey,
+        customer: snapshot.child(`/customer/id`).val(),
         transfer_group: newPostKey,
       }).then(function(err, charge) {
         if (err){
@@ -293,7 +289,7 @@ exports.makeDeliveryRequest = functions.https.onRequest((req,res) => {
           // deliveryDetails[storeName] = storeValues;
           deliveryDetails.isTaken = false;
           deliveryDetails.isCompleted = false;
-          deliveryDetails.chargeID = charge.id;
+          deliveryDetails.chargeID = charge;
           admin.database().ref('stores/'+storeID+'/deliveries/'+newPostKey).update(deliveryDetails).then(() =>{
             console.log('Update succeeded: stores')
           });
@@ -309,6 +305,27 @@ exports.makeDeliveryRequest = functions.https.onRequest((req,res) => {
     }
   })
 });
+
+exports.getPaidForDelivery = functions.https.onRequest((req, res) => {
+  var deliveryID = req.deliveryID;
+  var amount = req.amount;
+  var emailHash = req.emailHash;
+  var accountID = admin.database().ref(`/Couriers/${emailHash}/stripeAccount/id`);
+  stripe.transfers.create({
+    amount: amount,
+    currency: "cad",
+    destination: accountID,
+    transfer_group: deliveryID 
+  }).then(function(err, transfer) {
+    if (err){
+      console.log(err);
+      res.status(420).end(); // COULD NOT TRANSFER ERROR
+    }else{
+      console.log(transfer);
+      res.status(200).send(transfer); // OK
+    }
+  });
+})
 
 exports.getBestJob = functions.https.onRequest((req,res) => {
   var long = req.body.locationLong,
