@@ -2,7 +2,7 @@
 
 const functions = require('firebase-functions'),
     admin = require('firebase-admin'),
-    logging = require('@google-cloud/logging')(),
+    logging = require('@google-cloud/logging'),
     request = require('request');
 var crypto = require('crypto');
 admin.initializeApp(functions.config().firebase);
@@ -327,15 +327,8 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
                 recieverNumber = req.body.recieverNumber,
                 pickupNumber = req.body.pickupNumber,
                 newPostKey = admin.database().ref().child('AllJobs').push().key,
-                stripeAccountKey = snapshot.child(`/stripeAccount/keys/secret`).val(),
-                stripeAccount = require("stripe")(stripeAccountKey),
-                chargeAmount = getChargeAmount(deliveryLat, deliveryLong, originLat, originLong)
-
-            if (!snapshot.child(`/customer`).val()) {
-                console.log("Cannot create a delivery. No customer returned by stripe");
-                res.status(400).end(); // NO CUSTOMER ERROR
-                return
-            }
+                chargeAmount = getChargeAmount(deliveryLat, deliveryLong, originLat, originLong);
+                
             stripe.charges.create({
                 amount: chargeAmount+100,
                 currency: "cad",
