@@ -80,10 +80,7 @@ exports.createTestStore = functions.https.onRequest((req, res) => {
     var storeBackground = req.body.storeBackground;
     var locationLat = req.body.locationLat;
     var locationLong = req.body.locationLong;
-    // var card_number = req.body.cardNumber;
-    // var exp_month = req.body.expMonth;
-    // var exp_year = req.body.expYear;
-    // var cvc = req.body.cvc;
+    var storeDescription = req.body.description;
     var address_city = req.body.city;
     var address_country = req.body.country;
     var address_line1 = req.body.line1;
@@ -114,6 +111,7 @@ exports.createTestStore = functions.https.onRequest((req, res) => {
             var storeDetails = {
                 storeName,
                 storeLogo,
+                storeDescription,
                 storeBackground,
                 locationLat,
                 locationLong
@@ -315,6 +313,7 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
     var storeID = req.body.storeID;
     admin.database().ref(`/stores/${storeID}`).once("value", function(snapshot) {
         if (snapshot.exists) {
+            console.log(storeID);
             var deliveryLat = req.body.deliveryLat,
                 deliveryLong = req.body.deliveryLong,
                 deliveryMainInstruction = req.body.deliveryMainInstruction,
@@ -328,7 +327,12 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
                 pickupNumber = req.body.pickupNumber,
                 newPostKey = admin.database().ref().child('AllJobs').push().key,
                 chargeAmount = getChargeAmount(deliveryLat, deliveryLong, originLat, originLong);
-                
+
+            if (snapshot.child(`/customer`).val() == null) {
+                console.log("Cannot create a delivery. No customer returned by stripe");
+                res.status(400).end(); // NO CUSTOMER ERROR
+                return
+            }
             stripe.charges.create({
                 amount: chargeAmount+100,
                 currency: "cad",
@@ -382,8 +386,8 @@ exports.getPaidForDelivery = functions.https.onRequest((req, res) => {
     admin.database().ref(`/Couriers/${emailHash}/stripeAccount/id`).once("value", function(snapshot){
         var accountID = snapshot.val();
         console.log("ACCOUNTID:",accountID);
-        if (accountID == nul){
-            console.log("Could not retrive account ID");
+        if (accountID == null){
+            console.log("Could not retrieve account ID");
             res.status(450).end(); // COULD NOT RETRIVE ACCOUNT ID ERROR
             return
         }
