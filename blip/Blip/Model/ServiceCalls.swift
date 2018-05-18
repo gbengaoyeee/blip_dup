@@ -132,6 +132,7 @@ class ServiceCalls:NSObject, NSCoding{
         print("Observers Removed")
     }
     
+    
     func completedAllJobs(completion: @escaping() -> ()){
         userRef.child(emailHash).child("givenJob").observeSingleEvent(of: .value) { (snapshot) in
             let deliveries = snapshot.value as? [String: AnyObject]
@@ -143,9 +144,25 @@ class ServiceCalls:NSObject, NSCoding{
     
     func completedJob(id:String){
         userRef.child(emailHash).child("givenJob/deliveries").child(id).observeSingleEvent(of: .value) { (snapshot) in
-            let values = snapshot.value as? [String:Any]
-            self.userRef.child(self.emailHash).child("completedDeliveries").child("deliveries/\(id)").updateChildValues(values!)
-            self.userRef.child(self.emailHash).child("givenJob/deliveries").child(id).removeValue()
+            guard let values = snapshot.value as? [String:Any] else{
+                print("Couldn't get values")
+                return
+            }
+            guard let chargeID = values["chargeID"] as? [String:Any] else{
+                print("Couldn't get chargeID")
+                return
+            }
+            let amount = String(chargeID["amount"] as! Int)
+            print("ID:",id)
+            print("AMOUNT",amount)
+            MyAPIClient.sharedClient.getPaidForDelivery(deliveryID: id, amount: amount, emailHash: self.emailHash, completion: { (error) in
+                if error != nil{
+                    print("Couldn't pay after delivery")
+                    return
+                }
+                self.userRef.child(self.emailHash).child("completedDeliveries").child("deliveries/\(id)").updateChildValues(values)
+                self.userRef.child(self.emailHash).child("givenJob/deliveries").child(id).removeValue()
+            })
         }
     }
     
@@ -229,12 +246,14 @@ class ServiceCalls:NSObject, NSCoding{
         if provider != nil{
             userRef.child(MD5(string: email)).observeSingleEvent(of: .value) { (snapshot) in
                 if let values = snapshot.value as? [String:Any]{
-                    let granted = values["granted"] as! Bool
-                    if granted == true{
-                        let dict:[String:Any] = ["granted":true, "uid":uid, "firstName":firstName, "lastName":lastName, "email":email, "rating":5.0, "currentDevice":AppDelegate.DEVICEID]
-                        self.userRef.child(self.emailHash).updateChildValues(dict)
-                        return
+                    if let granted = values["granted"] as? Bool{
+                        if granted == true{
+                            let dict:[String:Any] = ["granted":true, "uid":uid, "firstName":firstName, "lastName":lastName, "email":email, "rating":5.0, "currentDevice":AppDelegate.DEVICEID]
+                            self.userRef.child(self.emailHash).updateChildValues(dict)
+                            return
+                        }
                     }
+                    
                     let dict:[String:Any] = ["granted":true, "uid":uid, "firstName":firstName, "lastName":lastName, "email":email, "rating":5.0, "currentDevice":AppDelegate.DEVICEID, "verified":false]
                     self.userRef.child(self.emailHash).updateChildValues(dict)
                 }

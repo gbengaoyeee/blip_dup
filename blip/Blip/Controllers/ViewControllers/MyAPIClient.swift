@@ -196,9 +196,31 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
         }
     }
     
-    func postTestJob(storeID:String, deliveryLat:Double, deliveryLong:Double, deliveryMainInstruction:String, deliverySubInstruction:String, originLat:Double, originLong:Double, pickupMainInstruction:String, pickupSubInstruction:String, recieverName:String, recieverNumber:String, pickupNumber:String){
+    func getPaidForDelivery(deliveryID:String, amount:String, emailHash:String, completion:@escaping (Error?)->()){
+        let url = self.baseURL.appendingPathComponent("getPaidForDelivery")
+        let params = [
+            "deliveryID":deliveryID,
+            "amount":amount,
+            "emailHash":emailHash
+        ]
+        Alamofire.request(url, method: .post, parameters: params, headers: nil)
+            .validate(statusCode: 200...200)
+            .responseJSON { (response) in
+                switch response.result{
+                case .success:
+                    print("Payment for delivery Successful")
+                    completion(nil)
+                    break
+                case .failure(let error):
+                    completion(error)
+                    break
+                }
+        }
+    }
+    
+    func makeDeliveryRequest(storeID:String, deliveryLat:Double, deliveryLong:Double, deliveryMainInstruction:String, deliverySubInstruction:String, originLat:Double, originLong:Double, pickupMainInstruction:String, pickupSubInstruction:String, recieverName:String, recieverNumber:String, pickupNumber:String){
         
-        let url = self.baseURL.appendingPathComponent("postTestJob")
+        let url = self.baseURL.appendingPathComponent("makeDeliveryRequest")
         let params:[String:Any] = [
             "storeID":storeID,
             "deliveryLat":deliveryLat,
