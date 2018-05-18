@@ -97,8 +97,8 @@ class Delivery{
                 let storeLogo = storeVal["storeLogo"] as! String
                 let storeBackground = storeVal["storeBackground"] as! String
                 let storeDescription = storeVal["description"] as! String
-                let latitude = storeVal["locationLat"] as! Double
-                let longitude = storeVal["locationLat"] as! Double
+                let latitude = Double(storeVal["locationLat"] as! String)!
+                let longitude = Double(storeVal["locationLat"] as! String)!
                 let storeName = storeVal["storeName"] as! String
                 self.store = Store(storeID: storeID, name: storeName, storeLogo: URL(string: storeLogo)!, storeBackground: URL(string: storeBackground)!, description: storeDescription, latitude: latitude, longitude: longitude)
             }

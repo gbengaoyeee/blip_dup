@@ -136,12 +136,12 @@ class InstructionVC: UIViewController {
         }
         else{
             self.prepareAndAddBlurredLoader()
-            service.completedAllJobs {
-                self.removedBlurredLoader()
-                self.dismiss(animated: true, completion: {
-                    self.foundJobVC.navigationController?.popToRootViewController(animated: true)
-                })
-            }
+            service.completedJob(id: self.delivery.identifier)
+            self.removedBlurredLoader()
+            self.dismiss(animated: true, completion: {
+                self.foundJobVC.navigationController?.popToRootViewController(animated: true)
+            })
+            
         }
     }
 }

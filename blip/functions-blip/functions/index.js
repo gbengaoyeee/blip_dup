@@ -381,7 +381,8 @@ exports.getPaidForDelivery = functions.https.onRequest((req, res) => {
     var emailHash = req.body.emailHash;
     admin.database().ref(`/Couriers/${emailHash}/stripeAccount/id`).once("value", function(snapshot){
         var accountID = snapshot.val();
-        if (!accountID){
+        console.log("ACCOUNTID:",accountID);
+        if (accountID == nul){
             console.log("Could not retrive account ID");
             res.status(450).end(); // COULD NOT RETRIVE ACCOUNT ID ERROR
             return
