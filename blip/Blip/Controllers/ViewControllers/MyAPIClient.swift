@@ -203,7 +203,7 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
             "amount":amount,
             "emailHash":emailHash
         ]
-        Alamofire.request(url, method: .get, parameters: params, headers: nil)
+        Alamofire.request(url, method: .post, parameters: params, headers: nil)
             .validate(statusCode: 200...200)
             .responseJSON { (response) in
                 switch response.result{
