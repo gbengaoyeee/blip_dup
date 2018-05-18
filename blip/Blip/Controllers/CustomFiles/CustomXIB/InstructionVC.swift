@@ -119,6 +119,7 @@ class InstructionVC: UIViewController {
     }
     
     @IBAction func donePressed(_ sender: Any) {
+        
         if !isLastWaypoint{
             navViewController?.routeController.routeProgress.legIndex += 1
             navViewController?.routeController.resume()
