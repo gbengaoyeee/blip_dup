@@ -304,7 +304,7 @@ function getChargeAmount(deliveryLat, deliveryLong, pickupLat, pickupLong) {
         latitude: pickupLat,
         longitude: pickupLong
     });
-    const price = (distanceBtw / 10) + 450 + 1 + 3.5;
+    const price = (((distanceBtw / 1000)*0.15) + 4.50);
     return price * 100;
 }
 
@@ -381,8 +381,9 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
 
 exports.getPaidForDelivery = functions.https.onRequest((req, res) => {
     var deliveryID = req.body.deliveryID;
-    var amount = req.body.amount;
+    var amount = int(req.body.amount);
     var emailHash = req.body.emailHash;
+    var chargeID = req.body.chargeID;
     admin.database().ref(`/Couriers/${emailHash}/stripeAccount/id`).once("value", function(snapshot){
         var accountID = snapshot.val();
         console.log("ACCOUNTID:",accountID);
@@ -392,8 +393,9 @@ exports.getPaidForDelivery = functions.https.onRequest((req, res) => {
             return
         }
         stripe.transfers.create({
-            amount: amount,
+            amount: (amount-100)*0.75,
             currency: "cad",
+            source_transaction: chargeID,
             destination: accountID,
             transfer_group: deliveryID
         }, function(err, transfer) {
