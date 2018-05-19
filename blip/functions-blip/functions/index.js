@@ -304,7 +304,7 @@ function getChargeAmount(deliveryLat, deliveryLong, pickupLat, pickupLong) {
         latitude: pickupLat,
         longitude: pickupLong
     });
-    const price = (((distanceBtw / 1000)*0.15) + 4.50);
+    const price = Math.floor((distanceBtw / 1000) + 4.50); // 4.50 for successfull delivery.
     return price * 100;
 }
 
@@ -336,9 +336,8 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
             stripe.charges.create({
                 amount: chargeAmount+100,
                 currency: "cad",
-                description: "Delivery;" + newPostKey,
-                customer: snapshot.child(`/customer/id`).val(),
-                transfer_group: newPostKey,
+                description: "Delivery; " + newPostKey + " By store; " + storeID,
+                customer: snapshot.child(`/customer/id`).val()
             }, function(err, charge) {
                 if (err) {
                     console.log(err);
@@ -358,7 +357,6 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
                         recieverNumber,
                         pickupNumber
                     };
-                    // deliveryDetails[storeName] = storeValues;
                     deliveryDetails.isTaken = false;
                     deliveryDetails.isCompleted = false;
                     deliveryDetails.chargeID = charge;
@@ -379,9 +377,40 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
     })
 });
 
+exports.payOnDelivery = functions.database.ref('completedJobs').onCreate(event => {
+    let deliveryID = event.key
+    admin.database().ref(`/completedJobs/${deliveryID}`).once("value", function(snapshot){
+        let chargeID = snapshot.child("chargeID/id").val();
+        let amount = +(snapshot.child("chargeID/amount").val());
+        let amountAfterCut = amount*0.75;
+        let emailHash = snapshot.child("jobTaker").val();
+        if (chargeID == null || amount == null || emailHash == null){
+            console.log("Could not parse data");
+            return
+        }
+        admin.database().ref(`Couriers/${emailHash}`).once("value", function(userSnapshot){
+            let accountID = userSnapshot.child("stripeAccount/id");
+            stripe.transfers.create({
+                amount: amountAfterCut,
+                currency: "cad",
+                source_transaction: chargeID,
+                destination: accountID
+            }), function(err, transfer){
+                if (err){
+                    console.log(err);
+                    return
+                }
+                else{
+                    console.log("Transfer made",transfer);
+                }
+            }
+        })
+    })
+})
+
 exports.getPaidForDelivery = functions.https.onRequest((req, res) => {
     var deliveryID = req.body.deliveryID;
-    var amount = int(req.body.amount);
+    var amount = parseInt(req.body.amount);
     var emailHash = req.body.emailHash;
     var chargeID = req.body.chargeID;
     admin.database().ref(`/Couriers/${emailHash}/stripeAccount/id`).once("value", function(snapshot){
@@ -396,8 +425,7 @@ exports.getPaidForDelivery = functions.https.onRequest((req, res) => {
             amount: (amount-100)*0.75,
             currency: "cad",
             source_transaction: chargeID,
-            destination: accountID,
-            transfer_group: deliveryID
+            destination: accountID
         }, function(err, transfer) {
           if (err) {
               console.log(err);
@@ -422,18 +450,18 @@ exports.getBestJob = functions.https.onRequest((req, res) => {
         if (error) {
             console.log(error.message, req.body);
             if (error.message === "User needs to verify their background check") {
-                res.status(400).send(error);
+                res.status(400).end(error);
             } else {
-                res.status(500).send(error);
+                res.status(500).end(error);
             }
 
         } else {
             getClosestJobIdAndDistance(lat, long, function(err, data) {
                 if (err) {
                     console.log("Found an Error");
-                    res.status(600).send(err);
+                    res.status(600).end(err);
                 } else {
-                    var maxDist = 20000;
+                    var maxDist = 12000;
                     const closestJobIdDict = data[0]; //This is a dictionary
                     const closestJobId = Object.keys(closestJobIdDict)[0];
                     console.log("Initial MaxDist is: " + maxDist);
