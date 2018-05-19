@@ -410,7 +410,11 @@ exports.payOnDelivery = functions.database.ref('completedJobs').onCreate(event =
 
 exports.getPaidForDelivery = functions.https.onRequest((req, res) => {
     var deliveryID = req.body.deliveryID;
+<<<<<<< HEAD
     var amount = parseInt(req.body.amount);
+=======
+    var amount = req.body.amount;
+>>>>>>> 72eaa58edd512ab636efc65814b6f644333338a5
     var emailHash = req.body.emailHash;
     var chargeID = req.body.chargeID;
     admin.database().ref(`/Couriers/${emailHash}/stripeAccount/id`).once("value", function(snapshot){
