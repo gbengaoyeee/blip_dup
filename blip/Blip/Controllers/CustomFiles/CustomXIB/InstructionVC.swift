@@ -119,25 +119,15 @@ class InstructionVC: UIViewController {
     }
     
     @IBAction func donePressed(_ sender: Any) {
-        
         if !isLastWaypoint{
             navViewController?.routeController.routeProgress.legIndex += 1
             navViewController?.routeController.resume()
-            let ref = Database.database().reference(withPath: "/Couriers/\(service.emailHash!)/givenJob/deliveries/\(delivery.identifier!)")
-            let storeRef = Database.database().reference(withPath: "/stores/\(delivery.store.name!)/deliveries/\(delivery.identifier!)")
-            if type == "Pickup"{
-                ref.updateChildValues(["state":"pickup"])
-            }else{
-                ref.updateChildValues(["state":"delivery"])
-                ref.updateChildValues(["isCompleted":true])
-                storeRef.updateChildValues(["isCompleted":true])
-                service.completedJob(id: self.delivery.identifier)
-            }
+            service.completedJob(id: self.delivery.identifier, type: type)
             self.dismiss(animated: true, completion: nil)
         }
         else{
             self.prepareAndAddBlurredLoader()
-            service.completedJob(id: self.delivery.identifier)
+            service.completedJob(id: self.delivery.identifier, type: type)
             self.removedBlurredLoader()
             self.dismiss(animated: true, completion: {
                 self.foundJobVC.navigationController?.popToRootViewController(animated: true)

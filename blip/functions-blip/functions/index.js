@@ -381,7 +381,7 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
 
 exports.getPaidForDelivery = functions.https.onRequest((req, res) => {
     var deliveryID = req.body.deliveryID;
-    var amount = int(req.body.amount);
+    var amount = req.body.amount;
     var emailHash = req.body.emailHash;
     var chargeID = req.body.chargeID;
     admin.database().ref(`/Couriers/${emailHash}/stripeAccount/id`).once("value", function(snapshot){
