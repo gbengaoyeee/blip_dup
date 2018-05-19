@@ -82,7 +82,6 @@ extension AppFABMenuController {
     }
     
 
-    
     fileprivate func prepareFABMenu() {
         fabMenu.fabButton = fabButton
         fabMenu.fabMenuItems = [logoutItem, profilePageItem]

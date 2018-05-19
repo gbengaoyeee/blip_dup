@@ -14,6 +14,7 @@ const geo = require('geolib');
 const stripe = require('stripe')("sk_test_4I0ubK7NduuV6dhJouhEAqtu"),
     currency = "CAD";
 
+
 exports.ephemeral_keys = functions.https.onRequest((req, res) => {
     const stripe_version = req.body.api_version;
     console.log(req);
@@ -127,15 +128,12 @@ exports.createTestStore = functions.https.onRequest((req, res) => {
 });
 
 exports.createStore = functions.https.onRequest((req, res) => {
+    var sourceID = req.body.sourceID;
     var storeName = req.body.storeName;
     var storeLogo = req.body.storeLogo;
     var storeBackground = req.body.storeBackground;
     var locationLat = req.body.locationLat;
     var locationLong = req.body.locationLong;
-    var card_number = req.body.cardNumber;
-    var exp_month = req.body.expMonth;
-    var exp_year = req.body.expYear;
-    var cvc = req.body.cvc;
     var address_city = req.body.city;
     var address_country = req.body.country;
     var address_line1 = req.body.line1;
@@ -155,20 +153,14 @@ exports.createStore = functions.https.onRequest((req, res) => {
         "metadata": {
             rep_first_name: first_name,
             rep_last_name: last_name,
-            signup_date: date
+            signup_date: date,
+            address_city: address_city,
+            address_country: address_country,
+            address_line1: address_line1,
+            address_zip: address_zip,
+            address_state: address_state
         },
-        "source": {
-            "object": "card",
-            "number": card_number,
-            "exp_month": exp_month,
-            "exp_year": exp_year,
-            "cvc": cvc,
-            "address_line1": address_line1,
-            "address_city": address_city,
-            "address_state": address_state,
-            "address_zip": address_zip,
-            "address_country": address_country
-        }
+        "source": sourceID
     }, function(err, customer) {
         if (err) {
             console.log(err);
@@ -234,11 +226,12 @@ exports.updateStripeAccount = functions.https.onRequest((req, res) => {
         }
     }, function(err, account) {
         if (err) {
-            console.log(err)
-            res.end()
+            console.log(err);
+            res.status(400).end();
         } else {
-            console.log(account)
-            res.send(account)
+            console.log(account);
+            admin.database().ref(`/Couriers/${emailHash}/stripeAccount`).update(account);
+            res.status(200).end();
         }
     });
 })
@@ -266,11 +259,11 @@ exports.createNewStripeAccount = functions.https.onRequest((req, res) => {
     }, function(err, account) {
         if (err) {
             console.log(err);
-            res.end();
+            res.status(400).end();
         } else {
             admin.database().ref(`/Couriers/${emailHash}/stripeAccount`).set(account)
             console.log(account);
-            res.send(200, account);
+            res.status(200).end();
         }
     });
 });
@@ -377,6 +370,7 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
     })
 });
 
+<<<<<<< HEAD
 exports.payOnDelivery = functions.database.ref('CompletedJobs').onWrite(event => {
     let deliveryID = event.key
     console.log("DeliveryID:", deliveryID);
@@ -404,8 +398,34 @@ exports.payOnDelivery = functions.database.ref('CompletedJobs').onWrite(event =>
                 else{
                     console.log("Transfer made",transfer);
                 }
+=======
+exports.payOnDelivery = functions.database.ref('/CompletedJobs/{id}').onCreate((snapshot, context) => {
+
+    let chargeID = snapshot.child("chargeID/id").val();
+    let amount = +(snapshot.child("chargeID/amount").val());
+    let amountAfterCut = amount*0.75;
+    let emailHash = snapshot.child("jobTaker").val();
+    if (chargeID == null || amount == null || emailHash == null){
+        console.log("Could not parse data");
+        return
+    }
+    admin.database().ref(`Couriers/${emailHash}`).once("value", function(userSnapshot){
+        let accountID = userSnapshot.child("stripeAccount/id");
+        stripe.transfers.create({
+            amount: amountAfterCut,
+            currency: "cad",
+            source_transaction: chargeID,
+            destination: accountID
+        }), function(err, transfer){
+            if (err){
+                console.log(err);
+                return
+>>>>>>> 4e2d48c1ce7664b5ec768bbbc03c367ab6ecc28b
             }
-        })
+            else{
+                console.log("Transfer made",transfer);
+            }
+        }
     })
 })
 
