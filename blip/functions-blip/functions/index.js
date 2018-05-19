@@ -423,8 +423,10 @@ exports.getBestJob = functions.https.onRequest((req, res) => {
             console.log(error.message, req.body);
             if (error.message === "User needs to verify their background check") {
                 res.status(400).send(error);
+                return
             } else {
                 res.status(500).send(error);
+                return
             }
 
         } else {

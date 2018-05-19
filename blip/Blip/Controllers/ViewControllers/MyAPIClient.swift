@@ -22,7 +22,7 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
     let service = ServiceCalls.instance
     var customer_id: String?
     static let sharedClient = MyAPIClient()
-    var baseURLString: String? = "https://blip.delivery/"
+    var baseURLString: String? = "https://us-central1-blip-c1e83.cloudfunctions.net/"
     var baseURL: URL{
         if let urlString = self.baseURLString, let url = URL(string: urlString) {
             return url

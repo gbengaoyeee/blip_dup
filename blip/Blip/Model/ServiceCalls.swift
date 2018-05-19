@@ -167,7 +167,8 @@ class ServiceCalls:NSObject, NSCoding{
             ref.updateChildValues(["state":"delivery"])
             ref.updateChildValues(["isCompleted":true])
             storeRef.updateChildValues(["isCompleted":true])
-            self.completedJobsRef.child("\(id)").updateChildValues(values)
+            self.completedJobsRef.child(id).updateChildValues(values)
+            self.completedJobsRef.child(id).updateChildValues(["isCompleted":true])
             self.userRef.child(self.emailHash).child("completedDeliveries").child("deliveries/\(id)").updateChildValues(values)
             self.userRef.child(self.emailHash).child("givenJob/deliveries").child(id).removeValue()
         }
@@ -178,7 +179,7 @@ class ServiceCalls:NSObject, NSCoding{
         let storesRef = Database.database().reference(withPath: "stores")
         for way in waypointList{
             ref.child(way.delivery.identifier).updateChildValues(["isTaken":true])
-            storesRef.child("\(way.delivery.store.name!)/deliveries/\(way.delivery.identifier!)").updateChildValues(["isTaken":true, "jobTaker":self.emailHash!])
+            storesRef.child("\(way.delivery.store.storeID)/deliveries/\(way.delivery.identifier!)").updateChildValues(["isTaken":true, "jobTaker":self.emailHash!])
         }
     }
     

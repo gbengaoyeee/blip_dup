@@ -148,7 +148,7 @@ class SearchForJobVC: UIViewController {
         banner.show()
         loading.play()
         
-        self.service.findJob(myLocation: self.currentLocation, userHash: self.userDefaults.dictionary(forKey: "loginCredentials")!["emailHash"] as! String) { (errorCode, job) in
+        self.service.findJob(myLocation: self.currentLocation, userHash: self.service.emailHash) { (errorCode, job) in
             
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
                 banner.dismiss()
