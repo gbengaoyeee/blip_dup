@@ -178,7 +178,7 @@ class ServiceCalls:NSObject, NSCoding{
         let ref = Database.database().reference(withPath: "Couriers/\(self.emailHash!)/givenJob/deliveries")
         let storesRef = Database.database().reference(withPath: "stores")
         for way in waypointList{
-            ref.child(way.delivery.identifier).updateChildValues(["isTaken":true])
+            ref.child(way.delivery.identifier).updateChildValues(["isTaken":true, "jobTaker":self.emailHash!])
             storesRef.child("\(way.delivery.store.storeID)/deliveries/\(way.delivery.identifier!)").updateChildValues(["isTaken":true, "jobTaker":self.emailHash!])
         }
     }
@@ -483,10 +483,26 @@ class ServiceCalls:NSObject, NSCoding{
         }
     }
     
-    
     func userCancelledJob(){
         self.userRef.child(emailHash).updateChildValues(["flagged":true])
-        self.putBackJobs()
+        // remove state, istaken to false,
+        self.userRef.child(emailHash).child("givenJob/deliveries").observeSingleEvent(of: .value) { (snapshot) in
+            guard let jobs = snapshot.value as? [String:Any] else{
+                print("Couldn't find jobs to cancel")
+                return
+            }
+            for (deliveryID, values) in jobs{
+                guard var value = values as? [String:Any] else{
+                    print("This error is inside userCancelledJobs")
+                    return
+                }
+                value["state"] = nil
+                value["isTaken"] = false
+                self.jobsRef.child(deliveryID).updateChildValues(value)
+                self.userRef.child(self.emailHash).child("givenJob/deliveries/\(deliveryID)").removeValue()
+                
+            }//end of for loop
+        }
     }
     
     /**

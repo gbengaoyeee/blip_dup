@@ -7,7 +7,7 @@ import Stripe
 import PopupDialog
 import Kingfisher
 
-class AppFABMenuController: FABMenuController, STPPaymentContextDelegate{
+class AppFABMenuController: FABMenuController{
     fileprivate let fabMenuSize = CGSize(width: 40, height: 40)
     fileprivate let bottomInset: CGFloat = 50
     fileprivate let rightInset: CGFloat = 20
@@ -15,9 +15,7 @@ class AppFABMenuController: FABMenuController, STPPaymentContextDelegate{
     fileprivate var fabButton: FABButton!
     fileprivate var logoutItem: FABMenuItem!
     fileprivate var unconfirmedItem: FABMenuItem!
-    fileprivate var paymentMethodsItem: FABMenuItem!
     fileprivate var profilePageItem: FABMenuItem!
-    var paymentContext: STPPaymentContext? = nil
     
     var currUser: BlipUser?
     let service = ServiceCalls.instance
@@ -25,32 +23,12 @@ class AppFABMenuController: FABMenuController, STPPaymentContextDelegate{
     var userCredDict:[String:String]!
     let loginCredentials = "loginCredentials"
     
-    
-    func paymentContext(_ paymentContext: STPPaymentContext, didFailToLoadWithError error: Error) {
-        print(error)
-        
-    }
-    
-    func paymentContextDidChange(_ paymentContext: STPPaymentContext) {
-        
-    }
-    
-    func paymentContext(_ paymentContext: STPPaymentContext, didFinishWith status: STPPaymentStatus, error: Error?) {
-        
-    }
-    
-    func paymentContext(_ paymentContext: STPPaymentContext, didCreatePaymentResult paymentResult: STPPaymentResult, completion: @escaping STPErrorBlock) {
-        let source = paymentResult.source.stripeID
-        MyAPIClient.sharedClient.addPaymentSource(id: source, completion: { (error) in })
-    }
-    
     open override func prepare() {
         super.prepare()
         view.backgroundColor = .white
         prepareFABButton()
         prepareLogoutFabMenuItem()
         prepareProfilePageFabMenuItem()
-        preparePaymentMethodsItem()
         prepareFABMenu()
     }
 }
@@ -63,15 +41,14 @@ extension AppFABMenuController {
         fabButton.backgroundColor = #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1)
         fabButton.imageView?.makeCircular()
         fabButton.makeCircular()
-        // Not good way to do it
+        fabButton.setIcon(icon: .googleMaterialDesign(.settings), color: UIColor.white, forState: .normal)
         self.setImageToButton()
-
+        
     }
     
     func setImageToButton(){
         if self.fabButton.image == nil{
             if let credentials = userDefaults.dictionary(forKey: "loginCredentials"){
-                print(credentials)
                 if let pictureString = credentials["photoURL"] as? String{
                     KingfisherManager.shared.retrieveImage(with: URL(string: pictureString)!, options: nil, progressBlock: nil) { (image, error, type, url) in
                         if let image = image {
@@ -104,19 +81,11 @@ extension AppFABMenuController {
         profilePageItem.fabButton.addTarget(self, action: #selector(handleProfile(button:)), for: .touchUpInside)
     }
     
-    fileprivate func preparePaymentMethodsItem() {
-        paymentMethodsItem = FABMenuItem()
-        paymentMethodsItem.title = "Payment Methods"
-        paymentMethodsItem.fabButton.image = Icon.cm.settings
-        paymentMethodsItem.fabButton.tintColor = .white
-        paymentMethodsItem.fabButton.pulseColor = .white
-        paymentMethodsItem.fabButton.backgroundColor = Color.blue.base
-        paymentMethodsItem.fabButton.addTarget(self, action: #selector(handlePaymentMethods(button:)), for: .touchUpInside)
-    }
+
     
     fileprivate func prepareFABMenu() {
         fabMenu.fabButton = fabButton
-        fabMenu.fabMenuItems = [logoutItem, paymentMethodsItem, profilePageItem]
+        fabMenu.fabMenuItems = [logoutItem, profilePageItem]
         fabMenuBacking = .none
         fabMenu.fabMenuDirection = .down
         view.layout(fabMenu)
@@ -152,14 +121,6 @@ extension AppFABMenuController {
         }
     }
     
-
-    
-    @objc fileprivate func handlePaymentMethods(button: UIButton) {
-        self.paymentContext = STPPaymentContext(apiAdapter: CustomAPIAdapter())
-        self.paymentContext!.delegate = self
-        self.paymentContext!.hostViewController = self
-        self.paymentContext!.presentPaymentMethodsViewController()
-    }
 }
 
 extension AppFABMenuController {
