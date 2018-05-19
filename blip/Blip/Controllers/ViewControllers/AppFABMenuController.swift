@@ -29,7 +29,6 @@ class AppFABMenuController: FABMenuController{
         prepareFABButton()
         prepareLogoutFabMenuItem()
         prepareProfilePageFabMenuItem()
-        preparePaymentMethodsItem()
         prepareFABMenu()
     }
 }
@@ -82,19 +81,9 @@ extension AppFABMenuController {
         profilePageItem.fabButton.addTarget(self, action: #selector(handleProfile(button:)), for: .touchUpInside)
     }
     
-    fileprivate func preparePaymentMethodsItem() {
-        paymentMethodsItem = FABMenuItem()
-        paymentMethodsItem.title = "Payment Methods"
-        paymentMethodsItem.fabButton.image = Icon.cm.settings
-        paymentMethodsItem.fabButton.tintColor = .white
-        paymentMethodsItem.fabButton.pulseColor = .white
-        paymentMethodsItem.fabButton.backgroundColor = Color.blue.base
-        paymentMethodsItem.fabButton.addTarget(self, action: #selector(handlePaymentMethods(button:)), for: .touchUpInside)
-    }
-    
     fileprivate func prepareFABMenu() {
         fabMenu.fabButton = fabButton
-        fabMenu.fabMenuItems = [logoutItem, paymentMethodsItem, profilePageItem]
+        fabMenu.fabMenuItems = [logoutItem, profilePageItem]
         fabMenuBacking = .none
         fabMenu.fabMenuDirection = .down
         view.layout(fabMenu)
