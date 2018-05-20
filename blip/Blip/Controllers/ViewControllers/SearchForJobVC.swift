@@ -129,8 +129,8 @@ class SearchForJobVC: UIViewController {
     
     @IBAction func postTestJob(_ sender: Any) {
         service.getCurrentUserInfo { (user) in
-            let deliveryLocation = self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 2000)
-            let pickupLocation = self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 3000)
+            let deliveryLocation = self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 100, max: 500)
+            let pickupLocation = self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 100, max: 500)
 //            self.service.addTestJob(deliveryLocation: (self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 2000)), pickupLocation: (self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 3000)), recieverName: "Srikanth Srinivas", recieverNumber: "6478229867", pickupMainInstruction: "Pickup from xyz", pickupSubInstruction: "Go to front entrance of xyz, order number 110021 is waiting for you", deliveryMainInstruction: "Deliver to Srikanth Srinivas", deliverySubInstruction: "Go to main entrace, and buzz code 2003", pickupNumber: "6479839837")
             MyAPIClient.sharedClient.makeDeliveryRequest(storeID: "-LCjB5T_3QBjNfRkoc7Y", deliveryLat: deliveryLocation.latitude, deliveryLong: deliveryLocation.longitude, deliveryMainInstruction: "Deliver to Srikanth Srinivas", deliverySubInstruction: "Go to main entrace, and buzz code 2003", originLat: pickupLocation.latitude, originLong: pickupLocation.longitude, pickupMainInstruction: "Pickup from xyz", pickupSubInstruction: "Go to front entrance of xyz, order number 110021 is waiting for you", recieverName: "Srikanth Srinivas", recieverNumber: "6478229867", pickupNumber: "6479839837")
         }

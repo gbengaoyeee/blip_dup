@@ -370,33 +370,45 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
     })
 });
 
-exports.payOnDelivery = functions.database.ref('/CompletedJobs/{id}').onCreate((snapshot, context) => {
-    let chargeID = snapshot.child("chargeID/id").val();
-    let amount = +(snapshot.child("chargeID/amount").val());
-    let amountAfterCut = amount*0.75;
-    let emailHash = snapshot.child("jobTaker").val();
+exports.payOnDelivery = functions.database.ref('/CompletedJobs/{id}').onCreate((snapshot, context) =>{
+    console.log(snapshot.val());
+    const chargeID = snapshot.child("chargeID/id").val();
+    const amount = +(snapshot.child("chargeID/amount").val());
+    const amountAfterCut = amount*0.75;
+    const emailHash = snapshot.child("jobTaker").val();
     if (chargeID == null || amount == null || emailHash == null){
         console.log("Could not parse data");
-        return
+        return;
     }
-    admin.database().ref(`Couriers/${emailHash}`).once("value", function(userSnapshot){
-        let accountID = userSnapshot.child("stripeAccount/id");
+    console.log("This is Before Observe");
+    console.log('Blah blah:', chargeID, amount, emailHash);
+    return admin.database().ref(`Couriers/${emailHash}`).once('value').then(function(userSnapshot){
+        console.log(userSnapshot.val());
+        const userValues = userSnapshot.val();
+        const accountID = userSnapshot.child("stripeAccount/id").val();
+        console.log("AcctID:",accountID);
         stripe.transfers.create({
             amount: amountAfterCut,
             currency: "cad",
             source_transaction: chargeID,
             destination: accountID
-        }), function(err, transfer){
+        }, function(err, transfer){
+            console.log("Inside stripe!!!")
             if (err){
-                console.log(err);
-                return
-            }
-            else{
+                console.log(error);
+                console.log('Inside Stripe Error');
+                return;
+            }else{
                 console.log("Transfer made",transfer);
+                return;
             }
-        }
-    })
-})
+        });
+        console.log('FULFILLED');
+    }, function(error){
+        console.error(error);
+    });
+});
+
 
 exports.getPaidForDelivery = functions.https.onRequest((req, res) => {
     var deliveryID = req.body.deliveryID;
