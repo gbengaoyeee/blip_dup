@@ -122,11 +122,18 @@ class SettingsVC: FormViewController {
                         return
                     }
                     
-                    MyAPIClient.sharedClient.verifyStripeAccount(routingNumber: self.form.values()["routingNumber"] as! String, accountNumber: self.form.values()["accountNumber"] as! String, city: self.form.values()["city"] as! String, streetAdd: self.form.values()["address"] as! String, postalCode: self.form.values()["postalCode"] as! String, province: self.form.values()["province"] as! String, sin: self.form.values()["sin"] as! String, completion: { (json, error) in
-                        if error == nil{
-                            self.dismiss(animated: true, completion: nil)
-                        }
-                    })
+                    let calendar = Calendar.current
+                    let components = calendar.dateComponents([.day,.month,.year], from: self.form.values()["date"] as! Date)
+                    if let day = components.day, let month = components.month, let year = components.year {
+                        let dayString = String(day)
+                        let monthString = String(month)
+                        let yearString = String(year)
+                        MyAPIClient.sharedClient.verifyStripeAccount(routingNumber: self.form.values()["routingNumber"] as! String, accountNumber: self.form.values()["accountNumber"] as! String, city: self.form.values()["city"] as! String, streetAdd: self.form.values()["address"] as! String, postalCode: self.form.values()["postalCode"] as! String, province: self.provinces[self.form.values()["province"] as! String], sin: self.form.values()["sin"] as! String, dobMonth: monthString, dobDay: dayString, dobYear: yearString, completion: { (json, error) in
+                            if error == nil{
+                                self.dismiss(animated: true, completion: nil)
+                            }
+                        })
+                    }
             }
     }
     

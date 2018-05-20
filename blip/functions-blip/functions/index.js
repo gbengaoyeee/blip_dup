@@ -378,10 +378,12 @@ exports.payOnDelivery = functions.database.ref('/CompletedJobs/{id}').onCreate((
     let emailHash = snapshot.child("jobTaker").val();
     if (chargeID == null || amount == null || emailHash == null){
         console.log("Could not parse data");
-        return
+        return false
     }
-    admin.database().ref(`Couriers/${emailHash}`).once("value", function(userSnapshot){
-        let accountID = userSnapshot.child("stripeAccount/id");
+    console.log("Checking userRef", emailHash, amountAfterCut, chargeID);
+    return admin.database().ref(`Couriers/${emailHash}`).once("value", function(userSnapshot){
+        console.log("Making stripe request");
+        var accountID = userSnapshot.child("stripeAccount/id");
         stripe.transfers.create({
             amount: amountAfterCut,
             currency: "cad",
@@ -390,13 +392,13 @@ exports.payOnDelivery = functions.database.ref('/CompletedJobs/{id}').onCreate((
         }), function(err, transfer){
             if (err){
                 console.log(err);
-                return
             }
             else{
                 console.log("Transfer made",transfer);
+                return true
             }
         }
-    })
+    })   
 })
 
 exports.getPaidForDelivery = functions.https.onRequest((req, res) => {

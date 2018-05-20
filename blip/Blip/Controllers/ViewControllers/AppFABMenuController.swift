@@ -118,15 +118,6 @@ extension AppFABMenuController {
             print ("Error signing out: %@", signOutError)
         }
     }
-    
-
-    
-    @objc fileprivate func handlePaymentMethods(button: UIButton) {
-        self.paymentContext = STPPaymentContext(apiAdapter: CustomAPIAdapter())
-        self.paymentContext!.delegate = self
-        self.paymentContext!.hostViewController = self
-        self.paymentContext!.presentPaymentMethodsViewController()
-    }
 }
 
 extension AppFABMenuController {
