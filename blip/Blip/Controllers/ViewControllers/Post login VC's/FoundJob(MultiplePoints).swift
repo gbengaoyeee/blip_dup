@@ -16,6 +16,7 @@ import SRCountdownTimer
 import Pulsator
 import PopupDialog
 import NotificationBannerSwift
+import Material
 
 class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
 
@@ -24,6 +25,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     @IBOutlet weak var pulseAnimationView: UIView!
     @IBOutlet weak var map: MGLMapView!
     @IBOutlet weak var countDownView: SRCountdownTimer!
+    @IBOutlet weak var acceptJob: RaisedButton!
     
     var fromIndex = 0
     var toIndex = 1
@@ -40,7 +42,14 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        prepareDataForNavigation()
+        acceptJob.isUserInteractionEnabled = false
+        prepareDataForNavigation { (bool) in
+            if bool{
+                self.acceptJob.isUserInteractionEnabled = true
+            }else{
+                self.preparePopupForErrors()
+            }
+        }
         setupTimer()
     }
     
@@ -72,7 +81,16 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
         self.navigationController?.popViewController(animated: true)
     }
     
-    func prepareDataForNavigation(){
+    func preparePopupForErrors(){
+        let popup = PopupDialog(title: "Error", message: "An error occured when parsing job data")
+        let okButton = PopupDialogButton(title: "Continue") {
+            popup.dismiss()
+            self.navigationController?.popToRootViewController(animated: true)
+        }
+        popup.addButton(okButton)
+    }
+    
+    func prepareDataForNavigation(completion: @escaping(Bool) -> ()){
         if let job = self.job{
 
             var distributions = ""
@@ -94,18 +112,18 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
                     if let routeData = routeData{
                         self.parseRouteData(routeData: routeData)
                     }
+                    completion(true)
                 }
                 else{
+                    completion(false)
                     print(error!)
                     self.service.putBackJobs()
-                    self.navigationController?.popViewController(animated: true)
-                    //Show error by way of a popup
                 }
             }
         }
         else{
+            completion(false)
             print("An Error occured. No Job was passed")
-            self.navigationController?.popViewController(animated: true)
         }
     }
     
@@ -151,6 +169,23 @@ extension FoundJobVC: MGLMapViewDelegate{
 }
 
 extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
+    
+    func navigationViewController(_ viewController: NavigationViewController, didSend feedbackId: String, feedbackType: FeedbackType) {
+        if feedbackType == .mapIssue{
+            let error = PopupDialog(title: "We want to know whats wrong", message: "Get in touch with us right now at 647-983-9837, and mention your email address")
+            let callButton = PopupDialogButton(title: "Call") {
+                if let url:URL = URL(string: "tel://6479839837"), UIApplication.shared.canOpenURL(url){
+                    if #available(iOS 10, *) {
+                        UIApplication.shared.open(url)
+                    } else {
+                        UIApplication.shared.openURL(url)
+                    }
+                }
+            }
+            error.addButton(callButton)
+            self.present(error, animated: true)
+        }
+    }
     
     func navigationViewController(_ navigationViewController: NavigationViewController, didArriveAt waypoint: Waypoint) -> Bool {
         let vc = InstructionVC(nibName: "InstructionVC", bundle: nil)

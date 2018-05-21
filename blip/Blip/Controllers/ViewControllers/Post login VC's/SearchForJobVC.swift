@@ -80,14 +80,6 @@ class SearchForJobVC: UIViewController {
         }
     }
     
-    fileprivate func showBanner(title: String, subtitle: String?, style:BannerStyle){
-        let leftImageView = UIImageView()
-        leftImageView.setIcon(icon: .googleMaterialDesign(.info), textColor: UIColor.white, backgroundColor: UIColor.clear, size: CGSize(size: 50))
-        let banner = NotificationBanner(title: title, subtitle: subtitle, leftView: leftImageView, rightView: nil, style: style)
-        banner.dismissOnSwipeUp = true
-        banner.show()
-    }
-    
     func prepareBlur(){
         gradient = CAGradientLayer()
         gradient.frame = map.bounds
@@ -129,9 +121,8 @@ class SearchForJobVC: UIViewController {
     
     @IBAction func postTestJob(_ sender: Any) {
         service.getCurrentUserInfo { (user) in
-            let deliveryLocation = self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 2000)
+            let deliveryLocation = self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 3000)
             let pickupLocation = self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 3000)
-//            self.service.addTestJob(deliveryLocation: (self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 2000)), pickupLocation: (self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 3000)), recieverName: "Srikanth Srinivas", recieverNumber: "6478229867", pickupMainInstruction: "Pickup from xyz", pickupSubInstruction: "Go to front entrance of xyz, order number 110021 is waiting for you", deliveryMainInstruction: "Deliver to Srikanth Srinivas", deliverySubInstruction: "Go to main entrace, and buzz code 2003", pickupNumber: "6479839837")
             MyAPIClient.sharedClient.makeDeliveryRequest(storeID: "-LCjB5T_3QBjNfRkoc7Y", deliveryLat: deliveryLocation.latitude, deliveryLong: deliveryLocation.longitude, deliveryMainInstruction: "Deliver to Srikanth Srinivas", deliverySubInstruction: "Go to main entrace, and buzz code 2003", originLat: pickupLocation.latitude, originLong: pickupLocation.longitude, pickupMainInstruction: "Pickup from xyz", pickupSubInstruction: "Go to front entrance of xyz, order number 110021 is waiting for you", recieverName: "Srikanth Srinivas", recieverNumber: "6478229867", pickupNumber: "6479839837")
         }
     }
@@ -148,7 +139,7 @@ class SearchForJobVC: UIViewController {
         banner.show()
         loading.play()
         
-        self.service.findJob(myLocation: self.currentLocation, userHash: self.userDefaults.dictionary(forKey: "loginCredentials")!["emailHash"] as! String) { (errorCode, job) in
+        self.service.findJob(myLocation: self.currentLocation, userHash: self.service.emailHash) { (errorCode, job) in
             
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
                 banner.dismiss()
@@ -162,12 +153,20 @@ class SearchForJobVC: UIViewController {
                 else if errorCode != nil{
                     if errorCode == 400{
                         //Not verified
-                        self.showBanner(title: "Account Not Verified", subtitle: "Please contact us to verify your account", style: .warning)
+                        let newBanner = NotificationBanner(title: "Error", subtitle: "Account not verified", style: .warning)
+                        newBanner.autoDismiss = true
+                        newBanner.show()
+                        newBanner.dismissOnSwipeUp = true
+                        newBanner.dismissOnTap = true
                         print("Not verified")
                     }
                     else if errorCode == 500{
                         //Flagged
-                        self.showBanner(title: "Error", subtitle: "Your account has been disabled due to leaving a job. Please contact us to unlock your account", style: .warning)
+                        let newBanner = NotificationBanner(title: "Error", subtitle: "Your account has been disabled due to leaving a job. Please contact us to unlock your account", style: .warning)
+                        newBanner.autoDismiss = false
+                        newBanner.show()
+                        newBanner.dismissOnSwipeUp = true
+                        newBanner.dismissOnTap = true
                         print("Flagged")
                     }else{
                         // No job Found

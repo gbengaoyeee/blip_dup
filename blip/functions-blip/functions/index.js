@@ -370,12 +370,12 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
     })
 });
 
-exports.payOnDelivery = functions.database.ref('/CompletedJobs/{id}').onCreate((snapshot, context) => {
-
-    let chargeID = snapshot.child("chargeID/id").val();
-    let amount = +(snapshot.child("chargeID/amount").val());
-    let amountAfterCut = amount*0.75;
-    let emailHash = snapshot.child("jobTaker").val();
+exports.payOnDelivery = functions.database.ref('/CompletedJobs/{id}').onCreate((snapshot, context) =>{
+    console.log(snapshot.val());
+    const chargeID = snapshot.child("chargeID/id").val();
+    const amount = +(snapshot.child("chargeID/amount").val());
+    const amountAfterCut = amount*0.75;
+    const emailHash = snapshot.child("jobTaker").val();
     if (chargeID == null || amount == null || emailHash == null){
         console.log("Could not parse data");
         return false
@@ -389,7 +389,8 @@ exports.payOnDelivery = functions.database.ref('/CompletedJobs/{id}').onCreate((
             currency: "cad",
             source_transaction: chargeID,
             destination: accountID
-        }), function(err, transfer){
+        }, function(err, transfer){
+            console.log("Inside stripe!!!")
             if (err){
                 console.log(err);
             }
@@ -443,9 +444,11 @@ exports.getBestJob = functions.https.onRequest((req, res) => {
         if (error) {
             console.log(error.message, req.body);
             if (error.message === "User needs to verify their background check") {
-                res.status(400).end(error);
+                res.status(400).send(error);
+                return
             } else {
-                res.status(500).end(error);
+                res.status(500).send(error);
+                return
             }
 
         } else {

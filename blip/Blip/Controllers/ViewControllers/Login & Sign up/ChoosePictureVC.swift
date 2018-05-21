@@ -116,59 +116,6 @@ class ChoosePictureVC: UIViewController, UIImagePickerControllerDelegate, UINavi
         cameraAnimation.play()
     }
     
-    
-//    func prepareEmailVerifyPopup(user: User) -> PopupDialog{
-//        let title = "Verify your email"
-//        let message = "Please check your email for a verification link, then press continue after verifying"
-//        let emailVerifyPopup = PopupDialog(title: title, message: message)
-//        let resendButton = DefaultButton(title: "Resend verification Email", dismissOnTap: false) {
-//            user.sendEmailVerification(completion: { (error) in
-//                if error != nil{
-//                    print(error!.localizedDescription)
-//                    return
-//                }
-//            })
-//        }
-//        let continueButton = DefaultButton(title: "Continue", dismissOnTap: false){
-//            user.reload(completion: { (err) in
-//                if let error = err{
-//                    print(error.localizedDescription)
-//                    return
-//                }
-//                if user.isEmailVerified{
-//                    emailVerifyPopup.dismiss()
-//                    let profile = user.createProfileChangeRequest()
-//                    profile.displayName = self.userInfoDict["name"]
-//                    profile.commitChanges(completion: { (error2) in
-//                        if (error2 != nil){
-//                            print(error2!.localizedDescription)
-//                            return
-//                        }
-//                        else{
-//                            self.service.addUserToDatabase(uid: user.uid, name: self.userInfoDict["name"]!, email: self.userInfoDict["email"]!, provider: nil)
-//                            self.service.uploadProfileImage(image: self.profileImageView.image!, completion: { (errMsg, any) in
-//                                if errMsg != nil{
-//                                    print(errMsg!)
-//                                    return
-//                                }
-//                                else{
-//                                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
-//                                    appDelegate.setLoginAsRoot()
-//                                }
-//                            })
-//                        }
-//                    })
-//                }
-//                else{   // if user has not verified email
-//                    emailVerifyPopup.shake()
-//                }
-//            })
-//        }
-//        emailVerifyPopup.addButtons([continueButton, resendButton])
-//        return emailVerifyPopup
-//    }
-    
-    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         let image = info[UIImagePickerControllerOriginalImage] as! UIImage
         profileImageView.image = image

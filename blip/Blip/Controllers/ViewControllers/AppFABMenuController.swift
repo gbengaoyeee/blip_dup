@@ -81,6 +81,7 @@ extension AppFABMenuController {
         profilePageItem.fabButton.addTarget(self, action: #selector(handleProfile(button:)), for: .touchUpInside)
     }
     
+
     fileprivate func prepareFABMenu() {
         fabMenu.fabButton = fabButton
         fabMenu.fabMenuItems = [logoutItem, profilePageItem]
@@ -137,17 +138,6 @@ extension AppFABMenuController {
     
     @objc open func fabMenuDidClose(fabMenu: FABMenu) {
         print("fabMenuDidClose")
-    }
-    
-    override func encodeRestorableState(with coder: NSCoder) {
-//        coder.encode(service, forKey: "service")
-        super.encodeRestorableState(with: coder)
-        print("Saved")
-    }
-    
-    override func decodeRestorableState(with coder: NSCoder) {
-//        service = coder.decodeObject(forKey: "service") as! ServiceCalls
-        print("Restored")
     }
 }
 

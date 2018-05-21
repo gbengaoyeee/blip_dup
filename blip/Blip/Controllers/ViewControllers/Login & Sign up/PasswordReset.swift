@@ -23,7 +23,8 @@ class PasswordReset: UIViewController {
         super.viewDidLoad()
         prepareTextField()
         gradientView.animationDuration = 3.0
-        gradientView.setColors([#colorLiteral(red: 0.3476088047, green: 0.1101973727, blue: 0.08525472134, alpha: 1),#colorLiteral(red: 0.9411764741, green: 0.4980392158, blue: 0.3529411852, alpha: 1)])
+        gradientView.prepareDefaultPastelView()
+        gradientView.startAnimation()
         // Do any additional setup after loading the view.
     }
 
@@ -98,16 +99,12 @@ class PasswordReset: UIViewController {
     private func popupForNoInternet()-> PopupDialog {
         let title = "Internet Unavailable"
         let message = "Please connect to the internet and try again"
-        let okButton = CancelButton(title: "OK") {
-            return
-        }
         let popup = PopupDialog(title: title, message: message)
-        popup.addButton(okButton)
         return popup
     }
     
     private func ERR_WRONG_EMAIL()-> PopupDialog {
-        let title = "Faulty Email"
+        let title = "Error"
         let message = "Please check your email and try again"
         let okButton = CancelButton(title: "OK") {
             return

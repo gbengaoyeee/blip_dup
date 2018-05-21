@@ -119,16 +119,13 @@ class InstructionVC: UIViewController {
     }
     
     @IBAction func donePressed(_ sender: Any) {
+        service.completedJob(id: self.delivery.identifier, type: type)
         if !isLastWaypoint{
             navViewController?.routeController.routeProgress.legIndex += 1
             navViewController?.routeController.resume()
-            service.completedJob(id: self.delivery.identifier, type: type)
             self.dismiss(animated: true, completion: nil)
         }
         else{
-            self.prepareAndAddBlurredLoader()
-            service.completedJob(id: self.delivery.identifier, type: type)
-            self.removedBlurredLoader()
             self.dismiss(animated: true, completion: {
                 self.foundJobVC.navigationController?.popToRootViewController(animated: true)
             })
