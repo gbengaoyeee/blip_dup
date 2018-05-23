@@ -76,23 +76,23 @@ exports.captureCharge = functions.https.onRequest((req, res) => {
 });
 
 exports.createTestStore = functions.https.onRequest((req, res) => {
-    var storeName = req.body.storeName;
-    var storeLogo = req.body.storeLogo;
-    var storeBackground = req.body.storeBackground;
-    var locationLat = req.body.locationLat;
-    var locationLong = req.body.locationLong;
-    var storeDescription = req.body.description;
-    var address_city = req.body.city;
-    var address_country = req.body.country;
-    var address_line1 = req.body.line1;
-    var address_zip = req.body.postalCode;
-    var address_state = req.body.province;
-    var business_name = req.body.businessName;
-    var business_tax_id = req.body.businessTaxId;
-    var first_name = req.body.firstName;
-    var last_name = req.body.lastName;
+    var storeName = "Test Store";
+    var storeLogo = "Your store logo";
+    var storeBackground = "Your store background";
+    var locationLat = "";
+    var locationLong = "";
+    var storeDescription = "Your store description";
+    var address_city = "Toronto";
+    var address_country = "CA";
+    var address_line1 = "Line 1";
+    var address_zip = "A0A 0A0";
+    var address_state = "ON";
+    var business_name = "Test business";
+    var business_tax_id = "000000000";
+    var first_name = "Your name";
+    var last_name = "Your last name";
     var date = Math.floor(new Date() / 1000);
-    var email = req.body.email;
+    var email = "test@grr.la";
 
     stripe.customers.create({
         "business_vat_id": business_tax_id,
@@ -398,7 +398,7 @@ exports.payOnDelivery = functions.database.ref('/CompletedJobs/{id}').onCreate((
                 console.log("Transfer made",transfer);
                 return true
             }
-        }
+        })
     })   
 })
 
