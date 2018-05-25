@@ -153,22 +153,18 @@ class SearchForJobVC: UIViewController {
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
                 banner.dismiss()
                 loading.stop()
-                if let job = job{
-                    self.foundJob = job
-                    self.goButton.isUserInteractionEnabled = true
-                    print("Found job")
-                    self.performSegue(withIdentifier: "foundJob", sender: self)
-                }
-                else if errorCode != nil{
+                if errorCode != nil{
                     if errorCode == 400{
                         //Not verified
-                        self.showBanner(title: "Account Not Verified", subtitle: "Please contact us to verify your account", style: .warning)
+                        self.showBanner(title: "Account Not Verified", subtitle: "Please verify your email and contact us to verify your account", style: .warning)
                         print("Not verified")
+                        return
                     }
                     else if errorCode == 500{
                         //Flagged
                         self.showBanner(title: "Error", subtitle: "Your account has been disabled due to leaving a job. Please contact us to unlock your account", style: .warning)
                         print("Flagged")
+                        return
                     }else{
                         // No job Found
                         let newBanner = NotificationBanner(title: "Error", subtitle: "No job found at this time", style: .info)
@@ -177,8 +173,16 @@ class SearchForJobVC: UIViewController {
                         newBanner.dismissOnSwipeUp = true
                         newBanner.dismissOnTap = true
                         print("No job Found")
+                        return
                     }
                 }
+                guard let job = job else{
+                    print("Something wrong with getting job")
+                    return
+                }
+                self.foundJob = job
+                self.goButton.isUserInteractionEnabled = true
+                self.performSegue(withIdentifier: "foundJob", sender: self)
             })
             self.goButton.isUserInteractionEnabled = true
         }

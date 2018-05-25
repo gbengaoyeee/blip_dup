@@ -123,8 +123,12 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
                         print("Result:", resp.result.value)
                         completion(nil, false)
                     }
+                    break
                 case .failure(let error):
+                    print("Result:",resp.result)
+                    print("Result:",resp.result.value)
                     completion(error, nil)
+                    break
                 }
         }
 //        Alamofire.request(url, method: .get, parameters: params, encoding: JSONEncoding.default, headers: nil).responseJSON { (resp) in

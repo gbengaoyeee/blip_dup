@@ -114,16 +114,20 @@ class ServiceCalls:NSObject, NSCoding{
         
         MyAPIClient.sharedClient.getBestJobAt(location: myLocation, userHash: userHash) { (error, found) in
             if let err = error as? AFError{
-                if err.responseCode! == 400{
+                if (err.responseCode! == 400 || !(Auth.auth().currentUser?.isEmailVerified)!){
+                    self.removeFirebaseObservers()
                     completion(400, nil)//Not verified
+                    return
                 }
                 else if err.responseCode! == 500{
+                    self.removeFirebaseObservers()
                     completion(500, nil)//Flagged
+                    return
                 }else{
+                    self.removeFirebaseObservers()
                     completion(600, nil)// No job Found
+                    return
                 }
-                self.removeFirebaseObservers()
-                return
             }
         }
         
