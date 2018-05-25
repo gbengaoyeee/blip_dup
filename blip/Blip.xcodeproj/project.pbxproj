@@ -356,7 +356,6 @@
 			isa = PBXGroup;
 			children = (
 				5F33377720332B0B00B83E01 /* RatingViewController.xib */,
-				F3D21EE7208AE39500832544 /* InstructionVC.swift */,
 				F3D21EE8208AE39500832544 /* InstructionVC.xib */,
 			);
 			path = CustomXIB;
@@ -408,6 +407,7 @@
 				F39BE63920B32E1400A4228C /* FoundJob(MultiplePoints).swift */,
 				F39BE63820B32E1400A4228C /* SearchForJobVC.swift */,
 				F3EC0E69209FDD5400E08668 /* SettingsVC.swift */,
+				F3D21EE7208AE39500832544 /* InstructionVC.swift */,
 			);
 			path = "Post login VC's";
 			sourceTree = "<group>";

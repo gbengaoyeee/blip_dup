@@ -13,6 +13,7 @@ import MapboxDirections
 import MapboxNavigation
 import Material
 import PopupDialog
+import Kingfisher
 
 class InstructionVC: UIViewController {
 
@@ -62,7 +63,11 @@ class InstructionVC: UIViewController {
             subInstructionLabel.text = text
         }
         if let url = delivery.store.storeLogo{
-            storeLogo.kf.setImage(with: url)
+            KingfisherManager.shared.retrieveImage(with: url, options: nil, progressBlock: nil) { (image, error, cache, url) in
+                if let image = image{
+                    storeLogo.image = image
+                }
+            }
         }
     }
     
@@ -115,21 +120,26 @@ class InstructionVC: UIViewController {
                 calls += 1
             }
         }
-        
     }
     
     @IBAction func donePressed(_ sender: Any) {
-        service.completedJob(id: self.delivery.identifier, type: type)
-        if !isLastWaypoint{
-            navViewController?.routeController.routeProgress.legIndex += 1
-            navViewController?.routeController.resume()
-            self.dismiss(animated: true, completion: nil)
-        }
-        else{
-            self.dismiss(animated: true, completion: {
-                self.foundJobVC.navigationController?.popToRootViewController(animated: true)
+        let popup = PopupDialog(title: "Confirm", message: "Please make sure you have successfully completed the delivery before pressing confirm. Failure to do so may result in the suspension of your account. Alternatively, press the No Show button if the delivery cannot be completed successfully")
+        let confirmButton = PopupDialogButton(title: "Confirm") {
+            popup.dismiss({
+                self.service.completedJob(id: self.delivery.identifier, type: type)
+                if !isLastWaypoint{
+                    navViewController?.routeController.routeProgress.legIndex += 1
+                    navViewController?.routeController.resume()
+                    self.dismiss(animated: true, completion: nil)
+                }
+                else{
+                    self.dismiss(animated: true, completion: {
+                        self.foundJobVC.navigationController?.popToRootViewController(animated: true)
+                    })
+                    
+                }
             })
-            
         }
+        
     }
 }

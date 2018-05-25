@@ -63,6 +63,9 @@ class SearchForJobVC: UIViewController {
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        if let annotations = map.annotations{
+            map.removeAnnotations(annotations)
+        }
     }
     
     override func didReceiveMemoryWarning() {
