@@ -63,6 +63,9 @@ class SearchForJobVC: UIViewController {
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        if let annotations = map.annotations{
+            map.removeAnnotations(annotations)
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -78,14 +81,6 @@ class SearchForJobVC: UIViewController {
             let dest = segue.destination as! FoundJobVC
             dest.job = foundJob
         }
-    }
-    
-    fileprivate func showBanner(title: String, subtitle: String?, style:BannerStyle){
-        let leftImageView = UIImageView()
-        leftImageView.setIcon(icon: .googleMaterialDesign(.info), textColor: UIColor.white, backgroundColor: UIColor.clear, size: CGSize(size: 50))
-        let banner = NotificationBanner(title: title, subtitle: subtitle, leftView: leftImageView, rightView: nil, style: style)
-        banner.dismissOnSwipeUp = true
-        banner.show()
     }
     
     func prepareBlur(){
@@ -129,9 +124,8 @@ class SearchForJobVC: UIViewController {
     
     @IBAction func postTestJob(_ sender: Any) {
         service.getCurrentUserInfo { (user) in
-            let deliveryLocation = self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 100, max: 500)
-            let pickupLocation = self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 100, max: 500)
-//            self.service.addTestJob(deliveryLocation: (self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 2000)), pickupLocation: (self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 3000)), recieverName: "Srikanth Srinivas", recieverNumber: "6478229867", pickupMainInstruction: "Pickup from xyz", pickupSubInstruction: "Go to front entrance of xyz, order number 110021 is waiting for you", deliveryMainInstruction: "Deliver to Srikanth Srinivas", deliverySubInstruction: "Go to main entrace, and buzz code 2003", pickupNumber: "6479839837")
+            let deliveryLocation = self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 3000)
+            let pickupLocation = self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 3000)
             MyAPIClient.sharedClient.makeDeliveryRequest(storeID: "-LCjB5T_3QBjNfRkoc7Y", deliveryLat: deliveryLocation.latitude, deliveryLong: deliveryLocation.longitude, deliveryMainInstruction: "Deliver to Srikanth Srinivas", deliverySubInstruction: "Go to main entrace, and buzz code 2003", originLat: pickupLocation.latitude, originLong: pickupLocation.longitude, pickupMainInstruction: "Pickup from xyz", pickupSubInstruction: "Go to front entrance of xyz, order number 110021 is waiting for you", recieverName: "Srikanth Srinivas", recieverNumber: "6478229867", pickupNumber: "6479839837")
         }
     }
@@ -156,13 +150,25 @@ class SearchForJobVC: UIViewController {
                 if errorCode != nil{
                     if errorCode == 400{
                         //Not verified
+<<<<<<< HEAD:blip/Blip/Controllers/ViewControllers/SearchForJobVC.swift
                         self.showBanner(title: "Account Not Verified", subtitle: "Please verify your email and contact us to verify your account", style: .warning)
+=======
+                        let newBanner = NotificationBanner(title: "Error", subtitle: "Account not verified", style: .warning)
+                        newBanner.autoDismiss = true
+                        newBanner.show()
+                        newBanner.dismissOnSwipeUp = true
+                        newBanner.dismissOnTap = true
+>>>>>>> 88ae04b33b2deb1129abd1c820a43cbaa2ca784e:blip/Blip/Controllers/ViewControllers/Post login VC's/SearchForJobVC.swift
                         print("Not verified")
                         return
                     }
                     else if errorCode == 500{
                         //Flagged
-                        self.showBanner(title: "Error", subtitle: "Your account has been disabled due to leaving a job. Please contact us to unlock your account", style: .warning)
+                        let newBanner = NotificationBanner(title: "Error", subtitle: "Your account has been disabled due to leaving a job. Please contact us to unlock your account", style: .warning)
+                        newBanner.autoDismiss = false
+                        newBanner.show()
+                        newBanner.dismissOnSwipeUp = true
+                        newBanner.dismissOnTap = true
                         print("Flagged")
                         return
                     }else{

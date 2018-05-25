@@ -119,7 +119,6 @@ extension AppFABMenuController {
             print ("Error signing out: %@", signOutError)
         }
     }
-    
 }
 
 extension AppFABMenuController {
@@ -139,17 +138,6 @@ extension AppFABMenuController {
     
     @objc open func fabMenuDidClose(fabMenu: FABMenu) {
         print("fabMenuDidClose")
-    }
-    
-    override func encodeRestorableState(with coder: NSCoder) {
-//        coder.encode(service, forKey: "service")
-        super.encodeRestorableState(with: coder)
-        print("Saved")
-    }
-    
-    override func decodeRestorableState(with coder: NSCoder) {
-//        service = coder.decodeObject(forKey: "service") as! ServiceCalls
-        print("Restored")
     }
 }
 

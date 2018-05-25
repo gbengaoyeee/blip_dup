@@ -32,12 +32,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     static let NOTIFICATION_URL = "https://fcm.googleapis.com/fcm/send"
     static var DEVICEID = String()
     static let SERVERKEY = "AAAAzHCGqik:APA91bGDGsKKvtlaTgbVsLtRnUrWs00wXc9aWNBBoEcbZ8TUQiclkCe4RpUzMxGx2m0jvwnLaTBG-Jwc-57qFE0F-QFmRNaBzPfGsIQj5LSEUvnlzA8kQu6pwJuCPfI2iCzO191eHoY-"
-    
-//    override init() {
-//
-//        FirebaseApp.configure()
-//    }
 
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         print("didFinishLaunchingWithOptions")
         // Override point for customization after application launch.
@@ -49,12 +45,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         _ = Auth.auth().addStateDidChangeListener { (auth, user) in
             if auth.currentUser != nil {
-                
                 self.setLoginAsRoot()
             }
             else{
                 self.setLogoutAsRoot()
-            
             }
         }
         

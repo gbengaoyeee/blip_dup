@@ -56,7 +56,7 @@ class SettingsVC: FormViewController {
             <<< TextRow(){ row in
                 row.tag = "postalCode"
                 row.title = "Postal code"
-                row.placeholder = "Eg. L5L6A2"
+                row.placeholder = "Eg. L5L 6A2"
             }
             <<< TextRow(){ row in
                 row.tag = "province"
@@ -97,6 +97,20 @@ class SettingsVC: FormViewController {
                 }
                 .onCellSelection { cell, row in
                     
+                    if !self.validatePostalCode(code: self.form.values()["postalCode"] as? String){
+                        //Invalid postal code
+                        let popup = self.errorField(title: "Invalid Postal code", message: "Make sure your postal code is correct, and in the format A0A 0A0")
+                        self.present(popup, animated: true, completion: nil)
+                        return
+                    }
+                    
+                    if !self.validateCityAndAddress(city: self.form.values()["city"] as? String, address: self.form.values()["line1"] as? String){
+                        //Invalid city/Address
+                        let popup = self.errorField(title: "City and/or address not entered", message: "Please check your city and street address fields")
+                        self.present(popup, animated: true, completion: nil)
+                        return
+                    }
+                    
                     if !self.validateSIN(SIN: self.form.values()["sin"] as? String){
                         //Invalid SIN
                         let popup = self.errorField(title: "Invalid SIN", message: "Please check your SIN Number and make sure it is correct")
@@ -122,11 +136,18 @@ class SettingsVC: FormViewController {
                         return
                     }
                     
-                    MyAPIClient.sharedClient.verifyStripeAccount(routingNumber: self.form.values()["routingNumber"] as! String, accountNumber: self.form.values()["accountNumber"] as! String, city: self.form.values()["city"] as! String, streetAdd: self.form.values()["address"] as! String, postalCode: self.form.values()["postalCode"] as! String, province: self.form.values()["province"] as! String, sin: self.form.values()["sin"] as! String, completion: { (json, error) in
-                        if error == nil{
-                            self.dismiss(animated: true, completion: nil)
-                        }
-                    })
+                    let calendar = Calendar.current
+                    let components = calendar.dateComponents([.day,.month,.year], from: self.form.values()["date"] as! Date)
+                    if let day = components.day, let month = components.month, let year = components.year {
+                        let dayString = String(day)
+                        let monthString = String(month)
+                        let yearString = String(year)
+                        MyAPIClient.sharedClient.verifyStripeAccount(routingNumber: self.form.values()["routingNumber"] as! String, accountNumber: self.form.values()["accountNumber"] as! String, city: self.form.values()["city"] as! String, streetAdd: self.form.values()["address"] as! String, postalCode: self.form.values()["postalCode"] as! String, province: self.provinces[self.form.values()["province"] as! String], sin: self.form.values()["sin"] as! String, dobMonth: monthString, dobDay: dayString, dobYear: yearString, completion: { (json, error) in
+                            if error == nil{
+                                self.dismiss(animated: true, completion: nil)
+                            }
+                        })
+                    }
             }
     }
     
@@ -235,6 +256,30 @@ class SettingsVC: FormViewController {
             return false
         }
         return true
+    }
+    
+    func validatePostalCode(code: String?) -> Bool{
+        if code == nil{
+            return false
+        }
+        let regex = "(^[a-zA-Z][0-9][a-zA-Z][- ]*[0-9][a-zA-Z][0-9]$)"
+        let r = code!.startIndex..<code!.endIndex
+        let r2 = code!.range(of: regex, options: .regularExpression)
+        if r2 == r{
+            return true
+        }
+        else{
+            return false
+        }
+    }
+    
+    func validateCityAndAddress(city: String?, address: String?) -> Bool{
+        if city == nil || address == nil{
+            return false
+        }
+        else{
+            return true
+        }
     }
     
 }

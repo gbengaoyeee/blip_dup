@@ -40,13 +40,10 @@
 		3B537374202EC0DC0020F3B1 /* NavigationBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53735D202EC0D80020F3B1 /* NavigationBarViewController.swift */; };
 		3B537375202EC0DC0020F3B1 /* PasswordReset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53735E202EC0D80020F3B1 /* PasswordReset.swift */; };
 		3B537376202EC0DC0020F3B1 /* CustomAPIAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53735F202EC0D80020F3B1 /* CustomAPIAdapter.swift */; };
-		3B537377202EC0DC0020F3B1 /* ProfilePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537360202EC0D80020F3B1 /* ProfilePage.swift */; };
-		3B537379202EC0DC0020F3B1 /* SellVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537362202EC0D90020F3B1 /* SellVC.swift */; };
 		3B53737B202EC0DC0020F3B1 /* OnboardingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537364202EC0D90020F3B1 /* OnboardingVC.swift */; };
 		3B53737C202EC0DC0020F3B1 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537365202EC0D90020F3B1 /* LoginVC.swift */; };
 		3B53737E202EC0DC0020F3B1 /* MyAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537367202EC0D90020F3B1 /* MyAPIClient.swift */; };
 		3B537381202EC0DC0020F3B1 /* ProfilePicture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53736A202EC0DA0020F3B1 /* ProfilePicture.swift */; };
-		3B537382202EC0DC0020F3B1 /* SellVC+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53736B202EC0DA0020F3B1 /* SellVC+.swift */; };
 		3B537383202EC0DC0020F3B1 /* AppFABMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53736C202EC0DB0020F3B1 /* AppFABMenuController.swift */; };
 		3B537387202EC0DC0020F3B1 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537370202EC0DB0020F3B1 /* SplashViewController.swift */; };
 		3B537388202EC0DC0020F3B1 /* Lgsupage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537371202EC0DC0020F3B1 /* Lgsupage.swift */; };
@@ -62,15 +59,14 @@
 		D2AFD91630288F27B050C92C /* Pods_Blip.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F17503340FF2DF7A45CD03F1 /* Pods_Blip.framework */; };
 		DD72AAE625CF15AC4CF40392 /* Pods_BlipUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1E4C90BBD8A603818B54420 /* Pods_BlipUITests.framework */; };
 		F30D60CB207B19930022F90D /* Delivery.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30D60CA207B19930022F90D /* Delivery.swift */; };
-		F347473E207FC40D00F9A603 /* SearchForJobVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F347473D207FC40D00F9A603 /* SearchForJobVC.swift */; };
-		F38E5A6D208119B400128D46 /* FoundJob(MultiplePoints).swift in Sources */ = {isa = PBXBuildFile; fileRef = F38E5A6C208119B400128D46 /* FoundJob(MultiplePoints).swift */; };
+		F39BE63A20B32E1400A4228C /* SearchForJobVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39BE63820B32E1400A4228C /* SearchForJobVC.swift */; };
+		F39BE63B20B32E1400A4228C /* FoundJob(MultiplePoints).swift in Sources */ = {isa = PBXBuildFile; fileRef = F39BE63920B32E1400A4228C /* FoundJob(MultiplePoints).swift */; };
 		F39C6556209D5430002BCCF5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F39C6555209D5430002BCCF5 /* Assets.xcassets */; };
 		F3D21EE420857E2100832544 /* BlipWaypoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D21EE320857E2100832544 /* BlipWaypoint.swift */; };
 		F3D21EE9208AE39500832544 /* InstructionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D21EE7208AE39500832544 /* InstructionVC.swift */; };
 		F3D21EEA208AE39500832544 /* InstructionVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3D21EE8208AE39500832544 /* InstructionVC.xib */; };
 		F3E330B42075A38100F19CF8 /* camera.json in Resources */ = {isa = PBXBuildFile; fileRef = F3E330B32075A38000F19CF8 /* camera.json */; };
 		F3EC0E6A209FDD5500E08668 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EC0E69209FDD5400E08668 /* SettingsVC.swift */; };
-		F3EC0E6D209FE13400E08668 /* BankFormVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EC0E6B209FE13400E08668 /* BankFormVC.swift */; };
 		F3F5081E2031F77E00252E65 /* CenturyGothic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B537340202EBD4C0020F3B1 /* CenturyGothic.ttf */; };
 		F3F5081F2031F78300252E65 /* CenturyGothicBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B53733F202EBD4C0020F3B1 /* CenturyGothicBold.ttf */; };
 		F3F508202031F78C00252E65 /* lgsu.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 3B14B53F202F55E100B1C015 /* lgsu.mp4 */; };
@@ -141,13 +137,10 @@
 		3B53735D202EC0D80020F3B1 /* NavigationBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationBarViewController.swift; sourceTree = "<group>"; };
 		3B53735E202EC0D80020F3B1 /* PasswordReset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordReset.swift; sourceTree = "<group>"; };
 		3B53735F202EC0D80020F3B1 /* CustomAPIAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAPIAdapter.swift; sourceTree = "<group>"; };
-		3B537360202EC0D80020F3B1 /* ProfilePage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePage.swift; sourceTree = "<group>"; };
-		3B537362202EC0D90020F3B1 /* SellVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SellVC.swift; sourceTree = "<group>"; };
 		3B537364202EC0D90020F3B1 /* OnboardingVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingVC.swift; sourceTree = "<group>"; };
 		3B537365202EC0D90020F3B1 /* LoginVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		3B537367202EC0D90020F3B1 /* MyAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyAPIClient.swift; sourceTree = "<group>"; };
 		3B53736A202EC0DA0020F3B1 /* ProfilePicture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePicture.swift; sourceTree = "<group>"; };
-		3B53736B202EC0DA0020F3B1 /* SellVC+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SellVC+.swift"; sourceTree = "<group>"; };
 		3B53736C202EC0DB0020F3B1 /* AppFABMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppFABMenuController.swift; sourceTree = "<group>"; };
 		3B537370202EC0DB0020F3B1 /* SplashViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		3B537371202EC0DC0020F3B1 /* Lgsupage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lgsupage.swift; sourceTree = "<group>"; };
@@ -167,15 +160,14 @@
 		EED268B8A007395F95AA9068 /* Pods-Blip.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Blip.release.xcconfig"; path = "Pods/Target Support Files/Pods-Blip/Pods-Blip.release.xcconfig"; sourceTree = "<group>"; };
 		F17503340FF2DF7A45CD03F1 /* Pods_Blip.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Blip.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F30D60CA207B19930022F90D /* Delivery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Delivery.swift; sourceTree = "<group>"; };
-		F347473D207FC40D00F9A603 /* SearchForJobVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchForJobVC.swift; sourceTree = "<group>"; };
-		F38E5A6C208119B400128D46 /* FoundJob(MultiplePoints).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FoundJob(MultiplePoints).swift"; sourceTree = "<group>"; };
+		F39BE63820B32E1400A4228C /* SearchForJobVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchForJobVC.swift; sourceTree = "<group>"; };
+		F39BE63920B32E1400A4228C /* FoundJob(MultiplePoints).swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FoundJob(MultiplePoints).swift"; sourceTree = "<group>"; };
 		F39C6555209D5430002BCCF5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F3D21EE320857E2100832544 /* BlipWaypoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlipWaypoint.swift; sourceTree = "<group>"; };
 		F3D21EE7208AE39500832544 /* InstructionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionVC.swift; sourceTree = "<group>"; };
 		F3D21EE8208AE39500832544 /* InstructionVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InstructionVC.xib; sourceTree = "<group>"; };
 		F3E330B32075A38000F19CF8 /* camera.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = camera.json; sourceTree = "<group>"; };
 		F3EC0E69209FDD5400E08668 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
-		F3EC0E6B209FE13400E08668 /* BankFormVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankFormVC.swift; sourceTree = "<group>"; };
 		F3F508212032085600252E65 /* Blip-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Blip-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -335,24 +327,11 @@
 		3B53733A202EBBDC0020F3B1 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				F3EC0E6B209FE13400E08668 /* BankFormVC.swift */,
 				3B53736C202EC0DB0020F3B1 /* AppFABMenuController.swift */,
-				3B537360202EC0D80020F3B1 /* ProfilePage.swift */,
-				3B537371202EC0DC0020F3B1 /* Lgsupage.swift */,
-				3B537365202EC0D90020F3B1 /* LoginVC.swift */,
 				3B537367202EC0D90020F3B1 /* MyAPIClient.swift */,
-				3B53735D202EC0D80020F3B1 /* NavigationBarViewController.swift */,
-				3B537364202EC0D90020F3B1 /* OnboardingVC.swift */,
-				3B53735E202EC0D80020F3B1 /* PasswordReset.swift */,
-				3B53736A202EC0DA0020F3B1 /* ProfilePicture.swift */,
-				3B537362202EC0D90020F3B1 /* SellVC.swift */,
-				3B53736B202EC0DA0020F3B1 /* SellVC+.swift */,
-				3B537370202EC0DB0020F3B1 /* SplashViewController.swift */,
-				3BCD8443207416E70079B4D4 /* NewSignUpVC.swift */,
-				3BCD844520747C130079B4D4 /* ChoosePictureVC.swift */,
-				F347473D207FC40D00F9A603 /* SearchForJobVC.swift */,
-				F38E5A6C208119B400128D46 /* FoundJob(MultiplePoints).swift */,
-				F3EC0E69209FDD5400E08668 /* SettingsVC.swift */,
+				F39BE63620B32DC900A4228C /* Pre sign up */,
+				F39BE63720B32DE200A4228C /* Post login VC's */,
+				F35E680920B32C1400F4A1B2 /* Login & Sign up */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -377,7 +356,6 @@
 			isa = PBXGroup;
 			children = (
 				5F33377720332B0B00B83E01 /* RatingViewController.xib */,
-				F3D21EE7208AE39500832544 /* InstructionVC.swift */,
 				F3D21EE8208AE39500832544 /* InstructionVC.xib */,
 			);
 			path = CustomXIB;
@@ -398,6 +376,40 @@
 				C1E4C90BBD8A603818B54420 /* Pods_BlipUITests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F35E680920B32C1400F4A1B2 /* Login & Sign up */ = {
+			isa = PBXGroup;
+			children = (
+				3B537365202EC0D90020F3B1 /* LoginVC.swift */,
+				3B53735E202EC0D80020F3B1 /* PasswordReset.swift */,
+				3B53736A202EC0DA0020F3B1 /* ProfilePicture.swift */,
+				3BCD8443207416E70079B4D4 /* NewSignUpVC.swift */,
+				3BCD844520747C130079B4D4 /* ChoosePictureVC.swift */,
+			);
+			path = "Login & Sign up";
+			sourceTree = "<group>";
+		};
+		F39BE63620B32DC900A4228C /* Pre sign up */ = {
+			isa = PBXGroup;
+			children = (
+				3B537371202EC0DC0020F3B1 /* Lgsupage.swift */,
+				3B53735D202EC0D80020F3B1 /* NavigationBarViewController.swift */,
+				3B537364202EC0D90020F3B1 /* OnboardingVC.swift */,
+				3B537370202EC0DB0020F3B1 /* SplashViewController.swift */,
+			);
+			path = "Pre sign up";
+			sourceTree = "<group>";
+		};
+		F39BE63720B32DE200A4228C /* Post login VC's */ = {
+			isa = PBXGroup;
+			children = (
+				F39BE63920B32E1400A4228C /* FoundJob(MultiplePoints).swift */,
+				F39BE63820B32E1400A4228C /* SearchForJobVC.swift */,
+				F3EC0E69209FDD5400E08668 /* SettingsVC.swift */,
+				F3D21EE7208AE39500832544 /* InstructionVC.swift */,
+			);
+			path = "Post login VC's";
 			sourceTree = "<group>";
 		};
 		F63380B3E8388089276E6493 /* Pods */ = {
@@ -742,6 +754,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F39BE63A20B32E1400A4228C /* SearchForJobVC.swift in Sources */,
 				F3D21EE9208AE39500832544 /* InstructionVC.swift in Sources */,
 				3B53737C202EC0DC0020F3B1 /* LoginVC.swift in Sources */,
 				3B537335202EBA6B0020F3B1 /* LocationManager.swift in Sources */,
@@ -751,12 +764,9 @@
 				3BCD8444207416E70079B4D4 /* NewSignUpVC.swift in Sources */,
 				3B53739D202EC2210020F3B1 /* BlipAnnotation.swift in Sources */,
 				3B53733D202EBD0F0020F3B1 /* Connectivity.swift in Sources */,
-				3B537382202EC0DC0020F3B1 /* SellVC+.swift in Sources */,
 				3B5372F8202EB4320020F3B1 /* AppDelegate.swift in Sources */,
 				F3D21EE420857E2100832544 /* BlipWaypoint.swift in Sources */,
-				F3EC0E6D209FE13400E08668 /* BankFormVC.swift in Sources */,
 				3B537330202EBA6B0020F3B1 /* AppError.swift in Sources */,
-				F347473E207FC40D00F9A603 /* SearchForJobVC.swift in Sources */,
 				3B537381202EC0DC0020F3B1 /* ProfilePicture.swift in Sources */,
 				F30D60CB207B19930022F90D /* Delivery.swift in Sources */,
 				3B537397202EC2210020F3B1 /* Extensions.swift in Sources */,
@@ -765,16 +775,14 @@
 				3B537334202EBA6B0020F3B1 /* BlipUser.swift in Sources */,
 				3B537375202EC0DC0020F3B1 /* PasswordReset.swift in Sources */,
 				3B537383202EC0DC0020F3B1 /* AppFABMenuController.swift in Sources */,
-				3B537377202EC0DC0020F3B1 /* ProfilePage.swift in Sources */,
 				3B4B92CA20797E030075BE98 /* PickUpAnnotation.swift in Sources */,
 				3B53737B202EC0DC0020F3B1 /* OnboardingVC.swift in Sources */,
 				3B53732E202EBA6B0020F3B1 /* ServiceCalls.swift in Sources */,
 				3B53732F202EBA6B0020F3B1 /* Job.swift in Sources */,
 				3B53737E202EC0DC0020F3B1 /* MyAPIClient.swift in Sources */,
-				F38E5A6D208119B400128D46 /* FoundJob(MultiplePoints).swift in Sources */,
+				F39BE63B20B32E1400A4228C /* FoundJob(MultiplePoints).swift in Sources */,
 				3B537374202EC0DC0020F3B1 /* NavigationBarViewController.swift in Sources */,
 				3B537331202EBA6B0020F3B1 /* HelperFunctions.swift in Sources */,
-				3B537379202EC0DC0020F3B1 /* SellVC.swift in Sources */,
 				3B537388202EC0DC0020F3B1 /* Lgsupage.swift in Sources */,
 				3B53739B202EC2210020F3B1 /* CustomAnnotationView.swift in Sources */,
 				3BF9F1272096F2D400BD7E6B /* Store.swift in Sources */,

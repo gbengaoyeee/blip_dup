@@ -61,19 +61,23 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
         }
     }
     
-    func verifyStripeAccount(routingNumber: String!, accountNumber: String!, city: String!, streetAdd: String!, postalCode: String!, province: String!, sin: String!, completion: @escaping([String: AnyObject]?, Error?) -> ()){
+    func verifyStripeAccount(routingNumber: String!, accountNumber: String!, city: String!, streetAdd: String!, postalCode: String!, province: String!, sin: String!, dobMonth: String, dobDay: String, dobYear: String, completion: @escaping([String: AnyObject]?, Error?) -> ()){
         let url = self.baseURL.appendingPathComponent("updateStripeAccount")
         service.retrieveStripeAccount { (account) in
             if let account = account{
                 let params: [String: Any] = [
                     "emailHash": self.service.emailHash!,
                     "account_ID": account,
-                    "routing_number": "11000-000",
-                    "account_number": "000123456789",
-                    "city": "Mississauga", "line1": "156 enfield",
-                    "postal_code": "l5b4l8",
-                    "state": "ON",
-                    "sin": "000000000",
+                    "routing_number": routingNumber,
+                    "account_number": accountNumber,
+                    "city": city,
+                    "line1": streetAdd,
+                    "dob_day": dobDay,
+                    "dob_month": dobMonth,
+                    "dob_year": dobYear,
+                    "postal_code": postalCode,
+                    "state": province,
+                    "sin": sin,
                     "tos_time": "\(Int(NSDate().timeIntervalSince1970.rounded()))"]
             
                 Alamofire.request(url, method: .post, parameters: params, headers: nil).responseJSON { (response) in
