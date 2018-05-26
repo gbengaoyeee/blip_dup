@@ -56,6 +56,9 @@ extension AppFABMenuController {
                     }
                 }
             }
+            else{
+                self.fabButton.setIcon(icon: .googleMaterialDesign(.settings), iconSize: 40, color: UIColor.white, forState: .normal)
+            }
         }
     }
     
