@@ -52,6 +52,10 @@ class SearchForJobVC: UIViewController {
         self.fabMenuController?.prepare()
     }
     
+    @IBAction func unwindToRoot(segue:UIStoryboardSegue) {
+        
+    }
+    
     func showUnfinishedBanner(){
         let banner = NotificationBanner(title: "Unfinished delivery", subtitle: "Tap to continue your unfinished delivery",style: .info)
         banner.onTap = {
