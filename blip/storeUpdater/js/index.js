@@ -141,7 +141,7 @@ function registerElements(elements, exampleName) {
         "sourceID":sourceID
       }
     }).then(function(res){
-      console.log("WORKED!!");
+      console.log("Successfully updated payment information");
     });
   }
 

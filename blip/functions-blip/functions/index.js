@@ -78,6 +78,21 @@ exports.captureCharge = functions.https.onRequest((req, res) => {
     })
 });
 
+exports.getDeliveryPrice = functions.https.onRequest((req, res) => {
+    var deliveryLat = req.body.deliveryLat;
+    var deliveryLong = req.body.deliveryLong;
+    var pickupLat = req.body.pickupLat;
+    var pickupLong = req.body.pickupLong;
+    const price = getChargeAmount(deliveryLat, deliveryLong, pickupLat, pickupLong);
+    if (price !== undefined || price != null){
+        console.log("Cost of delivery is;",price);
+        res.status(200).send(price);
+    }else{
+        console.log("A field is empty");
+        res.status(400).end();
+    }
+})
+
 exports.createTestStore = functions.https.onRequest((req, res) => {
     var storeName = "Test Store";
     var storeLogo = "https://www.google.com/url?sa=i&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwiRgdr1iJzbAhUI0IMKHQeaAHwQjRx6BAgBEAU&url=http%3A%2F%2Fwww.brandsoftheworld.com%2Flogo%2Fwalmart&psig=AOvVaw3C4LLfJirtNg2SpKD8VK8Z&ust=1527172998529215";
