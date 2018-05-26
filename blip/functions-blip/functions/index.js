@@ -16,6 +16,8 @@ const stripe = require('stripe')("sk_test_4I0ubK7NduuV6dhJouhEAqtu"),
 const cors = require('cors')({origin: true});
 
 
+
+
 exports.ephemeral_keys = functions.https.onRequest((req, res) => {
     const stripe_version = req.body.api_version;
     console.log(req);
@@ -495,10 +497,10 @@ exports.getBestJob = functions.https.onRequest((req, res) => {
         if (error) {
             console.log(error.message, req.body);
             if (error.message === "User needs to verify their background check") {
-                res.status(400).send(error);
+                res.status(400).send("need to verify");
                 return
             } else {
-                res.status(500).send(error);
+                res.status(500).send("need to unflag");
                 return
             }
 
@@ -506,7 +508,7 @@ exports.getBestJob = functions.https.onRequest((req, res) => {
             getClosestJobIdAndDistance(lat, long, function(err, data) {
                 if (err) {
                     console.log("Found an Error");
-                    res.status(600).end(err);
+                    res.status(600).send(err);
                 } else {
                     var maxDist = 12000;
                     const closestJobIdDict = data[0]; //This is a dictionary
@@ -661,8 +663,11 @@ exports.deleteUserFromDatabase = functions.auth.user().onDelete(event => {
     const data = event.data;
     const emailHash = crypto.createHash('md5').update(data.email).digest('hex');
     console.log('Deleting user from database');
-    return admin.database().ref(`/Couriers/${emailHash}`).remove();
-    console.log('Deleted user from database');
+    return admin.database().ref(`/Couriers/${emailHash}`).remove().then(function(fulfilled){
+        console.log('Deleted user from database');
+    }, function(error){
+        console.log("Couldn't delete the user's reference");
+    });
 });
 
 // To keep on top of errors, we should raise a verbose error report with Stackdriver rather

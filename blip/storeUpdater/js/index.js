@@ -1,7 +1,7 @@
 'use strict';
 
-var stripe = Stripe('pk_test_6pRNASCoBOKtIshFeQd4XMUh');
-
+var stripe = Stripe('pk_test_P3R1xmIzcdaTTBm1dudDPkgd');
+console.log("I AM READY");
 function registerElements(elements, exampleName) {
   var formClass = '.' + exampleName;
   var example = document.querySelector(formClass);
@@ -122,6 +122,7 @@ function registerElements(elements, exampleName) {
         // HERE IS WHERE YOU CALL THE FUNCTION /updateStorePayment THIS TAKES TWO THINGS
         // 1. storeID: this is defined as name.value if you want to get the storeID
         // 2. sourceID: this is defined as result.token.id if you want the tokenID
+        updatePayment(name.value, result.token.id);
         example.classList.add('submitted');
       } else {
         // Otherwise, un-disable inputs.
@@ -129,6 +130,59 @@ function registerElements(elements, exampleName) {
       }
     });
   });
+
+  function updatePayment(storeID, sourceID){
+    request({
+      url: "https://us-central1-blip-c1e83.cloudfunctions.net/updateStorePayment",
+      method: "POST",
+      cors: false,
+      data:{
+        "storeID":storeID,
+        "sourceID":sourceID
+      }
+    }).then(function(res){
+      console.log("WORKED!!");
+    });
+  }
+
+  function request(obj){
+    return new Promise((resolve,reject)=>{
+      var xhr = new XMLHttpRequest();
+      var dataS = "";
+      var dataL = +Object.keys(obj.data).length;
+      for(var key in obj.data)
+      {
+        dataS += key+"="+obj.data[key]+(dataL>1?"&":"");
+        dataL--;
+      }
+            xhr.open(obj.method,obj.url,true);
+            if (typeof obj.cors === "boolean" && obj.cors === true) xhr.withCredentials = true;
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      
+      /*
+      *I'm using this commented piece of code to complete the request
+      */
+
+      /*xhr.onloadend = function()
+      {
+        resolve(xhr.responseText);
+      }*/
+
+      /*
+      *This nex function is the propper to manage the response storeID
+      */
+
+      xhr.onload = function()
+      {
+        console.log("yeah",xhr);
+        resolve(xhr.responseText);
+      }
+
+      //^^^^^^^^^^^^here
+
+            xhr.send(obj.data ? dataS : null);
+        });
+  }
 
   resetButton.addEventListener('click', function(e) {
     e.preventDefault();

@@ -1,0 +1,66 @@
+/* input,
+button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    outline: none;
+    border-style: none;
+}
+
+label {
+    width: 15%;
+    min-width: 70px;
+    padding: 11px 0;
+    color: #c4f0ff;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#field label, #field textarea{
+    color: black;
+}
+
+button {
+    display: block;
+    width: calc(100% - 30px);
+    height: 40px;
+    margin: 40px 15px 0;
+    background-color: #3480f3;
+    box-shadow: 0 6px 9px rgba(50, 50, 93, 0.06), 0 2px 5px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 #ffb9f6;
+    border-radius: 4px;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+button:active {
+    background-color: #82c4f0;
+    box-shadow: 0 6px 9px rgba(50, 50, 93, 0.06), 0 2px 5px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 #e298d8;
+} */
+
+.container{
+    margin-left: 0 auto;
+}
+
+.container.form{
+    margin-top: 50px;
+}
+
+#intro{
+    height: 35px;
+    position: absolute;
+}
+.container.intro-head{
+    /* background-color: black; */
+}
+
+.baseline{
+    background-color: rgba(79, 158, 226, 0.877);
+    height: 3px;
+    position: relative;
+    top: 35px;
+}
+

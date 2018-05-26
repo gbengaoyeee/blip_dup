@@ -151,21 +151,20 @@ class SearchForJobVC: UIViewController {
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
                 banner.dismiss()
                 loading.stop()
-                if let job = job{
-                    self.foundJob = job
-                    self.goButton.isUserInteractionEnabled = true
-                    print("Found job")
-                    self.performSegue(withIdentifier: "foundJob", sender: self)
-                }
-                else if errorCode != nil{
+                if errorCode != nil{
                     if errorCode == 400{
                         //Not verified
+<<<<<<< HEAD:blip/Blip/Controllers/ViewControllers/SearchForJobVC.swift
+                        self.showBanner(title: "Account Not Verified", subtitle: "Please verify your email and contact us to verify your account", style: .warning)
+=======
                         let newBanner = NotificationBanner(title: "Error", subtitle: "Account not verified", style: .warning)
                         newBanner.autoDismiss = true
                         newBanner.show()
                         newBanner.dismissOnSwipeUp = true
                         newBanner.dismissOnTap = true
+>>>>>>> 88ae04b33b2deb1129abd1c820a43cbaa2ca784e:blip/Blip/Controllers/ViewControllers/Post login VC's/SearchForJobVC.swift
                         print("Not verified")
+                        return
                     }
                     else if errorCode == 500{
                         //Flagged
@@ -175,6 +174,7 @@ class SearchForJobVC: UIViewController {
                         newBanner.dismissOnSwipeUp = true
                         newBanner.dismissOnTap = true
                         print("Flagged")
+                        return
                     }else{
                         // No job Found
                         let newBanner = NotificationBanner(title: "Error", subtitle: "No job found at this time", style: .info)
@@ -183,8 +183,16 @@ class SearchForJobVC: UIViewController {
                         newBanner.dismissOnSwipeUp = true
                         newBanner.dismissOnTap = true
                         print("No job Found")
+                        return
                     }
                 }
+                guard let job = job else{
+                    print("Something wrong with getting job")
+                    return
+                }
+                self.foundJob = job
+                self.goButton.isUserInteractionEnabled = true
+                self.performSegue(withIdentifier: "foundJob", sender: self)
             })
             self.goButton.isUserInteractionEnabled = true
         }
