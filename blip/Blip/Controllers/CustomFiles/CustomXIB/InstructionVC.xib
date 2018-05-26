@@ -20,7 +20,7 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="InstructionVC" customModule="Blip" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner">
             <connections>
                 <outlet property="callButton" destination="HF1-h2-Uj4" id="NLi-FC-BpO"/>
                 <outlet property="doneButton" destination="NVS-9k-Lgw" id="JA7-ng-Rlj"/>

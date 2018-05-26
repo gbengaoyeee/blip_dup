@@ -188,8 +188,8 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
     }
     
     func navigationViewController(_ navigationViewController: NavigationViewController, didArriveAt waypoint: Waypoint) -> Bool {
-        let vc = InstructionVC(nibName: "InstructionVC", bundle: nil)
-        vc.foundJobVC = self
+        let storyboard = UIStoryboard(name: "main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "InstructionVC") as! InstructionVC
         navigationViewController.routeController.suspendLocationUpdates()
         for way in self.waypoints{
             if waypoint.coordinate == way.coordinate{
@@ -207,7 +207,6 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
                         vc.subInstruction = way.delivery.deliverySubInstruction
                     }
                 }
-                vc.navViewController = navigationViewController
                 navigationViewController.present(vc, animated: true, completion: nil)
             }
         }

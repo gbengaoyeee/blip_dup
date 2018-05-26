@@ -360,7 +360,6 @@
                         <outlet property="pickupLabel" destination="yzd-d1-K1t" id="Iel-lL-KkE"/>
                         <outlet property="pulseAnimationView" destination="1wn-A6-DYN" id="lQB-ol-IIo"/>
                         <outlet property="timeLabel" destination="PQI-N9-SFv" id="Z3l-Xh-lW9"/>
-                        <segue destination="mDC-S8-kW2" kind="presentation" id="CCV-os-hJ0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fej-sf-vjv" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -370,7 +369,7 @@
         <!--InstructionVC-->
         <scene sceneID="ahV-b7-vyV">
             <objects>
-                <viewController id="mDC-S8-kW2" customClass="InstructionVC" customModule="Blip" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="InstructionVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="mDC-S8-kW2" customClass="InstructionVC" customModule="Blip" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="vQU-mv-ADt">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -385,7 +384,7 @@
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pickup at 123 john street" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="12" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="ajI-hE-vvL">
-                                        <rect key="frame" x="20" y="173.5" width="200.5" height="21"/>
+                                        <rect key="frame" x="20" y="173.5" width="189.5" height="20"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" relation="lessThanOrEqual" constant="250" id="9a3-pZ-fSe"/>
@@ -396,7 +395,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Go to front door and pickup stuff from the main entrance" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hRD-dv-Uln">
-                                        <rect key="frame" x="20" y="214.5" width="238" height="42"/>
+                                        <rect key="frame" x="20" y="213.5" width="250" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="lessThanOrEqual" constant="270" id="TTy-cX-1TO"/>
                                             <constraint firstAttribute="width" relation="lessThanOrEqual" constant="250" id="u1b-7G-bJO"/>
@@ -428,6 +427,9 @@
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
                                         </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="callPressed:" destination="mDC-S8-kW2" eventType="touchUpInside" id="oiz-Cf-nef"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TWc-wO-kZZ" customClass="RaisedButton" customModule="Material">
                                         <rect key="frame" x="295" y="557" width="60" height="60"/>
@@ -452,6 +454,9 @@
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
                                         </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="donePressed:" destination="mDC-S8-kW2" eventType="touchUpInside" id="DhL-YB-dCV"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JWe-4j-4sO" customClass="RaisedButton" customModule="Material">
                                         <rect key="frame" x="157.5" y="557" width="60" height="60"/>
@@ -476,6 +481,9 @@
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
                                         </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="noShowPressed:" destination="mDC-S8-kW2" eventType="touchUpInside" id="Rlq-5u-YuV"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -505,10 +513,20 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="2IM-05-vUL"/>
                     </view>
+                    <connections>
+                        <outlet property="callButton" destination="Pjk-oP-5WM" id="KbK-AY-X2H"/>
+                        <outlet property="doneButton" destination="TWc-wO-kZZ" id="heZ-3Y-Ss3"/>
+                        <outlet property="mainInstructionLabel" destination="ajI-hE-vvL" id="9Qq-jB-fBc"/>
+                        <outlet property="noShowButton" destination="JWe-4j-4sO" id="J4O-dT-uGX"/>
+                        <outlet property="storeLogo" destination="FO6-nV-MV8" id="e5f-SQ-H2m"/>
+                        <outlet property="subInstructionLabel" destination="hRD-dv-Uln" id="Ql0-T4-Lpp"/>
+                        <segue destination="EB9-FW-XbJ" kind="unwind" identifier="unwindToRoot" unwindAction="unwindToRootWithSegue:" id="FZt-Ch-NZP"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5kR-a8-PZi" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="EB9-FW-XbJ" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="135" y="-101"/>
+            <point key="canvasLocation" x="233" y="-101"/>
         </scene>
         <!--LoginVC-->
         <scene sceneID="d0L-8V-apV">
