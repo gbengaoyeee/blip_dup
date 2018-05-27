@@ -20,6 +20,8 @@ import Material
 
 class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
 
+    @IBOutlet weak var jobEarnings: UILabel!
+    @IBOutlet weak var jobDistance: UILabel!
     @IBOutlet weak var pickupLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var pulseAnimationView: UIView!
@@ -148,11 +150,14 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     
     func prepareMap(){
         map.makeCircular()
-        let camera = MGLMapCamera(lookingAtCenter: (job.deliveries.first?.origin)!, fromDistance: 6000, pitch: 0, heading: 0)
-        map.setCamera(camera, animated: true)
-        let pickupAnnotation = MGLPointAnnotation()
-        pickupAnnotation.coordinate = camera.centerCoordinate
-        map.addAnnotation(pickupAnnotation)
+        for delivery in job.deliveries{
+            let annotation = MGLPointAnnotation()
+            annotation.coordinate = delivery.origin
+            map.addAnnotation(annotation)
+        }
+        if let annotations = map.annotations{
+            map.showAnnotations(annotations, animated: true)
+        }
     }
     
     func prepareCenterView(){
@@ -405,9 +410,13 @@ extension FoundJobVC{
     
     func parseRouteData(routeData: [String: AnyObject]){
         let estimatedTime = routeData["duration"] as! NSNumber
+        let estimatedDistance = routeData["distance"] as! NSNumber
+        let distanceInKm = (estimatedDistance.intValue/1000)
         let minutes = estimatedTime.doubleValue/60
         timeLabel.text = "\(minutes.rounded()) min(s)"
         pickupLabel.text = "\(job.deliveries.count) Delivery(s)"
+        jobDistance.text = "\(distanceInKm) km"
+        jobEarnings.text = "$ \(job.earnings)"
     }
 }
 

@@ -90,9 +90,28 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
                     }
                 }
             }
-            
         }
+    }
+    
+    func getAccountBalance(emailHash: String, completion: @escaping(String?) -> ()) {
         
+        let url = self.baseURL.appendingPathComponent("getAccountBalance")
+        let params: [String: Any] = [
+            "emailHash": emailHash
+        ]
+        Alamofire.request(url, method: .post, parameters: params)
+            .validate(statusCode: 200..<300)
+            .responseString { (resp) in
+                switch resp.result{
+                case .success:
+                    if let response = resp.result.value{
+                        completion(response)
+                    }
+                case .failure:
+                    print(resp.result.value)
+                    completion(nil)
+                }
+        }
     }
     
     func getNumberOfJobsNearMe(location: CLLocationCoordinate2D, completion: @escaping(Int?) -> ()){
@@ -118,6 +137,10 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
         ]
         Alamofire.request(url, method: .post, parameters: params, headers: nil).validate(statusCode: 200..<300)
             .responseString { (resp) in
+//                print(resp)
+//                print(resp.result)
+//                print(resp.response)
+//                print(resp.response?.statusCode)
                 switch resp.result{
                 case .success:
                     if resp.result.value != "No job found"{

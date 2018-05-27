@@ -78,6 +78,24 @@ exports.captureCharge = functions.https.onRequest((req, res) => {
     })
 });
 
+exports.getAccountBalance = functions.https.onRequest((req, res) => {
+    var emailHash = req.body.emailHash;
+    admin.database().ref(`Couriers/${emailHash}/stripeAccount/keys/secret`).once("value", function(snapshot){
+        if (snapshot.exists){
+            var stripeAccount = require('stripe')(snapshot.val())
+            stripeAccount.balance.retrieve(function(err, balance) {
+                if (err){
+                    console.log(err);
+                    res.status(400).end();
+                } else{
+                    console.log(balance.available[0].amount);
+                    res.status(200).send(balance.available[0].amount);
+                }
+            })
+        }
+    })
+})
+
 exports.getDeliveryPrice = functions.https.onRequest((req, res) => {
     var deliveryLat = req.body.deliveryLat;
     var deliveryLong = req.body.deliveryLong;
@@ -422,7 +440,8 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
                         pickupSubInstruction,
                         recieverName,
                         recieverNumber,
-                        pickupNumber
+                        pickupNumber,
+                        chargeAmount
                     };
                     deliveryDetails.isTaken = false;
                     deliveryDetails.isCompleted = false;
@@ -450,7 +469,7 @@ exports.payOnDelivery = functions.database.ref('/CompletedJobs/{id}').onCreate((
     console.log(snapshot.val());
     const chargeID = snapshot.child("chargeID/id").val();
     const amount = +(snapshot.child("chargeID/amount").val());
-    const amountAfterCut = amount*0.75;
+    const amountAfterCut = (amount-100)*0.75;
     const emailHash = snapshot.child("jobTaker").val();
     if (chargeID == null || amount == null || emailHash == null){
         console.log("Could not parse data");
@@ -677,6 +696,7 @@ function getClosestJobIdAndDistance(lat, long, callback) {
             } //end of if-statements
         } else {
             //AllJobs Reference is empty
+            console.log("ALL MESSED UP");
             var emptyRefError = new Error("No Jobs Available");
             callback(emptyRefError, null);
         }
