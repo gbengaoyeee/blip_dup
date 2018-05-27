@@ -18,11 +18,7 @@ import FBSDKCoreKit
 
 typealias CreateUserCompletion = (_ errorMsg: String?, _ data: AnyObject?) ->Void
 
-class ServiceCalls:NSObject, NSCoding{
-    
-    
-    
-//    private static let _instance:ServiceCalls = ServiceCalls()
+class ServiceCalls{
     private static var _instance:ServiceCalls{
         return ServiceCalls()
     }
@@ -58,24 +54,22 @@ class ServiceCalls:NSObject, NSCoding{
     var userCredDict:[String:String]!
     let loginCredentials = "loginCredentials"
     let userDefault = UserDefaults.standard
+    var provider:String!
     
-    override init() {
-        super.init()
+    init() {
         if let currentUser = Auth.auth().currentUser{
             self.emailHash = MD5(string: (currentUser.email)!)
         }
+        if let providerData = Auth.auth().currentUser?.providerData {
+            guard let provider = providerData.first?.providerID else{
+                print("Couldnt get provider")
+                return
+            }
+            self.provider = provider
+        }
     }
     
-    func encode(with aCoder: NSCoder) {
-        aCoder.encode(emailHash, forKey: "emailHash")
-    }
-    
-    required convenience init?(coder aDecoder: NSCoder) {
-//        self.emailHash = aDecoder.decodeObject(forKey: "emailHash") as! String
-        self.init()
-    }
-    
-    //Checks if user is flagged
+    ///Checks if user has been flagged for leaving a job
     func checkUserVerifiedOrFlagged(completion: @escaping (Int)->()){
         self.userRef.child(emailHash).observeSingleEvent(of: .value) { (snap) in
             if let userValues = snap.value as? [String:Any]{
@@ -89,23 +83,15 @@ class ServiceCalls:NSObject, NSCoding{
                 }else{
                     completion(0)
                 }
-                
             }
-//            if snap.exists(){
-//                completion(true)
-//            }else{
-//                completion(false)
-//            }
         }
     }
     
-    ///Finds jobs based on this user's location
+    ///Finds job(s) based on this user's location
     func findJob(myLocation: CLLocationCoordinate2D, userHash: String, completion: @escaping(Int?, Job?) -> ()){
         self.userRefHandle = userRef.child(emailHash).observe(.childAdded, with: { (snap) in
-            
             if snap.key == "givenJob"{
                 if let jobID = snap.value as? [String: AnyObject]{
-//                    let j = Job(snapshot: snap.childSnapshot(forPath: jobID.keys.first!), type: "delivery")
                     let j = Job(snapshot: snap, type: "delivery")
                     j?.locList.insert(myLocation, at: 0)
                     completion(nil, j)
@@ -115,7 +101,14 @@ class ServiceCalls:NSObject, NSCoding{
         
         MyAPIClient.sharedClient.getBestJobAt(location: myLocation, userHash: userHash) { (error, found) in
             if let err = error as? AFError{
-                if (err.responseCode! == 400 || !(Auth.auth().currentUser?.isEmailVerified)!){
+                
+                if (err.responseCode! == 400 || self.provider == "facebook.com")
+                {
+                    self.removeFirebaseObservers()
+                    completion(400, nil)//Not verified
+                    return
+                }
+                else if(err.responseCode! == 400 || !(Auth.auth().currentUser?.isEmailVerified)!){
                     self.removeFirebaseObservers()
                     completion(400, nil)//Not verified
                     return
@@ -123,6 +116,7 @@ class ServiceCalls:NSObject, NSCoding{
                 else if err.responseCode! == 500{
                     self.removeFirebaseObservers()
                     completion(500, nil)//Flagged
+                    print("Here")
                     return
                 }else{
                     self.removeFirebaseObservers()

@@ -135,9 +135,7 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
                     break
                 }
         }
-//        Alamofire.request(url, method: .get, parameters: params, encoding: JSONEncoding.default, headers: nil).responseJSON { (resp) in
-//            print("DATA IS:",resp)
-//        }
+
     }
     
     func stringify(json: Any, prettyPrinted: Bool = false) -> String {

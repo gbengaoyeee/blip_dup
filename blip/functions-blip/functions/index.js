@@ -317,23 +317,26 @@ exports.createNewStripeAccount = functions.https.onRequest((req, res) => {
 });
 
 function checkUserVerifiedOrFlagged(emailHash, callback) {
-    admin.database().ref('Couriers/' + emailHash).once('value', function(snapshot) {
+    return admin.database().ref('Couriers/' + emailHash).once('value').then(function(snapshot){
         var userValues = snapshot.val();
         if (userValues != null) {
             const flagged = userValues.flagged;
             const verified = userValues.verified;
-            if (!(verified)) {
+            if (verified == false) {
                 var notVerifiedError = new Error("User needs to verify their background check");
                 callback(notVerifiedError, null);
+                return;
             } else if (flagged != null) {
                 var flaggedError = new Error("User account has been flagged due to leaving a job");
                 callback(flaggedError, null);
+                return;
             } else {
                 callback(null, true);
+                return;
             }
-        } else {
-            //SOME WEIRD THING HAPPEN
-        }
+        } 
+    }, function(error){
+        //SOME WEIRD THING HAPPEN
     });
 }
 
@@ -517,17 +520,17 @@ exports.getBestJob = functions.https.onRequest((req, res) => {
             console.log(error.message, req.body);
             if (error.message === "User needs to verify their background check") {
                 res.status(400).send("need to verify");
-                return
+                return;
             } else {
                 res.status(500).send("need to unflag");
-                return
+                return;
             }
-
         } else {
             getClosestJobIdAndDistance(lat, long, function(err, data) {
                 if (err) {
                     console.log("Found an Error");
                     res.status(600).send(err);
+                    return
                 } else {
                     var maxDist = 12000;
                     const closestJobIdDict = data[0]; //This is a dictionary
@@ -621,7 +624,9 @@ function getClosestJobIdAndDistance(lat, long, callback) {
     allJobsref.once('value', function(snapshot) {
         // console.log(data.val());
         var allJobsValues = snapshot.val();
+        console.log('Before Null:',allJobsValues);
         if (allJobsValues != null) {
+            console.log('after Null:',allJobsValues);
             var keysArr = Object.keys(allJobsValues); // this gives an array of keys of JobIDs
             var minimumDistance = 20000;
             var totalDistance = 20000;

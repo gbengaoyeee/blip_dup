@@ -164,6 +164,7 @@ class SearchForJobVC: UIViewController {
                     }
                     else if errorCode == 500{
                         //Flagged
+                        print("Here")
                         let newBanner = NotificationBanner(title: "Error", subtitle: "Your account has been disabled due to leaving a job. Please contact us to unlock your account", style: .warning)
                         newBanner.autoDismiss = false
                         newBanner.show()
