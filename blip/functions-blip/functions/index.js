@@ -88,8 +88,9 @@ exports.getAccountBalance = functions.https.onRequest((req, res) => {
                     console.log(err);
                     res.status(400).end();
                 } else{
-                    console.log(balance.available[0].amount);
-                    res.status(200).send(balance.available[0].amount);
+                    const availBalance = balance.available[0];
+                    console.log(availBalance.amount);
+                    res.status(200).send(''+availBalance.amount);
                 }
             })
         }
@@ -546,7 +547,7 @@ exports.getBestJob = functions.https.onRequest((req, res) => {
             getClosestJobIdAndDistance(lat, long, function(err, data) {
                 if (err) {
                     console.log("Found an Error");
-                    res.status(600).send(err);
+                    res.status(404).send(err);
                 } else {
                     var maxDist = 12000;
                     const closestJobIdDict = data[0]; //This is a dictionary
@@ -640,7 +641,7 @@ function getClosestJobIdAndDistance(lat, long, callback) {
     allJobsref.once('value', function(snapshot) {
         // console.log(data.val());
         var allJobsValues = snapshot.val();
-        if (allJobsValues != null) {
+        if (snapshot.val() != null) {
             var keysArr = Object.keys(allJobsValues); // this gives an array of keys of JobIDs
             var minimumDistance = 20000;
             var totalDistance = 20000;

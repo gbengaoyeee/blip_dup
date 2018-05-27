@@ -78,7 +78,8 @@ class Delivery{
         let originLat = Double(deliveryValues!["originLat"] as! String)!
         let originLong = Double(deliveryValues!["originLong"] as! String)!
         self.deliveryLocation = CLLocationCoordinate2D(latitude: deliveryLat, longitude: deliveryLong)
-        self.earnings = deliveryValues!["chargeAmount"] as! String
+        let deliveryEarnings = deliveryValues!["chargeAmount"] as! NSNumber
+        self.earnings = deliveryEarnings.stringValue
         self.identifier = snapshot.key
         if let state = deliveryValues!["state"] as? String{
             self.state = state
