@@ -47,8 +47,8 @@ class InstructionVC: UIViewController {
     
     func prepareView(){
         storeLogo.makeCircular()
-        subView.ApplyCornerRadiusToView()
-        subView.ApplyOuterShadowToView()
+        view.ApplyCornerRadiusToView()
+        view.ApplyOuterShadowToView()
     }
     
     func prepareLabels(){
