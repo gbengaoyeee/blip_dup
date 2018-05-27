@@ -360,6 +360,7 @@
                         <outlet property="pickupLabel" destination="yzd-d1-K1t" id="Iel-lL-KkE"/>
                         <outlet property="pulseAnimationView" destination="1wn-A6-DYN" id="lQB-ol-IIo"/>
                         <outlet property="timeLabel" destination="PQI-N9-SFv" id="Z3l-Xh-lW9"/>
+                        <segue destination="mDC-S8-kW2" kind="presentation" identifier="presentInstructions" id="twI-ww-2j8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fej-sf-vjv" userLabel="First Responder" sceneMemberID="firstResponder"/>

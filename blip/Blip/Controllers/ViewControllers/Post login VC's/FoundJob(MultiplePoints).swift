@@ -37,6 +37,12 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     var timer = Timer()
     var mglSource: MGLShapeSource!
     
+    var currentType: String!
+    var currentSubInstruction: String!
+    var currentMainInstruction: String!
+    var currentDelivery: Delivery!
+    var isLastWaypoint: Bool!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -69,6 +75,17 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = true
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "presentInstructions"{
+            let dest = segue.destination as! InstructionVC
+            dest.delivery = self.currentDelivery
+            dest.subInstruction = self.currentSubInstruction
+            dest.mainInstruction = self.currentMainInstruction
+            dest.type = self.currentType
+            dest.isLastWaypoint = self.isLastWaypoint
+        }
     }
     
     fileprivate func setupTimer(){
@@ -188,26 +205,25 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
     }
     
     func navigationViewController(_ navigationViewController: NavigationViewController, didArriveAt waypoint: Waypoint) -> Bool {
-        let storyboard = UIStoryboard(name: "main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "InstructionVC") as! InstructionVC
+
         navigationViewController.routeController.suspendLocationUpdates()
         for way in self.waypoints{
             if waypoint.coordinate == way.coordinate{
-                vc.isLastWaypoint = (self.waypoints.last?.coordinate == way.coordinate)
-                vc.delivery = way.delivery
+                self.isLastWaypoint = (self.waypoints.last?.coordinate == way.coordinate)
+                self.currentDelivery = way.delivery
                 if let name = way.name{
                     if name == "Pickup"{
-                        vc.type = "Pickup"
-                        vc.mainInstruction = way.delivery.pickupMainInstruction
-                        vc.subInstruction = way.delivery.pickupSubInstruction
+                        self.currentType = "Pickup"
+                        self.currentMainInstruction = way.delivery.pickupMainInstruction
+                        self.currentSubInstruction = way.delivery.pickupSubInstruction
                     }
                     else if name == "Delivery"{
-                        vc.type = "Delivery"
-                        vc.mainInstruction = way.delivery.deliveryMainInstruction
-                        vc.subInstruction = way.delivery.deliverySubInstruction
+                        self.currentType = "Delivery"
+                        self.currentMainInstruction = way.delivery.deliveryMainInstruction
+                        self.currentSubInstruction = way.delivery.deliverySubInstruction
                     }
                 }
-                navigationViewController.present(vc, animated: true, completion: nil)
+                self.performSegue(withIdentifier: "presentInstructions", sender: self)
             }
         }
         return false
