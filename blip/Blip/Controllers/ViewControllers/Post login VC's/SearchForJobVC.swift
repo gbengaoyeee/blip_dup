@@ -20,6 +20,7 @@ import Firebase
 
 class SearchForJobVC: UIViewController {
 
+    @IBOutlet weak var earningsLabel: RaisedButton!
     @IBOutlet weak var goButtonPulseAnimation: UIView!
     @IBOutlet weak var goButton: RaisedButton!
     @IBOutlet var map: MGLMapView!
@@ -44,6 +45,7 @@ class SearchForJobVC: UIViewController {
         locationManager.startUpdatingLocation()
         prepareMap()
         prepareGoButton()
+        getBalance()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -52,9 +54,14 @@ class SearchForJobVC: UIViewController {
         self.fabMenuController?.prepare()
     }
     
-    @IBAction func unwindToRoot(segue:UIStoryboardSegue) {
-        
+    func getBalance(){
+        earningsLabel.layer.cornerRadius = 15
+        MyAPIClient.sharedClient.getAccountBalance(emailHash: self.service.emailHash) { (balance) in
+            self.earningsLabel.title = "$ \(balance)"
+        }
     }
+    
+    @IBAction func unwindToRoot(segue:UIStoryboardSegue) {}
     
     func showUnfinishedBanner(){
         let banner = NotificationBanner(title: "Unfinished delivery", subtitle: "Tap to continue your unfinished delivery",style: .info)

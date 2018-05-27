@@ -47,18 +47,16 @@ extension AppFABMenuController {
     }
     
     func setImageToButton(){
-        if self.fabButton.image == nil{
-            if let url = Auth.auth().currentUser?.photoURL{
-                KingfisherManager.shared.retrieveImage(with: url, options: nil, progressBlock: nil) { (image, error, type, url) in
-                    if let image = image {
-                        self.fabButton.setImage(image, for: .normal)
-                        self.fabButton.clipsToBounds = true
-                    }
+        if let url = Auth.auth().currentUser?.photoURL{
+            KingfisherManager.shared.retrieveImage(with: url, options: nil, progressBlock: nil) { (image, error, type, url) in
+                if let image = image {
+                    self.fabButton.setImage(image, for: .normal)
+                    self.fabButton.clipsToBounds = true
                 }
             }
-            else{
-                self.fabButton.setIcon(icon: .googleMaterialDesign(.settings), iconSize: 40, color: UIColor.white, forState: .normal)
-            }
+        }
+        else{
+            self.fabButton.setIcon(icon: .googleMaterialDesign(.settings), iconSize: 40, color: UIColor.white, forState: .normal)
         }
     }
     

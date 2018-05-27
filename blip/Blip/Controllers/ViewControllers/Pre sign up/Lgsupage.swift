@@ -23,8 +23,6 @@ class Lgsupage: UIViewController {
     var Player: AVPlayer!
     var PlayerLayer: AVPlayerLayer!
     
-    @IBOutlet var BlipLogo: UIView!
-    @IBOutlet var BlipLabel: UILabel!
     @IBOutlet var LoginButton: UIButton!
     @IBOutlet var SignUpButton: UIButton!
 
@@ -49,16 +47,8 @@ class Lgsupage: UIViewController {
             self.dbRef.child("Couriers").child(hash).removeValue()
         }
         self.navigationController?.navigationBar.isHidden = true
-        playLogoAnimation()
         playBackgroundVideo()
     }
-    
-    fileprivate func playLogoAnimation() {
-        BlipLabel.adjustsFontSizeToFitWidth = true
-        BlipLogo.handledAnimation(Animation: logoAnimation, width: 1, height: 1)
-        logoAnimation.play()
-    }
-    
     
     fileprivate func prepareFacebookButton(){
         let facebookImage = UIImage(icon: .fontAwesome(.facebookF), size: CGSize(width: 40, height: 40), textColor: UIColor.white, backgroundColor: .clear)

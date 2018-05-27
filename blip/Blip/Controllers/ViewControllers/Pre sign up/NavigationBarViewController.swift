@@ -24,27 +24,8 @@ class NavigationBarViewController: AnimatableNavigationController {
         
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        if appDelegate.isLaunched {
-            prepareSplash()
-        }
-    }
-    
-    func prepareSplash(){
-        
-        let splash = RevealingSplashView(iconImage: #imageLiteral(resourceName: "logoNoBg"), iconInitialSize: CGSize(width: 150, height: 150), backgroundColor: #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1))
-        splash.animationType = SplashAnimationType.squeezeAndZoomOut
-        splash.tag = 10
-        self.view.addSubview(splash)
-        splash.startAnimation {
-            print("Splash Screen complete")
-            self.appDelegate.isLaunched = false
-        }
-    }
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-
     }
 
 }
