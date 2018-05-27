@@ -24,6 +24,7 @@ class InstructionVC: UIViewController {
     @IBOutlet weak var noShowButton: RaisedButton!
     @IBOutlet weak var doneButton: RaisedButton!
     
+    var navViewController: NavigationViewController!
     var type: String!
     var delivery: Delivery!
     let service = ServiceCalls.instance
@@ -47,8 +48,8 @@ class InstructionVC: UIViewController {
     
     func prepareView(){
         storeLogo.makeCircular()
-        subView.ApplyCornerRadiusToView()
-        subView.ApplyOuterShadowToView()
+        view.ApplyCornerRadiusToView()
+        view.ApplyOuterShadowToView()
     }
     
     func prepareLabels(){
@@ -61,7 +62,7 @@ class InstructionVC: UIViewController {
         if let url = delivery.store.storeLogo{
             KingfisherManager.shared.retrieveImage(with: url, options: nil, progressBlock: nil) { (image, error, cache, url) in
                 if let image = image{
-                    storeLogo.image = image
+                    self.storeLogo.image = image
                 }
             }
         }
@@ -122,10 +123,10 @@ class InstructionVC: UIViewController {
         let popup = PopupDialog(title: "Confirm", message: "Please make sure you have successfully completed the delivery before pressing confirm. Failure to do so may result in the suspension of your account. Alternatively, press the No Show button if the delivery cannot be completed successfully")
         let confirmButton = PopupDialogButton(title: "Confirm") {
             popup.dismiss({
-                self.service.completedJob(id: self.delivery.identifier, type: type)
-                if !isLastWaypoint{
-                    navViewController?.routeController.routeProgress.legIndex += 1
-                    navViewController?.routeController.resume()
+                self.service.completedJob(id: self.delivery.identifier, type: self.type)
+                if !self.isLastWaypoint{
+                    self.navViewController?.routeController.routeProgress.legIndex += 1
+                    self.navViewController?.routeController.resume()
                     self.dismiss(animated: true, completion: nil)
                 }
                 else{

@@ -42,6 +42,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     var currentMainInstruction: String!
     var currentDelivery: Delivery!
     var isLastWaypoint: Bool!
+    var navViewController: NavigationViewController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -85,6 +86,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
             dest.mainInstruction = self.currentMainInstruction
             dest.type = self.currentType
             dest.isLastWaypoint = self.isLastWaypoint
+            dest.navViewController = self.navViewController
         }
     }
     
@@ -206,6 +208,7 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
     
     func navigationViewController(_ navigationViewController: NavigationViewController, didArriveAt waypoint: Waypoint) -> Bool {
 
+        self.navViewController = navigationViewController
         navigationViewController.routeController.suspendLocationUpdates()
         for way in self.waypoints{
             if waypoint.coordinate == way.coordinate{
