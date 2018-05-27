@@ -24,6 +24,7 @@ class InstructionVC: UIViewController {
     @IBOutlet weak var noShowButton: RaisedButton!
     @IBOutlet weak var doneButton: RaisedButton!
     
+    var navViewController: NavigationViewController!
     var type: String!
     var delivery: Delivery!
     let service = ServiceCalls.instance
@@ -121,18 +122,27 @@ class InstructionVC: UIViewController {
     @IBAction func donePressed(_ sender: Any) {
         let popup = PopupDialog(title: "Confirm", message: "Please make sure you have successfully completed the delivery before pressing confirm. Failure to do so may result in the suspension of your account. Alternatively, press the No Show button if the delivery cannot be completed successfully")
         let confirmButton = PopupDialogButton(title: "Confirm") {
-            popup.dismiss({
-                self.service.completedJob(deliveryID: self.delivery.identifier, storeID: self.delivery.store.storeID, type: self.type)
-                if !self.isLastWaypoint{
-                    self.navViewController?.routeController.routeProgress.legIndex += 1
-                    self.navViewController?.routeController.resume()
-                    self.dismiss(animated: true, completion: nil)
-                }
-                else{
-                    self.performSegue(withIdentifier: "unwindToRoot", sender: self)
-                }
-            })
+            print("DISMISSED")
+            
+            self.service.completedJob(deliveryID: self.delivery.identifier, storeID: self.delivery.store.storeID, type: self.type)
+            
+            if !self.isLastWaypoint{
+                self.navViewController?.routeController.routeProgress.legIndex += 1
+                self.navViewController?.routeController.resume()
+                popup.dismiss()
+                self.dismiss(animated: true, completion: nil)
+            }
+            else{
+                popup.dismiss()
+                self.performSegue(withIdentifier: "unwindToRoot", sender: self)
+            }
+//            popup.dismiss({
+//                print("DISMISSED")
+//
+//            })
         }
+        popup.addButton(confirmButton)
+        self.present(popup, animated: true, completion: nil)
         
     }
 }
