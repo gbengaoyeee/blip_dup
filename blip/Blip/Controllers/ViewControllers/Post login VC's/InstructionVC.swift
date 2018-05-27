@@ -17,10 +17,8 @@ import Kingfisher
 
 class InstructionVC: UIViewController {
 
-    @IBOutlet weak var subView: UIView!
     @IBOutlet weak var subInstructionLabel: UILabel!
     @IBOutlet weak var mainInstructionLabel: UILabel!
-    @IBOutlet var gradientView: UIView!
     @IBOutlet weak var storeLogo: UIImageView!
     @IBOutlet weak var callButton: RaisedButton!
     @IBOutlet weak var noShowButton: RaisedButton!
@@ -34,8 +32,6 @@ class InstructionVC: UIViewController {
     var isLastWaypoint: Bool!
     var storeLogoURL: String!
     var phoneNumber: URL!
-    var foundJobVC:FoundJobVC!
-    var navViewController:NavigationViewController!
     var calls = 0
     
     override func viewDidLoad() {
@@ -81,8 +77,8 @@ class InstructionVC: UIViewController {
     }
 
     @IBAction func noShowPressed(_ sender: Any) {
-        if type == "Delivery"{
-            let alert = PopupDialog(title: "No Show", message: "Press continue if you cannot contact the person to whom you are making a delivery. Please wait up to 5 mins before pressing this button. Doing so without waiting or making an effort to call/contact the person may result in a suspension of your account")
+        if type == "Delivery" || type == "Pickup"{
+            let alert = PopupDialog(title: "No Show", message: "Press continue if you cannot contact the person to complete the \(type.lowercased()). Please wait up to 5 mins before pressing this button. Doing so without waiting or making an effort to call/contact the person may result in a suspension of your account")
             let cancel = PopupDialogButton(title: "Cancel") {
                 alert.dismiss()
             }
@@ -133,10 +129,7 @@ class InstructionVC: UIViewController {
                     self.dismiss(animated: true, completion: nil)
                 }
                 else{
-                    self.dismiss(animated: true, completion: {
-                        self.foundJobVC.navigationController?.popToRootViewController(animated: true)
-                    })
-                    
+                    self.performSegue(withIdentifier: "unwindToRoot", sender: self)
                 }
             })
         }

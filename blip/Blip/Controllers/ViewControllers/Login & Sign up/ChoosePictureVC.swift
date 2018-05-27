@@ -31,6 +31,7 @@ class ChoosePictureVC: UIViewController, UIImagePickerControllerDelegate, UINavi
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        prepareCameraAnimation()
         self.navigationController?.navigationBar.isHidden = false
         prepareGradientView()
         setupImageView()
@@ -39,10 +40,6 @@ class ChoosePictureVC: UIViewController, UIImagePickerControllerDelegate, UINavi
     
     override func viewWillAppear(_ animated: Bool) {
         prepareGradientView()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        prepareCameraAnimation()
     }
     
     fileprivate func prepareGradientView(){
