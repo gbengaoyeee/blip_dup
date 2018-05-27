@@ -135,28 +135,32 @@ exports.createTestStore = functions.https.onRequest((req, res) => {
 exports.updateStorePayment = functions.https.onRequest((req, res) => {
     var storeID = req.body.storeID;
     var sourceID = req.body.sourceID;
-    admin.database().ref(`/stores/${storeID}/customer/id`).once("value", function(snapshot) {
-        if (snapshot.exists) {
+    return admin.database().ref(`/stores/${storeID}/customer/id`).once('value').then(function(snapshot){
+        if (snapshot.exists){
             stripe.customers.update(snapshot.val(), {
                 source: sourceID
-            }), function(err, customer){
+            }, function(err, customer){
                 if (err){
-                    console.log(err);
+                    console.log("STRIPE ERROR",err);
                     res.status(400).send(err);
                 } else{
-                    admin.database().ref(`/stores/${storeID}/customer`).update(customer);
-                    console.log(customer);
-                    res.status(200).send(customer);
+                    admin.database().ref(`/stores/${storeID}/customer`).update(customer).then(() =>{
+                        console.log("COMPLETE",customer);
+                        res.status(200).send(customer);
+                    });
                 }
-            }
-        } else{
+            });
+        }else{// No such customer
             console.log("CustomerID does not exist or store does not exist");
             res.status(404).end();
         }
-    })
+    }, function(error){
+        console.log("OBSERVER ERROR", error);
+    });
 })
 
 exports.createStore = functions.https.onRequest((req, res) => {
+    console.log(req.body);
     var storeName = req.body.storeName;
     var storeLogo = req.body.storeLogo;
     var storeBackground = req.body.storeBackground;

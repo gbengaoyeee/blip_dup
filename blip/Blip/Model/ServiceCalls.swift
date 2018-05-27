@@ -150,31 +150,28 @@ class ServiceCalls:NSObject, NSCoding{
         }
     }
     
-    func completedJob(id:String, type:String){
+    func completedJob(deliveryID:String, storeID:String, type:String){
         if type == "Pickup"{
-            let ref = Database.database().reference(withPath: "/Couriers/\(self.emailHash!)/givenJob/deliveries/\(id)")
+            let ref = Database.database().reference(withPath: "/Couriers/\(self.emailHash!)/givenJob/deliveries/\(deliveryID)")
+            let storeRef = Database.database().reference(withPath: "/stores/\(storeID)/deliveries/\(deliveryID)")
             ref.updateChildValues(["state":"pickup"])
+            storeRef.updateChildValues(["state":"pickup"])
             return
         }
-        
-        userRef.child(emailHash).child("givenJob/deliveries").child(id).observeSingleEvent(of: .value) { (snapshot) in
-            guard let values = snapshot.value as? [String:Any] else{
+        userRef.child(emailHash).child("givenJob/deliveries").child(deliveryID).observeSingleEvent(of: .value) { (snapshot) in
+            guard var values = snapshot.value as? [String:Any] else{
                 print("Couldn't get values")
                 return
             }
-            guard let storeID = values["storeID"] as? String else{
-                print("Couldn't get store ID")
-                return
-            }
-            let ref = Database.database().reference(withPath: "/Couriers/\(self.emailHash!)/givenJob/deliveries/\(id)")
-            let storeRef = Database.database().reference(withPath: "/stores/\(storeID)/deliveries/\(id)")
-            ref.updateChildValues(["state":"delivery"])
-            ref.updateChildValues(["isCompleted":true])
-            storeRef.updateChildValues(["isCompleted":true])
-            self.completedJobsRef.child(id).updateChildValues(values)
-            self.completedJobsRef.child(id).updateChildValues(["isCompleted":true])
-            self.userRef.child(self.emailHash).child("completedDeliveries").child("deliveries/\(id)").updateChildValues(values)
-            self.userRef.child(self.emailHash).child("givenJob/deliveries").child(id).removeValue()
+            
+            values["isCompleted"] = true
+            values["state"] = "delivery"
+            let ref = Database.database().reference(withPath: "/Couriers/\(self.emailHash!)/givenJob/deliveries/\(deliveryID)")
+            let storeRef = Database.database().reference(withPath: "/stores/\(storeID)/deliveries/\(deliveryID)")
+            storeRef.updateChildValues(values)
+            self.completedJobsRef.child(deliveryID).updateChildValues(values)
+            self.userRef.child(self.emailHash).child("completedDeliveries").child("deliveries/\(deliveryID)").updateChildValues(values)
+            ref.removeValue()
         }
     }
     

@@ -208,7 +208,7 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
                     }
                 }
                 vc.navViewController = navigationViewController
-                navigationViewController.present(vc, animated: true, completion: nil)
+                self.present(vc, animated: true, completion: nil)
             }
         }
         return false

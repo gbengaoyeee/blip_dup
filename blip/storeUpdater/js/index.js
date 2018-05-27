@@ -141,7 +141,7 @@ function registerElements(elements, exampleName) {
         "sourceID":sourceID
       }
     }).then(function(res){
-      console.log("WORKED!!");
+      console.log("WORKED!!",res);
     });
   }
 
@@ -155,6 +155,7 @@ function registerElements(elements, exampleName) {
         dataS += key+"="+obj.data[key]+(dataL>1?"&":"");
         dataL--;
       }
+      console.log('DataS:',dataS);
             xhr.open(obj.method,obj.url,true);
             if (typeof obj.cors === "boolean" && obj.cors === true) xhr.withCredentials = true;
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -171,17 +172,18 @@ function registerElements(elements, exampleName) {
       /*
       *This nex function is the propper to manage the response storeID
       */
-
+      
       xhr.onload = function()
       {
+        
         console.log("yeah",xhr);
         resolve(xhr.responseText);
       }
 
       //^^^^^^^^^^^^here
-
-            xhr.send(obj.data ? dataS : null);
-        });
+      console.log('DATA',xhr)
+        xhr.send(obj.data ? dataS : null);
+      });
   }
 
   resetButton.addEventListener('click', function(e) {
