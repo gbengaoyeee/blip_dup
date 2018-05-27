@@ -592,13 +592,13 @@ exports.getBestJob = functions.https.onRequest((req, res) => {
                                 }
                             } //End of For loop
 
-                            admin.database().ref('Couriers/' + emailHash + '/givenJobs').update(jobBundle).then(() => {
+                            admin.database().ref('Couriers/' + emailHash + '/givenJob').update(jobBundle).then(() => {
                                 console.log('Update succeeded!');
                                 res.status(200).send("OK It Gave Back Jobs");
                             });
                         } else {
                             //No more jobs in the AllJobs Reference, so put the closestJob found in helper in user's reference
-                            admin.database().ref('Couriers/' + emailHash + '/givenJobs').update(jobBundle).then(() => {
+                            admin.database().ref('Couriers/' + emailHash + '/givenJob').update(jobBundle).then(() => {
                                 console.log('Update succeeded!');
                                 res.status(200).send("OK It Gave Back Jobs");
                             });

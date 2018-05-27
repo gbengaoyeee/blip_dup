@@ -31,7 +31,7 @@ class Job{
         guard type == "delivery" || type == "other" else {
             return nil
         }
-        guard snapshot.key == "givenJobs" || !snapshot.key.isEmpty else {
+        guard snapshot.key == "givenJob" || !snapshot.key.isEmpty else {
             return nil
         }
         if type == "delivery"{
