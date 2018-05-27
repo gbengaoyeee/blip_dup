@@ -105,7 +105,8 @@ class ServiceCalls:NSObject, NSCoding{
             
             if snap.key == "givenJob"{
                 if let jobID = snap.value as? [String: AnyObject]{
-                    let j = Job(snapshot: snap.childSnapshot(forPath: jobID.keys.first!), type: "delivery")
+//                    let j = Job(snapshot: snap.childSnapshot(forPath: jobID.keys.first!), type: "delivery")
+                    let j = Job(snapshot: snap, type: "delivery")
                     j?.locList.insert(myLocation, at: 0)
                     completion(nil, j)
                 }
@@ -143,43 +144,43 @@ class ServiceCalls:NSObject, NSCoding{
     
     func completedAllJobs(completion: @escaping() -> ()){
         userRef.child(emailHash).child("givenJob").observeSingleEvent(of: .value) { (snapshot) in
-            let deliveries = snapshot.value as? [String: AnyObject]
-            self.userRef.child(self.emailHash).updateChildValues(["completedDeliveries": deliveries as Any])
+            guard let deliveries = snapshot.value as? [String: AnyObject] else{
+                print("Couldn't get delivery jobs")
+                return
+            }
+            self.userRef.child(self.emailHash).child("completedDeliveries").updateChildValues(deliveries)
             self.userRef.child(self.emailHash).child("givenJob").removeValue()
             completion()
         }
     }
     
-    func completedJob(id:String, type:String){
+    func completedJob(deliveryID:String, storeID:String, type:String){
         if type == "Pickup"{
-            let ref = Database.database().reference(withPath: "/Couriers/\(self.emailHash!)/givenJob/deliveries/\(id)")
+            let ref = Database.database().reference(withPath: "/Couriers/\(self.emailHash!)/givenJob/\(deliveryID)")
+            let storeRef = Database.database().reference(withPath: "/stores/\(storeID)/deliveries/\(deliveryID)")
             ref.updateChildValues(["state":"pickup"])
+            storeRef.updateChildValues(["state":"pickup"])
             return
         }
-        
-        userRef.child(emailHash).child("givenJob/deliveries").child(id).observeSingleEvent(of: .value) { (snapshot) in
-            guard let values = snapshot.value as? [String:Any] else{
+        userRef.child(emailHash).child("givenJob").child(deliveryID).observeSingleEvent(of: .value) { (snapshot) in
+            guard var values = snapshot.value as? [String:Any] else{
                 print("Couldn't get values")
                 return
             }
-            guard let storeID = values["storeID"] as? String else{
-                print("Couldn't get store ID")
-                return
-            }
-            let ref = Database.database().reference(withPath: "/Couriers/\(self.emailHash!)/givenJob/deliveries/\(id)")
-            let storeRef = Database.database().reference(withPath: "/stores/\(storeID)/deliveries/\(id)")
-            ref.updateChildValues(["state":"delivery"])
-            ref.updateChildValues(["isCompleted":true])
-            storeRef.updateChildValues(["isCompleted":true])
-            self.completedJobsRef.child(id).updateChildValues(values)
-            self.completedJobsRef.child(id).updateChildValues(["isCompleted":true])
-            self.userRef.child(self.emailHash).child("completedDeliveries").child("deliveries/\(id)").updateChildValues(values)
-            self.userRef.child(self.emailHash).child("givenJob/deliveries").child(id).removeValue()
+            
+            values["isCompleted"] = true
+            values["state"] = "delivery"
+            let ref = Database.database().reference(withPath: "/Couriers/\(self.emailHash!)/givenJob/\(deliveryID)")
+            let storeRef = Database.database().reference(withPath: "/stores/\(storeID)/deliveries/\(deliveryID)")
+            storeRef.updateChildValues(values)
+            self.completedJobsRef.child(deliveryID).updateChildValues(values)
+            self.userRef.child(self.emailHash).child("completedDeliveries/\(deliveryID)").updateChildValues(values)
+            ref.removeValue()
         }
     }
     
     func setIsTakenOnGivenJobsAndStore(waypointList:[BlipWaypoint]){
-        let ref = Database.database().reference(withPath: "Couriers/\(self.emailHash!)/givenJob/deliveries")
+        let ref = Database.database().reference(withPath: "Couriers/\(self.emailHash!)/givenJob")
         let storesRef = Database.database().reference(withPath: "stores")
         for way in waypointList{
             ref.child(way.delivery.identifier).updateChildValues(["isTaken":true, "jobTaker":self.emailHash!])
@@ -420,7 +421,7 @@ class ServiceCalls:NSObject, NSCoding{
     
     ///Add noShow to delivery reference
     func addNoShow(id:String, call: Bool){
-        userRef.child(emailHash).child("givenJob/deliveries/\(id)").updateChildValues(["noShow":true, "called": call])
+        userRef.child(emailHash).child("givenJob/\(id)").updateChildValues(["noShow":true, "called": call])
     }
     
     
@@ -452,17 +453,12 @@ class ServiceCalls:NSObject, NSCoding{
     
     ///Puts the collection of jobs back in AllJobs reference if this user does not accept within 30 seconds
     func putBackJobs(){
-//        self.userRef.child(emailHash).child("givenJob").observeSingleEvent(of: .childRemoved) { (snapshot) in
-//            if snapshot.key == "deliveries"{
-//                self.jobsRef.updateChildValues(snapshot.value as! [String:Any])
-//            }
-//        }
-        self.userRef.child(emailHash).child("givenJob/deliveries").observe(.childAdded) { (snapshot) in
+        self.userRef.child(emailHash).child("givenJob").observe(.childAdded) { (snapshot) in
             let values = snapshot.value as? [String:Any]
             let state = values!["state"] as? String
             if (state == "delivery") || (state == nil){
                 self.jobsRef.updateChildValues([snapshot.key:values as Any])
-                self.userRef.child(self.emailHash).child("givenJob/deliveries/\(snapshot.key)").removeValue()
+                self.userRef.child(self.emailHash).child("givenJob/\(snapshot.key)").removeValue()
             }
         }
         
@@ -475,7 +471,8 @@ class ServiceCalls:NSObject, NSCoding{
                 print(snapshot)
                 if snapshot.key == "givenJob"{
                     if let jobID = snapshot.value as? [String: AnyObject]{
-                        let j = Job(snapshot: snapshot.childSnapshot(forPath: jobID.keys.first!), type: "delivery")
+//                        let j = Job(snapshot: snapshot.childSnapshot(forPath: jobID.keys.first!), type: "delivery")
+                        let j = Job(snapshot: snapshot, type: "delivery")
                         j?.locList.insert(myLocation, at: 0)
                         completion(true, j)
                     }
@@ -490,7 +487,7 @@ class ServiceCalls:NSObject, NSCoding{
     func userCancelledJob(){
         self.userRef.child(emailHash).updateChildValues(["flagged":true])
         // remove state, istaken to false,
-        self.userRef.child(emailHash).child("givenJob/deliveries").observeSingleEvent(of: .value) { (snapshot) in
+        self.userRef.child(emailHash).child("givenJob").observeSingleEvent(of: .value) { (snapshot) in
             guard let jobs = snapshot.value as? [String:Any] else{
                 print("Couldn't find jobs to cancel")
                 return
@@ -503,7 +500,7 @@ class ServiceCalls:NSObject, NSCoding{
                 value["state"] = nil
                 value["isTaken"] = false
                 self.jobsRef.child(deliveryID).updateChildValues(value)
-                self.userRef.child(self.emailHash).child("givenJob/deliveries/\(deliveryID)").removeValue()
+                self.userRef.child(self.emailHash).child("givenJob/\(deliveryID)").removeValue()
                 
             }//end of for loop
         }
