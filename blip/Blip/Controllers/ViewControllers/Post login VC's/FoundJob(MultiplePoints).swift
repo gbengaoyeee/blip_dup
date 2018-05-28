@@ -23,7 +23,6 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     @IBOutlet weak var jobEarnings: UILabel!
     @IBOutlet weak var jobDistance: UILabel!
     @IBOutlet weak var pickupLabel: UILabel!
-    @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var pulseAnimationView: UIView!
     @IBOutlet weak var map: MGLMapView!
     @IBOutlet weak var countDownView: SRCountdownTimer!
@@ -409,14 +408,13 @@ extension FoundJobVC{
     }
     
     func parseRouteData(routeData: [String: AnyObject]){
-        let estimatedTime = routeData["duration"] as! NSNumber
+
         let estimatedDistance = routeData["distance"] as! NSNumber
         let distanceInKm = (estimatedDistance.intValue/1000)
-        let minutes = estimatedTime.doubleValue/60
-        timeLabel.text = "\(minutes.rounded()) min(s)"
         pickupLabel.text = "\(job.deliveries.count) Delivery(s)"
         jobDistance.text = "\(distanceInKm) km"
-        jobEarnings.text = "$ \(job.earnings)"
+        let earningsText = String(format: "%.2f", arguments: [job.earnings])
+        jobEarnings.text = "$ \(earningsText)"
     }
 }
 

@@ -42,6 +42,14 @@ class SettingsVC: FormViewController {
     }
     
     func buildForm(){
+        form +++ Section()
+            <<< ButtonRow() {
+                $0.title = "Back"
+                $0.cell.backgroundColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
+                $0.cell.tintColor = UIColor.white
+                }.onCellSelection({ (cell, row) in
+                    self.dismiss(animated: true, completion: nil)
+                })
         form +++ Section("Address")
             <<< TextRow(){ row in
                 row.tag = "address"

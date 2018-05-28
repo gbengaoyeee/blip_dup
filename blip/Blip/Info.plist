@@ -74,6 +74,12 @@
 	<string>We require a profile picture to verify your identity</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Your location is used to set you up with appropriate delivery jobs around your area, and get your status while on a job</string>
+	<key>NSLocationUsageDescription</key>
+	<string>We use your location to determine the jobs near your area</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Your location is used to ensure that you are being directed appropriately while on the job</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Your location is used to determine jobs near your area, and provide directions to complete the job</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We require you to select a picture of yourself to verify your identity</string>
 	<key>UIBackgroundModes</key>
