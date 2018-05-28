@@ -50,6 +50,7 @@ class Lgsupage: UIViewController {
         playBackgroundVideo()
     }
     
+    ///Prepares the "Login wiith Facebook" button
     fileprivate func prepareFacebookButton(){
         let facebookImage = UIImage(icon: .fontAwesome(.facebookF), size: CGSize(width: 40, height: 40), textColor: UIColor.white, backgroundColor: .clear)
         
@@ -80,9 +81,10 @@ class Lgsupage: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(playerItemReachEnd(notification:)), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: Player.currentItem)
     }
 
-    
+    /**
+     Logs in user with facebook
+     */
     @IBAction func loginWithFacebookClicked(_ sender: Any) {
-        
         let fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
         fbLoginManager.logIn(withReadPermissions: ["email"], from: self) { (result, error) -> Void in
             if (error == nil){
