@@ -67,6 +67,23 @@ class SearchForJobVC: UIViewController {
         }
     }
     
+    func checkLocationServices() -> Bool{
+        if CLLocationManager.locationServicesEnabled() {
+            
+            switch CLLocationManager.authorizationStatus() {
+            case .notDetermined, .restricted, .denied:
+                let locationError = PopupDialog(title: "Location permission denied", message: "Blip needs permission to access your location information, or we cannot match you with jobs around your area. Please go to settings -> Privacy -> Location services; and turn on location services for blip")
+                self.present(locationError, animated: true, completion: nil)
+                return false
+            case .authorizedAlways, .authorizedWhenInUse:
+                locationManager.delegate = self
+                locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+                return true
+            }
+        }
+        return false
+    }
+    
     @IBAction func unwindToRoot(segue:UIStoryboardSegue) {}
     
     func showUnfinishedBanner(){
@@ -148,6 +165,10 @@ class SearchForJobVC: UIViewController {
     }
     
     @IBAction func searchForJob(_ sender: Any) {
+        
+        if !checkLocationServices(){
+            return
+        }
 
         goButton.isUserInteractionEnabled = false
         let leftImageView = UIView()

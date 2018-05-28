@@ -323,16 +323,6 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PQI-N9-SFv">
-                                <rect key="frame" x="40" y="110" width="0.0" height="0.0"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="60" id="bLG-8d-8nc"/>
-                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="250" id="dxx-wu-XOt"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="22"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cM0-nB-8sp" customClass="RaisedButton" customModule="Material">
                                 <rect key="frame" x="37.5" y="590.5" width="300" height="46.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -396,7 +386,6 @@
                             <constraint firstItem="BfG-qX-nPE" firstAttribute="centerX" secondItem="tCQ-HF-mF7" secondAttribute="centerX" id="EvO-CZ-erg"/>
                             <constraint firstItem="cM0-nB-8sp" firstAttribute="height" secondItem="13i-Zf-zdN" secondAttribute="height" multiplier="0.07" id="JMs-Je-8hr"/>
                             <constraint firstItem="yb1-G9-67n" firstAttribute="height" secondItem="13i-Zf-zdN" secondAttribute="height" multiplier="280/667" id="Jja-tv-JZE"/>
-                            <constraint firstItem="PQI-N9-SFv" firstAttribute="leading" secondItem="tCQ-HF-mF7" secondAttribute="leading" constant="40" id="LC7-Sy-hpe"/>
                             <constraint firstItem="TDs-wf-hhb" firstAttribute="top" secondItem="yb1-G9-67n" secondAttribute="bottom" constant="30" id="TPA-9v-dG6"/>
                             <constraint firstItem="cM0-nB-8sp" firstAttribute="top" secondItem="BfG-qX-nPE" secondAttribute="bottom" constant="30" id="Y6O-k4-Hlj"/>
                             <constraint firstItem="B0v-oc-6kk" firstAttribute="centerX" secondItem="tCQ-HF-mF7" secondAttribute="centerX" id="bKV-QT-tcx"/>
@@ -416,13 +405,12 @@
                         <outlet property="map" destination="rVS-1F-aSB" id="KS8-05-Kfc"/>
                         <outlet property="pickupLabel" destination="yzd-d1-K1t" id="Iel-lL-KkE"/>
                         <outlet property="pulseAnimationView" destination="1wn-A6-DYN" id="lQB-ol-IIo"/>
-                        <outlet property="timeLabel" destination="PQI-N9-SFv" id="Z3l-Xh-lW9"/>
                         <segue destination="mDC-S8-kW2" kind="presentation" identifier="presentInstructions" id="twI-ww-2j8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fej-sf-vjv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-604" y="-101.19940029985008"/>
+            <point key="canvasLocation" x="-665" y="-101"/>
         </scene>
         <!--InstructionVC-->
         <scene sceneID="ahV-b7-vyV">

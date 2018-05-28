@@ -17,7 +17,7 @@ class Delivery{
     var deliveryPlacemark: CLPlacemark!
     var deliveryLocation: CLLocationCoordinate2D!
     var identifier: String!
-    var earnings: String!
+    var earnings: Float!
     var origin: CLLocationCoordinate2D!
     var recieverName: String!
     var receiverPhoneNumber: String!
@@ -29,7 +29,7 @@ class Delivery{
     var pickupNumber: String!
     var state: String?
     
-    init(deliveryLocation: CLLocationCoordinate2D, identifier: String, origin: CLLocationCoordinate2D, recieverName: String, recieverNumber: String, pickupNumber: String, pickupMainInstruction: String, pickupSubInstruction: String, deliveryMainInstruction: String, deliverySubInstruction: String, storeID:String, earnings: String) {
+    init(deliveryLocation: CLLocationCoordinate2D, identifier: String, origin: CLLocationCoordinate2D, recieverName: String, recieverNumber: String, pickupNumber: String, pickupMainInstruction: String, pickupSubInstruction: String, deliveryMainInstruction: String, deliverySubInstruction: String, storeID:String, earnings: Float) {
         self.deliveryLocation = deliveryLocation
         self.identifier = identifier
         self.origin = origin
@@ -79,7 +79,7 @@ class Delivery{
         let originLong = Double(deliveryValues!["originLong"] as! String)!
         self.deliveryLocation = CLLocationCoordinate2D(latitude: deliveryLat, longitude: deliveryLong)
         let deliveryEarnings = deliveryValues!["chargeAmount"] as! NSNumber
-        self.earnings = deliveryEarnings.stringValue
+        self.earnings = (deliveryEarnings.floatValue/100)
         self.identifier = snapshot.key
         if let state = deliveryValues!["state"] as? String{
             self.state = state

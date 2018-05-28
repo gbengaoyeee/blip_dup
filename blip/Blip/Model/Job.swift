@@ -21,7 +21,7 @@ class Job{
     var unfinishedLocList = [CLLocationCoordinate2D]()
     var name: String!
     var description: String!
-    var earnings: Double!
+    var earnings: Double = 0
     var duration: Double!
     var otherTypeLocation: CLLocationCoordinate2D!
     var jobImages = [UIImage]()
@@ -40,6 +40,10 @@ class Job{
                 let id = value.key
                 let delivery = Delivery(snapshot: snapshot.childSnapshot(forPath: id))
                 if let delivery = delivery{
+                    let deliveryEarnings = Double(delivery.earnings)
+                    let earnings = deliveryEarnings
+                    self.earnings += earnings
+                
                     if delivery.state != nil{
                         self.unfinishedLocList.append(delivery.deliveryLocation)
                     }
@@ -60,7 +64,6 @@ class Job{
                 self.name = jobValues["name"] as? String
                 self.description = jobValues["description"] as? String
                 self.duration = jobValues["duration"] as? Double
-                self.earnings = jobValues["earnings"] as? Double
                 self.otherJobID = snapshot.key
                 self.otherTypeLocation = CLLocationCoordinate2D(latitude: jobValues["locationLat"] as! Double, longitude: jobValues["locationLong"] as! Double)
                 for value in jobValues["imageURLs"] as! [String]{
