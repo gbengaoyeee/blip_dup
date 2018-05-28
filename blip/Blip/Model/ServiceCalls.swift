@@ -99,33 +99,62 @@ class ServiceCalls{
             }
         })
         
-        MyAPIClient.sharedClient.getBestJobAt(location: myLocation, userHash: userHash) { (error, found) in
-            if let err = error as? AFError{
+        MyAPIClient.sharedClient.getBestJobAt(location: myLocation, userHash: userHash) { (errorCode, found) in
+            
+            if errorCode != nil{
                 
-                if (err.responseCode! == 400 || self.provider == "facebook.com")
-                {
+                if (errorCode! == 400 && self.provider == "facebook.com"){
                     self.removeFirebaseObservers()
                     completion(400, nil)//Not verified
                     return
                 }
-                else if(err.responseCode! == 400 || !(Auth.auth().currentUser?.isEmailVerified)!){
+                else if(errorCode! == 400 && !(Auth.auth().currentUser?.isEmailVerified)!){
                     self.removeFirebaseObservers()
                     completion(400, nil)//Not verified
                     return
                 }
-                else if err.responseCode! == 500{
+                else if(errorCode == 400){
+                    self.removeFirebaseObservers()
+                    completion(400, nil)//Not verified
+                    return
+                }
+                else if errorCode == 500{
                     self.removeFirebaseObservers()
                     completion(500, nil)//Flagged
-                    print("Here")
                     return
                 }else{
-                    self.removeFirebaseObservers()
-                    completion(600, nil)// No job Found
+                    completion(404, nil)// No job Found
                     return
                 }
+
+                
             }
+            
+//            if let err = error as? AFError{
+//                if (err.responseCode! == 400 || self.provider == "facebook.com")
+//                {
+//                    self.removeFirebaseObservers()
+//                    completion(400, nil)//Not verified
+//                    return
+//                }
+//                else if(err.responseCode! == 400 || !(Auth.auth().currentUser?.isEmailVerified)!){
+//                    self.removeFirebaseObservers()
+//                    completion(400, nil)//Not verified
+//                    return
+//                }
+//                else if err.responseCode! == 500{
+//                    self.removeFirebaseObservers()
+//                    completion(500, nil)//Flagged
+//
+//                    return
+//                }else{
+//                    print("Here")
+//                    self.removeFirebaseObservers()
+//                    completion(404, nil)// No job Found
+//                    return
+//                }
+//            }
         }
-        
     }
     
     ///REMOVE MORE AS YOU ADD MORE OBSERVERS

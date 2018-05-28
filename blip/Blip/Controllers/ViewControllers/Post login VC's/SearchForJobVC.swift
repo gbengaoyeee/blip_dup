@@ -55,9 +55,15 @@ class SearchForJobVC: UIViewController {
     }
     
     func getBalance(){
+        earningsLabel.borderColor = UIColor.white
+        earningsLabel.layer.borderWidth = 2.5
         earningsLabel.layer.cornerRadius = 15
         MyAPIClient.sharedClient.getAccountBalance(emailHash: self.service.emailHash) { (balance) in
-            self.earningsLabel.title = "$ \(balance!)"
+            if let balance = balance{
+                let accountBalance = Double(balance)!/100
+                let text = String(format: "%.2f", arguments: [accountBalance])
+                self.earningsLabel.title = "$ \(text)"
+            }
         }
     }
     
@@ -68,7 +74,7 @@ class SearchForJobVC: UIViewController {
         banner.onTap = {
             self.performSegue(withIdentifier: "foundJob", sender: self)
         }
-        banner.autoDismiss = false
+        banner.autoDismiss = true
         banner.show()
     }
 

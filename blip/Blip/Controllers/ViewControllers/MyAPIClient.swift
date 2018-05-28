@@ -126,7 +126,7 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
         Alamofire.request(url, method: .post, parameters: params)
     }
     
-    func getBestJobAt(location: CLLocationCoordinate2D, userHash: String, completion: @escaping(Error?,Bool?) -> ()){
+    func getBestJobAt(location: CLLocationCoordinate2D, userHash: String, completion: @escaping(Int?,Bool?) -> ()){
         let locationLat = Double(location.latitude)
         let locationLong = Double(location.longitude)
         let url = self.baseURL.appendingPathComponent("getBestJob")
@@ -135,7 +135,7 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
             "locationLong" : locationLong,
             "emailHash" : userHash
         ]
-        Alamofire.request(url, method: .post, parameters: params, headers: nil).validate(statusCode: 200..<300)
+        Alamofire.request(url, method: .post, parameters: params, headers: nil).validate(statusCode: 200...200)
             .responseString { (resp) in
 //                print(resp)
 //                print(resp.result)
@@ -143,18 +143,14 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
 //                print(resp.response?.statusCode)
                 switch resp.result{
                 case .success:
-                    if resp.result.value != "No job found"{
-                        print("Result:", resp.result.value)
-                        completion(nil, true)
-                    }else{
-                        print("Result:", resp.result.value)
-                        completion(nil, false)
-                    }
+                    print("Result:", resp.result.value)
+                    print("Result:", resp.response?.statusCode)
+                    completion(nil, true)
                     break
                 case .failure(let error):
                     print("Result:",resp.result)
-                    print("Result:",resp.result.value)
-                    completion(error, nil)
+                    print("Result:",resp.response?.statusCode)
+                    completion(resp.response?.statusCode, nil)
                     break
                 }
         }
