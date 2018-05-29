@@ -251,14 +251,14 @@ exports.createCourier = functions.https.onRequest((req, res) => {
     }
     if (validatePassword(password) === false) {
         //TO-DO: Password must be 6 or more characters and must include at least one uppercase, one lowercase, and one special characters 
-        console.log('Password must be 6 or more characters and must include at least one uppercase, one lowercase, and one special characters');
+        console.log('Password must be 6 or more characters and must include at least one uppercase, one lowercase, one number, and one special characters');
         res.status(402).send();
         return;
     }
     if (checkPasswordMatch(password, confirmPassword) === false) {
         //TO-DO: Passwords do not match
         console.log('Passwords do not match');
-        res.status(406).send();
+        res.status(403).send();
         return;
     }
     //hash the email
@@ -277,11 +277,11 @@ exports.createCourier = functions.https.onRequest((req, res) => {
                 res.status(200).end();
             }, function(error){
                 console.log("Error creating stripe after adding user to db",error);
-                res.status(408).end();
+                res.status(407).end();
             });
         }, function (error) {
             console.log('Error Adding user to db');
-            res.status(407).send(error);
+            res.status(406).send(error);
         });
     }, function (error) {
         console.log("Error creating user:", error);
