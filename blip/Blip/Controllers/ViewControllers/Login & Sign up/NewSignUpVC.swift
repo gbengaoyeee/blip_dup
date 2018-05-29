@@ -156,6 +156,7 @@ class NewSignUpVC: UIViewController {
     }
     
     fileprivate func validatePassword(enteredPassword:String) ->Bool{
+//        let postalcodeFormat = "^\s*([abceghj-nprstvxyABCEGHJ-NPRSTVXY][0-9][abceghj-nprstv-zABCEGHJ-NPRSTV-Z])\s+([0-9][abceghj-nprstv-zABCEGHJ-NPRSTV-Z][0-9])\s*$"
         let passwordFormat = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z !@#$%^&*()_\\-+={}\\[\\]\\\\|'\";:?\\/.,<>`~\\d]{6,}"
         let passwordPredicate = NSPredicate(format:"SELF MATCHES %@", passwordFormat)
         return passwordPredicate.evaluate(with: enteredPassword)

@@ -13,7 +13,7 @@ const app = express();
 const geo = require('geolib');
 const stripe = require('stripe')("sk_test_4I0ubK7NduuV6dhJouhEAqtu"),
     currency = "CAD";
-const cors = require('cors')({origin: true});
+const cors = require('cors')({ origin: true });
 
 
 
@@ -33,12 +33,12 @@ exports.ephemeral_keys = functions.https.onRequest((req, res) => {
     stripe.ephemeralKeys.create({
         customer: req.body.customerID
     }, {
-        stripe_version: stripe_version
-    }).then((key) => {
-        res.status(200).json(key);
-    }).catch((err) => {
-        res.status(500).end();
-    });
+            stripe_version: stripe_version
+        }).then((key) => {
+            res.status(200).json(key);
+        }).catch((err) => {
+            res.status(500).end();
+        });
 });
 
 exports.charges = functions.https.onRequest((req, res) => {
@@ -53,7 +53,7 @@ exports.charges = functions.https.onRequest((req, res) => {
         amount: amount,
         currency: currency,
         capture: false
-    }, function(err, charge) {
+    }, function (err, charge) {
         if (err) {
             console.log(err, req.body)
             res.status(500).end()
@@ -67,7 +67,7 @@ exports.captureCharge = functions.https.onRequest((req, res) => {
     var chargeID = req.body.chargeID;
     var accountID = req.body.accountID;
     console.log(chargeID);
-    stripe.charges.capture(chargeID, function(err, charge) {
+    stripe.charges.capture(chargeID, function (err, charge) {
         console.log(charge);
         if (err) {
             console.log(err.req.body)
@@ -80,17 +80,17 @@ exports.captureCharge = functions.https.onRequest((req, res) => {
 
 exports.getAccountBalance = functions.https.onRequest((req, res) => {
     var emailHash = req.body.emailHash;
-    admin.database().ref(`Couriers/${emailHash}/stripeAccount/keys/secret`).once("value", function(snapshot){
-        if (snapshot.exists){
+    admin.database().ref(`Couriers/${emailHash}/stripeAccount/keys/secret`).once("value", function (snapshot) {
+        if (snapshot.exists) {
             var stripeAccount = require('stripe')(snapshot.val())
-            stripeAccount.balance.retrieve(function(err, balance) {
-                if (err){
+            stripeAccount.balance.retrieve(function (err, balance) {
+                if (err) {
                     console.log(err);
                     res.status(400).end();
-                } else{
+                } else {
                     const availBalance = balance.available[0];
                     console.log(availBalance.amount);
-                    res.status(200).send(''+availBalance.amount);
+                    res.status(200).send('' + availBalance.amount);
                 }
             })
         }
@@ -103,10 +103,10 @@ exports.getDeliveryPrice = functions.https.onRequest((req, res) => {
     var pickupLat = req.body.pickupLat;
     var pickupLong = req.body.pickupLong;
     const price = getChargeAmount(deliveryLat, deliveryLong, pickupLat, pickupLong);
-    if (price !== undefined || price != null){
-        console.log("Cost of delivery is;",price);
+    if (price !== undefined || price != null) {
+        console.log("Cost of delivery is;", price);
         res.status(200).send(price);
-    }else{
+    } else {
         console.log("A field is empty");
         res.status(400).end();
     }
@@ -141,7 +141,7 @@ exports.createTestStore = functions.https.onRequest((req, res) => {
             signup_date: date
         },
         "source": "tok_ca"
-    }, function(err, customer) {
+    }, function (err, customer) {
         if (err) {
             console.log(err);
             res.status(400).end(); // COULD NOT CREATE CUSTOMER ERROR
@@ -169,32 +169,128 @@ exports.createTestStore = functions.https.onRequest((req, res) => {
 exports.updateStorePayment = functions.https.onRequest((req, res) => {
     var storeID = req.body.storeID;
     var sourceID = req.body.sourceID;
-    return admin.database().ref(`/stores/${storeID}/customer/id`).once('value').then(function(snapshot){
-        if (snapshot.exists){
+    return admin.database().ref(`/stores/${storeID}/customer/id`).once('value').then(function (snapshot) {
+        if (snapshot.exists) {
             stripe.customers.update(snapshot.val(), {
                 source: sourceID
-            }, function(err, customer){
-                if (err){
-                    console.log("STRIPE ERROR",err);
+            }, function (err, customer) {
+                if (err) {
+                    console.log("STRIPE ERROR", err);
                     res.status(400).send(err);
-                } else{
-                    admin.database().ref(`/stores/${storeID}/customer`).update(customer).then(() =>{
-                        console.log("COMPLETE",customer);
+                } else {
+                    admin.database().ref(`/stores/${storeID}/customer`).update(customer).then(() => {
+                        console.log("COMPLETE", customer);
                         res.status(200).send(customer);
                     });
                 }
             });
-        }else{// No such customer
+        } else {// No such customer
             console.log("CustomerID does not exist or store does not exist");
             res.status(404).end();
         }
-    }, function(error){
+    }, function (error) {
         console.log("OBSERVER ERROR", error);
     });
 })
 
+///Validate the email provided
+function validateEmail(email) {
+    return /[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,64}/.test(email);
+}
+///Validates the password provided
+function validatePassword(password) {
+    return /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*()\-+=_[\]|;:'"\/.,<>`~]).{6,}$/.test(password);
+}
+///Checks if both passwords provided match
+function checkPasswordMatch(password1, password2) {
+    return password1 === password2;
+}
+///Checks if firstName, lastName and photoURL is not empty(photoURL not necessary but why not)
+///Returns false if empty else true
+function checkFirstLastAndPhoto(firstName, lastName, photoURL){
+    return (firstName != "" && lastName != "" && photoURL != "");
+}
+///Adds the successfully created user to the database
+function addCourierToDatabase(uid, firstName, lastName, email, emailHash, photoURL) {
+    const dict = {
+        "uid": uid, "firstName": firstName, "lastName": lastName, "photoURL": photoURL,
+        "email": email, "rating": 5.0, "currentDevice": "", "verified": false
+    };
+
+    return new Promise(function (resolve, reject) {
+        admin.database().ref('Couriers/' + emailHash).update(dict).then(() => {
+            console.log("Added to the database successfully");
+            resolve()
+        }, function (error) {
+            console.log("Couldn't add the user to the database for some reason");
+            reject(error);
+        });
+    });
+}
+exports.createCourier = functions.https.onRequest((req, res) => {
+    const firstName = req.body.firstName;
+    const lastName = req.body.lastName;
+    const email = req.body.email;
+    const password = req.body.password;
+    const confirmPassword = req.body.confirmPassword;
+    const phoneNumber = req.body.phoneNumber;
+    const photoURL = req.body.photoURL;
+    //check if fields of type text and photoURL is not empty
+    if(checkFirstLastAndPhoto(firstName, lastName, photoURL) === false){
+        console.log('All fields are required');
+        res.status(400).send();
+        return;
+    }
+    //Need to validate email
+    //Need to validate password and make sure both passwords match
+    if (validateEmail(email) === false) {
+        //TO-DO: Please provide a valid email
+        console.log('Invalid Email: Please provide a valid email');
+        res.status(401).send();
+        return;
+    }
+    if (validatePassword(password) === false) {
+        //TO-DO: Password must be 6 or more characters and must include at least one uppercase, one lowercase, and one special characters 
+        console.log('Password must be 6 or more characters and must include at least one uppercase, one lowercase, and one special characters');
+        res.status(402).send();
+        return;
+    }
+    if (checkPasswordMatch(password, confirmPassword) === false) {
+        //TO-DO: Passwords do not match
+        console.log('Passwords do not match');
+        res.status(406).send();
+        return;
+    }
+    //hash the email
+    const emailHash = crypto.createHash('md5').update(email).digest('hex');
+    return admin.auth().createUser({//can also add photourl later on
+        email: email,
+        emailVerified: false,
+        password: password,
+        displayName: "" + firstName + " " + lastName,
+        disabled: false
+    }).then(function (user) {
+        console.log("Created user succesfully with uid:", user.uid);
+        addCourierToDatabase(user.uid, firstName, lastName, email, emailHash, photoURL).then(function (resolve) {
+            createCourierStripeAccount(email, emailHash, firstName, lastName).then(function(account){
+                console.log(account);
+                res.status(200).end();
+            }, function(error){
+                console.log("Error creating stripe after adding user to db",error);
+                res.status(408).end();
+            });
+        }, function (error) {
+            console.log('Error Adding user to db');
+            res.status(407).send(error);
+        });
+    }, function (error) {
+        console.log("Error creating user:", error);
+        res.status(405).send(error);
+    });
+});
+
+
 exports.createStore = functions.https.onRequest((req, res) => {
-    console.log(req.body);
     var storeName = req.body.storeName;
     var storeLogo = req.body.storeLogo;
     var storeBackground = req.body.storeBackground;
@@ -227,7 +323,7 @@ exports.createStore = functions.https.onRequest((req, res) => {
             address_zip: address_zip,
             address_state: address_state
         }
-    }, function(err, customer) {
+    }, function (err, customer) {
         if (err) {
             console.log(err);
             res.status(400).end(); // COULD NOT CREATE CUSTOMER ERROR
@@ -291,7 +387,7 @@ exports.updateStripeAccount = functions.https.onRequest((req, res) => {
             "date": tos_time,
             "ip": "99.250.237.232"
         }
-    }, function(err, account) {
+    }, function (err, account) {
         if (err) {
             console.log(err);
             res.status(400).end();
@@ -302,41 +398,52 @@ exports.updateStripeAccount = functions.https.onRequest((req, res) => {
         }
     });
 })
-
+function createCourierStripeAccount(email, emailHash, firstName, lastName) {
+    return new Promise(function (resolve, reject) {
+        stripe.accounts.create({
+            country: "CA",
+            default_currency: "cad",
+            type: "custom",
+            email: email,
+            legal_entity: {
+                type: "individual",
+                first_name: firstName,
+                last_name: lastName
+            },
+            payout_schedule: {
+                interval: "weekly",
+                weekly_anchor: "wednesday"
+            }
+        }, function (err, account) {
+            if (err) {
+                reject(err);
+            } else {
+                admin.database().ref(`/Couriers/${emailHash}/stripeAccount`).set(account).then(function (fulfilled) {
+                    resolve(account);
+                }, function (error) {
+                    console.log('Error setting stripeAccount for the first time');
+                    reject(error);
+                });
+            }
+        });
+    });
+}
 exports.createNewStripeAccount = functions.https.onRequest((req, res) => {
     const email = req.body.email;
     const emailHash = crypto.createHash('md5').update(email).digest('hex');
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;
-
-    return stripe.accounts.create({
-        country: "CA",
-        default_currency: "cad",
-        type: "custom",
-        email: email,
-        legal_entity: {
-            type: "individual",
-            first_name: firstName,
-            last_name: lastName
-        },
-        payout_schedule: {
-            interval: "weekly",
-            weekly_anchor: "wednesday"
-        }
-    }, function(err, account) {
-        if (err) {
-            console.log(err);
-            res.status(400).end();
-        } else {
-            admin.database().ref(`/Couriers/${emailHash}/stripeAccount`).set(account)
-            console.log(account);
-            res.status(200).end();
-        }
+    createCourierStripeAccount(email, emailHash, firstName, lastName).then(function(account){
+        console.log(account);
+        res.status(200).end();
+    }, function(error){
+        console.log(error);
+        res.status(400).end();
     });
 });
 
 function checkUserVerifiedOrFlagged(emailHash, callback) {
-    return admin.database().ref('Couriers/' + emailHash).once('value').then(function(snapshot){
+    return admin.database().ref('Couriers/' + emailHash).once('value').then(function (snapshot) {
         var userValues = snapshot.val();
         if (userValues != null) {
             const flagged = userValues.flagged;
@@ -353,8 +460,8 @@ function checkUserVerifiedOrFlagged(emailHash, callback) {
                 callback(null, true);
                 return;
             }
-        } 
-    }, function(error){
+        }
+    }, function (error) {
         //SOME WEIRD THING HAPPEN
     });
 }
@@ -364,9 +471,9 @@ function getChargeAmount(deliveryLat, deliveryLong, pickupLat, pickupLong) {
         latitude: deliveryLat,
         longitude: deliveryLong
     }, {
-        latitude: pickupLat,
-        longitude: pickupLong
-    });
+            latitude: pickupLat,
+            longitude: pickupLong
+        });
     const price = Math.floor((distanceBtw / 1000) + 4.50); // 4.50 for successfull delivery.
     return price * 100;
 }
@@ -374,18 +481,18 @@ function getChargeAmount(deliveryLat, deliveryLong, pickupLat, pickupLong) {
 exports.getDeliveryStatus = functions.https.onRequest((req, res) => {
     const deliveryID = req.body.deliveryID;
     const storeID = req.body.storeID;
-    admin.database().ref(`/AllJobs/${deliveryID}`).once("value", function(snapshot) {
+    admin.database().ref(`/AllJobs/${deliveryID}`).once("value", function (snapshot) {
         if (snapshot.exists) {
             console.log("Found delivery in AllJobs");
             res.status(206).end(); // NOT TAKEN
         }
-        else{
-            admin.database().ref(`/TakenJobs/${deliveryID}`).once("value", function(secondSnapshot) {
+        else {
+            admin.database().ref(`/TakenJobs/${deliveryID}`).once("value", function (secondSnapshot) {
                 if (secondSnapshot.exists) {
                     console.log("Found delivery in TakenJobs");
                     res.status(200).send(secondSnapshot); // OK
                 }
-                else{
+                else {
                     console.log("Unknown deliveryID");
                     res.status(400).end();
                 }
@@ -397,7 +504,7 @@ exports.getDeliveryStatus = functions.https.onRequest((req, res) => {
 exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
     //storeName, deliveryLat, deliveryLong, deliveryMainInstruction, deliverySubInstruction, originLat, originLong, pickupMainInstruction, pickupSubInstruction, recieverName, recieverNumber, pickupNumber  
     var storeID = req.body.storeID;
-    admin.database().ref(`/stores/${storeID}`).once("value", function(snapshot) {
+    admin.database().ref(`/stores/${storeID}`).once("value", function (snapshot) {
         if (snapshot.exists) {
             console.log(storeID);
             var deliveryLat = req.body.deliveryLat,
@@ -420,11 +527,11 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
                 return
             }
             stripe.charges.create({
-                amount: chargeAmount+100,
+                amount: chargeAmount + 100,
                 currency: "cad",
                 description: "Delivery; " + newPostKey + " By store; " + storeID,
                 customer: snapshot.child(`/customer/id`).val()
-            }, function(err, charge) {
+            }, function (err, charge) {
                 if (err) {
                     console.log(err);
                     res.status(450).end // CANNOT CHARGE ERROR
@@ -466,18 +573,18 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
     })
 });
 
-exports.payOnDelivery = functions.database.ref('/CompletedJobs/{id}').onCreate((snapshot, context) =>{
+exports.payOnDelivery = functions.database.ref('/CompletedJobs/{id}').onCreate((snapshot, context) => {
     console.log(snapshot.val());
     const chargeID = snapshot.child("chargeID/id").val();
     const amount = +(snapshot.child("chargeID/amount").val());
-    const amountAfterCut = (amount-100)*0.75;
+    const amountAfterCut = (amount - 100) * 0.75;
     const emailHash = snapshot.child("jobTaker").val();
-    if (chargeID == null || amount == null || emailHash == null){
+    if (chargeID == null || amount == null || emailHash == null) {
         console.log("Could not parse data");
         return false
     }
     console.log("Checking userRef", emailHash, amountAfterCut, chargeID);
-    return admin.database().ref(`Couriers/${emailHash}`).once("value", function(userSnapshot){
+    return admin.database().ref(`Couriers/${emailHash}`).once("value", function (userSnapshot) {
         console.log("Making stripe request");
         var accountID = userSnapshot.child("stripeAccount/id");
         stripe.transfers.create({
@@ -485,16 +592,16 @@ exports.payOnDelivery = functions.database.ref('/CompletedJobs/{id}').onCreate((
             currency: "cad",
             source_transaction: chargeID,
             destination: accountID
-        }, function(err, transfer){
-            if (err){
+        }, function (err, transfer) {
+            if (err) {
                 console.log(err);
             }
-            else{
-                console.log("Transfer made",transfer);
+            else {
+                console.log("Transfer made", transfer);
                 return true
             }
         })
-    })   
+    })
 })
 
 exports.getPaidForDelivery = functions.https.onRequest((req, res) => {
@@ -502,29 +609,29 @@ exports.getPaidForDelivery = functions.https.onRequest((req, res) => {
     var amount = req.body.amount;
     var emailHash = req.body.emailHash;
     var chargeID = req.body.chargeID;
-    admin.database().ref(`/Couriers/${emailHash}/stripeAccount/id`).once("value", function(snapshot){
+    admin.database().ref(`/Couriers/${emailHash}/stripeAccount/id`).once("value", function (snapshot) {
         var accountID = snapshot.val();
-        console.log("ACCOUNTID:",accountID);
-        if (accountID == null){
+        console.log("ACCOUNTID:", accountID);
+        if (accountID == null) {
             console.log("Could not retrieve account ID");
             res.status(450).end(); // COULD NOT RETRIVE ACCOUNT ID ERROR
             return
         }
         stripe.transfers.create({
-            amount: (amount-100)*0.75,
+            amount: (amount - 100) * 0.75,
             currency: "cad",
             source_transaction: chargeID,
             destination: accountID
-        }, function(err, transfer) {
-          if (err) {
-              console.log(err);
-              res.status(420).end(); // COULD NOT TRANSFER ERROR
-          } else {
-              console.log(transfer);
-              res.status(200).send(transfer); // OK
-          }
-      });
-    });   
+        }, function (err, transfer) {
+            if (err) {
+                console.log(err);
+                res.status(420).end(); // COULD NOT TRANSFER ERROR
+            } else {
+                console.log(transfer);
+                res.status(200).send(transfer); // OK
+            }
+        });
+    });
 })
 
 exports.getBestJob = functions.https.onRequest((req, res) => {
@@ -534,103 +641,103 @@ exports.getBestJob = functions.https.onRequest((req, res) => {
     var minDist = 20000,
         currentDist = 0,
         jobKey;
-
-    checkUserVerifiedOrFlagged(emailHash, function(error, checked) {
-        if (error) {
-            console.log(error.message, req.body);
-            if (error.message === "User needs to verify their background check") {
-                res.status(400).send("need to verify");
-                return;
-            } else {
-                res.status(500).send("need to unflag");
-                return;
-            }
-        } else {
-            getClosestJobIdAndDistance(lat, long, function(err, data) {
-                if (err) {
-                    console.log("Found an Error");
-                    res.status(404).send(err);
+    admin.auth().
+        checkUserVerifiedOrFlagged(emailHash, function (error, checked) {
+            if (error) {
+                console.log(error.message, req.body);
+                if (error.message === "User needs to verify their background check") {
+                    res.status(400).send("need to verify");
                     return;
                 } else {
-                    var maxDist = 12000;
-                    const closestJobIdDict = data[0]; //This is a dictionary
-                    const closestJobId = Object.keys(closestJobIdDict)[0];
-                    console.log("Initial MaxDist is: " + maxDist);
-                    console.log("Dict: " + closestJobIdDict + " ID: " + closestJobId);
-                    const totalDistance = data[1];
-                    var jobBundle = closestJobIdDict;
-                    maxDist = maxDist - totalDistance;
+                    res.status(500).send("need to unflag");
+                    return;
+                }
+            } else {
+                getClosestJobIdAndDistance(lat, long, function (err, data) {
+                    if (err) {
+                        console.log("Found an Error");
+                        res.status(404).send(err);
+                        return;
+                    } else {
+                        var maxDist = 12000;
+                        const closestJobIdDict = data[0]; //This is a dictionary
+                        const closestJobId = Object.keys(closestJobIdDict)[0];
+                        console.log("Initial MaxDist is: " + maxDist);
+                        console.log("Dict: " + closestJobIdDict + " ID: " + closestJobId);
+                        const totalDistance = data[1];
+                        var jobBundle = closestJobIdDict;
+                        maxDist = maxDist - totalDistance;
 
-                    var allJobsref = admin.database().ref('AllJobs');
-                    allJobsref.once('value', function(snapshot) {
-                        var allJobsValues = snapshot.val();
-                        if (allJobsValues != null) {
-                            for (const jobId in allJobsValues) {
-                                if (jobId != closestJobId) { //So skip if it sees the same job as the closest it already found
-                                    const pickupLat = allJobsValues[jobId].originLat;
-                                    const pickupLong = allJobsValues[jobId].originLong;
-                                    const deliveryLat = allJobsValues[jobId].deliveryLat;
-                                    const deliveryLong = allJobsValues[jobId].deliveryLong;
-                                    var x = geo.getDistance({
-                                        latitude: pickupLat,
-                                        longitude: pickupLong
-                                    }, {
-                                        latitude: lat,
-                                        longitude: long
-                                    });
-                                    var y = geo.getDistance({
-                                        latitude: pickupLat,
-                                        longitude: pickupLong
-                                    }, {
-                                        latitude: closestJobIdDict[closestJobId].originLat,
-                                        longitude: closestJobIdDict[closestJobId].originLong
-                                    });
-                                    var m = geo.getDistance({
-                                        latitude: pickupLat,
-                                        longitude: pickupLong
-                                    }, {
-                                        latitude: deliveryLat,
-                                        longitude: deliveryLong
-                                    });
-                                    var n = Math.min(...[x, y]);
+                        var allJobsref = admin.database().ref('AllJobs');
+                        allJobsref.once('value', function (snapshot) {
+                            var allJobsValues = snapshot.val();
+                            if (allJobsValues != null) {
+                                for (const jobId in allJobsValues) {
+                                    if (jobId != closestJobId) { //So skip if it sees the same job as the closest it already found
+                                        const pickupLat = allJobsValues[jobId].originLat;
+                                        const pickupLong = allJobsValues[jobId].originLong;
+                                        const deliveryLat = allJobsValues[jobId].deliveryLat;
+                                        const deliveryLong = allJobsValues[jobId].deliveryLong;
+                                        var x = geo.getDistance({
+                                            latitude: pickupLat,
+                                            longitude: pickupLong
+                                        }, {
+                                                latitude: lat,
+                                                longitude: long
+                                            });
+                                        var y = geo.getDistance({
+                                            latitude: pickupLat,
+                                            longitude: pickupLong
+                                        }, {
+                                                latitude: closestJobIdDict[closestJobId].originLat,
+                                                longitude: closestJobIdDict[closestJobId].originLong
+                                            });
+                                        var m = geo.getDistance({
+                                            latitude: pickupLat,
+                                            longitude: pickupLong
+                                        }, {
+                                                latitude: deliveryLat,
+                                                longitude: deliveryLong
+                                            });
+                                        var n = Math.min(...[x, y]);
 
-                                    if (maxDist >= (m + n)) {
-                                        var jobDict = {};
-                                        // jobDict[jobId] = allJobsValues[jobId];
-                                        jobBundle[jobId] = allJobsValues[jobId];
-                                        maxDist = maxDist - (m + n);
+                                        if (maxDist >= (m + n)) {
+                                            var jobDict = {};
+                                            // jobDict[jobId] = allJobsValues[jobId];
+                                            jobBundle[jobId] = allJobsValues[jobId];
+                                            maxDist = maxDist - (m + n);
+                                            admin.database().ref('AllJobs/' + jobId).remove().then(() => {
+                                                console.log("Removed job from AllJobs reference successfully");
+                                            }, () => {
+                                                console.log("Cannot remove job from AllJobs reference")
+                                            });
+                                            console.log("MaxDist is: " + maxDist);
+                                        }
+                                    } else {
                                         admin.database().ref('AllJobs/' + jobId).remove().then(() => {
                                             console.log("Removed job from AllJobs reference successfully");
                                         }, () => {
                                             console.log("Cannot remove job from AllJobs reference")
                                         });
-                                        console.log("MaxDist is: " + maxDist);
                                     }
-                                } else {
-                                    admin.database().ref('AllJobs/' + jobId).remove().then(() => {
-                                        console.log("Removed job from AllJobs reference successfully");
-                                    }, () => {
-                                        console.log("Cannot remove job from AllJobs reference")
-                                    });
-                                }
-                            } //End of For loop
+                                } //End of For loop
 
-                            admin.database().ref('Couriers/' + emailHash + '/givenJob').update(jobBundle).then(() => {
-                                console.log('Update succeeded!');
-                                res.status(200).send("OK It Gave Back Jobs");
-                            });
-                        } else {
-                            //No more jobs in the AllJobs Reference, so put the closestJob found in helper in user's reference
-                            admin.database().ref('Couriers/' + emailHash + '/givenJob').update(jobBundle).then(() => {
-                                console.log('Update succeeded!');
-                                res.status(200).send("OK It Gave Back Jobs");
-                            });
-                        }
-                    }); //End of observe single event
-                }
-            });
-        } // End of first if statement
-    }); //End of is flagged or verified function
+                                admin.database().ref('Couriers/' + emailHash + '/givenJob').update(jobBundle).then(() => {
+                                    console.log('Update succeeded!');
+                                    res.status(200).send("OK It Gave Back Jobs");
+                                });
+                            } else {
+                                //No more jobs in the AllJobs Reference, so put the closestJob found in helper in user's reference
+                                admin.database().ref('Couriers/' + emailHash + '/givenJob').update(jobBundle).then(() => {
+                                    console.log('Update succeeded!');
+                                    res.status(200).send("OK It Gave Back Jobs");
+                                });
+                            }
+                        }); //End of observe single event
+                    }
+                });
+            } // End of first if statement
+        }); //End of is flagged or verified function
 }); //End of Function
 
 function gotError(err) {
@@ -641,7 +748,7 @@ function gotError(err) {
 
 function getClosestJobIdAndDistance(lat, long, callback) {
     var allJobsref = admin.database().ref('AllJobs');
-    allJobsref.once('value', function(snapshot) {
+    allJobsref.once('value', function (snapshot) {
         // console.log(data.val());
         var allJobsValues = snapshot.val();
         if (snapshot.val() != null) {
@@ -659,16 +766,16 @@ function getClosestJobIdAndDistance(lat, long, callback) {
                     latitude: lat,
                     longitude: long
                 }, {
-                    latitude: pickupLat,
-                    longitude: pickupLong
-                });
+                        latitude: pickupLat,
+                        longitude: pickupLong
+                    });
                 const distanceFromPickupToDelivery = geo.getDistance({
                     latitude: pickupLat,
                     longitude: pickupLong
                 }, {
-                    latitude: deliveryLat,
-                    longitude: deliveryLong
-                });
+                        latitude: deliveryLat,
+                        longitude: deliveryLong
+                    });
                 if (distanceFromCurrentLocationToPickup + distanceFromPickupToDelivery < totalDistance) {
                     closestJobDict = {};
                     closestJobDict[jobId] = allJobsValues[jobId];
@@ -706,9 +813,9 @@ exports.deleteUserFromDatabase = functions.auth.user().onDelete(event => {
     const data = event.data;
     const emailHash = crypto.createHash('md5').update(data.email).digest('hex');
     console.log('Deleting user from database');
-    return admin.database().ref(`/Couriers/${emailHash}`).remove().then(function(fulfilled){
+    return admin.database().ref(`/Couriers/${emailHash}`).remove().then(function (fulfilled) {
         console.log('Deleted user from database');
-    }, function(error){
+    }, function (error) {
         console.log("Couldn't delete the user's reference");
     });
 });
@@ -718,43 +825,43 @@ exports.deleteUserFromDatabase = functions.auth.user().onDelete(event => {
 // alerts, if you've opted into receiving them.
 // [START reporterror]
 function reportError(err, context = {}) {
-  // This is the name of the StackDriver log stream that will receive the log
-  // entry. This name can be any valid log stream name, but must contain "err"
-  // in order for the error to be picked up by StackDriver Error Reporting.
-  const logName = 'errors';
-  const log = logging.log(logName);
+    // This is the name of the StackDriver log stream that will receive the log
+    // entry. This name can be any valid log stream name, but must contain "err"
+    // in order for the error to be picked up by StackDriver Error Reporting.
+    const logName = 'errors';
+    const log = logging.log(logName);
 
-  // https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/MonitoredResource
-  const metadata = {
-    resource: {
-      type: 'cloud_function',
-      labels: { function_name: process.env.FUNCTION_NAME }
-    }
-  };
+    // https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/MonitoredResource
+    const metadata = {
+        resource: {
+            type: 'cloud_function',
+            labels: { function_name: process.env.FUNCTION_NAME }
+        }
+    };
 
-  // https://cloud.google.com/error-reporting/reference/rest/v1beta1/ErrorEvent
-  const errorEvent = {
-    message: err.stack,
-    serviceContext: {
-      service: process.env.FUNCTION_NAME,
-      resourceType: 'cloud_function'
-    },
-    context: context
-  };
+    // https://cloud.google.com/error-reporting/reference/rest/v1beta1/ErrorEvent
+    const errorEvent = {
+        message: err.stack,
+        serviceContext: {
+            service: process.env.FUNCTION_NAME,
+            resourceType: 'cloud_function'
+        },
+        context: context
+    };
 
-  // Write the error log entry
-  return new Promise((resolve, reject) => {
-    log.write(log.entry(metadata, errorEvent), error => {
-      if (error) { reject(error); }
-      resolve();
+    // Write the error log entry
+    return new Promise((resolve, reject) => {
+        log.write(log.entry(metadata, errorEvent), error => {
+            if (error) { reject(error); }
+            resolve();
+        });
     });
-  });
 }
 // [END reporterror]
 
 // Sanitize the error message for the user
 function userFacingMessage(error) {
-  return error.type ? error.message : 'An error occurred, developers have been alerted';
+    return error.type ? error.message : 'An error occurred, developers have been alerted';
 }
 
 
@@ -762,42 +869,41 @@ function userFacingMessage(error) {
 
 
 //API STARTS HERE
-function newDelivery(storeID, deliveryLat, deliveryLong, deliveryMainInstruction, deliverySubInstruction, originLat, originLong, pickupMainInstruction, pickupSubInstruction, recieverName, recieverNumber, pickupNumber)
-{
+function newDelivery(storeID, deliveryLat, deliveryLong, deliveryMainInstruction, deliverySubInstruction, originLat, originLong, pickupMainInstruction, pickupSubInstruction, recieverName, recieverNumber, pickupNumber) {
 
-  getStore(storeID, function(storeValues, error){
-    if (error){
-      alert(error.message);
-      console.log(error);
-      return 500;
-    }else{
-      var deliveryDetails = {storeID, deliveryLat, deliveryLong, deliveryMainInstruction, deliverySubInstruction, originLat, originLong, pickupMainInstruction, pickupSubInstruction, recieverName, recieverNumber, pickupNumber};
-      // deliveryDetails[storeName] = storeValues;
-      deliveryDetails.isTaken = false;
-      deliveryDetails.isCompleted = false;
-      // Get a key for a new Post.
-      var newPostKey = admin.database().ref().child('AllJobs').push().key;
-      admin.database().ref('stores/'+storeID+'/deliveries/'+newPostKey).update(deliveryDetails).then(() =>{
-        console.log('Update succeeded: stores')
-      });
+    getStore(storeID, function (storeValues, error) {
+        if (error) {
+            alert(error.message);
+            console.log(error);
+            return 500;
+        } else {
+            var deliveryDetails = { storeID, deliveryLat, deliveryLong, deliveryMainInstruction, deliverySubInstruction, originLat, originLong, pickupMainInstruction, pickupSubInstruction, recieverName, recieverNumber, pickupNumber };
+            // deliveryDetails[storeName] = storeValues;
+            deliveryDetails.isTaken = false;
+            deliveryDetails.isCompleted = false;
+            // Get a key for a new Post.
+            var newPostKey = admin.database().ref().child('AllJobs').push().key;
+            admin.database().ref('stores/' + storeID + '/deliveries/' + newPostKey).update(deliveryDetails).then(() => {
+                console.log('Update succeeded: stores')
+            });
 
-      admin.database().ref('AllJobs/'+newPostKey).update(deliveryDetails).then(() =>{
-        console.log('Update succeeded: alljobs');
-      });
-    }
-  })
+            admin.database().ref('AllJobs/' + newPostKey).update(deliveryDetails).then(() => {
+                console.log('Update succeeded: alljobs');
+            });
+        }
+    })
 }
 
-function getStore(storeID, callback){
-  var storesRef = admin.database().ref('stores/'+storeID);
-  storesRef.once('value',function(snapshot){
-    if (snapshot.exists()){
-      const storeValues = snapshot.val();
-      callback(storeValues,null);
-    }else{
-      const error = new Error("No such store availablie");
-      callback(null,error);
-    }
-    
-  });
+function getStore(storeID, callback) {
+    var storesRef = admin.database().ref('stores/' + storeID);
+    storesRef.once('value', function (snapshot) {
+        if (snapshot.exists()) {
+            const storeValues = snapshot.val();
+            callback(storeValues, null);
+        } else {
+            const error = new Error("No such store availablie");
+            callback(null, error);
+        }
+
+    });
 }

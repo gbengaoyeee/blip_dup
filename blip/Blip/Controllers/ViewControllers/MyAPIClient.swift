@@ -135,25 +135,37 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
             "locationLong" : locationLong,
             "emailHash" : userHash
         ]
-        Alamofire.request(url, method: .post, parameters: params, headers: nil).validate(statusCode: 200...200)
-            .responseString { (resp) in
-//                print(resp)
-//                print(resp.result)
-//                print(resp.response)
-//                print(resp.response?.statusCode)
-                switch resp.result{
-                case .success:
-                    print("Result:", resp.result.value)
-                    print("Result:", resp.response?.statusCode)
-                    completion(nil, true)
-                    break
-                case .failure(let error):
-                    print("Result:",resp.result)
-                    print("Result:",resp.response?.statusCode)
-                    completion(resp.response?.statusCode, nil)
-                    break
-                }
-        }
+        
+        Auth.auth().currentUser?.reload(completion: { (err) in
+            if err != nil{
+                print("Error reloading current user")
+                return
+            }
+            print(Auth.auth().currentUser?.isEmailVerified)
+            if (self.service.provider != "facebook.com" && !(Auth.auth().currentUser?.isEmailVerified)!){
+                // This non-facebook user has not verified their email, so cannot make job requests
+                
+                print("checking for verified b4 request", Auth.auth().currentUser?.isEmailVerified, self.service.provider)
+                completion(400, nil)
+                return
+            }
+            Alamofire.request(url, method: .post, parameters: params, headers: nil).validate(statusCode: 200...200)
+                .responseString { (resp) in
+                    switch resp.result{
+                    case .success:
+                        print("Result:", resp.result.value)
+                        print("Result:", resp.response?.statusCode)
+                        completion(nil, true)
+                        break
+                    case .failure(let error):
+                        print("Result:",resp.result)
+                        print("Result:",resp.response?.statusCode)
+                        completion(resp.response?.statusCode, nil)
+                        break
+                    }
+            }
+        })
+        
 
     }
     
