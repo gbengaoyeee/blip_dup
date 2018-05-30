@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0700"
+   LastUpgradeVersion = "0930"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -13,11 +13,11 @@
             buildForProfiling = "YES"
             buildForArchiving = "YES">
             <BuildableReference
-               BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'FAD5196F7FFEAB8E82A15882A88EA373'
-               BlueprintName = 'SwiftIcons'
-               ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'SwiftIcons.framework'>
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "1D1C9ECF2A84A2B3C737B84648CF0CD4"
+               BlueprintName = "SwiftIcons"
+               ReferencedContainer = "container:Pods.xcodeproj"
+               BuildableName = "SwiftIcons.framework">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

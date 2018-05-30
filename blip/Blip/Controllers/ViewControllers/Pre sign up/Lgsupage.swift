@@ -9,22 +9,17 @@
 import UIKit
 import AVFoundation
 import Lottie
-import FBSDKLoginKit
-import FBSDKCoreKit
 import Material
 import Firebase
 import RevealingSplashView
 import Alamofire
 
-
 class Lgsupage: UIViewController {
-    @IBOutlet weak var facebookLoginButton: RaisedButton!
     
     var Player: AVPlayer!
     var PlayerLayer: AVPlayerLayer!
     
     @IBOutlet var LoginButton: UIButton!
-    @IBOutlet var SignUpButton: UIButton!
 
     var dbRef: DatabaseReference!
     let logoAnimation = LOTAnimationView(name: "clock")
@@ -40,7 +35,6 @@ class Lgsupage: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        prepareFacebookButton()
         self.dbRef = Database.database().reference()
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         if let hash = appDelegate.lastUserHash{
@@ -50,12 +44,15 @@ class Lgsupage: UIViewController {
         playBackgroundVideo()
     }
     
-    ///Prepares the "Login wiith Facebook" button
-    fileprivate func prepareFacebookButton(){
-        let facebookImage = UIImage(icon: .fontAwesome(.facebookF), size: CGSize(width: 40, height: 40), textColor: UIColor.white, backgroundColor: .clear)
-        
-        facebookLoginButton.image = facebookImage
-        
+    @IBAction func signUpPressed(_ sender: Any) {
+        guard let url = URL(string: "http://www.blip.delivery") else {
+            return
+        }
+        if #available(iOS 10.0, *) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        } else {
+            UIApplication.shared.openURL(url)
+        }
     }
     
     fileprivate func playBackgroundVideo(){
@@ -79,38 +76,6 @@ class Lgsupage: UIViewController {
         
         NotificationCenter.default.addObserver(self,selector: #selector(appWillEnterForegroundNotification),name: .UIApplicationWillEnterForeground, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(playerItemReachEnd(notification:)), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: Player.currentItem)
-    }
-
-    /**
-     Logs in user with facebook
-     */
-    @IBAction func loginWithFacebookClicked(_ sender: Any) {
-        let fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
-        fbLoginManager.logIn(withReadPermissions: ["email"], from: self) { (result, error) -> Void in
-            if (error == nil){
-                let fbloginresult : FBSDKLoginManagerLoginResult = result!
-                // if user cancel the login
-                if (result?.isCancelled)!{
-                    return
-                }
-                if(fbloginresult.grantedPermissions.contains("email"))
-                {
-                    self.service.getFBUserData(completion: { (email, firstName, lastName) in
-                        guard let email = email, let firstName = firstName, let lastName = lastName else{
-                            print("Facebook got weird")
-                            return
-                        }
-                        MyAPIClient.sharedClient.createNewStripeAccount(email: email, firstName: firstName, lastName: lastName, completion: { (responseVal, error) in
-                            if let error = error as? AFError{
-                                print(error.errorDescription!)
-                                return
-                            }
-                            print("RESPONSE VALUE", responseVal)
-                        })
-                    })
-                }
-            }
-        }
     }
     
     @objc func appWillEnterForegroundNotification() {
