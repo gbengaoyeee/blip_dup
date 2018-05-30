@@ -216,7 +216,6 @@ function addCourierToDatabase(uid, firstName, lastName, email, emailHash, photoU
         "uid": uid, "firstName": firstName, "lastName": lastName, "photoURL": photoURL,
         "email": email, "rating": 5.0, "currentDevice": "", "verified": false, "phoneNumber":phoneNumber
     };
-
     return new Promise(function (resolve, reject) {
         admin.database().ref('Couriers/' + emailHash).update(dict).then(() => {
             console.log("Added to the database successfully");
@@ -235,32 +234,6 @@ exports.createCourier = functions.https.onRequest((req, res) => {
     const confirmPassword = req.body.confirmPassword;
     const phoneNumber = req.body.phoneNumber;
     const photoURL = req.body.photoURL;
-    //check if fields of type text and photoURL is not empty
-    if(checkFirstLastPhotoAndPhone(firstName, lastName, photoURL, phoneNumber) === false){
-        console.log('All fields are required');
-        res.status(400).send();
-        return;
-    }
-    //Need to validate email
-    //Need to validate password and make sure both passwords match
-    if (validateEmail(email) === false) {
-        //TO-DO: Please provide a valid email
-        console.log('Invalid Email: Please provide a valid email');
-        res.status(401).send();
-        return;
-    }
-    if (validatePassword(password) === false) {
-        //TO-DO: Password must be 6 or more characters and must include at least one uppercase, one lowercase, and one special characters 
-        console.log('Password must be 6 or more characters and must include at least one uppercase, one lowercase, one number, and one special characters');
-        res.status(402).send();
-        return;
-    }
-    if (checkPasswordMatch(password, confirmPassword) === false) {
-        //TO-DO: Passwords do not match
-        console.log('Passwords do not match');
-        res.status(403).send();
-        return;
-    }
     //hash the email
     const emailHash = crypto.createHash('md5').update(email).digest('hex');
     return admin.auth().createUser({//can also add photourl later on
@@ -279,15 +252,15 @@ exports.createCourier = functions.https.onRequest((req, res) => {
                 res.status(200).end();
             }, function(error){
                 console.log("Error creating stripe after adding user to db",error);
-                res.status(407).end();
+                res.status(402).end();
             });
         }, function (error) {
             console.log('Error Adding user to db');
-            res.status(406).send(error);
+            res.status(401).send(error);//406
         });
     }, function (error) {
         console.log("Error creating user:", error);
-        res.status(405).send(error);
+        res.status(400).send(error);//405
     });
 });
 
