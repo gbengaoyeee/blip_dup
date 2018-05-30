@@ -247,7 +247,7 @@ class ServiceCalls{
     ///   - password: user password
     ///   - completion: returns upon completion of user object creation in firebase
     func createUser(firstName:String, lastName:String, email: String, password:String, image:UIImage?, completion: CreateUserCompletion?){
-        Auth.auth().createUser(withEmail: email, password: password, completion: { (user, error) in
+        Auth.auth().createUser(withEmail: email, password: password, completion: { (dataResult, error) in
             if error != nil{
                 //Handling Firebase Errors
                 self.handleFirebaseError(error: (error as NSError?)!, completion: completion)
@@ -256,10 +256,10 @@ class ServiceCalls{
             //No errors
             //Do whatever is needed
             
-            self.emailHash = self.MD5(string: (user?.email)!)
-            self.addUserToDatabase(uid: (user?.uid)!, firstName: firstName, lastName: lastName, email: email, provider: nil)
+            self.emailHash = self.MD5(string: (dataResult?.user.email)!)
+            self.addUserToDatabase(uid: (dataResult!.user.uid), firstName: firstName, lastName: lastName, email: email, provider: nil)
             //Send Email verification
-            user?.sendEmailVerification(completion: { (error) in
+            dataResult?.user.sendEmailVerification(completion: { (error) in
                 if error != nil{
                     print(error!.localizedDescription)
                     self.handleFirebaseError(error: (error as NSError?)!, completion: completion)
@@ -271,7 +271,7 @@ class ServiceCalls{
                         print("ERROR:",errMsg!)
                         return
                     }
-                    completion?(nil, user)
+                    completion?(nil, dataResult?.user)
                 })
                 
             })

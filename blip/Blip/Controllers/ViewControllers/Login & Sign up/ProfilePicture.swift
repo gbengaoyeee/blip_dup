@@ -124,27 +124,27 @@ class ProfilePicture: UIViewController, UIImagePickerControllerDelegate, UINavig
             let errorPopup = PopupDialog(title: "Error", message: "Please upload a profile picture")
             self.present(errorPopup, animated: true, completion: nil)
         }
-        else{
-            if let profileImg = profilePicture.image, let imageData = UIImageJPEGRepresentation(profileImg, 0.1){
-                storageRef.putData(imageData, metadata: nil, completion: { (metadata, error) in
-                    if error != nil{
-                        return
-                    }
-                    
-                    let profileImgURL = metadata?.downloadURL()?.absoluteString
-                    let profile = Auth.auth().currentUser?.createProfileChangeRequest()
-                    profile?.photoURL = URL(string: profileImgURL!)
-                    profile?.commitChanges(completion: { (err) in
-                        if err != nil{
-                            return
-                        }
-                        let imgValues:[String:Any] = ["photoURL":profileImgURL!]
-                        self.userRef.updateChildValues(imgValues)
-                        self.performSegue(withIdentifier: "endSignUp", sender: nil)
-                    })
-                })
-            }
-        }
+//        else{
+//            if let profileImg = profilePicture.image, let imageData = UIImageJPEGRepresentation(profileImg, 0.1){
+//                storageRef.putData(imageData, metadata: nil, completion: { (metadata, error) in
+//                    if error != nil{
+//                        return
+//                    }
+//
+//                    let profileImgURL = metadata?.downloadURL()?.absoluteString
+//                    let profile = Auth.auth().currentUser?.createProfileChangeRequest()
+//                    profile?.photoURL = URL(string: profileImgURL!)
+//                    profile?.commitChanges(completion: { (err) in
+//                        if err != nil{
+//                            return
+//                        }
+//                        let imgValues:[String:Any] = ["photoURL":profileImgURL!]
+//                        self.userRef.updateChildValues(imgValues)
+//                        self.performSegue(withIdentifier: "endSignUp", sender: nil)
+//                    })
+//                })
+//            }
+//        }
     }
 
 //    @IBAction func continuePressed(_ sender: UIButton) {
@@ -182,7 +182,7 @@ class ProfilePicture: UIViewController, UIImagePickerControllerDelegate, UINavig
 //            }
 //        }
 //    }
-    
+
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         let image = info[UIImagePickerControllerOriginalImage] as! UIImage

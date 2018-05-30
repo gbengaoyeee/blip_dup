@@ -133,16 +133,16 @@ class LoginVC: UIViewController {
         }
             // check if email is in database and password are correct
         else{
-            Auth.auth().signIn(withEmail: emailTF.text!, password: passwordTF.text!, completion: { (user, error) in
+            Auth.auth().signIn(withEmail: emailTF.text!, password: passwordTF.text!, completion: { (dataResult, error) in
                 // do some error checking
-                if (error != nil || !(user?.isEmailVerified)!){
+                if (error != nil){
                     self.errorAnimation()
                     return
                 }
-                else if (error == nil && (user?.isEmailVerified)!){
+                else{
                     // else perform segue
-                    self.service.emailHash = self.MD5(string: (user?.email)!)
-                    let ref = Database.database().reference().child("Couriers").child(self.MD5(string: (user?.email)!))
+                    self.service.emailHash = self.MD5(string: (dataResult?.user.email)!)
+                    let ref = Database.database().reference().child("Couriers").child(self.MD5(string: (dataResult?.user.email)!))
                     let token = ["currentDevice": AppDelegate.DEVICEID]
                     ref.updateChildValues(token)
                     self.loginCredentialsCorrectAnimation()
