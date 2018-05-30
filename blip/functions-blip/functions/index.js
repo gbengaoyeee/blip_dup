@@ -207,14 +207,14 @@ function checkPasswordMatch(password1, password2) {
 }
 ///Checks if firstName, lastName and photoURL is not empty(photoURL not necessary but why not)
 ///Returns false if empty else true
-function checkFirstLastAndPhoto(firstName, lastName, photoURL){
-    return (firstName != "" && lastName != "" && photoURL != "");
+function checkFirstLastPhotoAndPhone(firstName, lastName, photoURL, phoneNumber){
+    return (firstName != "" && lastName != "" && photoURL != "" && phoneNumber != "");
 }
 ///Adds the successfully created user to the database
-function addCourierToDatabase(uid, firstName, lastName, email, emailHash, photoURL) {
+function addCourierToDatabase(uid, firstName, lastName, email, emailHash, photoURL, phoneNumber) {
     const dict = {
         "uid": uid, "firstName": firstName, "lastName": lastName, "photoURL": photoURL,
-        "email": email, "rating": 5.0, "currentDevice": "", "verified": false
+        "email": email, "rating": 5.0, "currentDevice": "", "verified": false, "phoneNumber":phoneNumber
     };
 
     return new Promise(function (resolve, reject) {
@@ -236,7 +236,7 @@ exports.createCourier = functions.https.onRequest((req, res) => {
     const phoneNumber = req.body.phoneNumber;
     const photoURL = req.body.photoURL;
     //check if fields of type text and photoURL is not empty
-    if(checkFirstLastAndPhoto(firstName, lastName, photoURL) === false){
+    if(checkFirstLastPhotoAndPhone(firstName, lastName, photoURL, phoneNumber) === false){
         console.log('All fields are required');
         res.status(400).send();
         return;
@@ -268,10 +268,12 @@ exports.createCourier = functions.https.onRequest((req, res) => {
         emailVerified: false,
         password: password,
         displayName: "" + firstName + " " + lastName,
+        photoURL: photoURL,
         disabled: false
     }).then(function (user) {
         console.log("Created user succesfully with uid:", user.uid);
-        addCourierToDatabase(user.uid, firstName, lastName, email, emailHash, photoURL).then(function (resolve) {
+        console.log("photo", user.photoURL);
+        addCourierToDatabase(user.uid, firstName, lastName, email, emailHash, photoURL, phoneNumber).then(function (resolve) {
             createCourierStripeAccount(email, emailHash, firstName, lastName).then(function(account){
                 console.log(account);
                 res.status(200).end();

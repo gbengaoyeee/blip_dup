@@ -41,6 +41,7 @@ class Lgsupage: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         prepareFacebookButton()
+        self.SignUpButton.addTarget(self, action: #selector(setupSignUpLink), for: .touchUpInside)
         self.dbRef = Database.database().reference()
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         if let hash = appDelegate.lastUserHash{
@@ -53,9 +54,15 @@ class Lgsupage: UIViewController {
     ///Prepares the "Login wiith Facebook" button
     fileprivate func prepareFacebookButton(){
         let facebookImage = UIImage(icon: .fontAwesome(.facebookF), size: CGSize(width: 40, height: 40), textColor: UIColor.white, backgroundColor: .clear)
-        
         facebookLoginButton.image = facebookImage
-        
+    }
+    
+    @objc fileprivate func setupSignUpLink(){
+        guard let websiteUrl = URL(string: "https://www.blip.delivery/") else {
+            print("Couldn't get the Blip website ")
+            return
+        }
+        UIApplication.shared.open(websiteUrl, options: [:], completionHandler: nil)
     }
     
     fileprivate func playBackgroundVideo(){

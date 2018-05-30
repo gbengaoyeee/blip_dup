@@ -204,7 +204,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8eP-3M-9Oo" customClass="RaisedButton" customModule="Material">
-                                <rect key="frame" x="130" y="78" width="106" height="30"/>
+                                <rect key="frame" x="132.5" y="78" width="110" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="35" id="fHc-X9-5kk"/>
                                     <constraint firstAttribute="width" constant="110" id="zgp-l7-q3J"/>
@@ -984,9 +984,6 @@
                                     <userDefinedRuntimeAttribute type="string" keyPath="heroID" value="signUp"/>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
                                 </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <segue destination="uRx-r0-n1m" kind="show" id="Bdr-JI-VRf"/>
-                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dont have an account?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CLm-7n-7F1">
                                 <rect key="frame" x="97.5" y="334" width="180" height="20"/>
@@ -1060,7 +1057,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="AYw-Ng-4rm" customClass="TextField" customModule="Material">
-                                <rect key="frame" x="70" y="247.5" width="220" height="35"/>
+                                <rect key="frame" x="70" y="203.5" width="220" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="220" id="Jfl-mx-W1r"/>
                                     <constraint firstAttribute="height" constant="35" id="vI5-mG-a1R"/>
@@ -1074,7 +1071,7 @@
                                 </userDefinedRuntimeAttributes>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RVx-NY-kBj" customClass="TextField" customModule="Material">
-                                <rect key="frame" x="70" y="327.5" width="220" height="35"/>
+                                <rect key="frame" x="70" y="283.5" width="220" height="35"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" textContentType="family-name"/>
@@ -1087,7 +1084,7 @@
                                 </connections>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="a53-2Y-Epf" customClass="TextField" customModule="Material">
-                                <rect key="frame" x="385" y="247.5" width="220" height="35"/>
+                                <rect key="frame" x="385" y="203.5" width="220" height="35"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="next" textContentType="email"/>
@@ -1097,7 +1094,7 @@
                                 </userDefinedRuntimeAttributes>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JHc-ES-7Z5" customClass="TextField" customModule="Material">
-                                <rect key="frame" x="385" y="327.5" width="220" height="35"/>
+                                <rect key="frame" x="385" y="283.5" width="220" height="35"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="go" secureTextEntry="YES" textContentType="password"/>
@@ -1110,7 +1107,7 @@
                                 </connections>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign up" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sMj-Ub-gch">
-                                <rect key="frame" x="130.5" y="79" width="114" height="39.5"/>
+                                <rect key="frame" x="130.5" y="35" width="114" height="39.5"/>
                                 <fontDescription key="fontDescription" name="CenturyGothic-Bold" family="Century Gothic" pointSize="32"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -1120,7 +1117,7 @@
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="For identity verification purposes, please enter your first and last name" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RDz-GU-Vpb">
-                                <rect key="frame" x="62.5" y="138.5" width="250" height="59"/>
+                                <rect key="frame" x="62.5" y="94.5" width="250" height="59"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="250" id="xqU-QH-S4R"/>
                                 </constraints>
@@ -1129,7 +1126,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yVe-5H-I9M" customClass="RaisedButton" customModule="Material">
-                                <rect key="frame" x="157.5" y="412.5" width="60" height="60"/>
+                                <rect key="frame" x="157.5" y="368.5" width="60" height="60"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="GT7-2u-PPv"/>
@@ -1207,7 +1204,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose a profile Picture" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JJU-ku-Nsz">
-                                <rect key="frame" x="47" y="109" width="281" height="80"/>
+                                <rect key="frame" x="47" y="65" width="281" height="80"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="80" id="p3W-ZB-16D"/>
                                 </constraints>
@@ -1220,7 +1217,7 @@
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Ze-zr-00g">
-                                <rect key="frame" x="97" y="229" width="180" height="180"/>
+                                <rect key="frame" x="97" y="185" width="180" height="180"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="180" id="djx-tl-tIR"/>
@@ -1228,14 +1225,14 @@
                                 </constraints>
                             </view>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DCg-XE-jzd">
-                                <rect key="frame" x="97" y="229" width="180" height="180"/>
+                                <rect key="frame" x="97" y="185" width="180" height="180"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
                                     <userDefinedRuntimeAttribute type="string" keyPath="heroID" value="signUpTF"/>
                                 </userDefinedRuntimeAttributes>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8RF-i0-W7t" customClass="RaisedButton" customModule="Material">
-                                <rect key="frame" x="65.5" y="502" width="244" height="40"/>
+                                <rect key="frame" x="65.5" y="458" width="244" height="40"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
                                 <color key="tintColor" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
