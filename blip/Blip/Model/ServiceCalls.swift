@@ -501,7 +501,7 @@ class ServiceCalls{
         }
     }
     
-    func userCancelledJob(){
+    func userCancelledJob(completion: @escaping ()->()){
         self.userRef.child(emailHash).updateChildValues(["flagged":true])
         // remove state, istaken to false,
         self.userRef.child(emailHash).child("givenJob").observeSingleEvent(of: .value) { (snapshot) in
@@ -514,6 +514,12 @@ class ServiceCalls{
                     print("This error is inside userCancelledJobs")
                     return
                 }
+                if let state = value["state"] as? String{
+                    if (state == "pickup"){
+                        continue
+                    }
+                }
+                
                 value["state"] = nil
                 value["isTaken"] = false
                 value["jobTaker"] = nil
@@ -530,6 +536,7 @@ class ServiceCalls{
                 self.userRef.child(self.emailHash).child("givenJob/\(deliveryID)").removeValue()
                 
             }//end of for loop
+            completion()
         }
     }
     
