@@ -141,14 +141,6 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
                 print("Error reloading current user")
                 return
             }
-            print(Auth.auth().currentUser?.isEmailVerified)
-            if (self.service.provider != "facebook.com" && !(Auth.auth().currentUser?.isEmailVerified)!){
-                // This non-facebook user has not verified their email, so cannot make job requests
-                
-                print("checking for verified b4 request", Auth.auth().currentUser?.isEmailVerified, self.service.provider)
-                completion(400, nil)
-                return
-            }
             Alamofire.request(url, method: .post, parameters: params, headers: nil).validate(statusCode: 200...200)
                 .responseString { (resp) in
                     switch resp.result{

@@ -154,6 +154,8 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
             annotation.coordinate = delivery.origin
             map.addAnnotation(annotation)
         }
+        map.setZoomLevel(10, animated: true)
+        map.setCenter((job.deliveries.first?.origin)!, animated: true)
         if let annotations = map.annotations{
             map.showAnnotations(annotations, animated: true)
         }
@@ -206,7 +208,7 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
                 }
             }
             error.addButton(callButton)
-            self.present(error, animated: true)
+            viewController.present(error, animated: true)
         }
     }
     
@@ -279,7 +281,7 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
         let yesButton = PopupDialogButton(title: "Yes") {
             alertPopup.dismiss()
             self.service.userCancelledJob()
-            self.navigationController?.popToRootViewController(animated: true)
+            navigationViewController.presentingViewController?.navigationController?.popToRootViewController(animated: true)
         }
         let noButton = PopupDialogButton(title: "No") {
             alertPopup.dismiss()
@@ -367,6 +369,7 @@ extension FoundJobVC{
                     navigation.showsEndOfRouteFeedback = false
                     self.service.setIsTakenOnGivenJobsAndStore(waypointList: waypointList)
                     self.navigationController?.pushViewController(navigation, animated: true)
+                    print(self.navigationController?.viewControllers)
                 }
             }
             else{

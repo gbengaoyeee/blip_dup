@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B5F39412A834A3F67F18968ADA1FE8F4"
-               BlueprintName = "PopupDialog"
+               BlueprintIdentifier = "4B7679721274BAD4911E1000F65F8CC4"
+               BlueprintName = "FirebaseMessaging"
                ReferencedContainer = "container:Pods.xcodeproj"
-               BuildableName = "PopupDialog.framework">
+               BuildableName = "libFirebaseMessaging.a">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

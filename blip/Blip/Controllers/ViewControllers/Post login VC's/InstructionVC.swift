@@ -136,10 +136,6 @@ class InstructionVC: UIViewController {
                 popup.dismiss()
                 self.performSegue(withIdentifier: "unwindToRoot", sender: self)
             }
-//            popup.dismiss({
-//                print("DISMISSED")
-//
-//            })
         }
         popup.addButton(confirmButton)
         self.present(popup, animated: true, completion: nil)

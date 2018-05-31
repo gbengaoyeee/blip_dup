@@ -16,8 +16,6 @@ const stripe = require('stripe')("sk_test_4I0ubK7NduuV6dhJouhEAqtu"),
 const cors = require('cors')({ origin: true });
 
 
-
-
 exports.ephemeral_keys = functions.https.onRequest((req, res) => {
     const stripe_version = req.body.api_version;
     console.log(req);
@@ -437,7 +435,7 @@ function checkUserVerifiedOrFlagged(emailHash, callback) {
             }
         }
     }, function (error) {
-        //SOME WEIRD THING HAPPEN
+        console.log(error);
     });
 }
 
@@ -559,21 +557,18 @@ exports.payOnDelivery = functions.database.ref('/CompletedJobs/{id}').onCreate((
         return false
     }
     console.log("Checking userRef", emailHash, amountAfterCut, chargeID);
-    return admin.database().ref(`Couriers/${emailHash}`).once("value", function (userSnapshot) {
-        console.log("Making stripe request");
-        var accountID = userSnapshot.child("stripeAccount/id");
+    return admin.database().ref(`Couriers/${emailHash}`).once("value").then(function(userSnapshot) {
+        var accountID = userSnapshot.child("stripeAccount/id").val();
         stripe.transfers.create({
             amount: amountAfterCut,
             currency: "cad",
             source_transaction: chargeID,
             destination: accountID
-        }, function (err, transfer) {
-            if (err) {
+        }, function(err, transfer) {
+            if (err){
                 console.log(err);
-            }
-            else {
+            }else{
                 console.log("Transfer made", transfer);
-                return true
             }
         })
     })
@@ -616,104 +611,105 @@ exports.getBestJob = functions.https.onRequest((req, res) => {
     var minDist = 20000,
         currentDist = 0,
         jobKey;
-    admin.auth().
-        checkUserVerifiedOrFlagged(emailHash, function (error, checked) {
-            if (error) {
-                console.log(error.message, req.body);
-                if (error.message === "User needs to verify their background check") {
-                    res.status(400).send("need to verify");
-                    return;
-                } else {
-                    res.status(500).send("need to unflag");
-                    return;
-                }
+
+    checkUserVerifiedOrFlagged(emailHash, function(error, checked) {
+        if (error) {
+            console.log(error.message, req.body);
+            if (error.message === "User needs to verify their background check") {
+                res.status(400).send("need to verify");
+                return
             } else {
-                getClosestJobIdAndDistance(lat, long, function (err, data) {
-                    if (err) {
-                        console.log("Found an Error");
-                        res.status(404).send(err);
-                        return;
-                    } else {
-                        var maxDist = 12000;
-                        const closestJobIdDict = data[0]; //This is a dictionary
-                        const closestJobId = Object.keys(closestJobIdDict)[0];
-                        console.log("Initial MaxDist is: " + maxDist);
-                        console.log("Dict: " + closestJobIdDict + " ID: " + closestJobId);
-                        const totalDistance = data[1];
-                        var jobBundle = closestJobIdDict;
-                        maxDist = maxDist - totalDistance;
+                res.status(500).send("need to unflag");
+                return
+            }
 
-                        var allJobsref = admin.database().ref('AllJobs');
-                        allJobsref.once('value', function (snapshot) {
-                            var allJobsValues = snapshot.val();
-                            if (allJobsValues != null) {
-                                for (const jobId in allJobsValues) {
-                                    if (jobId != closestJobId) { //So skip if it sees the same job as the closest it already found
-                                        const pickupLat = allJobsValues[jobId].originLat;
-                                        const pickupLong = allJobsValues[jobId].originLong;
-                                        const deliveryLat = allJobsValues[jobId].deliveryLat;
-                                        const deliveryLong = allJobsValues[jobId].deliveryLong;
-                                        var x = geo.getDistance({
-                                            latitude: pickupLat,
-                                            longitude: pickupLong
-                                        }, {
-                                                latitude: lat,
-                                                longitude: long
-                                            });
-                                        var y = geo.getDistance({
-                                            latitude: pickupLat,
-                                            longitude: pickupLong
-                                        }, {
-                                                latitude: closestJobIdDict[closestJobId].originLat,
-                                                longitude: closestJobIdDict[closestJobId].originLong
-                                            });
-                                        var m = geo.getDistance({
-                                            latitude: pickupLat,
-                                            longitude: pickupLong
-                                        }, {
-                                                latitude: deliveryLat,
-                                                longitude: deliveryLong
-                                            });
-                                        var n = Math.min(...[x, y]);
+        } else {
+            getClosestJobIdAndDistance(lat, long, function(err, data) {
+                if (err) {
+                    console.log("Found an Error");
+                    res.status(600).send(err);
+                } else {
+                    var maxDist = 12000;
+                    const closestJobIdDict = data[0]; //This is a dictionary
+                    const closestJobId = Object.keys(closestJobIdDict)[0];
+                    console.log("Initial MaxDist is: " + maxDist);
+                    console.log("Dict: " + closestJobIdDict + " ID: " + closestJobId);
+                    const totalDistance = data[1];
+                    var jobBundle = closestJobIdDict;
+                    maxDist = maxDist - totalDistance;
 
-                                        if (maxDist >= (m + n)) {
-                                            var jobDict = {};
-                                            // jobDict[jobId] = allJobsValues[jobId];
-                                            jobBundle[jobId] = allJobsValues[jobId];
-                                            maxDist = maxDist - (m + n);
-                                            admin.database().ref('AllJobs/' + jobId).remove().then(() => {
-                                                console.log("Removed job from AllJobs reference successfully");
-                                            }, () => {
-                                                console.log("Cannot remove job from AllJobs reference")
-                                            });
-                                            console.log("MaxDist is: " + maxDist);
-                                        }
-                                    } else {
+                    var allJobsref = admin.database().ref('AllJobs');
+                    allJobsref.once('value', function(snapshot) {
+                        var allJobsValues = snapshot.val();
+                        if (allJobsValues != null) {
+                            for (const jobId in allJobsValues) {
+                                if (jobId != closestJobId) { //So skip if it sees the same job as the closest it already found
+                                    const pickupLat = allJobsValues[jobId].originLat;
+                                    const pickupLong = allJobsValues[jobId].originLong;
+                                    const deliveryLat = allJobsValues[jobId].deliveryLat;
+                                    const deliveryLong = allJobsValues[jobId].deliveryLong;
+                                    var x = geo.getDistance({
+                                        latitude: pickupLat,
+                                        longitude: pickupLong
+                                    }, {
+                                        latitude: lat,
+                                        longitude: long
+                                    });
+                                    var y = geo.getDistance({
+                                        latitude: pickupLat,
+                                        longitude: pickupLong
+                                    }, {
+                                        latitude: closestJobIdDict[closestJobId].originLat,
+                                        longitude: closestJobIdDict[closestJobId].originLong
+                                    });
+                                    var m = geo.getDistance({
+                                        latitude: pickupLat,
+                                        longitude: pickupLong
+                                    }, {
+                                        latitude: deliveryLat,
+                                        longitude: deliveryLong
+                                    });
+                                    var n = Math.min(...[x, y]);
+
+                                    if (maxDist >= (m + n)) {
+                                        var jobDict = {};
+                                        // jobDict[jobId] = allJobsValues[jobId];
+                                        jobBundle[jobId] = allJobsValues[jobId];
+                                        maxDist = maxDist - (m + n);
                                         admin.database().ref('AllJobs/' + jobId).remove().then(() => {
                                             console.log("Removed job from AllJobs reference successfully");
                                         }, () => {
                                             console.log("Cannot remove job from AllJobs reference")
                                         });
+                                        console.log("MaxDist is: " + maxDist);
                                     }
-                                } //End of For loop
+                                } else {
+                                    admin.database().ref('AllJobs/' + jobId).remove().then(() => {
+                                        console.log("Removed job from AllJobs reference successfully");
+                                    }, () => {
+                                        console.log("Cannot remove job from AllJobs reference")
+                                    });
+                                }
+                            } //End of For loop
 
-                                admin.database().ref('Couriers/' + emailHash + '/givenJob').update(jobBundle).then(() => {
-                                    console.log('Update succeeded!');
-                                    res.status(200).send("OK It Gave Back Jobs");
-                                });
-                            } else {
-                                //No more jobs in the AllJobs Reference, so put the closestJob found in helper in user's reference
-                                admin.database().ref('Couriers/' + emailHash + '/givenJob').update(jobBundle).then(() => {
-                                    console.log('Update succeeded!');
-                                    res.status(200).send("OK It Gave Back Jobs");
-                                });
-                            }
-                        }); //End of observe single event
-                    }
-                });
-            } // End of first if statement
-        }); //End of is flagged or verified function
+                            admin.database().ref('Couriers/' + emailHash + '/givenJob').update(jobBundle).then(() => {
+                                console.log('Update succeeded!');
+                                res.status(200).send("OK It Gave Back Jobs");
+                            });
+                        } else {
+                            //No more jobs in the AllJobs Reference, so put the closestJob found in helper in user's reference
+                            admin.database().ref('Couriers/' + emailHash + '/givenJob').update(jobBundle).then(() => {
+                                console.log('Update succeeded!');
+                                res.status(200).send("OK It Gave Back Jobs");
+                            });
+                        }
+                    }); //End of observe single event
+                }
+            });
+        } // End of first if statement
+    }); //End of is flagged or verified function
 }); //End of Function
+
 
 function gotError(err) {
     if (err != null) {

@@ -40,13 +40,13 @@ PODS:
   - FirebaseAnalytics (5.0.1):
     - FirebaseCore (~> 5.0)
     - FirebaseInstanceID (~> 3.0)
-    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
+    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
     - nanopb (~> 0.3)
   - FirebaseAuth (5.0.0):
     - FirebaseCore (~> 5.0)
     - GTMSessionFetcher/Core (~> 1.1)
   - FirebaseCore (5.0.2):
-    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
+    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
   - FirebaseDatabase (5.0.1):
     - FirebaseCore (~> 5.0)
     - leveldb-library (~> 1.18)
@@ -63,7 +63,7 @@ PODS:
   - GoogleToolboxForMac/Defines (2.1.4)
   - GoogleToolboxForMac/Logger (2.1.4):
     - GoogleToolboxForMac/Defines (= 2.1.4)
-  - "GoogleToolboxForMac/NSData+zlib (2.1.4)":
+  - GoogleToolboxForMac/NSData+zlib (2.1.4):
     - GoogleToolboxForMac/Defines (= 2.1.4)
   - GTMSessionFetcher/Core (1.1.15)
   - Hero (1.2.0)
@@ -147,57 +147,6 @@ DEPENDENCIES:
   - Stripe
   - SwiftIcons
 
-SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
-    - Alamofire
-    - Bolts
-    - BSGridCollectionViewLayout
-    - BSImagePicker
-    - CHIPageControl
-    - Cosmos
-    - DynamicBlurView
-    - Eureka
-    - FBSDKCoreKit
-    - FBSDKLoginKit
-    - FBSDKShareKit
-    - Firebase
-    - FirebaseAnalytics
-    - FirebaseAuth
-    - FirebaseCore
-    - FirebaseDatabase
-    - FirebaseInstanceID
-    - FirebaseMessaging
-    - FirebaseStorage
-    - GoogleToolboxForMac
-    - GTMSessionFetcher
-    - Hero
-    - IBAnimatable
-    - Kingfisher
-    - leveldb-library
-    - lottie-ios
-    - Mapbox-iOS-SDK
-    - MapboxDirections.swift
-    - MapboxMobileEvents
-    - MapboxSpeech
-    - MarqueeLabel
-    - Material
-    - Motion
-    - nanopb
-    - NotificationBannerSwift
-    - Pastel
-    - Polyline
-    - PopupDialog
-    - Protobuf
-    - Pulsator
-    - RevealingSplashView
-    - SnapKit
-    - Solar
-    - SRCountdownTimer
-    - Stripe
-    - SwiftIcons
-    - Turf
-    - UIImageViewModeScaleAspect
-
 EXTERNAL SOURCES:
   MapboxCoreNavigation:
     :podspec: https://raw.githubusercontent.com/mapbox/mapbox-navigation-ios/v0.17.0-beta.1/MapboxCoreNavigation.podspec
@@ -258,4 +207,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 4d2f004d0b093ba3deb63388bdaef6fe2f07321b
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.4.0

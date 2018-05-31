@@ -102,19 +102,7 @@ class ServiceCalls{
         MyAPIClient.sharedClient.getBestJobAt(location: myLocation, userHash: userHash) { (errorCode, found) in
             
             if errorCode != nil{
-                
-//                if (errorCode! == 400 && self.provider == "facebook.com"){
-//                    self.removeFirebaseObservers()
-//                    completion(400, nil)//Not verified
-//                    return
-//                }
-                    //if it is not verified and not a fb user
-                
-//                if(errorCode! == 400 && (!(Auth.auth().currentUser?.isEmailVerified)! && self.provider != "facebook.com")){
-//                    self.removeFirebaseObservers()
-//                    completion(400, nil)//Not verified
-//                    return
-//                }
+
                 if(errorCode == 400){//This is for fb users
                     self.removeFirebaseObservers()
                     completion(400, nil)//Not verified

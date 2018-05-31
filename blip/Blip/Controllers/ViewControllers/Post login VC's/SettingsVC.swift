@@ -112,7 +112,7 @@ class SettingsVC: FormViewController {
                         return
                     }
                     
-                    if !self.validateCityAndAddress(city: self.form.values()["city"] as? String, address: self.form.values()["line1"] as? String){
+                    if !self.validateCityAndAddress(city: self.form.values()["city"] as? String, address: self.form.values()["address"] as? String){
                         //Invalid city/Address
                         let popup = self.errorField(title: "City and/or address not entered", message: "Please check your city and street address fields")
                         self.present(popup, animated: true, completion: nil)
