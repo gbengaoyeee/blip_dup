@@ -43,6 +43,10 @@ class ServiceCalls{
         return Database.database().reference(withPath: "/CompletedJobs")
     }
     
+    private var storesRef: DatabaseReference!{
+        return Database.database().reference(withPath: "/stores")
+    }
+    
     let userDefaults = UserDefaults.standard
     var availableJobs: [Job] = []
     let helper = HelperFunctions()
@@ -497,7 +501,7 @@ class ServiceCalls{
         }
     }
     
-    func userCancelledJob(){
+    func userCancelledJob(completion: @escaping ()->()){
         self.userRef.child(emailHash).updateChildValues(["flagged":true])
         // remove state, istaken to false,
         self.userRef.child(emailHash).child("givenJob").observeSingleEvent(of: .value) { (snapshot) in
@@ -510,12 +514,29 @@ class ServiceCalls{
                     print("This error is inside userCancelledJobs")
                     return
                 }
+                if let state = value["state"] as? String{
+                    if (state == "pickup"){
+                        continue
+                    }
+                }
+                
                 value["state"] = nil
                 value["isTaken"] = false
+                value["jobTaker"] = nil
+                guard let storeId = value["storeID"] as? String else {
+                    print("Couldn't get storeID")
+                    return
+                }
+                //next two line: remove the whole job from store and readd it as new
+                self.storesRef.child("\(storeId)/deliveries/\(deliveryID)").removeValue()
+                self.storesRef.child("\(storeId)/deliveries/\(deliveryID)").updateChildValues(value)
+                //next two line: remove the whole job from alljobsref and readd it as new
+                self.jobsRef.child(deliveryID).removeValue()
                 self.jobsRef.child(deliveryID).updateChildValues(value)
                 self.userRef.child(self.emailHash).child("givenJob/\(deliveryID)").removeValue()
                 
             }//end of for loop
+            completion()
         }
     }
     

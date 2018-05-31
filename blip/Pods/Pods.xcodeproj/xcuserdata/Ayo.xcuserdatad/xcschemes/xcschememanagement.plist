@@ -88,6 +88,31 @@
 			<key>orderHint</key>
 			<integer>11</integer>
 		</dict>
+		<key>FirebaseAuth.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>49</integer>
+		</dict>
+		<key>FirebaseCore.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>51</integer>
+		</dict>
+		<key>FirebaseDatabase.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>52</integer>
+		</dict>
+		<key>FirebaseMessaging.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>53</integer>
+		</dict>
+		<key>FirebaseStorage.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>54</integer>
+		</dict>
 		<key>GTMSessionFetcher.xcscheme</key>
 		<dict>
 			<key>isShown</key>
