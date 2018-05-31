@@ -87,8 +87,10 @@ exports.getAccountBalance = functions.https.onRequest((req, res) => {
                     res.status(400).end();
                 } else {
                     const availBalance = balance.available[0];
-                    console.log(availBalance.amount);
-                    res.status(200).send('' + availBalance.amount);
+                    const pendingBalance = balance.pending[0];
+                    console.log(availBalance.amount + pendingBalance.amount);
+                    const totalBalance = availBalance.amount + pendingBalance.amount;
+                    res.status(200).send('' + totalBalance);
                 }
             })
         }
@@ -320,7 +322,7 @@ exports.createStore = functions.https.onRequest((req, res) => {
 });
 
 exports.updateStripeAccount = functions.https.onRequest((req, res) => {
-    console.log(req.body);
+    console.log("Update account started", req.body);
     const routing_number = req.body.routing_number;
     const emailHash = req.body.emailHash;
     const account_number = req.body.account_number;
@@ -353,6 +355,11 @@ exports.updateStripeAccount = functions.https.onRequest((req, res) => {
                 "postal_code": postal_code,
                 "state": state
             },
+            "dob":{
+                "day": dob_day,
+                "month": dob_month,
+                "year": dob_year
+            },
             "personal_id_number": sin,
             "type": "individual",
         },
@@ -363,7 +370,7 @@ exports.updateStripeAccount = functions.https.onRequest((req, res) => {
     }, function (err, account) {
         if (err) {
             console.log(err);
-            res.status(400).end();
+            res.status(400).send(err);
         } else {
             console.log(account);
             admin.database().ref(`/Couriers/${emailHash}/stripeAccount`).update(account);

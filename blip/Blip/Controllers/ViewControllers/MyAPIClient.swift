@@ -61,7 +61,7 @@ class MyAPIClient: NSObject {
         }
     }
     
-    func verifyStripeAccount(routingNumber: String!, accountNumber: String!, city: String!, streetAdd: String!, postalCode: String!, province: String!, sin: String!, dobMonth: String, dobDay: String, dobYear: String, completion: @escaping([String: AnyObject]?, Error?) -> ()){
+    func verifyStripeAccount(routingNumber: String!, accountNumber: String!, city: String!, streetAdd: String!, postalCode: String!, province: String!, sin: String!, dobMonth: String, dobDay: String, dobYear: String, completion: @escaping([String: AnyObject]?, String?) -> ()){
         let url = self.baseURL.appendingPathComponent("updateStripeAccount")
         service.retrieveStripeAccount { (account) in
             if let account = account{
@@ -80,13 +80,17 @@ class MyAPIClient: NSObject {
                     "sin": sin!,
                     "tos_time": "\(Int(NSDate().timeIntervalSince1970.rounded()))"]
             
-                Alamofire.request(url, method: .post, parameters: params, headers: nil).responseJSON { (response) in
+                Alamofire.request(url, method: .post, parameters: params, headers: nil)
+                    .validate(statusCode: 200..<300)
+                    .responseString { (response) in
                     print("response", response)
                     switch response.result {
-                    case .success(let json):
-                        print(json)
-                    case .failure(let error):
-                        print(error)
+                    case .success:
+                        print("Successful verification")
+                        completion(nil, nil)
+                    case .failure:
+                        print(response.result.value)
+                        completion(nil, response.result.value)
                     }
                 }
             }

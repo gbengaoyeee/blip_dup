@@ -179,28 +179,16 @@ class SettingsVC: FormViewController {
             //Invalid Routing Number
             return false
         }
-        var routingNumArr = [Int]()
-        var ind = 0
-        //populate array
-        for i in routingNumber!{
-            
-            if ind == 5{
-                if i != "-"{
-                    return false
-                }
-                else{
-                    continue
-                }
-            }
-            if let num:Int = Int(String(i))!{
-                routingNumArr.append(num)
-            }
-            else{
-                return false
-            }
-            ind += 1
+        let regex = "[0-9][0-9][0-9][0-9][0-9][-][0-9][0-9][0-9]"
+        let r = routingNumber!.startIndex..<routingNumber!.endIndex
+        let r2 = routingNumber!.range(of: regex, options: .regularExpression)
+        if r2 == r{
+            return true
         }
-        return true
+        else{
+            return false
+        }
+        return false
     }
     
     ///* Validates a Account Number

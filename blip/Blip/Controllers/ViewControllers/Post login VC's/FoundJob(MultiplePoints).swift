@@ -193,7 +193,7 @@ extension FoundJobVC: MGLMapViewDelegate{
     }
 }
 
-extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
+extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate, NavigationMapViewDelegate{
     
     func navigationViewController(_ viewController: NavigationViewController, didSend feedbackId: String, feedbackType: FeedbackType) {
         if feedbackType == .mapIssue{
@@ -213,7 +213,6 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
     }
     
     func navigationViewController(_ navigationViewController: NavigationViewController, didArriveAt waypoint: Waypoint) -> Bool {
-
         self.navViewController = navigationViewController
         navigationViewController.routeController.suspendLocationUpdates()
         for way in self.waypoints{
@@ -238,8 +237,8 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
         return false
     }
     
-    func navigationMapView(_ mapView: NavigationMapView, waypointSymbolStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer? {
-
+    func navigationViewController(_ navigationViewController: NavigationViewController, waypointSymbolStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer? {
+        
         var features = [MGLPointFeature]()
         for waypoint in self.waypoints {
             let feature = MGLPointFeature()
@@ -256,19 +255,18 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
         let pickupImage = UIImage(named: "pickup")
         let y = MGLShapeSource(identifier: "waypointLayer", features: features, options: nil)
         mglSource = y
-        mapView.style?.addSource(mglSource)
-        mapView.style?.setImage(deliveryImage!.resizeImage(targetSize: CGSize(size: 40)), forName: "delivery")
-        mapView.style?.setImage(pickupImage!.resizeImage(targetSize: CGSize(size: 40)), forName: "pickup")
+        navigationViewController.mapView?.style?.addSource(mglSource)
+        navigationViewController.mapView?.style?.setImage(deliveryImage!.resizeImage(targetSize: CGSize(size: 40)), forName: "delivery")
+        navigationViewController.mapView?.style?.setImage(pickupImage!.resizeImage(targetSize: CGSize(size: 40)), forName: "pickup")
         let x = MGLSymbolStyleLayer(identifier: "waypointLayer", source: mglSource)
         x.iconImageName = NSExpression(forKeyPath: "type")
         x.iconAllowsOverlap = NSExpression(forConstantValue: true)
         x.iconIgnoresPlacement = NSExpression(forConstantValue: true)
-
+        
         return x
     }
     
-    func navigationMapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
-        
+    func navigationViewController(_ navigationViewController: NavigationViewController, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
         let delivery = UIImage(named: "delivery")
         if let delivery = delivery{
             return MGLAnnotationImage(image: delivery.resizeImage(targetSize: CGSize(size: 40)), reuseIdentifier: "delivery")
@@ -281,10 +279,11 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
         let yesButton = PopupDialogButton(title: "Yes") {
             alertPopup.dismiss()
             self.service.userCancelledJob(completion: {
-                self.navigationController?.popToRootViewController(animated: true)
+                navigationViewController.dismiss(animated: true, completion: {
+                    self.navigationController?.popToRootViewController(animated: true)
+                })
+                navigationViewController.presentingViewController?.navigationController?.popToRootViewController(animated: true)
             })
-        print("Before Removing")
-        print(self.navigationController?.viewControllers)
         }
         let noButton = PopupDialogButton(title: "No") {
             alertPopup.dismiss()

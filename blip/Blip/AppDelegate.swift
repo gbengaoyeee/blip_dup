@@ -130,7 +130,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         options.duration = 0
         options.style = .easeIn
         self.window = UIWindow(frame: Screen.bounds)
-        self.window!.setRootViewController(AppFABMenuController(rootViewController: UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "rootAfterLogin")), options: options)
+        self.window!.setRootViewController(UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "rootAfterLogin"), options: options)
         self.window?.makeKeyAndVisible()
     }
     

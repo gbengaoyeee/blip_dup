@@ -100,7 +100,6 @@ extension AppFABMenuController {
         let sb = UIStoryboard.init(name: "Main", bundle: nil)
         let settingsPage = sb.instantiateViewController(withIdentifier: "settings") as! SettingsVC
         self.present(settingsPage, animated: true, completion: nil)
-
     }
     
     @objc fileprivate func handleLogout(button: UIButton) {

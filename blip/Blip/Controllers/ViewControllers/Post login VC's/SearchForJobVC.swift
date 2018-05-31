@@ -13,6 +13,7 @@ import Material
 import Pulsator
 import NotificationBannerSwift
 import Lottie
+import CircleMenu
 //REMOVE ALL BELOW
 import PopupDialog
 import FBSDKLoginKit
@@ -25,8 +26,11 @@ class SearchForJobVC: UIViewController {
     @IBOutlet weak var goButton: RaisedButton!
     @IBOutlet var map: MGLMapView!
     @IBOutlet weak var testJobPost: UIButton!
-    let pulsator = Pulsator()
+    @IBOutlet weak var menu: RaisedButton!
+    @IBOutlet weak var blurView: UIVisualEffectView!
+    @IBOutlet weak var circleMenu: CircleMenu!
     
+    let pulsator = Pulsator()
     var gradient: CAGradientLayer!
     var locationManager = CLLocationManager()
     var currentLocation: CLLocationCoordinate2D!
@@ -36,8 +40,11 @@ class SearchForJobVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBar.isHidden = true
         locationManager.delegate = self
+        blurView.isHidden = true
         prepareBlur()
+        prepareMenuButton()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -66,6 +73,15 @@ class SearchForJobVC: UIViewController {
                 self.earningsLabel.title = "$ \(text)"
             }
         }
+    }
+    
+    func prepareMenuButton(){
+        menu.makeCircular()
+        menu.backgroundColor = UIColor.blue
+        circleMenu.makeCircular()
+        circleMenu.setIcon(icon: .googleMaterialDesign(.settings), iconSize: 40, color: UIColor.white, backgroundColor: #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1), forState: .normal)
+        circleMenu.delegate = self
+        circleMenu.isHidden = true
     }
     
     func checkLocationServices() -> Bool{
@@ -119,11 +135,11 @@ class SearchForJobVC: UIViewController {
     }
     
     func prepareBlur(){
-        gradient = CAGradientLayer()
-        gradient.frame = map.bounds
-        gradient.colors = [UIColor.clear.cgColor, UIColor.black.cgColor, UIColor.black.cgColor, UIColor.clear.cgColor]
-        gradient.locations = [0, 0.2, 0.8, 1]
-        map.layer.mask = gradient
+//        gradient = CAGradientLayer()
+//        gradient.frame = map.bounds
+//        gradient.colors = [UIColor.clear.cgColor, UIColor.black.cgColor, UIColor.black.cgColor, UIColor.clear.cgColor]
+//        gradient.locations = [0, 0.2, 0.8, 1]
+//        map.layer.mask = gradient
     }
     
     func prepareGoButton(){
@@ -154,7 +170,7 @@ class SearchForJobVC: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        gradient.frame = map.bounds
+//        gradient.frame = map.bounds
     }
     
     @IBAction func postTestJob(_ sender: Any) {
@@ -163,6 +179,11 @@ class SearchForJobVC: UIViewController {
             let pickupLocation = self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 100, max: 500)
             MyAPIClient.sharedClient.makeDeliveryRequest(storeID: "-LDCTqOOk7e1GNlpQcGR", deliveryLat: deliveryLocation.latitude, deliveryLong: deliveryLocation.longitude, deliveryMainInstruction: "Deliver to Srikanth Srinivas", deliverySubInstruction: "Go to main entrace, and buzz code 2003", originLat: pickupLocation.latitude, originLong: pickupLocation.longitude, pickupMainInstruction: "Pickup from xyz", pickupSubInstruction: "Go to front entrance of xyz, order number 110021 is waiting for you", recieverName: "Srikanth Srinivas", recieverNumber: "6478229867", pickupNumber: "6479839837")
         }
+    }
+    
+    @IBAction func menuTapped(_ sender: Any) {
+        blurView.isHidden = false
+        circleMenu.sendActions(for: .touchUpInside)
     }
     
     @IBAction func searchForJob(_ sender: Any) {
@@ -277,6 +298,30 @@ extension SearchForJobVC: CLLocationManagerDelegate{
         checkForUnfinishedJobs()
         setMapCamera()
         
+    }
+}
+
+extension SearchForJobVC: CircleMenuDelegate{
+    func circleMenu(_ circleMenu: CircleMenu, willDisplay button: UIButton, atIndex: Int) {
+        if atIndex == 0{
+            button.setIcon(icon: .googleMaterialDesign(.accountCircle), iconSize: 40, color: UIColor.white, backgroundColor: #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1), forState: .normal)
+        }
+        else if atIndex == 1{
+            button.setIcon(icon: .googleMaterialDesign(.close), iconSize: 40, color: UIColor.white, backgroundColor: #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1), forState: .normal)
+        }
+    }
+    
+    func circleMenu(_ circleMenu: CircleMenu, buttonDidSelected button: UIButton, atIndex: Int) {
+        self.blurView.isHidden = true
+        if atIndex == 0{
+            
+        }
+    }
+    
+    func circleMenu(_ circleMenu: CircleMenu, buttonWillSelected button: UIButton, atIndex: Int) {
+        if atIndex == 1{
+            self.blurView.isHidden = true
+        }
     }
 }
 

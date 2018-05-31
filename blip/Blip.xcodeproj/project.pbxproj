@@ -437,7 +437,6 @@
 				3B5372F1202EB4320020F3B1 /* Frameworks */,
 				3B5372F2202EB4320020F3B1 /* Resources */,
 				FEA450E2D111D9FF4D7DBCDE /* [CP] Embed Pods Frameworks */,
-				F668DCCB622D98EB2CE2C86A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -456,8 +455,6 @@
 				3B537304202EB4320020F3B1 /* Sources */,
 				3B537305202EB4320020F3B1 /* Frameworks */,
 				3B537306202EB4320020F3B1 /* Resources */,
-				69B8D3714A2721C875612CB7 /* [CP] Embed Pods Frameworks */,
-				6B7B04D2954795059D33D903 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -477,8 +474,6 @@
 				3B53730F202EB4320020F3B1 /* Sources */,
 				3B537310202EB4320020F3B1 /* Frameworks */,
 				3B537311202EB4320020F3B1 /* Resources */,
-				4900D3BA292410F12583CBF8 /* [CP] Embed Pods Frameworks */,
-				1167B600E26AF4FA59015C8C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -596,66 +591,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		1167B600E26AF4FA59015C8C /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BlipUITests/Pods-BlipUITests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		4900D3BA292410F12583CBF8 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BlipUITests/Pods-BlipUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		69B8D3714A2721C875612CB7 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BlipTests/Pods-BlipTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		6B7B04D2954795059D33D903 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BlipTests/Pods-BlipTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		AC437CC10AD0CEB0E38EB3C9 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -710,21 +645,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F668DCCB622D98EB2CE2C86A /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Blip/Pods-Blip-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		FEA450E2D111D9FF4D7DBCDE /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -737,6 +657,7 @@
 				"${BUILT_PRODUCTS_DIR}/BSImagePicker/BSImagePicker.framework",
 				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
 				"${BUILT_PRODUCTS_DIR}/CHIPageControl/CHIPageControl.framework",
+				"${BUILT_PRODUCTS_DIR}/CircleMenu/CircleMenu.framework",
 				"${BUILT_PRODUCTS_DIR}/Cosmos/Cosmos.framework",
 				"${BUILT_PRODUCTS_DIR}/DynamicBlurView/DynamicBlurView.framework",
 				"${BUILT_PRODUCTS_DIR}/Eureka/Eureka.framework",
@@ -783,6 +704,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BSImagePicker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CHIPageControl.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CircleMenu.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Cosmos.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DynamicBlurView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Eureka.framework",
