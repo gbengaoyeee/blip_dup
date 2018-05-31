@@ -134,7 +134,8 @@ class InstructionVC: UIViewController {
             }
             else{
                 popup.dismiss()
-                self.performSegue(withIdentifier: "unwindToRoot", sender: self)
+                print(self.presentingViewController, self.presentingViewController?.presentingViewController, self.presentingViewController?.presentingViewController?.navigationController)
+                self.presentingViewController?.presentingViewController?.navigationController?.popToRootViewController(animated: true)
             }
         }
         popup.addButton(confirmButton)

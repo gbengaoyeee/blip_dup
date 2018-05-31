@@ -368,8 +368,7 @@ extension FoundJobVC{
                     navigation.delegate = self
                     navigation.showsEndOfRouteFeedback = false
                     self.service.setIsTakenOnGivenJobsAndStore(waypointList: waypointList)
-                    self.navigationController?.pushViewController(navigation, animated: true)
-                    print(self.navigationController?.viewControllers)
+                    self.present(navigation, animated: true, completion: nil)
                 }
             }
             else{

@@ -291,7 +291,7 @@ class ServiceCalls{
     }
     
     func retrieveStripeAccount(completion: @escaping(String?) -> ()){
-        userRef.child(emailHash).child("account_ID").observeSingleEvent(of: .value) { (snapshot) in
+        userRef.child(emailHash).child("stripeAccount/id").observeSingleEvent(of: .value) { (snapshot) in
             if let accountID = snapshot.value as? String{
                 completion(accountID)
             }

@@ -125,19 +125,19 @@ class SettingsVC: FormViewController {
                         self.present(popup, animated: true, completion: nil)
                         return
                     }
-                    else if !self.validateAcctNo(acctNo: self.form.values()["accountNumber"] as? String){
+                    if !self.validateAcctNo(acctNo: self.form.values()["accountNumber"] as? String){
                         //Invalid Account Number
                         let popup = self.errorField(title: "Invalid Account Number", message: "Please check your Account Number and make sure it is correct")
                         self.present(popup, animated: true, completion: nil)
                         return
                     }
-                    else if !self.validateRoutingNumber(routingNumber: self.form.values()["routingNumber"] as? String){
+                    if !self.validateRoutingNumber(routingNumber: self.form.values()["routingNumber"] as? String){
                         //Invalid Routing Number
                         let popup = self.errorField(title: "Invalid Routing Number", message: "Please check your Routing Number and make sure it is correct")
                         self.present(popup, animated: true, completion: nil)
                         return
                     }
-                    else if !self.validateProvince(province: self.form.values()["province"] as? String){
+                    if !self.validateProvince(province: self.form.values()["province"] as? String){
                         //Invalid province
                         let popup = self.errorField(title: "Invalid province", message: "Please check your province and make sure it is correct")
                         self.present(popup, animated: true, completion: nil)
@@ -175,7 +175,7 @@ class SettingsVC: FormViewController {
             //Empty routing field
             return false
         }
-        if ((routingNumber?.count)! < 9) || ((routingNumber?.count)! > 9){
+        if ((routingNumber?.count)! < 8) || ((routingNumber?.count)! > 9){
             //Invalid Routing Number
             return false
         }
@@ -183,17 +183,22 @@ class SettingsVC: FormViewController {
         var ind = 0
         //populate array
         for i in routingNumber!{
-            let num:Int = Int(String(i))!
-            routingNumArr.append(num)
+            
+            if ind == 5{
+                if i != "-"{
+                    return false
+                }
+                else{
+                    continue
+                }
+            }
+            if let num:Int = Int(String(i))!{
+                routingNumArr.append(num)
+            }
+            else{
+                return false
+            }
             ind += 1
-        }
-        //3(d_{0}+d_{3}+d_{6})+7(d_{1}+d_{4}+d_{7})+(d_{2}+d_{5}+d_{8})\mod 10=0.\,
-        let firstSet:Int = 3 * (routingNumArr[0] + routingNumArr[3] + routingNumArr[6])
-        let secondSet:Int = 7 * (routingNumArr[1] + routingNumArr[4] + routingNumArr[7])
-        let thirdSet:Int = (routingNumArr[2] + routingNumArr[5] + routingNumArr[8])
-        if ((firstSet+secondSet+thirdSet)%10) != 0{
-            //Invalid Routing Number
-            return false
         }
         return true
     }
