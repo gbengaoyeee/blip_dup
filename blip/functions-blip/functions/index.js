@@ -635,6 +635,7 @@ exports.getBestJob = functions.https.onRequest((req, res) => {
                 if (err) {
                     console.log("Found an Error");
                     res.status(404).send(err);
+                    return
                 } else {
                     var maxDist = 12000;
                     const closestJobIdDict = data[0]; //This is a dictionary
