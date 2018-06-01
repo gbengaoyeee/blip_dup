@@ -7,10 +7,8 @@
 //
 
 import UIKit
-import IBAnimatable
-import RevealingSplashView
 
-class NavigationBarViewController: AnimatableNavigationController {
+class NavigationBarViewController: UINavigationController {
 
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     

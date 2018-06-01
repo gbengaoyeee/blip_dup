@@ -7,7 +7,7 @@ import CoreLocation
  adjusted by interval between locations.
  */
 @objc(MBReplayLocationManager)
-open class ReplayLocationManager: NavigationLocationManager {
+public class ReplayLocationManager: NavigationLocationManager {
     
     /**
      `speedMultiplier` adjusts the speed of the replay.
@@ -27,7 +27,7 @@ open class ReplayLocationManager: NavigationLocationManager {
         }
     }
     
-    @objc override open var location: CLLocation? {
+    @objc override public var location: CLLocation? {
         get {
             return lastKnownLocation
         }

@@ -109,18 +109,22 @@ internal class FileCache {
         }
     }
 
-    func cachePathWithKey(_ key: String) -> String {
+    private func cachePathWithKey(_ key: String) -> String {
         let cacheKey = cacheKeyForKey(key)
         return cacheURLWithKey(cacheKey).absoluteString
     }
 
-    func cacheURLWithKey(_ key: String) -> URL {
+    private func cacheURLWithKey(_ key: String) -> URL {
         let cacheKey = cacheKeyForKey(key)
         return diskCacheURL.appendingPathComponent(cacheKey)
     }
 
-    func cacheKeyForKey(_ key: String) -> String {
-        return key.md5()
+    private func cacheKeyForKey(_ key: String) -> String {
+        if let keyAsURL = URL(string: key) {
+            return String.init(keyAsURL.lastPathComponent.hashValue)
+        }
+
+        return String.init(key.hashValue)
     }
 
     private func createCacheDirIfNeeded(_ url: URL, fileManager: FileManager) {

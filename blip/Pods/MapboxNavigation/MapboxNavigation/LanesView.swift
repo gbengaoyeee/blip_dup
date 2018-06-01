@@ -5,7 +5,7 @@ import MapboxDirections
 /// :nodoc:
 @IBDesignable
 @objc(MBLanesView)
-open class LanesView: UIView {
+public class LanesView: UIView {
     weak var stackView: UIStackView!
     weak var separatorView: SeparatorView!
     
@@ -19,7 +19,7 @@ open class LanesView: UIView {
         commonInit()
     }
     
-    open override func prepareForInterfaceBuilder() {
+    public override func prepareForInterfaceBuilder() {
         super.prepareForInterfaceBuilder()
 
         for _ in 0...4 {

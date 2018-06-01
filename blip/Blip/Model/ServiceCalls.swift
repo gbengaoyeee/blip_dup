@@ -95,10 +95,12 @@ class ServiceCalls{
     func findJob(myLocation: CLLocationCoordinate2D, userHash: String, completion: @escaping(Int?, Job?) -> ()){
         self.userRefHandle = userRef.child(emailHash).observe(.childAdded, with: { (snap) in
             if snap.key == "givenJob"{
+                print("CHILD ADDED GOT TRIGGERD")
                 if let jobID = snap.value as? [String: AnyObject]{
                     let j = Job(snapshot: snap, type: "delivery")
                     j?.locList.insert(myLocation, at: 0)
                     completion(nil, j)
+                    self.userRef.removeAllObservers()
                 }
             }
         })
@@ -117,6 +119,7 @@ class ServiceCalls{
                     completion(500, nil)//Flagged
                     return
                 }else{
+                    self.removeFirebaseObservers()
                     completion(404, nil)// No job Found
                     return
                 }
@@ -154,7 +157,7 @@ class ServiceCalls{
     ///REMOVE MORE AS YOU ADD MORE OBSERVERS
     func removeFirebaseObservers(){
         userRef.child(emailHash).removeAllObservers()
-        self.userRef.child(emailHash).child("givenJob/deliveries").removeAllObservers()
+        self.userRef.child(emailHash).child("givenJobs").removeAllObservers()
         print("Observers Removed")
     }
     
@@ -200,6 +203,7 @@ class ServiceCalls{
         let ref = Database.database().reference(withPath: "Couriers/\(self.emailHash!)/givenJob")
         let storesRef = Database.database().reference(withPath: "stores")
         for way in waypointList{
+            print("CHILDADDED WILL GET TRIGGERED")
             ref.child(way.delivery.identifier).updateChildValues(["isTaken":true, "jobTaker":self.emailHash!])
             storesRef.child("\(way.delivery.store.storeID)/deliveries/\(way.delivery.identifier!)").updateChildValues(["isTaken":true, "jobTaker":self.emailHash!])
         }

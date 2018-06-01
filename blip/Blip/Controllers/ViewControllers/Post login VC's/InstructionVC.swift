@@ -122,7 +122,6 @@ class InstructionVC: UIViewController {
     @IBAction func donePressed(_ sender: Any) {
         let popup = PopupDialog(title: "Confirm", message: "Please make sure you have successfully completed the delivery before pressing confirm. Failure to do so may result in the suspension of your account. Alternatively, press the No Show button if the delivery cannot be completed successfully")
         let confirmButton = PopupDialogButton(title: "Confirm") {
-            print("DISMISSED")
             
             self.service.completedJob(deliveryID: self.delivery.identifier, storeID: self.delivery.store.storeID, type: self.type)
             
@@ -134,8 +133,10 @@ class InstructionVC: UIViewController {
             }
             else{
                 popup.dismiss()
-                print(self.presentingViewController, self.presentingViewController?.presentingViewController, self.presentingViewController?.presentingViewController?.navigationController)
-                self.presentingViewController?.presentingViewController?.navigationController?.popToRootViewController(animated: true)
+                print(self.navViewController.navigationController)
+                self.dismiss(animated: true, completion: {
+                    self.navViewController.navigationController?.popToRootViewController(animated: true)
+                })
             }
         }
         popup.addButton(confirmButton)

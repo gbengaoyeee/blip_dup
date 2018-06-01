@@ -76,7 +76,3 @@ extern const MBRouteControllerNotificationUserInfoKey MBRouteControllerRoutingEr
  A key in the user info dictionary of a `Notification.Name.RouteControllerDidReroute` notification. The corresponding value is an `NSNumber` instance containing a Boolean value indicating whether `RouteController` proactively rerouted the user onto a faster route.
  */
 extern const MBRouteControllerNotificationUserInfoKey MBRouteControllerIsProactiveKey;
-
-@interface NSString (MD5)
-- (NSString * _Nonnull)md5;
-@end

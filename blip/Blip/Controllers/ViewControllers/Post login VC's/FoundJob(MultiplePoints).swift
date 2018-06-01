@@ -1,10 +1,3 @@
-//
-//  FoundJobVC.swift
-//  Blip
-//
-//  Created by Srikanth Srinivas on 4/13/18.
-//  Copyright © 2018 Blip. All rights reserved.
-//
 
 import UIKit
 import Firebase
@@ -19,7 +12,7 @@ import NotificationBannerSwift
 import Material
 
 class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
-
+    
     @IBOutlet weak var jobEarnings: UILabel!
     @IBOutlet weak var jobDistance: UILabel!
     @IBOutlet weak var pickupLabel: UILabel!
@@ -70,7 +63,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
         prepareCenterView()
         prepareMap()
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -112,7 +105,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     
     func prepareDataForNavigation(completion: @escaping(Bool) -> ()){
         if let job = self.job{
-
+            
             var distributions = ""
             for i in stride(from: 0, to: 2*(job.deliveries.count - job.getUnfinishedDeliveries().count), by: 1) {
                 
@@ -154,8 +147,6 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
             annotation.coordinate = delivery.origin
             map.addAnnotation(annotation)
         }
-        map.setZoomLevel(10, animated: true)
-        map.setCenter((job.deliveries.first?.origin)!, animated: true)
         if let annotations = map.annotations{
             map.showAnnotations(annotations, animated: true)
         }
@@ -193,7 +184,7 @@ extension FoundJobVC: MGLMapViewDelegate{
     }
 }
 
-extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate, NavigationMapViewDelegate{
+extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
     
     func navigationViewController(_ viewController: NavigationViewController, didSend feedbackId: String, feedbackType: FeedbackType) {
         if feedbackType == .mapIssue{
@@ -208,11 +199,12 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate,
                 }
             }
             error.addButton(callButton)
-            viewController.present(error, animated: true)
+            self.present(error, animated: true)
         }
     }
     
     func navigationViewController(_ navigationViewController: NavigationViewController, didArriveAt waypoint: Waypoint) -> Bool {
+        
         self.navViewController = navigationViewController
         navigationViewController.routeController.suspendLocationUpdates()
         for way in self.waypoints{
@@ -237,7 +229,7 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate,
         return false
     }
     
-    func navigationViewController(_ navigationViewController: NavigationViewController, waypointSymbolStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer? {
+    func navigationMapView(_ mapView: NavigationMapView, waypointSymbolStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer? {
         
         var features = [MGLPointFeature]()
         for waypoint in self.waypoints {
@@ -255,9 +247,9 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate,
         let pickupImage = UIImage(named: "pickup")
         let y = MGLShapeSource(identifier: "waypointLayer", features: features, options: nil)
         mglSource = y
-        navigationViewController.mapView?.style?.addSource(mglSource)
-        navigationViewController.mapView?.style?.setImage(deliveryImage!.resizeImage(targetSize: CGSize(size: 40)), forName: "delivery")
-        navigationViewController.mapView?.style?.setImage(pickupImage!.resizeImage(targetSize: CGSize(size: 40)), forName: "pickup")
+        mapView.style?.addSource(mglSource)
+        mapView.style?.setImage(deliveryImage!.resizeImage(targetSize: CGSize(size: 40)), forName: "delivery")
+        mapView.style?.setImage(pickupImage!.resizeImage(targetSize: CGSize(size: 40)), forName: "pickup")
         let x = MGLSymbolStyleLayer(identifier: "waypointLayer", source: mglSource)
         x.iconImageName = NSExpression(forKeyPath: "type")
         x.iconAllowsOverlap = NSExpression(forConstantValue: true)
@@ -266,7 +258,8 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate,
         return x
     }
     
-    func navigationViewController(_ navigationViewController: NavigationViewController, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
+    func navigationMapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
+        
         let delivery = UIImage(named: "delivery")
         if let delivery = delivery{
             return MGLAnnotationImage(image: delivery.resizeImage(targetSize: CGSize(size: 40)), reuseIdentifier: "delivery")
@@ -279,11 +272,9 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate,
         let yesButton = PopupDialogButton(title: "Yes") {
             alertPopup.dismiss()
             self.service.userCancelledJob(completion: {
-                navigationViewController.dismiss(animated: true, completion: {
-                    self.navigationController?.popToRootViewController(animated: true)
-                })
-                navigationViewController.presentingViewController?.navigationController?.popToRootViewController(animated: true)
+                navigationViewController.navigationController?.popToRootViewController(animated: true)
             })
+            
         }
         let noButton = PopupDialogButton(title: "No") {
             alertPopup.dismiss()
@@ -301,7 +292,7 @@ extension FoundJobVC{
         var i = 0
         while waypointList.count < (waypointData.count){
             for element in waypointData{
-
+                
                 let loc = CLLocation(latitude: (element["location"]! as! [Double])[1], longitude: (element["location"]! as! [Double])[0])
                 let way = BlipWaypoint(location: loc, heading: nil, name: nil)
                 if element["waypoint_index"] as? Int == i{
@@ -340,7 +331,7 @@ extension FoundJobVC{
         return waypointList
     }
     
-
+    
     func getWaypointFor(coordinate: CLLocationCoordinate2D) -> BlipWaypoint{
         
         var dist: Double! = 20000
@@ -370,7 +361,7 @@ extension FoundJobVC{
                     navigation.delegate = self
                     navigation.showsEndOfRouteFeedback = false
                     self.service.setIsTakenOnGivenJobsAndStore(waypointList: waypointList)
-                    self.present(navigation, animated: true, completion: nil)
+                    self.navigationController?.pushViewController(navigation, animated: true)
                 }
             }
             else{
@@ -412,7 +403,7 @@ extension FoundJobVC{
     }
     
     func parseRouteData(routeData: [String: AnyObject]){
-
+        
         let estimatedDistance = routeData["distance"] as! NSNumber
         let distanceInKm = (estimatedDistance.intValue/1000)
         pickupLabel.text = "\(job.deliveries.count) Delivery(s)"
@@ -421,8 +412,4 @@ extension FoundJobVC{
         jobEarnings.text = "$ \(earningsText)"
     }
 }
-
-
-
-
 
