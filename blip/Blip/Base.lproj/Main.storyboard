@@ -1225,7 +1225,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ETA-Xo-tF0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3931" y="839"/>
+            <point key="canvasLocation" x="-6584" y="920"/>
         </scene>
         <!--Choose PictureVC-->
         <scene sceneID="dex-lz-2Rn">
@@ -1312,7 +1312,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fru-De-JpS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3053" y="839"/>
+            <point key="canvasLocation" x="-5706" y="920"/>
         </scene>
     </scenes>
     <resources>
