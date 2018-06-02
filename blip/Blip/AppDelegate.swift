@@ -14,6 +14,8 @@ import FBSDKCoreKit
 import Stripe
 import RevealingSplashView
 import PopupDialog
+import GoogleMaps
+import GooglePlaces
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, MessagingDelegate{
@@ -35,8 +37,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        print("didFinishLaunchingWithOptions")
-        // Override point for customization after application launch.
+        GMSServices.provideAPIKey("AIzaSyCj4q_DdXAKPQ8fbR2sS6wslQrXZINc6ZQ")
+        GMSPlacesClient.provideAPIKey("AIzaSyCj4q_DdXAKPQ8fbR2sS6wslQrXZINc6ZQ")
         FirebaseApp.configure()
         isLaunched = true
         

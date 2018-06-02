@@ -127,6 +127,8 @@ class InstructionVC: UIViewController {
             
             if !self.isLastWaypoint{
                 self.navViewController?.routeController.routeProgress.legIndex += 1
+                self.navViewController.mapView?.removeWaypoints()
+                self.navViewController.mapView?.showWaypoints(self.navViewController.route, legIndex: (self.navViewController?.routeController.routeProgress.legIndex)!)
                 self.navViewController?.routeController.resume()
                 popup.dismiss()
                 self.dismiss(animated: true, completion: nil)

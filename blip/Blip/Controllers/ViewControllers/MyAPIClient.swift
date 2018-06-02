@@ -45,16 +45,23 @@ class MyAPIClient: NSObject {
     func optimizeRoute(locations: [CLLocationCoordinate2D], distributions: String, completion: @escaping ([[String: AnyObject]]?,[String: AnyObject]?, Error?) -> ()){
         let coords = convertLocationToString(locations: locations)
         let url = "https://api.mapbox.com/optimized-trips/v1/mapbox/driving/\(coords)?&distributions=\(distributions)&geometries=geojson&access_token=pk.eyJ1Ijoic3Jpa2FudGhzcm52cyIsImEiOiJjajY0NDI0ejYxcDljMnFtcTNlYWliajNoIn0.jDevn4Fm6WBZUx7TDtys9Q"
-        print(url)
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil)
             .responseJSON { (response) in
                 switch response.result {
                 case .success(let json):
                     let jsonData = json as? [String: AnyObject]
-                    let waypointData = jsonData!["waypoints"] as? [[String: AnyObject]]
-                    let routeData = jsonData!["trips"] as? [[String: AnyObject]]
-                    let route = routeData![0]
-                    completion(waypointData, route, nil)
+                    if jsonData!["code"] as! String == "InvalidInput"{
+                        enum invalidInput: Error {
+                            case runtimeError(String)
+                        }
+                        completion(nil, nil, invalidInput.runtimeError("Invalid Input error"))
+                    }
+                    else{
+                        let waypointData = jsonData!["waypoints"] as? [[String: AnyObject]]
+                        let routeData = jsonData!["trips"] as? [[String: AnyObject]]
+                        let route = routeData![0]
+                        completion(waypointData, route, nil)
+                    }
                 case .failure(let error):
                     completion(nil, nil, error)
                 }
