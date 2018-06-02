@@ -110,8 +110,9 @@ class OnJobVC: UIViewController {
     }
     
     @IBAction func checkMarkPressed(_ sender: Any) {
-        if self.currentLocation != self.delivery.deliveryLocation{
+        if self.currentLocation != self.delivery.deliveryLocation{//checks if the user is in the pickup/delivery location
             //To- do : not yet in the place
+            print("NOT IN YOUR PICKUP/DELIVERY LOCATION")
             return
         }
         
@@ -123,13 +124,14 @@ class OnJobVC: UIViewController {
 //            if !self.isLastWaypoint{
             if self.waypoints.count != self.legIndex{// This is equivalent to !self.isLastWaypoint
                 self.legIndex += 1
-                popup.dismiss()
                 //Do other things here when the check mark is pressed and its the last waypoint
+                //like animate the sub and main instructions
+                popup.dismiss()
             }
             else{
                 popup.dismiss()
                 self.dismiss(animated: true, completion: {
-                    //Do something here like animate to the next waypoint stuff
+                    //All trips have been made
                 })
             }
         }
