@@ -168,7 +168,12 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     
     @IBAction func acceptJobPressed(_ sender: Any) {
         timer.invalidate()
-        calculateAndPresentNavigation(waypointList: self.waypoints, present: true)
+//        calculateAndPresentNavigation(waypointList: self.waypoints, present: true)
+        let sb = UIStoryboard(name: "Main", bundle: nil)
+        let onJobVC:OnJobVC = sb.instantiateViewController(withIdentifier: "onJobVC") as! OnJobVC
+        onJobVC.waypoints = self.waypoints
+        //Push the controller
+        self.navigationController?.pushViewController(onJobVC, animated: true)
     }
 }
 
@@ -229,10 +234,10 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
         return false
     }
     
-    func navigationMapView(_ mapView: NavigationMapView, waypointSymbolStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer? {
+    func navigationMapView(_ mapView: NavigationMapView, shapeFor waypoints: [Waypoint]) -> MGLShape? {
         
         var features = [MGLPointFeature]()
-        for waypoint in self.waypoints {
+        for waypoint in waypoints {
             let feature = MGLPointFeature()
             feature.coordinate = waypoint.coordinate
             if let name = waypoint.name{
@@ -242,19 +247,20 @@ extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
                 }
             }
         }
-        
+        return MGLShapeCollectionFeature(shapes: features)
+    }
+    
+    func navigationMapView(_ mapView: NavigationMapView, waypointSymbolStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer? {
+
         let deliveryImage = UIImage(named: "delivery")
         let pickupImage = UIImage(named: "pickup")
-        let y = MGLShapeSource(identifier: "waypointLayer", features: features, options: nil)
-        mglSource = y
-        mapView.style?.addSource(mglSource)
         mapView.style?.setImage(deliveryImage!.resizeImage(targetSize: CGSize(size: 40)), forName: "delivery")
         mapView.style?.setImage(pickupImage!.resizeImage(targetSize: CGSize(size: 40)), forName: "pickup")
-        let x = MGLSymbolStyleLayer(identifier: "waypointLayer", source: mglSource)
+        let x = MGLSymbolStyleLayer(identifier: identifier, source: source)
         x.iconImageName = NSExpression(forKeyPath: "type")
         x.iconAllowsOverlap = NSExpression(forConstantValue: true)
         x.iconIgnoresPlacement = NSExpression(forConstantValue: true)
-        
+
         return x
     }
     

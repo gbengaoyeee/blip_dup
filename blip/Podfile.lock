@@ -61,6 +61,13 @@ PODS:
   - FirebaseStorage (3.0.0):
     - FirebaseCore (~> 5.0)
     - GTMSessionFetcher/Core (~> 1.1)
+  - GoogleMaps (2.7.0):
+    - GoogleMaps/Maps (= 2.7.0)
+  - GoogleMaps/Base (2.7.0)
+  - GoogleMaps/Maps (2.7.0):
+    - GoogleMaps/Base
+  - GooglePlaces (2.7.0):
+    - GoogleMaps/Base (= 2.7.0)
   - GoogleToolboxForMac/Defines (2.1.4)
   - GoogleToolboxForMac/Logger (2.1.4):
     - GoogleToolboxForMac/Defines (= 2.1.4)
@@ -132,6 +139,8 @@ DEPENDENCIES:
   - Firebase/Database
   - Firebase/Messaging
   - Firebase/Storage
+  - GoogleMaps
+  - GooglePlaces
   - Hero
   - IBAnimatable
   - Kingfisher
@@ -171,6 +180,8 @@ SPEC REPOS:
     - FirebaseInstanceID
     - FirebaseMessaging
     - FirebaseStorage
+    - GoogleMaps
+    - GooglePlaces
     - GoogleToolboxForMac
     - GTMSessionFetcher
     - Hero
@@ -228,6 +239,8 @@ SPEC CHECKSUMS:
   FirebaseInstanceID: 83e0040351565df711a5db3d8ebe5ea21aca998a
   FirebaseMessaging: ec6fde5a77824c6da0218f9ca220feb251aa17d5
   FirebaseStorage: 7ca4bb7b58a25fa647b04f524033fc7cb7eb272b
+  GoogleMaps: f79af95cb24d869457b1f961c93d3ce8b2f3b848
+  GooglePlaces: 3d06e6c99654545b4738ce49648745779c25f2ef
   GoogleToolboxForMac: 91c824d21e85b31c2aae9bb011c5027c9b4e738f
   GTMSessionFetcher: 5fa5b80fd20e439ef5f545fb2cb3ca6c6714caa2
   Hero: 33dadf2cd1c98af71e213dcbc2902e6e03622a4e
@@ -260,6 +273,6 @@ SPEC CHECKSUMS:
   Turf: 4ace207379c8d58a8e45842755de821dac3fae72
   UIImageViewModeScaleAspect: 11a790a0b9d248a13dc63e3a78991f1463b6d84e
 
-PODFILE CHECKSUM: 1ee313e3473fb8791f18410fb59f35e240c565ea
+PODFILE CHECKSUM: 0b7158f29f6d2e206f2fbc4665940b5b8bb69b4b
 
 COCOAPODS: 1.5.3

@@ -43,7 +43,7 @@ class Job{
                     let deliveryEarnings = Double(delivery.earnings)
                     let earnings = deliveryEarnings
                     self.earnings += earnings
-                
+                    
                     if delivery.state != nil{
                         self.unfinishedLocList.append(delivery.deliveryLocation)
                     }

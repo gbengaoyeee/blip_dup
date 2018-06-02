@@ -107,8 +107,9 @@ class SearchForJobVC: UIViewController {
         let banner = NotificationBanner(title: "Unfinished delivery", subtitle: "Tap to continue your unfinished delivery",style: .info)
         banner.onTap = {
             self.performSegue(withIdentifier: "foundJob", sender: self)
+            banner.dismiss()
         }
-        banner.autoDismiss = true
+        banner.autoDismiss = false
         banner.show()
     }
 
