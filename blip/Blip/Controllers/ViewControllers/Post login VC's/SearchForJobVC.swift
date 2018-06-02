@@ -13,7 +13,7 @@ import Material
 import Pulsator
 import NotificationBannerSwift
 import Lottie
-import CircleMenu
+import Kingfisher
 //REMOVE ALL BELOW
 import PopupDialog
 import FBSDKLoginKit
@@ -27,8 +27,7 @@ class SearchForJobVC: UIViewController {
     @IBOutlet var map: MGLMapView!
     @IBOutlet weak var testJobPost: UIButton!
     @IBOutlet weak var menu: RaisedButton!
-    @IBOutlet weak var blurView: UIVisualEffectView!
-    @IBOutlet weak var circleMenu: CircleMenu!
+    @IBOutlet weak var earningsLoader: UIView!
     
     let pulsator = Pulsator()
     var gradient: CAGradientLayer!
@@ -42,7 +41,6 @@ class SearchForJobVC: UIViewController {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isHidden = true
         locationManager.delegate = self
-        blurView.isHidden = true
         prepareBlur()
         prepareMenuButton()
     }
@@ -56,37 +54,42 @@ class SearchForJobVC: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        print(self.navigationController?.viewControllers)
         super.viewDidAppear(animated)
         updateCurrentDevice()
-        self.fabMenuController?.prepare()
     }
     
     func getBalance(){
+        earningsLoader.borderColor = UIColor.clear
+        earningsLoader.layer.borderWidth = 2.5
+        earningsLoader.layer.cornerRadius = 15
+        earningsLoader.backgroundColor = UIColor.clear
+        let loader = LOTAnimationView(name: "earningsLoaderBlue")
+        earningsLoader.handledAnimation(Animation: loader, width: 1, height: 1)
+        loader.play()
+        loader.loopAnimation = true
         earningsLabel.borderColor = UIColor.white
         earningsLabel.layer.borderWidth = 2.5
         earningsLabel.layer.cornerRadius = 15
+        earningsLabel.isHidden = true
         MyAPIClient.sharedClient.getAccountBalance(emailHash: self.service.emailHash) { (balance) in
             if let balance = balance{
                 let accountBalance = Double(balance)!/100
                 let text = String(format: "%.2f", arguments: [accountBalance])
                 self.earningsLabel.title = "$ \(text)"
+                loader.stop()
+                loader.removeFromSuperview()
+                self.earningsLabel.isHidden = false
             }
         }
     }
     
     func prepareMenuButton(){
         menu.makeCircular()
-        menu.backgroundColor = UIColor.blue
-        circleMenu.makeCircular()
-        circleMenu.setIcon(icon: .googleMaterialDesign(.settings), iconSize: 40, color: UIColor.white, backgroundColor: #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1), forState: .normal)
-        circleMenu.delegate = self
-        circleMenu.isHidden = true
+        menu.setIcon(icon: .googleMaterialDesign(.menu), iconSize: 25, color: UIColor.white, backgroundColor: #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1), forState: .normal)
     }
     
     func checkLocationServices() -> Bool{
         if CLLocationManager.locationServicesEnabled() {
-            
             switch CLLocationManager.authorizationStatus() {
             case .notDetermined, .restricted, .denied:
                 let locationError = PopupDialog(title: "Location permission denied", message: "Blip needs permission to access your location information, or we cannot match you with jobs around your area. Please go to settings -> Privacy -> Location services; and turn on location services for blip")
@@ -100,8 +103,6 @@ class SearchForJobVC: UIViewController {
         }
         return false
     }
-    
-    @IBAction func unwindToRoot(segue:UIStoryboardSegue) {}
     
     func showUnfinishedBanner(){
         let banner = NotificationBanner(title: "Unfinished delivery", subtitle: "Tap to continue your unfinished delivery",style: .info)
@@ -183,8 +184,7 @@ class SearchForJobVC: UIViewController {
     }
     
     @IBAction func menuTapped(_ sender: Any) {
-        blurView.isHidden = false
-        circleMenu.sendActions(for: .touchUpInside)
+        
     }
     
     @IBAction func searchForJob(_ sender: Any) {
@@ -299,30 +299,6 @@ extension SearchForJobVC: CLLocationManagerDelegate{
         checkForUnfinishedJobs()
         setMapCamera()
         
-    }
-}
-
-extension SearchForJobVC: CircleMenuDelegate{
-    func circleMenu(_ circleMenu: CircleMenu, willDisplay button: UIButton, atIndex: Int) {
-        if atIndex == 0{
-            button.setIcon(icon: .googleMaterialDesign(.accountCircle), iconSize: 40, color: UIColor.white, backgroundColor: #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1), forState: .normal)
-        }
-        else if atIndex == 1{
-            button.setIcon(icon: .googleMaterialDesign(.close), iconSize: 40, color: UIColor.white, backgroundColor: #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1), forState: .normal)
-        }
-    }
-    
-    func circleMenu(_ circleMenu: CircleMenu, buttonDidSelected button: UIButton, atIndex: Int) {
-        self.blurView.isHidden = true
-        if atIndex == 0{
-            
-        }
-    }
-    
-    func circleMenu(_ circleMenu: CircleMenu, buttonWillSelected button: UIButton, atIndex: Int) {
-        if atIndex == 1{
-            self.blurView.isHidden = true
-        }
     }
 }
 

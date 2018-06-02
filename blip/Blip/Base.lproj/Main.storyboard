@@ -203,27 +203,37 @@
                                     <action selector="postTestJob:" destination="TKO-X2-gMW" eventType="touchUpInside" id="s5p-FK-tcw"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8eP-3M-9Oo" customClass="RaisedButton" customModule="Material">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nfe-Vv-4qP">
                                 <rect key="frame" x="152" y="45" width="110" height="35"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8eP-3M-9Oo" customClass="RaisedButton" customModule="Material">
+                                        <rect key="frame" x="0.0" y="-0.3333333333333357" width="110" height="35"/>
+                                        <state key="normal" title="Button"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="pulseColor">
+                                                <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
+                                                <color key="value" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
+                                                <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="title" value="$ 0.00"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="35" id="fHc-X9-5kk"/>
-                                    <constraint firstAttribute="width" constant="110" id="zgp-l7-q3J"/>
+                                    <constraint firstItem="8eP-3M-9Oo" firstAttribute="width" secondItem="Nfe-Vv-4qP" secondAttribute="width" id="2NI-EH-qi1"/>
+                                    <constraint firstAttribute="width" constant="110" id="M4P-f9-YuV"/>
+                                    <constraint firstAttribute="height" constant="35" id="N3L-Cf-63v"/>
+                                    <constraint firstItem="8eP-3M-9Oo" firstAttribute="centerY" secondItem="Nfe-Vv-4qP" secondAttribute="centerY" id="WVD-LM-6l8"/>
+                                    <constraint firstItem="8eP-3M-9Oo" firstAttribute="height" secondItem="Nfe-Vv-4qP" secondAttribute="height" id="j3y-eP-0DE"/>
+                                    <constraint firstItem="8eP-3M-9Oo" firstAttribute="centerX" secondItem="Nfe-Vv-4qP" secondAttribute="centerX" id="xjK-UY-hjn"/>
                                 </constraints>
-                                <state key="normal" title="Button"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="pulseColor">
-                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
-                                        <color key="value" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
-                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="title" value="$ 0.00"/>
-                                </userDefinedRuntimeAttributes>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="96v-VH-aRP" customClass="RaisedButton" customModule="Material">
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="96v-VH-aRP">
                                 <rect key="frame" x="349" y="45" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="8dL-LB-ndl"/>
@@ -248,44 +258,17 @@
                                     <action selector="menuTapped:" destination="TKO-X2-gMW" eventType="touchUpInside" id="LnT-JI-XYW"/>
                                 </connections>
                             </button>
-                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="by5-HF-IX8">
-                                <rect key="frame" x="0.0" y="10" width="414" height="736"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="LBJ-w3-RnD">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                </view>
-                                <blurEffect style="light"/>
-                            </visualEffectView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Xv-qT-swR" customClass="CircleMenu" customModule="CircleMenu">
-                                <rect key="frame" x="182" y="353" width="50" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="50" id="Lk5-jS-8vc"/>
-                                    <constraint firstAttribute="height" constant="50" id="iky-4V-VtI"/>
-                                </constraints>
-                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="buttonsCount">
-                                        <integer key="value" value="2"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="by5-HF-IX8" firstAttribute="centerX" secondItem="xni-lE-of8" secondAttribute="centerX" id="09l-Y3-xtL"/>
                             <constraint firstItem="JZz-UL-eYA" firstAttribute="leading" secondItem="xni-lE-of8" secondAttribute="leading" constant="20" id="2cw-uO-4Iv"/>
                             <constraint firstItem="F1g-OS-zCz" firstAttribute="centerY" secondItem="Yjo-Ea-HG0" secondAttribute="centerY" id="8kh-9J-Wlz"/>
                             <constraint firstItem="JZz-UL-eYA" firstAttribute="top" secondItem="xni-lE-of8" secondAttribute="top" constant="20" id="AOG-0n-c2L"/>
-                            <constraint firstItem="6Xv-qT-swR" firstAttribute="centerY" secondItem="xni-lE-of8" secondAttribute="centerY" id="AUu-3K-a6a"/>
-                            <constraint firstItem="8eP-3M-9Oo" firstAttribute="top" secondItem="xni-lE-of8" secondAttribute="top" constant="25" id="Bbd-Px-Mmy"/>
-                            <constraint firstItem="by5-HF-IX8" firstAttribute="width" secondItem="k1b-e6-YiJ" secondAttribute="width" id="P2B-O6-swh"/>
-                            <constraint firstItem="by5-HF-IX8" firstAttribute="centerY" secondItem="xni-lE-of8" secondAttribute="centerY" id="TgJ-dO-k1h"/>
+                            <constraint firstItem="Nfe-Vv-4qP" firstAttribute="top" secondItem="xni-lE-of8" secondAttribute="top" constant="25" id="T2a-SY-0PW"/>
                             <constraint firstItem="Yjo-Ea-HG0" firstAttribute="centerX" secondItem="xni-lE-of8" secondAttribute="centerX" id="Ty3-cK-aGJ"/>
                             <constraint firstItem="F1g-OS-zCz" firstAttribute="centerX" secondItem="Yjo-Ea-HG0" secondAttribute="centerX" id="Ujn-nK-BDD"/>
+                            <constraint firstItem="Nfe-Vv-4qP" firstAttribute="centerX" secondItem="xni-lE-of8" secondAttribute="centerX" id="aX8-4x-H78"/>
                             <constraint firstItem="96v-VH-aRP" firstAttribute="top" secondItem="xni-lE-of8" secondAttribute="top" constant="25" id="ecA-4x-rtd"/>
-                            <constraint firstItem="6Xv-qT-swR" firstAttribute="centerX" secondItem="xni-lE-of8" secondAttribute="centerX" id="l8J-LI-Kef"/>
-                            <constraint firstItem="by5-HF-IX8" firstAttribute="height" secondItem="k1b-e6-YiJ" secondAttribute="height" id="lYc-l2-dMf"/>
-                            <constraint firstItem="8eP-3M-9Oo" firstAttribute="centerX" secondItem="xni-lE-of8" secondAttribute="centerX" id="rp3-lR-r3P"/>
                             <constraint firstItem="xni-lE-of8" firstAttribute="trailing" secondItem="96v-VH-aRP" secondAttribute="trailing" constant="25" id="swW-6u-dmS"/>
                             <constraint firstItem="xni-lE-of8" firstAttribute="bottom" secondItem="Yjo-Ea-HG0" secondAttribute="bottom" constant="78" id="tNb-cB-eQ6"/>
                         </constraints>
@@ -302,9 +285,8 @@
                     <navigationItem key="navigationItem" id="yLA-nY-IhM"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
-                        <outlet property="blurView" destination="by5-HF-IX8" id="ArC-Uc-xvq"/>
-                        <outlet property="circleMenu" destination="6Xv-qT-swR" id="hX9-QQ-m3o"/>
                         <outlet property="earningsLabel" destination="8eP-3M-9Oo" id="TBu-bA-1ya"/>
+                        <outlet property="earningsLoader" destination="Nfe-Vv-4qP" id="C0O-PG-faj"/>
                         <outlet property="goButton" destination="Yjo-Ea-HG0" id="6OC-wQ-sUX"/>
                         <outlet property="goButtonPulseAnimation" destination="F1g-OS-zCz" id="hVu-7L-nHF"/>
                         <outlet property="map" destination="k1b-e6-YiJ" id="IyO-MK-efC"/>
@@ -315,7 +297,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fpp-hs-Po5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1420.289855072464" y="-101.08695652173914"/>
+            <point key="canvasLocation" x="-1371" y="-101"/>
         </scene>
         <!--Found JobVC-->
         <scene sceneID="uTq-Wh-5b1">

@@ -1,26 +1,13 @@
 PODS:
   - Alamofire (4.7.2)
-  - Bolts (1.9.0):
-    - Bolts/AppLinks (= 1.9.0)
-    - Bolts/Tasks (= 1.9.0)
-  - Bolts/AppLinks (1.9.0):
-    - Bolts/Tasks
-  - Bolts/Tasks (1.9.0)
   - BSGridCollectionViewLayout (1.2.0)
   - BSImagePicker (2.7.1):
     - BSGridCollectionViewLayout (~> 1.2.0)
     - UIImageViewModeScaleAspect (= 1.5)
   - CHIPageControl/Fresno (0.1.5)
-  - CircleMenu (3.0.6)
   - Cosmos (16.0.0)
   - DynamicBlurView (2.0.2)
   - Eureka (4.1.1)
-  - FBSDKCoreKit (4.33.0):
-    - Bolts (~> 1.7)
-  - FBSDKLoginKit (4.33.0):
-    - FBSDKCoreKit
-  - FBSDKShareKit (4.33.0):
-    - FBSDKCoreKit (~> 4.33.0)
   - Firebase/Auth (5.1.0):
     - Firebase/CoreOnly
     - FirebaseAuth (= 5.0.0)
@@ -61,13 +48,7 @@ PODS:
   - FirebaseStorage (3.0.0):
     - FirebaseCore (~> 5.0)
     - GTMSessionFetcher/Core (~> 1.1)
-  - GoogleMaps (2.7.0):
-    - GoogleMaps/Maps (= 2.7.0)
-  - GoogleMaps/Base (2.7.0)
-  - GoogleMaps/Maps (2.7.0):
-    - GoogleMaps/Base
-  - GooglePlaces (2.7.0):
-    - GoogleMaps/Base (= 2.7.0)
+  - Floaty (4.0.1)
   - GoogleToolboxForMac/Defines (2.1.4)
   - GoogleToolboxForMac/Logger (2.1.4):
     - GoogleToolboxForMac/Defines (= 2.1.4)
@@ -80,19 +61,13 @@ PODS:
   - leveldb-library (1.20)
   - lottie-ios (2.5.0)
   - Mapbox-iOS-SDK (4.0.2)
-  - MapboxCoreNavigation (0.17.0-beta.1):
+  - MapboxCoreNavigation (0.17.0):
     - MapboxDirections.swift (~> 0.20.0)
     - MapboxMobileEvents (~> 0.4)
     - Turf (~> 0.1)
   - MapboxDirections.swift (0.20.0):
     - Polyline (~> 4.2)
   - MapboxMobileEvents (0.4.0)
-  - MapboxNavigation (0.17.0-beta.1):
-    - Mapbox-iOS-SDK (~> 4.0)
-    - MapboxCoreNavigation (= 0.17.0-beta.1)
-    - MapboxSpeech (~> 0.0.1)
-    - Solar (~> 2.1)
-  - MapboxSpeech (0.0.1)
   - MarqueeLabel/Swift (3.1.4)
   - Material (2.15.0):
     - Material/Core (= 2.15.0)
@@ -117,7 +92,6 @@ PODS:
   - Pulsator (0.5.1)
   - RevealingSplashView (0.5.0)
   - SnapKit (4.0.0)
-  - Solar (2.1.0)
   - SRCountdownTimer (1.1)
   - Stripe (13.0.2)
   - SwiftIcons (2.0.1)
@@ -128,26 +102,20 @@ DEPENDENCIES:
   - Alamofire
   - BSImagePicker
   - CHIPageControl/Fresno
-  - CircleMenu
   - Cosmos
   - Eureka
-  - FBSDKCoreKit
-  - FBSDKLoginKit
-  - FBSDKShareKit
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Database
   - Firebase/Messaging
   - Firebase/Storage
-  - GoogleMaps
-  - GooglePlaces
+  - Floaty
   - Hero
   - IBAnimatable
   - Kingfisher
   - lottie-ios
   - Mapbox-iOS-SDK
-  - MapboxCoreNavigation (from `https://raw.githubusercontent.com/mapbox/mapbox-navigation-ios/v0.17.0-beta.1/MapboxCoreNavigation.podspec`)
-  - MapboxNavigation (from `https://raw.githubusercontent.com/mapbox/mapbox-navigation-ios/v0.17.0-beta.1/MapboxNavigation.podspec`)
+  - MapboxCoreNavigation
   - Material
   - NotificationBannerSwift
   - Pastel
@@ -161,17 +129,12 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
-    - Bolts
     - BSGridCollectionViewLayout
     - BSImagePicker
     - CHIPageControl
-    - CircleMenu
     - Cosmos
     - DynamicBlurView
     - Eureka
-    - FBSDKCoreKit
-    - FBSDKLoginKit
-    - FBSDKShareKit
     - Firebase
     - FirebaseAnalytics
     - FirebaseAuth
@@ -180,8 +143,7 @@ SPEC REPOS:
     - FirebaseInstanceID
     - FirebaseMessaging
     - FirebaseStorage
-    - GoogleMaps
-    - GooglePlaces
+    - Floaty
     - GoogleToolboxForMac
     - GTMSessionFetcher
     - Hero
@@ -190,9 +152,9 @@ SPEC REPOS:
     - leveldb-library
     - lottie-ios
     - Mapbox-iOS-SDK
+    - MapboxCoreNavigation
     - MapboxDirections.swift
     - MapboxMobileEvents
-    - MapboxSpeech
     - MarqueeLabel
     - Material
     - Motion
@@ -205,32 +167,20 @@ SPEC REPOS:
     - Pulsator
     - RevealingSplashView
     - SnapKit
-    - Solar
     - SRCountdownTimer
     - Stripe
     - SwiftIcons
     - Turf
     - UIImageViewModeScaleAspect
 
-EXTERNAL SOURCES:
-  MapboxCoreNavigation:
-    :podspec: https://raw.githubusercontent.com/mapbox/mapbox-navigation-ios/v0.17.0-beta.1/MapboxCoreNavigation.podspec
-  MapboxNavigation:
-    :podspec: https://raw.githubusercontent.com/mapbox/mapbox-navigation-ios/v0.17.0-beta.1/MapboxNavigation.podspec
-
 SPEC CHECKSUMS:
   Alamofire: e4fa87002c137ba2d8d634d2c51fabcda0d5c223
-  Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
   BSGridCollectionViewLayout: 8f12c8e1e08c47057f5a39a6828f4395f043d78f
   BSImagePicker: eb12948a6e71b9855c2c37723dfd989b9b4288bd
   CHIPageControl: 79d19a8ee2e35fa3c1da6533adb5364c77b5cfea
-  CircleMenu: 743ac815475e8e40e8848d2954fa7f7263d9f78d
   Cosmos: 7bcee0fa858a9355a214f2a181be5dffcee42c81
   DynamicBlurView: aa6db4defc6e537eb86fc5e58dd3991666178399
   Eureka: b88fb930e42c79f8c03c373d0fcdc28c1d6c50ed
-  FBSDKCoreKit: 572b047a7e029bc44542bcf8a59414e7ff2b543e
-  FBSDKLoginKit: 88cb456349cfb3b554427ce4f8b43729d85dfb40
-  FBSDKShareKit: 1869cb24db2cea90666a50cb9d568deb38e2d16e
   Firebase: e08fb0795f35707aeb1d8a715c731c45bdf6fd56
   FirebaseAnalytics: b3628aea54c50464c32c393fb2ea032566e7ecc2
   FirebaseAuth: acbeef02fe7c3a26624e309849f3fe30c84115af
@@ -239,8 +189,7 @@ SPEC CHECKSUMS:
   FirebaseInstanceID: 83e0040351565df711a5db3d8ebe5ea21aca998a
   FirebaseMessaging: ec6fde5a77824c6da0218f9ca220feb251aa17d5
   FirebaseStorage: 7ca4bb7b58a25fa647b04f524033fc7cb7eb272b
-  GoogleMaps: f79af95cb24d869457b1f961c93d3ce8b2f3b848
-  GooglePlaces: 3d06e6c99654545b4738ce49648745779c25f2ef
+  Floaty: 82854e1a5ef4fa208281ebd4da2f3d1e51ba67a6
   GoogleToolboxForMac: 91c824d21e85b31c2aae9bb011c5027c9b4e738f
   GTMSessionFetcher: 5fa5b80fd20e439ef5f545fb2cb3ca6c6714caa2
   Hero: 33dadf2cd1c98af71e213dcbc2902e6e03622a4e
@@ -249,11 +198,9 @@ SPEC CHECKSUMS:
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   lottie-ios: d699fdee68d7b63e721d949388b015fef1aaa4ac
   Mapbox-iOS-SDK: 02b15b70167d54b45fdc059737672a3a68cd780f
-  MapboxCoreNavigation: 2f84ea58a6dd555b278994c750981e32ed4cb2a9
+  MapboxCoreNavigation: 729666a164ceacb789b63047406a5c95ca965bbd
   MapboxDirections.swift: 9a46ca0f0608c76393f392ae793459cc30aa846f
   MapboxMobileEvents: e71cf788a95fa0c01ad6ce17fd5efd13140af5ff
-  MapboxNavigation: d75ec22bfdf6946bf8f791e941cfeccd5c745945
-  MapboxSpeech: 6cc9b3d53adc2988af3ebc704dd17907b84a3f9f
   MarqueeLabel: bf768455fe88d427f71476ebb23f9092b660f40b
   Material: 00e32bb5e61b3f749044897b2d93acd8bf33faa4
   Motion: 9f74d115d7f72bb5380a8e3cde2f8a1fc898ac36
@@ -266,13 +213,12 @@ SPEC CHECKSUMS:
   Pulsator: f465ca37212d826523fe8c79b07c1a4c1a941f5e
   RevealingSplashView: 0794eecad3a8983ac11a1fe474e9a9b51b926780
   SnapKit: a42d492c16e80209130a3379f73596c3454b7694
-  Solar: 2dc6e7cc39186cb0c8228fa08df76fb50c7d8f24
   SRCountdownTimer: 9c92e444b5403c92f01dd6610299b8c634bc8562
   Stripe: f52f60e948fbc111c26b83227f7d802adfc64c5e
   SwiftIcons: e475a56ae2c2da40672dbf16061ca5dd5cee7dbb
   Turf: 4ace207379c8d58a8e45842755de821dac3fae72
   UIImageViewModeScaleAspect: 11a790a0b9d248a13dc63e3a78991f1463b6d84e
 
-PODFILE CHECKSUM: 0b7158f29f6d2e206f2fbc4665940b5b8bb69b4b
+PODFILE CHECKSUM: 08da3e7df9cb72aad36eb4ea567bc78d13fe6ab9
 
 COCOAPODS: 1.5.3
