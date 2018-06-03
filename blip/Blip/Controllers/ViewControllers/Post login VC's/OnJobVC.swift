@@ -22,16 +22,20 @@ class OnJobVC: UIViewController {
     @IBOutlet weak var map: MGLMapView!
     @IBOutlet weak var callButton: RaisedButton!
     @IBOutlet weak var noShowButton: RaisedButton!
+    @IBOutlet weak var navigateButton: RaisedButton!
     @IBOutlet weak var doneButton: RaisedButton!
+    
+    @IBOutlet weak var doneToBottom: NSLayoutConstraint!
     
     let service = ServiceCalls.instance
     var waypoints:[BlipWaypoint]!
-    var legIndex = 1 //1 because of origin in the first position of waypoints
+    var legIndex = 1
     var delivery:Delivery!
     var type:String!
     var calls = 0
     let locationManager = CLLocationManager()
     var currentLocation:CLLocationCoordinate2D!
+    var distance = 1
     
     override func viewDidLoad() {
         UIApplication.shared.statusBarStyle = .lightContent
@@ -49,6 +53,7 @@ class OnJobVC: UIViewController {
             locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
             locationManager.startUpdatingLocation()
         }
+        deactivateDoneButton()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -62,7 +67,6 @@ class OnJobVC: UIViewController {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     func prepareInstructions(type: String, delivery: Delivery){
@@ -72,33 +76,38 @@ class OnJobVC: UIViewController {
         }
         else{
             self.mainInsructionLabel.text = delivery.deliveryMainInstruction
-            self.mainInsructionLabel.text = delivery.deliverySubInstruction
+            self.subInstructionLabel.text = delivery.deliverySubInstruction
         }
     }
     
     func prepareButtons(){
         callButton.setIcon(icon: .googleMaterialDesign(.call), iconSize: 45, color: UIColor.white, backgroundColor: #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1), forState: .normal)
         noShowButton.setIcon(icon: .googleMaterialDesign(.error), iconSize: 45, color: UIColor.white, backgroundColor: #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1), forState: .normal)
-        doneButton.setIcon(icon: .googleMaterialDesign(.done), iconSize: 45, color: UIColor.white, backgroundColor: UIColor.lightGray, forState: .normal)
+        navigateButton.setIcon(icon: .googleMaterialDesign(.navigation), iconSize: 45, color: UIColor.white, backgroundColor: #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1), forState: .normal)
         callButton.makeCircular()
         noShowButton.makeCircular()
-        doneButton.makeCircular()
-        doneButton.isEnabled = false
+        navigateButton.makeCircular()
+        doneButton.image = UIImage(icon: .googleMaterialDesign(.check), size: CGSize(size: 40), textColor: UIColor.white, backgroundColor: UIColor.clear)
     }
     
     func activateDoneButton(){
-        doneButton.backgroundColor = UIColor.green
         doneButton.isEnabled = true
+        doneButton.backgroundColor = #colorLiteral(red: 0, green: 0.7973585725, blue: 0, alpha: 1)
     }
     
-    @IBAction func googleMaps(_ sender: Any) {
-        print("Before",calls)
-        calls += 1
-        print("After",calls)
+    func deactivateDoneButton(){
+        doneButton.backgroundColor = UIColor.gray
+        doneButton.isEnabled = false
     }
     
     @IBAction func appleMapsPressed(_ sender: Any) {
-        let location = self.delivery.deliveryLocation
+        let location: CLLocationCoordinate2D!
+        if self.type == "Pickup"{
+            location = self.delivery.origin
+        }
+        else{
+            location = self.delivery.deliveryLocation
+        }
         let regionDistance:CLLocationDistance = 1000
         let regionSpan = MKCoordinateRegionMakeWithDistance(location!, regionDistance, regionDistance)
         let options = [MKLaunchOptionsMapCenterKey: NSValue(mkCoordinate: regionSpan.center), MKLaunchOptionsMapSpanKey: NSValue(mkCoordinateSpan: regionSpan.span) ]
@@ -151,16 +160,23 @@ class OnJobVC: UIViewController {
         }
     }
     
+    @IBAction func test(_ sender: Any) {
+        self.distance = 3000
+    }
+    
+    
     @IBAction func checkMarkPressed(_ sender: Any) {
         
         let popup = PopupDialog(title: "Confirm", message: "Please make sure you have successfully completed the delivery before pressing confirm. Failure to do so may result in the suspension of your account. Alternatively, press the No Show button if the delivery cannot be completed successfully")
         let confirmButton = PopupDialogButton(title: "Confirm") {
             
             self.service.completedJob(deliveryID: self.delivery.identifier, storeID: self.delivery.store.storeID, type: self.type)
-
-            if self.waypoints.count != self.legIndex{// This is equivalent to !self.isLastWaypoint
-                //increase the leg index
+            self.deactivateDoneButton()
+            if self.waypoints.count != self.legIndex{
+                
                 self.legIndex += 1
+                self.type = self.waypoints[self.legIndex].name!
+                self.delivery = self.waypoints[self.legIndex].delivery
                 if let currentType = self.waypoints[self.legIndex].name, let currentDelivery = self.waypoints[self.legIndex].delivery{
                     self.prepareInstructions(type: currentType, delivery: currentDelivery)
                     self.prepareButtons()
@@ -198,6 +214,9 @@ extension OnJobVC: MGLMapViewDelegate{
     
     func prepareMap(type: String, delivery: Delivery){
         map.delegate = self
+        if let annotations = map.annotations{
+            map.removeAnnotations(annotations)
+        }
         map.showsUserLocation = true
         map.showsUserHeadingIndicator = true
         map.userTrackingMode = .followWithHeading
@@ -226,14 +245,14 @@ extension OnJobVC:CLLocationManagerDelegate{
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if self.type == "Pickup"{
             if let currentLocation = locations.first{
-                if self.delivery.origin.distance(to: currentLocation.coordinate) < 300{
+                if self.delivery.origin.distance(to: currentLocation.coordinate) < Double(self.distance){
                     self.activateDoneButton()
                 }
             }
         }
         else{
             if let currentLocation = locations.first{
-                if self.delivery.deliveryLocation.distance(to: currentLocation.coordinate) < 300{
+                if self.delivery.deliveryLocation.distance(to: currentLocation.coordinate) < Double(self.distance){
                     self.activateDoneButton()
                 }
             }

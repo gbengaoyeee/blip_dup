@@ -43,13 +43,13 @@ class SearchForJobVC: UIViewController {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isHidden = true
         locationManager.delegate = self
+        locationManager.startUpdatingLocation()
         prepareBlur()
         prepareMenuButton()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        locationManager.startUpdatingLocation()
         prepareMap()
         prepareGoButton()
         getBalance()
@@ -86,9 +86,6 @@ class SearchForJobVC: UIViewController {
     }
     
     func prepareMenuButton(){
-//        menu.makeCircular()
-//        menu.buttonColor = #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1)
-//        menu.buttonImage = UIImage(icon: .googleMaterialDesign(.add), size: CGSize(size: 30), textColor: UIColor.white, backgroundColor: #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1))
         menu.addItem("Test", icon: UIImage(icon: .googleMaterialDesign(.verifiedUser), size: CGSize(size: 25), textColor: UIColor.white, backgroundColor: UIColor.blue)) { (item) in
             print("Hi")
         }
@@ -146,11 +143,7 @@ class SearchForJobVC: UIViewController {
     }
     
     func prepareBlur(){
-//        gradient = CAGradientLayer()
-//        gradient.frame = map.bounds
-//        gradient.colors = [UIColor.clear.cgColor, UIColor.black.cgColor, UIColor.black.cgColor, UIColor.clear.cgColor]
-//        gradient.locations = [0, 0.2, 0.8, 1]
-//        map.layer.mask = gradient
+        
     }
     
     func prepareGoButton(){
