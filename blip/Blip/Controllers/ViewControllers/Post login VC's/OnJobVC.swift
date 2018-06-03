@@ -26,7 +26,6 @@ class OnJobVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         // Ask for Authorisation from the User.
         self.locationManager.requestAlwaysAuthorization()
         
@@ -45,6 +44,10 @@ class OnJobVC: UIViewController {
             self.type = waypoints[legIndex].name
         }
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -52,7 +55,9 @@ class OnJobVC: UIViewController {
     }
     
     @IBAction func googleMaps(_ sender: Any) {
-        
+        print("Before",calls)
+        calls += 1
+        print("After",calls)
     }
     
     @IBAction func appleMapsPressed(_ sender: Any) {
@@ -110,9 +115,11 @@ class OnJobVC: UIViewController {
     }
     
     @IBAction func checkMarkPressed(_ sender: Any) {
-        if self.currentLocation != self.delivery.deliveryLocation{//checks if the user is in the pickup/delivery location
+        if self.currentLocation != self.delivery.deliveryLocation{//checks if the user is in the pickup/delivery location(DOES NOT WORK AND I AM TRYING TO FIND A WAY TO FIX)
             //To- do : not yet in the place
             print("NOT IN YOUR PICKUP/DELIVERY LOCATION")
+            print(self.currentLocation.latitude, self.currentLocation.longitude)
+            print(self.delivery.deliveryLocation.latitude, self.delivery.deliveryLocation.longitude)
             return
         }
         
@@ -123,6 +130,7 @@ class OnJobVC: UIViewController {
             
 //            if !self.isLastWaypoint{
             if self.waypoints.count != self.legIndex{// This is equivalent to !self.isLastWaypoint
+                //increase the leg index
                 self.legIndex += 1
                 //Do other things here when the check mark is pressed and its the last waypoint
                 //like animate the sub and main instructions
@@ -146,6 +154,6 @@ extension OnJobVC:CLLocationManagerDelegate{
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
-        self.currentLocation = locValue
+        self.currentLocation = locations.first?.coordinate
     }
 }

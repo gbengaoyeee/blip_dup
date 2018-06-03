@@ -2,11 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>UIAppFonts</key>
-	<array>
-		<string>CenturyGothic.ttf</string>
-		<string>CenturyGothicBold.ttf</string>
-	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDocumentTypes</key>
@@ -72,19 +67,25 @@
 	</array>
 	<key>NSCameraUsageDescription</key>
 	<string>We require a profile picture to verify your identity</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Your location is used to set you up with appropriate delivery jobs around your area, and get your status while on a job</string>
-	<key>NSLocationUsageDescription</key>
-	<string>We use your location to determine the jobs near your area</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Your location is used to ensure that you are being directed appropriately while on the job</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Your location is used to determine jobs near your area, and provide directions to complete the job</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Your location is used to ensure that you are being directed appropriately while on the job</string>
+	<key>NSLocationUsageDescription</key>
+	<string>We use your location to determine the jobs near your area</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Your location is used to set you up with appropriate delivery jobs around your area, and get your status while on a job</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We require you to select a picture of yourself to verify your identity</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>CenturyGothic.ttf</string>
+		<string>CenturyGothicBold.ttf</string>
+	</array>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
+		<string>location</string>
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>

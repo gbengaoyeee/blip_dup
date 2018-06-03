@@ -832,14 +832,20 @@
                         <constraints>
                             <constraint firstItem="GUk-7d-Sxg" firstAttribute="top" secondItem="FYP-BH-skc" secondAttribute="bottom" constant="30" id="1F0-ya-Wfa"/>
                             <constraint firstItem="GUk-7d-Sxg" firstAttribute="leading" secondItem="SkJ-fE-MMA" secondAttribute="leading" constant="20" id="5Qh-fM-OHN"/>
+                            <constraint firstItem="SkJ-fE-MMA" firstAttribute="trailing" secondItem="QPW-Kc-9kN" secondAttribute="trailing" constant="20" id="BoJ-s3-oOa"/>
                             <constraint firstItem="SFM-92-WS3" firstAttribute="top" secondItem="GUk-7d-Sxg" secondAttribute="bottom" constant="15" id="IPY-4W-Gi7"/>
                             <constraint firstItem="rdI-hz-Nb0" firstAttribute="width" secondItem="2U6-TE-CdR" secondAttribute="width" id="JlH-HL-pd9"/>
                             <constraint firstItem="rdI-hz-Nb0" firstAttribute="centerX" secondItem="SkJ-fE-MMA" secondAttribute="centerX" id="LeF-1M-VKM"/>
+                            <constraint firstItem="fAZ-is-Mbx" firstAttribute="centerX" secondItem="SkJ-fE-MMA" secondAttribute="centerX" id="OQa-Zp-mXE"/>
+                            <constraint firstItem="SkJ-fE-MMA" firstAttribute="bottom" secondItem="YW0-Zg-hYN" secondAttribute="bottom" constant="20" id="Swv-jF-G6w"/>
                             <constraint firstItem="SkJ-fE-MMA" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="GUk-7d-Sxg" secondAttribute="trailing" constant="20" id="VIq-0v-QD0"/>
+                            <constraint firstItem="SkJ-fE-MMA" firstAttribute="bottom" secondItem="QPW-Kc-9kN" secondAttribute="bottom" constant="20" id="cUw-F4-dfc"/>
                             <constraint firstItem="rdI-hz-Nb0" firstAttribute="height" secondItem="2U6-TE-CdR" secondAttribute="height" multiplier="0.5" id="hkQ-hu-cxB"/>
                             <constraint firstItem="SFM-92-WS3" firstAttribute="leading" secondItem="rdI-hz-Nb0" secondAttribute="leading" constant="20" id="iok-MW-CFq"/>
+                            <constraint firstItem="SkJ-fE-MMA" firstAttribute="bottom" secondItem="fAZ-is-Mbx" secondAttribute="bottom" constant="20" id="jMM-3R-npI"/>
                             <constraint firstItem="SkJ-fE-MMA" firstAttribute="top" secondItem="rdI-hz-Nb0" secondAttribute="top" id="nRq-0i-271"/>
                             <constraint firstItem="SFM-92-WS3" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="rdI-hz-Nb0" secondAttribute="trailing" constant="20" id="oB0-hO-8Zb"/>
+                            <constraint firstItem="YW0-Zg-hYN" firstAttribute="leading" secondItem="SkJ-fE-MMA" secondAttribute="leading" constant="20" id="sQk-ql-rlV"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="SkJ-fE-MMA"/>
                     </view>
