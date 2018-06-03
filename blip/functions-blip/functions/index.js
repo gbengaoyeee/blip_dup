@@ -650,7 +650,11 @@ exports.getBestJob = functions.https.onRequest((req, res) => {
                     allJobsref.once('value', function(snapshot) {
                         var allJobsValues = snapshot.val();
                         if (allJobsValues != null) {
-                            for (const jobId in allJobsValues) {
+                            for (const jobId in allJobsValues) {//looping thru all the jobs in the Alljobs reference
+                                //check to see if the number of jobs found is greater than 6
+                                if (Object.keys(jobBundle).length === 6){
+                                    break;// Break out of the loop if there are 6 jobs already found
+                                }
                                 if (jobId != closestJobId) { //So skip if it sees the same job as the closest it already found
                                     const pickupLat = allJobsValues[jobId].originLat;
                                     const pickupLong = allJobsValues[jobId].originLong;

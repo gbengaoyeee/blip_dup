@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="V9e-Cj-ili">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -598,10 +598,10 @@
             </objects>
             <point key="canvasLocation" x="233" y="-101"/>
         </scene>
-        <!--View Controller-->
+        <!--On JobVC-->
         <scene sceneID="UTk-tr-rxs">
             <objects>
-                <viewController id="gM9-IO-ocS" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="onJobVC" id="gM9-IO-ocS" customClass="OnJobVC" customModule="Blip" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="2U6-TE-CdR">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -630,7 +630,11 @@
                                                         <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="title" value="Google Maps"/>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="googleMaps:" destination="gM9-IO-ocS" eventType="touchUpInside" id="Y4f-h9-2xY"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="97k-pF-eb7" customClass="RaisedButton" customModule="Material">
                                                 <rect key="frame" x="8" y="5.6666666666666288" width="194" height="44"/>
@@ -650,7 +654,11 @@
                                                         <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="title" value="Apple Maps"/>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="appleMapsPressed:" destination="gM9-IO-ocS" eventType="touchUpInside" id="3Sr-EJ-ZTZ"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" red="0.387600271" green="0.60725958359999999" blue="0.78178537439999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -718,6 +726,9 @@
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="callButton:" destination="gM9-IO-ocS" eventType="touchUpInside" id="s3W-J9-Og9"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fAZ-is-Mbx" customClass="RaisedButton" customModule="Material">
                                 <rect key="frame" x="177" y="656" width="60" height="60"/>
@@ -742,6 +753,9 @@
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="noShowPressed:" destination="gM9-IO-ocS" eventType="touchUpInside" id="Y0q-Z7-W0M"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QPW-Kc-9kN" customClass="RaisedButton" customModule="Material">
                                 <rect key="frame" x="334" y="656" width="60" height="60"/>
@@ -766,6 +780,9 @@
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="checkMarkPressed:" destination="gM9-IO-ocS" eventType="touchUpInside" id="fgu-F3-OKE"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Go to front door and pickup stuff from the main entrance" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SFM-92-WS3">
                                 <rect key="frame" x="20" y="457.66666666666669" width="350.33333333333331" height="42"/>
@@ -781,17 +798,27 @@
                         <constraints>
                             <constraint firstItem="GUk-7d-Sxg" firstAttribute="top" secondItem="FYP-BH-skc" secondAttribute="bottom" constant="30" id="1F0-ya-Wfa"/>
                             <constraint firstItem="GUk-7d-Sxg" firstAttribute="leading" secondItem="SkJ-fE-MMA" secondAttribute="leading" constant="20" id="5Qh-fM-OHN"/>
+                            <constraint firstItem="SkJ-fE-MMA" firstAttribute="trailing" secondItem="QPW-Kc-9kN" secondAttribute="trailing" constant="20" id="BoJ-s3-oOa"/>
                             <constraint firstItem="SFM-92-WS3" firstAttribute="top" secondItem="GUk-7d-Sxg" secondAttribute="bottom" constant="15" id="IPY-4W-Gi7"/>
                             <constraint firstItem="rdI-hz-Nb0" firstAttribute="width" secondItem="2U6-TE-CdR" secondAttribute="width" id="JlH-HL-pd9"/>
                             <constraint firstItem="rdI-hz-Nb0" firstAttribute="centerX" secondItem="SkJ-fE-MMA" secondAttribute="centerX" id="LeF-1M-VKM"/>
+                            <constraint firstItem="fAZ-is-Mbx" firstAttribute="centerX" secondItem="SkJ-fE-MMA" secondAttribute="centerX" id="OQa-Zp-mXE"/>
+                            <constraint firstItem="SkJ-fE-MMA" firstAttribute="bottom" secondItem="YW0-Zg-hYN" secondAttribute="bottom" constant="20" id="Swv-jF-G6w"/>
                             <constraint firstItem="SkJ-fE-MMA" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="GUk-7d-Sxg" secondAttribute="trailing" constant="20" id="VIq-0v-QD0"/>
+                            <constraint firstItem="SkJ-fE-MMA" firstAttribute="bottom" secondItem="QPW-Kc-9kN" secondAttribute="bottom" constant="20" id="cUw-F4-dfc"/>
                             <constraint firstItem="rdI-hz-Nb0" firstAttribute="height" secondItem="2U6-TE-CdR" secondAttribute="height" multiplier="0.5" id="hkQ-hu-cxB"/>
                             <constraint firstItem="SFM-92-WS3" firstAttribute="leading" secondItem="rdI-hz-Nb0" secondAttribute="leading" constant="20" id="iok-MW-CFq"/>
+                            <constraint firstItem="SkJ-fE-MMA" firstAttribute="bottom" secondItem="fAZ-is-Mbx" secondAttribute="bottom" constant="20" id="jMM-3R-npI"/>
                             <constraint firstItem="SkJ-fE-MMA" firstAttribute="top" secondItem="rdI-hz-Nb0" secondAttribute="top" id="nRq-0i-271"/>
                             <constraint firstItem="SFM-92-WS3" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="rdI-hz-Nb0" secondAttribute="trailing" constant="20" id="oB0-hO-8Zb"/>
+                            <constraint firstItem="YW0-Zg-hYN" firstAttribute="leading" secondItem="SkJ-fE-MMA" secondAttribute="leading" constant="20" id="sQk-ql-rlV"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="SkJ-fE-MMA"/>
                     </view>
+                    <connections>
+                        <outlet property="mainInsructionLabel" destination="GUk-7d-Sxg" id="t33-IZ-tQy"/>
+                        <outlet property="subInstructionLabel" destination="SFM-92-WS3" id="cOx-aW-Zz1"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JJp-CF-9Ei" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1390,7 +1417,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ETA-Xo-tF0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3931" y="839"/>
+            <point key="canvasLocation" x="-6584" y="920"/>
         </scene>
         <!--Choose PictureVC-->
         <scene sceneID="dex-lz-2Rn">
@@ -1477,7 +1504,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fru-De-JpS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3053" y="839"/>
+            <point key="canvasLocation" x="-5706" y="920"/>
         </scene>
     </scenes>
     <resources>

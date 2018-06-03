@@ -168,7 +168,12 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     
     @IBAction func acceptJobPressed(_ sender: Any) {
         timer.invalidate()
-        calculateAndPresentNavigation(waypointList: self.waypoints, present: true)
+//        calculateAndPresentNavigation(waypointList: self.waypoints, present: true)
+        let sb = UIStoryboard(name: "Main", bundle: nil)
+        let onJobVC:OnJobVC = sb.instantiateViewController(withIdentifier: "onJobVC") as! OnJobVC
+        onJobVC.waypoints = self.waypoints
+        //Push the controller
+        self.navigationController?.pushViewController(onJobVC, animated: true)
     }
 }
 
