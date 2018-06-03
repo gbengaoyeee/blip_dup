@@ -10,8 +10,8 @@ import UIKit
 import Firebase
 import MapboxCoreNavigation
 import MapboxDirections
-import MapboxNavigation
 import Material
+import MapboxNavigation
 import PopupDialog
 import Kingfisher
 

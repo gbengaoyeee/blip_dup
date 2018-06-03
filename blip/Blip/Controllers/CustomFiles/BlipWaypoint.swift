@@ -8,7 +8,7 @@
 
 import Foundation
 import MapboxDirections
-import MapboxNavigation
+import MapboxCoreNavigation
 
 class BlipWaypoint: Waypoint{
     

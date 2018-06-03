@@ -233,43 +233,26 @@
                                     <constraint firstItem="8eP-3M-9Oo" firstAttribute="centerX" secondItem="Nfe-Vv-4qP" secondAttribute="centerX" id="xjK-UY-hjn"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="96v-VH-aRP">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="naf-xm-kCo" customClass="Floaty" customModule="Floaty">
                                 <rect key="frame" x="349" y="45" width="40" height="40"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="8dL-LB-ndl"/>
-                                    <constraint firstAttribute="width" constant="40" id="rbZ-7x-mvL"/>
+                                    <constraint firstAttribute="width" constant="40" id="OM9-dn-hXK"/>
+                                    <constraint firstAttribute="height" constant="40" id="jVA-iJ-3dN"/>
                                 </constraints>
-                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="buttonsCount">
-                                        <integer key="value" value="2"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="startAngle">
-                                        <real key="value" value="-180"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="endAngle">
-                                        <real key="value" value="-90"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="pulseColor">
-                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="menuTapped:" destination="TKO-X2-gMW" eventType="touchUpInside" id="LnT-JI-XYW"/>
-                                </connections>
-                            </button>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="JZz-UL-eYA" firstAttribute="leading" secondItem="xni-lE-of8" secondAttribute="leading" constant="20" id="2cw-uO-4Iv"/>
                             <constraint firstItem="F1g-OS-zCz" firstAttribute="centerY" secondItem="Yjo-Ea-HG0" secondAttribute="centerY" id="8kh-9J-Wlz"/>
                             <constraint firstItem="JZz-UL-eYA" firstAttribute="top" secondItem="xni-lE-of8" secondAttribute="top" constant="20" id="AOG-0n-c2L"/>
+                            <constraint firstItem="xni-lE-of8" firstAttribute="trailing" secondItem="naf-xm-kCo" secondAttribute="trailing" constant="25" id="Hih-VS-xmw"/>
                             <constraint firstItem="Nfe-Vv-4qP" firstAttribute="top" secondItem="xni-lE-of8" secondAttribute="top" constant="25" id="T2a-SY-0PW"/>
                             <constraint firstItem="Yjo-Ea-HG0" firstAttribute="centerX" secondItem="xni-lE-of8" secondAttribute="centerX" id="Ty3-cK-aGJ"/>
                             <constraint firstItem="F1g-OS-zCz" firstAttribute="centerX" secondItem="Yjo-Ea-HG0" secondAttribute="centerX" id="Ujn-nK-BDD"/>
                             <constraint firstItem="Nfe-Vv-4qP" firstAttribute="centerX" secondItem="xni-lE-of8" secondAttribute="centerX" id="aX8-4x-H78"/>
-                            <constraint firstItem="96v-VH-aRP" firstAttribute="top" secondItem="xni-lE-of8" secondAttribute="top" constant="25" id="ecA-4x-rtd"/>
-                            <constraint firstItem="xni-lE-of8" firstAttribute="trailing" secondItem="96v-VH-aRP" secondAttribute="trailing" constant="25" id="swW-6u-dmS"/>
+                            <constraint firstItem="naf-xm-kCo" firstAttribute="top" secondItem="xni-lE-of8" secondAttribute="top" constant="25" id="dyi-EA-oWH"/>
                             <constraint firstItem="xni-lE-of8" firstAttribute="bottom" secondItem="Yjo-Ea-HG0" secondAttribute="bottom" constant="78" id="tNb-cB-eQ6"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="xni-lE-of8"/>
@@ -290,7 +273,8 @@
                         <outlet property="goButton" destination="Yjo-Ea-HG0" id="6OC-wQ-sUX"/>
                         <outlet property="goButtonPulseAnimation" destination="F1g-OS-zCz" id="hVu-7L-nHF"/>
                         <outlet property="map" destination="k1b-e6-YiJ" id="IyO-MK-efC"/>
-                        <outlet property="menu" destination="96v-VH-aRP" id="JJv-kg-mZc"/>
+                        <outlet property="menu" destination="naf-xm-kCo" id="zye-h5-jGJ"/>
+                        <outlet property="menuTop" destination="dyi-EA-oWH" id="c6y-qy-vkh"/>
                         <outlet property="testJobPost" destination="JZz-UL-eYA" id="oh4-wq-mEe"/>
                         <segue destination="H07-W2-WS5" kind="show" identifier="foundJob" id="pBq-Ls-F0d"/>
                     </connections>
@@ -925,7 +909,7 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hi there!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="16" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GPh-VZ-Of4">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hi there!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="16" translatesAutoresizingMaskIntoConstraints="NO" id="GPh-VZ-Of4">
                                 <rect key="frame" x="51.666666666666657" y="89" width="310.66666666666674" height="36.666666666666657"/>
                                 <fontDescription key="fontDescription" name="CenturyGothic-Bold" family="Century Gothic" pointSize="32"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -991,7 +975,7 @@
                         <outlet property="passwordanim" destination="5Rr-Po-Ici" id="60M-gs-iiU"/>
                         <outlet property="subview" destination="9pS-4x-rky" id="oQ8-NQ-b7s"/>
                         <outlet property="usernameanim" destination="vbX-mc-euX" id="rQe-yb-aTh"/>
-                        <segue destination="Lt5-zt-yGE" kind="show" id="ARa-Zc-67J"/>
+                        <segue destination="Lt5-zt-yGE" kind="show" identifier="goToRootAfterLogin" id="ARa-Zc-67J"/>
                         <segue destination="H7z-0J-SuD" kind="presentation" identifier="forgotPasswordPage" id="VlG-z2-vrL"/>
                     </connections>
                 </viewController>

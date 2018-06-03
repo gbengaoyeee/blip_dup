@@ -14,7 +14,6 @@ import Firebase
 import MapboxDirections
 import Mapbox
 import MapboxCoreNavigation
-import MapboxNavigation
 import FirebaseDatabase
 
 class MyAPIClient: NSObject {

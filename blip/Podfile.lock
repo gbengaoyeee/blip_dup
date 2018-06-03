@@ -68,6 +68,12 @@ PODS:
   - MapboxDirections.swift (0.20.0):
     - Polyline (~> 4.2)
   - MapboxMobileEvents (0.4.0)
+  - MapboxNavigation (0.17.0):
+    - Mapbox-iOS-SDK (~> 4.0)
+    - MapboxCoreNavigation (= 0.17.0)
+    - MapboxSpeech (~> 0.0.1)
+    - Solar (~> 2.1)
+  - MapboxSpeech (0.0.1)
   - MarqueeLabel/Swift (3.1.4)
   - Material (2.15.0):
     - Material/Core (= 2.15.0)
@@ -92,6 +98,7 @@ PODS:
   - Pulsator (0.5.1)
   - RevealingSplashView (0.5.0)
   - SnapKit (4.0.0)
+  - Solar (2.1.0)
   - SRCountdownTimer (1.1)
   - Stripe (13.0.2)
   - SwiftIcons (2.0.1)
@@ -116,6 +123,7 @@ DEPENDENCIES:
   - lottie-ios
   - Mapbox-iOS-SDK
   - MapboxCoreNavigation
+  - MapboxNavigation
   - Material
   - NotificationBannerSwift
   - Pastel
@@ -155,6 +163,8 @@ SPEC REPOS:
     - MapboxCoreNavigation
     - MapboxDirections.swift
     - MapboxMobileEvents
+    - MapboxNavigation
+    - MapboxSpeech
     - MarqueeLabel
     - Material
     - Motion
@@ -167,6 +177,7 @@ SPEC REPOS:
     - Pulsator
     - RevealingSplashView
     - SnapKit
+    - Solar
     - SRCountdownTimer
     - Stripe
     - SwiftIcons
@@ -201,6 +212,8 @@ SPEC CHECKSUMS:
   MapboxCoreNavigation: 729666a164ceacb789b63047406a5c95ca965bbd
   MapboxDirections.swift: 9a46ca0f0608c76393f392ae793459cc30aa846f
   MapboxMobileEvents: e71cf788a95fa0c01ad6ce17fd5efd13140af5ff
+  MapboxNavigation: afe18c9de475aefc1387100daa3a46cc8f95a5de
+  MapboxSpeech: 6cc9b3d53adc2988af3ebc704dd17907b84a3f9f
   MarqueeLabel: bf768455fe88d427f71476ebb23f9092b660f40b
   Material: 00e32bb5e61b3f749044897b2d93acd8bf33faa4
   Motion: 9f74d115d7f72bb5380a8e3cde2f8a1fc898ac36
@@ -213,12 +226,13 @@ SPEC CHECKSUMS:
   Pulsator: f465ca37212d826523fe8c79b07c1a4c1a941f5e
   RevealingSplashView: 0794eecad3a8983ac11a1fe474e9a9b51b926780
   SnapKit: a42d492c16e80209130a3379f73596c3454b7694
+  Solar: 2dc6e7cc39186cb0c8228fa08df76fb50c7d8f24
   SRCountdownTimer: 9c92e444b5403c92f01dd6610299b8c634bc8562
   Stripe: f52f60e948fbc111c26b83227f7d802adfc64c5e
   SwiftIcons: e475a56ae2c2da40672dbf16061ca5dd5cee7dbb
   Turf: 4ace207379c8d58a8e45842755de821dac3fae72
   UIImageViewModeScaleAspect: 11a790a0b9d248a13dc63e3a78991f1463b6d84e
 
-PODFILE CHECKSUM: 08da3e7df9cb72aad36eb4ea567bc78d13fe6ab9
+PODFILE CHECKSUM: 1e29e8565dbd3cc0c641e7fddc8ff9e937b5018c
 
 COCOAPODS: 1.5.3

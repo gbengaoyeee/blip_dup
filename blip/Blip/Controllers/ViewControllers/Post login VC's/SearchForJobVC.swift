@@ -10,13 +10,13 @@ import UIKit
 import Mapbox
 import CoreLocation
 import Material
+import Floaty
 import Pulsator
 import NotificationBannerSwift
 import Lottie
 import Kingfisher
 //REMOVE ALL BELOW
 import PopupDialog
-import FBSDKLoginKit
 import Firebase
 
 class SearchForJobVC: UIViewController {
@@ -26,8 +26,10 @@ class SearchForJobVC: UIViewController {
     @IBOutlet weak var goButton: RaisedButton!
     @IBOutlet var map: MGLMapView!
     @IBOutlet weak var testJobPost: UIButton!
-    @IBOutlet weak var menu: RaisedButton!
+    @IBOutlet weak var menu: Floaty!
     @IBOutlet weak var earningsLoader: UIView!
+    
+    @IBOutlet weak var menuTop: NSLayoutConstraint!
     
     let pulsator = Pulsator()
     var gradient: CAGradientLayer!
@@ -84,8 +86,15 @@ class SearchForJobVC: UIViewController {
     }
     
     func prepareMenuButton(){
-        menu.makeCircular()
-        menu.setIcon(icon: .googleMaterialDesign(.menu), iconSize: 25, color: UIColor.white, backgroundColor: #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1), forState: .normal)
+//        menu.makeCircular()
+//        menu.buttonColor = #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1)
+//        menu.buttonImage = UIImage(icon: .googleMaterialDesign(.add), size: CGSize(size: 30), textColor: UIColor.white, backgroundColor: #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1))
+        menu.addItem("Test", icon: UIImage(icon: .googleMaterialDesign(.verifiedUser), size: CGSize(size: 25), textColor: UIColor.white, backgroundColor: UIColor.blue)) { (item) in
+            print("Hi")
+        }
+        menu.fabDelegate = self
+        menu.addItem(title: "hello")
+        menu.openAnimationType = .slideLeft
     }
     
     func checkLocationServices() -> Bool{
@@ -181,10 +190,6 @@ class SearchForJobVC: UIViewController {
             let pickupLocation = self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 100, max: 500)
             MyAPIClient.sharedClient.makeDeliveryRequest(storeID: "-LDCTqOOk7e1GNlpQcGR", deliveryLat: deliveryLocation.latitude, deliveryLong: deliveryLocation.longitude, deliveryMainInstruction: "Deliver to Srikanth Srinivas", deliverySubInstruction: "Go to main entrace, and buzz code 2003", originLat: pickupLocation.latitude, originLong: pickupLocation.longitude, pickupMainInstruction: "Pickup from xyz", pickupSubInstruction: "Go to front entrance of xyz, order number 110021 is waiting for you", recieverName: "Srikanth Srinivas", recieverNumber: "6478229867", pickupNumber: "6479839837")
         }
-    }
-    
-    @IBAction func menuTapped(_ sender: Any) {
-        
     }
     
     @IBAction func searchForJob(_ sender: Any) {
@@ -299,6 +304,57 @@ extension SearchForJobVC: CLLocationManagerDelegate{
         checkForUnfinishedJobs()
         setMapCamera()
         
+    }
+}
+
+extension SearchForJobVC: FloatyDelegate{
+    
+    func floatyWillOpen(_ floaty: Floaty) {
+        UIView.animate(withDuration: 0.8, delay: 0, options: .curveLinear, animations: {
+            self.menuTop.constant += 100
+        }, completion: nil)
+    }
+    
+    func floatyWillClose(_ floaty: Floaty) {
+        UIView.animate(withDuration: 0.8, delay: 0, options: .curveLinear, animations: {
+            self.menuTop.constant = 25
+        }, completion: nil)
+    }
+    
+    fileprivate func prepareAndReturnLogout() -> FloatyItem{
+        
+        let item = FloatyItem()
+        item.buttonColor = UIColor.white
+        item.icon = UIImage(icon: .icofont(.logout), size: CGSize(size: 25), textColor: #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1), backgroundColor: UIColor.white)
+        item.title = "Logout"
+        item.titleColor = UIColor.darkText
+        item.handler = { item in
+            do{
+                try Auth.auth().signOut()
+                print("Logged out")
+            } catch let signOutError as NSError{
+                let signOutErrorPopup = PopupDialog(title: "Error", message: "Error signing you out, try again later" + signOutError.localizedDescription )
+                self.present(signOutErrorPopup, animated: true, completion: nil)
+                print ("Error signing out: %@", signOutError)
+            }
+        }
+        return item
+    }
+    
+    fileprivate func prepareAndReturnSettings() -> FloatyItem{
+        
+        let item = FloatyItem()
+        item.buttonColor = UIColor.white
+        item.icon = UIImage(icon: .icofont(.verificationCheck), size: CGSize(size: 25), textColor: #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1), backgroundColor: UIColor.white)
+        item.title = "Update Account"
+        item.titleColor = UIColor.darkText
+        let sb = UIStoryboard.init(name: "Main", bundle: nil)
+        let settingsPage = sb.instantiateViewController(withIdentifier: "settings") as! SettingsVC
+        self.present(settingsPage, animated: true, completion: nil)
+        item.handler = { item in
+            self.present(settingsPage, animated: true, completion: nil)
+        }
+        return item
     }
 }
 

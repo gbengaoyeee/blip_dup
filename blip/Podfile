@@ -32,6 +32,7 @@ target 'Blip' do
   pod 'Pulsator'
   pod 'Eureka'
   pod "Floaty"
+  pod "MapboxNavigation"
 
   target 'BlipTests' do
     inherit! :search_paths

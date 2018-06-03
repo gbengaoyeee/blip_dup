@@ -11,7 +11,6 @@ import Kingfisher
 import Hero
 import Material
 import Firebase
-import FBSDKLoginKit
 import PopupDialog
 import Eureka
 

@@ -13,8 +13,6 @@ import CoreLocation
 import Firebase
 import Mapbox
 import Alamofire
-import FBSDKLoginKit
-import FBSDKCoreKit
 
 typealias CreateUserCompletion = (_ errorMsg: String?, _ data: AnyObject?) ->Void
 
@@ -383,49 +381,49 @@ class ServiceCalls{
     }
     
     ///Get facebook user data
-    func getFBUserData(completion: @escaping (String?,String?,String?)->()){
-        if((FBSDKAccessToken.current()) != nil){
-            FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, name, first_name, last_name, picture.type(large), email"]).start(completionHandler: { (connection, result, error) -> Void in
-                if (error == nil){
-                    //everything works
-                    let credential = FacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
-                    Auth.auth().signIn(with: credential) { (user, error) in
-                        if error != nil {
-                            print(error as Any)
-                            return
-                        }
-                        print("Signed in with Facebook")
-                        let data = result as! [String: AnyObject]
-                        let FBid = data["id"] as? String
-                        let firstName:String = data["first_name"] as! String
-                        let lastName:String = data["last_name"] as! String
-                        let email:String = data["email"] as! String
-                        
-                        let url = URL(string: "https://graph.facebook.com/\(FBid!)/picture?type=large&return_ssl_resources=1")
-                        let profile = user?.createProfileChangeRequest()
-                        profile?.photoURL = url
-                        profile?.commitChanges(completion: { (err) in
-                            if err != nil{
-                                print(err?.localizedDescription ?? "")
-                            }else{
-                                let emailHash = self.MD5(string: (user?.email)!)
-                                self.dbRef.child("Couriers").child(emailHash).child("photoURL").setValue(url?.absoluteString)
-                                self.emailHash = emailHash //MIGHT WANT TO REMOVE THIS LATER ON
-                                self.addUserToDatabase(uid: (user?.uid)!, firstName: firstName, lastName: lastName, email: (user?.email)!, provider: "facebook")
-                                self.saveFBUserInfoInUserDefault(picture: url?.absoluteString, emailHash: emailHash)
-                                //Add completion
-                                completion(email,firstName,lastName)
-                            }
-                        })
-                    }
-                }
-                else{
-                    print(error?.localizedDescription ?? "")
-                    return
-                }
-            })
-        }
-    }
+//    func getFBUserData(completion: @escaping (String?,String?,String?)->()){
+//        if((FBSDKAccessToken.current()) != nil){
+//            FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, name, first_name, last_name, picture.type(large), email"]).start(completionHandler: { (connection, result, error) -> Void in
+//                if (error == nil){
+//                    //everything works
+//                    let credential = FacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
+//                    Auth.auth().signIn(with: credential) { (user, error) in
+//                        if error != nil {
+//                            print(error as Any)
+//                            return
+//                        }
+//                        print("Signed in with Facebook")
+//                        let data = result as! [String: AnyObject]
+//                        let FBid = data["id"] as? String
+//                        let firstName:String = data["first_name"] as! String
+//                        let lastName:String = data["last_name"] as! String
+//                        let email:String = data["email"] as! String
+//
+//                        let url = URL(string: "https://graph.facebook.com/\(FBid!)/picture?type=large&return_ssl_resources=1")
+//                        let profile = user?.createProfileChangeRequest()
+//                        profile?.photoURL = url
+//                        profile?.commitChanges(completion: { (err) in
+//                            if err != nil{
+//                                print(err?.localizedDescription ?? "")
+//                            }else{
+//                                let emailHash = self.MD5(string: (user?.email)!)
+//                                self.dbRef.child("Couriers").child(emailHash).child("photoURL").setValue(url?.absoluteString)
+//                                self.emailHash = emailHash //MIGHT WANT TO REMOVE THIS LATER ON
+//                                self.addUserToDatabase(uid: (user?.uid)!, firstName: firstName, lastName: lastName, email: (user?.email)!, provider: "facebook")
+//                                self.saveFBUserInfoInUserDefault(picture: url?.absoluteString, emailHash: emailHash)
+//                                //Add completion
+//                                completion(email,firstName,lastName)
+//                            }
+//                        })
+//                    }
+//                }
+//                else{
+//                    print(error?.localizedDescription ?? "")
+//                    return
+//                }
+//            })
+//        }
+//    }
     
     
     fileprivate func saveFBUserInfoInUserDefault(picture:String?, emailHash:String){

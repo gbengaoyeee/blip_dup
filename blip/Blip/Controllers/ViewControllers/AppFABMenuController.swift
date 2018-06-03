@@ -2,7 +2,6 @@
 import UIKit
 import Material
 import Firebase
-import FBSDKLoginKit
 import Stripe
 import PopupDialog
 import Kingfisher
@@ -103,19 +102,19 @@ extension AppFABMenuController {
     }
     
     @objc fileprivate func handleLogout(button: UIButton) {
-        fabMenu.close()
-        fabMenu.fabButton?.animate(.rotate(0))
-        let firebaseAuth = Auth.auth()
-        do {
-            try firebaseAuth.signOut()
-            let facebookLoginManager = FBSDKLoginManager()
-            facebookLoginManager.logOut()
-            print("Logged out")
-        } catch let signOutError as NSError {
-            let signOutErrorPopup = PopupDialog(title: "Error", message: "Error signing you out, try again later" + signOutError.localizedDescription )
-            self.present(signOutErrorPopup, animated: true, completion: nil)
-            print ("Error signing out: %@", signOutError)
-        }
+//        fabMenu.close()
+//        fabMenu.fabButton?.animate(.rotate(0))
+//        let firebaseAuth = Auth.auth()
+//        do {
+//            try firebaseAuth.signOut()
+//            let facebookLoginManager = FBSDKLoginManager()
+//            facebookLoginManager.logOut()
+//            print("Logged out")
+//        } catch let signOutError as NSError {
+//            let signOutErrorPopup = PopupDialog(title: "Error", message: "Error signing you out, try again later" + signOutError.localizedDescription )
+//            self.present(signOutErrorPopup, animated: true, completion: nil)
+//            print ("Error signing out: %@", signOutError)
+//        }
     }
 }
 
