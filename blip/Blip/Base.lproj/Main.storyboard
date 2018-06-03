@@ -607,7 +607,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rdI-hz-Nb0">
-                                <rect key="frame" x="0.0" y="20" width="414" height="368"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="368"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FYP-BH-skc">
                                         <rect key="frame" x="0.0" y="312.66666666666669" width="414" height="55.333333333333314"/>
@@ -615,8 +615,8 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="127-6l-33Z" customClass="RaisedButton" customModule="Material">
                                                 <rect key="frame" x="212" y="5.6666666666666288" width="194" height="44"/>
                                                 <color key="backgroundColor" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
-                                                <state key="normal">
+                                                <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="14"/>
+                                                <state key="normal" title="Open with google maps">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </state>
                                                 <userDefinedRuntimeAttributes>
@@ -630,7 +630,7 @@
                                                         <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="title" value="Google Maps"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="title" value="Open with google maps"/>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="googleMaps:" destination="gM9-IO-ocS" eventType="touchUpInside" id="Y4f-h9-2xY"/>
@@ -639,8 +639,8 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="97k-pF-eb7" customClass="RaisedButton" customModule="Material">
                                                 <rect key="frame" x="8" y="5.6666666666666288" width="194" height="44"/>
                                                 <color key="backgroundColor" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
-                                                <state key="normal">
+                                                <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="14"/>
+                                                <state key="normal" title="Open with Apple maps">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </state>
                                                 <userDefinedRuntimeAttributes>
@@ -654,7 +654,7 @@
                                                         <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="title" value="Apple Maps"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="title" value="Open with Apple maps"/>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="appleMapsPressed:" destination="gM9-IO-ocS" eventType="touchUpInside" id="3Sr-EJ-ZTZ"/>
@@ -674,7 +674,7 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s8Y-2b-JU9" customClass="MGLMapView">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="312.66666666666669"/>
+                                        <rect key="frame" x="0.0" y="-0.66666666666665719" width="414" height="312.66666666666663"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="string" keyPath="styleURL__" value="mapbox://styles/srikanthsrnvs/cjd6ciwwm54my2rms3052j5us"/>
@@ -685,25 +685,25 @@
                                 <constraints>
                                     <constraint firstItem="FYP-BH-skc" firstAttribute="width" secondItem="rdI-hz-Nb0" secondAttribute="width" id="1dJ-wO-MD9"/>
                                     <constraint firstItem="s8Y-2b-JU9" firstAttribute="height" secondItem="rdI-hz-Nb0" secondAttribute="height" multiplier="0.85" id="6Rg-hG-tKU"/>
+                                    <constraint firstItem="s8Y-2b-JU9" firstAttribute="top" secondItem="rdI-hz-Nb0" secondAttribute="top" id="KQe-i4-x3v"/>
                                     <constraint firstAttribute="bottom" secondItem="FYP-BH-skc" secondAttribute="bottom" id="dMz-Hh-UTa"/>
                                     <constraint firstItem="FYP-BH-skc" firstAttribute="centerX" secondItem="rdI-hz-Nb0" secondAttribute="centerX" id="f7P-Sw-dEt"/>
-                                    <constraint firstItem="FYP-BH-skc" firstAttribute="top" secondItem="s8Y-2b-JU9" secondAttribute="bottom" id="wbN-RR-VS1"/>
                                     <constraint firstItem="s8Y-2b-JU9" firstAttribute="centerX" secondItem="rdI-hz-Nb0" secondAttribute="centerX" id="wfv-AU-oji"/>
                                     <constraint firstItem="FYP-BH-skc" firstAttribute="height" secondItem="rdI-hz-Nb0" secondAttribute="height" multiplier="0.15" id="wlW-Se-gTp"/>
                                     <constraint firstItem="s8Y-2b-JU9" firstAttribute="width" secondItem="rdI-hz-Nb0" secondAttribute="width" id="zYf-br-iEC"/>
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pickup at 123 john street" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="12" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="GUk-7d-Sxg">
-                                <rect key="frame" x="20" y="418" width="374" height="24.666666666666686"/>
+                                <rect key="frame" x="20" y="398" width="374" height="27"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="80" id="2mt-JP-QOe"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="CenturyGothic-Bold" family="Century Gothic" pointSize="20"/>
+                                <fontDescription key="fontDescription" name="CenturyGothic-Bold" family="Century Gothic" pointSize="22"/>
                                 <color key="textColor" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YW0-Zg-hYN" customClass="RaisedButton" customModule="Material">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YW0-Zg-hYN" customClass="RaisedButton" customModule="Material">
                                 <rect key="frame" x="20" y="656" width="60" height="60"/>
                                 <color key="backgroundColor" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
@@ -730,7 +730,7 @@
                                     <action selector="callButton:" destination="gM9-IO-ocS" eventType="touchUpInside" id="s3W-J9-Og9"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fAZ-is-Mbx" customClass="RaisedButton" customModule="Material">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fAZ-is-Mbx" customClass="RaisedButton" customModule="Material">
                                 <rect key="frame" x="177" y="656" width="60" height="60"/>
                                 <color key="backgroundColor" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
@@ -757,7 +757,7 @@
                                     <action selector="noShowPressed:" destination="gM9-IO-ocS" eventType="touchUpInside" id="Y0q-Z7-W0M"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QPW-Kc-9kN" customClass="RaisedButton" customModule="Material">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QPW-Kc-9kN" customClass="RaisedButton" customModule="Material">
                                 <rect key="frame" x="334" y="656" width="60" height="60"/>
                                 <color key="backgroundColor" red="0.079774440459999998" green="0.78299492390000003" blue="0.15149520429999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
@@ -785,7 +785,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Go to front door and pickup stuff from the main entrance" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SFM-92-WS3">
-                                <rect key="frame" x="20" y="457.66666666666669" width="350.33333333333331" height="42"/>
+                                <rect key="frame" x="20" y="440" width="350.33333333333331" height="42"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="270" id="OEz-WM-2Q8"/>
                                 </constraints>
@@ -809,14 +809,18 @@
                             <constraint firstItem="rdI-hz-Nb0" firstAttribute="height" secondItem="2U6-TE-CdR" secondAttribute="height" multiplier="0.5" id="hkQ-hu-cxB"/>
                             <constraint firstItem="SFM-92-WS3" firstAttribute="leading" secondItem="rdI-hz-Nb0" secondAttribute="leading" constant="20" id="iok-MW-CFq"/>
                             <constraint firstItem="SkJ-fE-MMA" firstAttribute="bottom" secondItem="fAZ-is-Mbx" secondAttribute="bottom" constant="20" id="jMM-3R-npI"/>
-                            <constraint firstItem="SkJ-fE-MMA" firstAttribute="top" secondItem="rdI-hz-Nb0" secondAttribute="top" id="nRq-0i-271"/>
                             <constraint firstItem="SFM-92-WS3" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="rdI-hz-Nb0" secondAttribute="trailing" constant="20" id="oB0-hO-8Zb"/>
                             <constraint firstItem="YW0-Zg-hYN" firstAttribute="leading" secondItem="SkJ-fE-MMA" secondAttribute="leading" constant="20" id="sQk-ql-rlV"/>
+                            <constraint firstItem="rdI-hz-Nb0" firstAttribute="top" secondItem="2U6-TE-CdR" secondAttribute="top" id="uL0-iR-m0v"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="SkJ-fE-MMA"/>
                     </view>
                     <connections>
+                        <outlet property="callButton" destination="YW0-Zg-hYN" id="uoS-V2-EGB"/>
+                        <outlet property="doneButton" destination="QPW-Kc-9kN" id="apa-Xn-IwQ"/>
                         <outlet property="mainInsructionLabel" destination="GUk-7d-Sxg" id="t33-IZ-tQy"/>
+                        <outlet property="map" destination="s8Y-2b-JU9" id="Twf-gU-q4c"/>
+                        <outlet property="noShowButton" destination="fAZ-is-Mbx" id="W6E-og-Yn7"/>
                         <outlet property="subInstructionLabel" destination="SFM-92-WS3" id="cOx-aW-Zz1"/>
                     </connections>
                 </viewController>

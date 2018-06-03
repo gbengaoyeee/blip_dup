@@ -10,11 +10,20 @@ import UIKit
 import MapKit
 import PopupDialog
 import CoreLocation
+import Mapbox
+import Material
+import MapboxDirections
+import MapboxCoreNavigation
 
 class OnJobVC: UIViewController {
 
     @IBOutlet weak var mainInsructionLabel: UILabel!
     @IBOutlet weak var subInstructionLabel: UILabel!
+    @IBOutlet weak var map: MGLMapView!
+    @IBOutlet weak var callButton: RaisedButton!
+    @IBOutlet weak var noShowButton: RaisedButton!
+    @IBOutlet weak var doneButton: RaisedButton!
+    
     let service = ServiceCalls.instance
     var waypoints:[BlipWaypoint]!
     var legIndex = 1 //1 because of origin in the first position of waypoints
@@ -25,7 +34,10 @@ class OnJobVC: UIViewController {
     var currentLocation:CLLocationCoordinate2D!
     
     override func viewDidLoad() {
+        UIApplication.shared.statusBarStyle = .lightContent
         super.viewDidLoad()
+        self.delivery = waypoints[legIndex].delivery
+        self.type = waypoints[legIndex].name!
         // Ask for Authorisation from the User.
         self.locationManager.requestAlwaysAuthorization()
         
@@ -34,24 +46,49 @@ class OnJobVC: UIViewController {
 
         if CLLocationManager.locationServicesEnabled() {
             locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
             locationManager.startUpdatingLocation()
-        }
-        print("WAYPOINT", self.waypoints)
-        // Do any additional setup after loading the view.
-        if waypoints != nil{
-            self.delivery = waypoints[legIndex].delivery
-            self.type = waypoints[legIndex].name
         }
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        if let currentType = waypoints[legIndex].name, let currentDelivery = waypoints[legIndex].delivery{
+            prepareMap(type: currentType, delivery: currentDelivery)
+            prepareInstructions(type: currentType, delivery: currentDelivery)
+            prepareButtons()
+        }
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func prepareInstructions(type: String, delivery: Delivery){
+        if type == "Pickup"{
+            self.mainInsructionLabel.text = delivery.pickupMainInstruction
+            self.subInstructionLabel.text = delivery.pickupSubInstruction
+        }
+        else{
+            self.mainInsructionLabel.text = delivery.deliveryMainInstruction
+            self.mainInsructionLabel.text = delivery.deliverySubInstruction
+        }
+    }
+    
+    func prepareButtons(){
+        callButton.setIcon(icon: .googleMaterialDesign(.call), iconSize: 45, color: UIColor.white, backgroundColor: #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1), forState: .normal)
+        noShowButton.setIcon(icon: .googleMaterialDesign(.error), iconSize: 45, color: UIColor.white, backgroundColor: #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1), forState: .normal)
+        doneButton.setIcon(icon: .googleMaterialDesign(.done), iconSize: 45, color: UIColor.white, backgroundColor: UIColor.lightGray, forState: .normal)
+        callButton.makeCircular()
+        noShowButton.makeCircular()
+        doneButton.makeCircular()
+        doneButton.isEnabled = false
+    }
+    
+    func activateDoneButton(){
+        doneButton.backgroundColor = UIColor.green
+        doneButton.isEnabled = true
     }
     
     @IBAction func googleMaps(_ sender: Any) {
@@ -115,32 +152,25 @@ class OnJobVC: UIViewController {
     }
     
     @IBAction func checkMarkPressed(_ sender: Any) {
-        if self.currentLocation != self.delivery.deliveryLocation{//checks if the user is in the pickup/delivery location(DOES NOT WORK AND I AM TRYING TO FIND A WAY TO FIX)
-            //To- do : not yet in the place
-            print("NOT IN YOUR PICKUP/DELIVERY LOCATION")
-            print(self.currentLocation.latitude, self.currentLocation.longitude)
-            print(self.delivery.deliveryLocation.latitude, self.delivery.deliveryLocation.longitude)
-            return
-        }
         
         let popup = PopupDialog(title: "Confirm", message: "Please make sure you have successfully completed the delivery before pressing confirm. Failure to do so may result in the suspension of your account. Alternatively, press the No Show button if the delivery cannot be completed successfully")
         let confirmButton = PopupDialogButton(title: "Confirm") {
             
             self.service.completedJob(deliveryID: self.delivery.identifier, storeID: self.delivery.store.storeID, type: self.type)
-            
-//            if !self.isLastWaypoint{
+
             if self.waypoints.count != self.legIndex{// This is equivalent to !self.isLastWaypoint
                 //increase the leg index
                 self.legIndex += 1
-                //Do other things here when the check mark is pressed and its the last waypoint
-                //like animate the sub and main instructions
+                if let currentType = self.waypoints[self.legIndex].name, let currentDelivery = self.waypoints[self.legIndex].delivery{
+                    self.prepareInstructions(type: currentType, delivery: currentDelivery)
+                    self.prepareButtons()
+                    self.prepareMap(type: currentType, delivery: currentDelivery)
+                }
                 popup.dismiss()
             }
             else{
                 popup.dismiss()
-                self.dismiss(animated: true, completion: {
-                    //All trips have been made
-                })
+                self.navigationController?.popToRootViewController(animated: true)
             }
         }
         popup.addButton(confirmButton)
@@ -149,10 +179,65 @@ class OnJobVC: UIViewController {
     
 }
 
+extension OnJobVC: MGLMapViewDelegate{
+    
+    func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
+        if annotation is MGLUserLocation && mapView.userLocation != nil {
+            return CustomUserLocationAnnotationView()
+        }
+        return nil
+    }
+    
+    func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
+        if !(annotation is MGLUserLocation){
+            let image = UIImage(named: annotation.title!!.lowercased())
+            return MGLAnnotationImage(image: image!, reuseIdentifier: "annotation")
+        }
+        return nil
+    }
+    
+    func prepareMap(type: String, delivery: Delivery){
+        map.delegate = self
+        map.showsUserLocation = true
+        map.showsUserHeadingIndicator = true
+        map.userTrackingMode = .followWithHeading
+        let annotation = MGLPointAnnotation()
+        if type == "Pickup"{
+            annotation.coordinate = delivery.origin
+            annotation.title = type
+        }
+        else{
+            annotation.coordinate = delivery.deliveryLocation
+            annotation.title = type
+        }
+        self.map.addAnnotation(annotation)
+        map.setCenter(currentLocation!, zoomLevel: 7, direction: 0, animated: false)
+        let camera = MGLMapCamera(lookingAtCenter: currentLocation, fromDistance: 4500, pitch: 0, heading: 0)
+        map.setCamera(camera, withDuration: 2, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)) {
+            if let user = self.map.userLocation{
+                self.map.showAnnotations([annotation, user], animated: true)
+            }
+        }
+    }
+}
 
 extension OnJobVC:CLLocationManagerDelegate{
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if self.type == "Pickup"{
+            if let currentLocation = locations.first{
+                if self.delivery.origin.distance(to: currentLocation.coordinate) < 300{
+                    self.activateDoneButton()
+                }
+            }
+        }
+        else{
+            if let currentLocation = locations.first{
+                if self.delivery.deliveryLocation.distance(to: currentLocation.coordinate) < 300{
+                    self.activateDoneButton()
+                }
+            }
+        }
         guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
         self.currentLocation = locations.first?.coordinate
     }
