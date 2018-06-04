@@ -58,6 +58,7 @@ class SearchForJobVC: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         updateCurrentDevice()
+        checkForUnfinishedJobs()
     }
     
     func getBalance(){
@@ -111,12 +112,11 @@ class SearchForJobVC: UIViewController {
     }
     
     func showUnfinishedBanner(){
-        let banner = NotificationBanner(title: "Unfinished delivery", subtitle: "Tap to continue your unfinished delivery",style: .info)
-        banner.onTap = {
-            self.performSegue(withIdentifier: "foundJob", sender: self)
-            banner.dismiss()
-        }
-        banner.autoDismiss = false
+        let banner = NotificationBanner(title: "Unfinished delivery", subtitle: "Tap go to complete your unfinished delivery",style: .info)
+
+        banner.autoDismiss = true
+        banner.dismissOnTap = true
+        banner.dismissOnSwipeUp = true
         banner.show()
     }
 
@@ -148,26 +148,30 @@ class SearchForJobVC: UIViewController {
     
     func prepareGoButton(){
         pulsator.backgroundColor = #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1)
-        pulsator.numPulse = 2
-        pulsator.animationDuration = 3.0
-        pulsator.radius = 150
-        pulsator.repeatCount = .infinity
-        pulsator.start()
-        goButtonPulseAnimation.layer.addSublayer(pulsator)
         goButton.makeCircular()
         goButton.borderColor = UIColor.white
         goButton.layer.borderWidth = 2.5
         goButton.isUserInteractionEnabled = false
     }
     
+    func startButtonPulse(){
+        pulsator.numPulse = 2
+        pulsator.animationDuration = 3.0
+        pulsator.radius = 150
+        pulsator.repeatCount = .infinity
+        pulsator.start()
+        goButtonPulseAnimation.layer.addSublayer(pulsator)
+    }
+    
     func checkForUnfinishedJobs(){
-        service.checkIncompleteJobs(myLocation: self.currentLocation) { (exist, job) in
+
+        service.checkIncompleteJobs { (exist) in
+            self.goButton.isUserInteractionEnabled = true
             if exist{
-                self.foundJob = job
                 self.showUnfinishedBanner()
             }
             else{
-                self.goButton.isUserInteractionEnabled = true
+                self.startButtonPulse()
             }
         }
     }
@@ -187,66 +191,73 @@ class SearchForJobVC: UIViewController {
     
     @IBAction func searchForJob(_ sender: Any) {
         
+        goButton.isUserInteractionEnabled = false
         if !checkLocationServices(){
             return
         }
-
-        goButton.isUserInteractionEnabled = false
-        let leftImageView = UIView()
-        let loading = LOTAnimationView(name: "loading")
-        loading.loopAnimation = true
-        leftImageView.handledAnimation(Animation: loading, width: 1, height: 1)
-        let banner = NotificationBanner(title: "Please wait", subtitle: "Looking for job", leftView: leftImageView, rightView: nil, style: .info)
-        banner.dismissOnSwipeUp = false
-        banner.show()
-        loading.play()
-        
-        self.service.findJob(myLocation: self.currentLocation, userHash: self.service.emailHash) { (errorCode, job) in
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
-                banner.dismiss()
-                loading.stop()
-                if errorCode != nil{
-                    if errorCode == 400{
-                        //Not verified
-                        let newBanner = NotificationBanner(title: "Error", subtitle: "Account not verified", style: .warning)
-                        newBanner.autoDismiss = true
-                        newBanner.show()
-                        newBanner.dismissOnSwipeUp = true
-                        newBanner.dismissOnTap = true
-                        print("Not verified")
-                        return
-                    }
-                    else if errorCode == 500{
-                        //Flagged
-                        print("Here")
-                        let newBanner = NotificationBanner(title: "Error", subtitle: "Your account has been disabled due to leaving a job. Please contact us to unlock your account", style: .warning)
-                        newBanner.autoDismiss = false
-                        newBanner.show()
-                        newBanner.dismissOnSwipeUp = true
-                        newBanner.dismissOnTap = true
-                        print("Flagged")
-                        return
-                    }else{
-                        // No job Found
-                        let newBanner = NotificationBanner(title: "Error", subtitle: "No job found at this time", style: .info)
-                        newBanner.autoDismiss = true
-                        newBanner.show()
-                        newBanner.dismissOnSwipeUp = true
-                        newBanner.dismissOnTap = true
-                        print("No job Found")
-                        return
-                    }
-                }
-                guard let job = job else{
-                    print("Something wrong with getting job")
-                    return
-                }
+        self.service.getUnfinishedJobs(myLocation: self.currentLocation) { (job) in
+            if let job = job{
                 self.foundJob = job
-                self.goButton.isUserInteractionEnabled = true
                 self.performSegue(withIdentifier: "foundJob", sender: self)
-            })
-            self.goButton.isUserInteractionEnabled = true
+            }
+            else{
+                self.goButton.isUserInteractionEnabled = false
+                let leftImageView = UIView()
+                let loading = LOTAnimationView(name: "loading")
+                loading.loopAnimation = true
+                leftImageView.handledAnimation(Animation: loading, width: 1, height: 1)
+                let banner = NotificationBanner(title: "Please wait", subtitle: "Looking for job", leftView: leftImageView, rightView: nil, style: .info)
+                banner.dismissOnSwipeUp = false
+                banner.show()
+                loading.play()
+                
+                self.service.findJob(myLocation: self.currentLocation, userHash: self.service.emailHash) { (errorCode, job) in
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
+                        banner.dismiss()
+                        loading.stop()
+                        if errorCode != nil{
+                            if errorCode == 400{
+                                //Not verified
+                                let newBanner = NotificationBanner(title: "Error", subtitle: "Account not verified", style: .warning)
+                                newBanner.autoDismiss = true
+                                newBanner.show()
+                                newBanner.dismissOnSwipeUp = true
+                                newBanner.dismissOnTap = true
+                                print("Not verified")
+                                return
+                            }
+                            else if errorCode == 500{
+                                //Flagged
+                                print("Here")
+                                let newBanner = NotificationBanner(title: "Error", subtitle: "Your account has been disabled due to leaving a job. Please contact us to unlock your account", style: .warning)
+                                newBanner.autoDismiss = false
+                                newBanner.show()
+                                newBanner.dismissOnSwipeUp = true
+                                newBanner.dismissOnTap = true
+                                print("Flagged")
+                                return
+                            }else{
+                                // No job Found
+                                let newBanner = NotificationBanner(title: "Error", subtitle: "No job found at this time", style: .info)
+                                newBanner.autoDismiss = true
+                                newBanner.show()
+                                newBanner.dismissOnSwipeUp = true
+                                newBanner.dismissOnTap = true
+                                print("No job Found")
+                                return
+                            }
+                        }
+                        guard let job = job else{
+                            print("Something wrong with getting job")
+                            return
+                        }
+                        self.foundJob = job
+                        self.goButton.isUserInteractionEnabled = true
+                        self.performSegue(withIdentifier: "foundJob", sender: self)
+                    })
+                }
+            }
         }
     }
 }
@@ -294,7 +305,6 @@ extension SearchForJobVC: CLLocationManagerDelegate{
         currentLocation = locValue
         service.updateJobAccepterLocation(location: locValue!)
         manager.stopUpdatingLocation()
-        checkForUnfinishedJobs()
         setMapCamera()
         
     }

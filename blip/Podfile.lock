@@ -102,6 +102,7 @@ PODS:
   - SRCountdownTimer (1.1)
   - Stripe (13.0.2)
   - SwiftIcons (2.0.1)
+  - SwipeCellKit (2.4.1)
   - Turf (0.1.1)
   - UIImageViewModeScaleAspect (1.5)
 
@@ -133,6 +134,7 @@ DEPENDENCIES:
   - SRCountdownTimer
   - Stripe
   - SwiftIcons
+  - SwipeCellKit
 
 SPEC CHECKSUMS:
   Alamofire: e4fa87002c137ba2d8d634d2c51fabcda0d5c223
@@ -180,9 +182,10 @@ SPEC CHECKSUMS:
   SRCountdownTimer: 9c92e444b5403c92f01dd6610299b8c634bc8562
   Stripe: f52f60e948fbc111c26b83227f7d802adfc64c5e
   SwiftIcons: e475a56ae2c2da40672dbf16061ca5dd5cee7dbb
+  SwipeCellKit: 189dab685734056ce3c803842759b73b8d6aa65f
   Turf: 4ace207379c8d58a8e45842755de821dac3fae72
   UIImageViewModeScaleAspect: 11a790a0b9d248a13dc63e3a78991f1463b6d84e
 
-PODFILE CHECKSUM: c226358cc25cf1f4d9e9415a7dbd335281d93ddd
+PODFILE CHECKSUM: 6d1f7c7056e9048b9c8513f6122cd6a77d53b80d
 
 COCOAPODS: 1.4.0

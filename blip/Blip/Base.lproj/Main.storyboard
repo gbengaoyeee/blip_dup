@@ -7,6 +7,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -148,7 +149,7 @@
         <scene sceneID="f0C-01-7xO">
             <objects>
                 <viewController storyboardIdentifier="searchForJob" useStoryboardIdentifierAsRestorationIdentifier="YES" id="TKO-X2-gMW" customClass="SearchForJobVC" customModule="Blip" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="k1b-e6-YiJ">
+                    <view key="view" contentMode="scaleToFill" id="k1b-e6-YiJ" customClass="MGLMapView">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -312,7 +313,7 @@
                                             <constraint firstAttribute="height" id="Cnz-dZ-6ED"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rVS-1F-aSB">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rVS-1F-aSB" customClass="MGLMapView">
                                         <rect key="frame" x="11" y="11.666666666666657" width="285.66666666666669" height="285"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <userDefinedRuntimeAttributes>
@@ -609,7 +610,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rdI-hz-Nb0">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="368"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s8Y-2b-JU9">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s8Y-2b-JU9" customClass="MGLMapView">
                                         <rect key="frame" x="0.0" y="-0.66666666666665719" width="414" height="368.33333333333326"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <userDefinedRuntimeAttributes>
@@ -625,184 +626,138 @@
                                     <constraint firstItem="s8Y-2b-JU9" firstAttribute="width" secondItem="rdI-hz-Nb0" secondAttribute="width" id="zYf-br-iEC"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Z1L-z0-POq" customClass="CHIPageControlFresno" customModule="CHIPageControl">
-                                <rect key="frame" x="132" y="200" width="150" height="59"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="150" id="MgC-yM-Hp6"/>
-                                    <constraint firstAttribute="height" constant="20" id="gnS-iJ-piK"/>
-                                </constraints>
-                            </view>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JbZ-ue-lJb">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="xzT-Lk-3PR">
                                 <rect key="frame" x="0.0" y="368" width="414" height="368"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Main instructions" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="12" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="GUk-7d-Sxg">
-                                        <rect key="frame" x="25" y="90.333333333333314" width="177" height="27"/>
-                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" relation="lessThanOrEqual" constant="80" id="2mt-JP-QOe"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="CenturyGothic-Bold" family="Century Gothic" pointSize="22"/>
-                                        <color key="textColor" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QPW-Kc-9kN" customClass="RaisedButton" customModule="Material">
-                                        <rect key="frame" x="282" y="25.333333333333318" width="50" height="45.333333333333343"/>
-                                        <color key="backgroundColor" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                        <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
-                                        <state key="normal">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="pulseColor">
-                                                <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
-                                                <color key="value" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
-                                                <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
-                                        </userDefinedRuntimeAttributes>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="waypointCell" rowHeight="177" id="NGw-CB-1oM" customClass="WaypointCell" customModule="Blip" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="177"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="NGw-CB-1oM" id="Nxn-Kl-RLb">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="176.66666666666666"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Main instructions" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="12" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="GUk-7d-Sxg">
+                                                    <rect key="frame" x="20" y="20" width="334" height="27"/>
+                                                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <fontDescription key="fontDescription" name="CenturyGothic-Bold" family="Century Gothic" pointSize="22"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subinstructions" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SFM-92-WS3">
+                                                    <rect key="frame" x="20" y="57" width="334" height="12"/>
+                                                    <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="15"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QPW-Kc-9kN" customClass="RaisedButton" customModule="Material">
+                                                    <rect key="frame" x="117" y="99" width="47" height="47"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
+                                                    <state key="normal">
+                                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </state>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="pulseColor">
+                                                            <color key="value" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
+                                                            <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
+                                                            <color key="value" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <action selector="navigateToPoint:" destination="NGw-CB-1oM" eventType="touchUpInside" id="qZz-xC-6XZ"/>
+                                                    </connections>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YW0-Zg-hYN" customClass="RaisedButton" customModule="Material">
+                                                    <rect key="frame" x="20" y="99" width="47" height="47"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="47" id="3bp-Nh-KeL"/>
+                                                        <constraint firstAttribute="width" constant="47" id="Ztn-FE-vcm"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
+                                                    <state key="normal">
+                                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </state>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="pulseColor">
+                                                            <color key="value" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
+                                                            <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
+                                                            <color key="value" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <action selector="callButton:" destination="NGw-CB-1oM" eventType="touchUpInside" id="SSn-zs-g7U"/>
+                                                    </connections>
+                                                </button>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pJ2-ap-BAy">
+                                                    <rect key="frame" x="364" y="63.333333333333343" width="50" height="50"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="60" id="6D1-fI-9KV"/>
+                                                        <constraint firstAttribute="width" constant="60" id="B66-pw-DEh"/>
+                                                    </constraints>
+                                                </imageView>
+                                            </subviews>
+                                            <color key="backgroundColor" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="GUk-7d-Sxg" secondAttribute="trailing" constant="70" id="2Ax-ax-TzN"/>
+                                                <constraint firstItem="GUk-7d-Sxg" firstAttribute="leading" secondItem="Nxn-Kl-RLb" secondAttribute="leading" constant="20" id="C1c-xE-GAb"/>
+                                                <constraint firstAttribute="trailing" secondItem="SFM-92-WS3" secondAttribute="trailing" constant="70" id="MWd-ll-Cgw"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="YW0-Zg-hYN" secondAttribute="bottom" constant="20" id="PFH-FO-MlG"/>
+                                                <constraint firstItem="pJ2-ap-BAy" firstAttribute="centerY" secondItem="Nxn-Kl-RLb" secondAttribute="centerY" id="R6u-My-GqG"/>
+                                                <constraint firstItem="YW0-Zg-hYN" firstAttribute="centerY" secondItem="QPW-Kc-9kN" secondAttribute="centerY" id="VFN-kg-zfs"/>
+                                                <constraint firstItem="QPW-Kc-9kN" firstAttribute="leading" secondItem="YW0-Zg-hYN" secondAttribute="trailing" constant="50" id="Xus-eW-0cj"/>
+                                                <constraint firstItem="GUk-7d-Sxg" firstAttribute="top" secondItem="Nxn-Kl-RLb" secondAttribute="top" constant="20" id="fti-sQ-ZED"/>
+                                                <constraint firstItem="YW0-Zg-hYN" firstAttribute="top" secondItem="SFM-92-WS3" secondAttribute="bottom" constant="30" id="ixs-gV-ylu"/>
+                                                <constraint firstItem="SFM-92-WS3" firstAttribute="leading" secondItem="Nxn-Kl-RLb" secondAttribute="leading" constant="20" id="jEQ-9X-GA0"/>
+                                                <constraint firstItem="SFM-92-WS3" firstAttribute="top" secondItem="GUk-7d-Sxg" secondAttribute="bottom" constant="10" id="m5b-uI-zWW"/>
+                                                <constraint firstItem="YW0-Zg-hYN" firstAttribute="leading" secondItem="Nxn-Kl-RLb" secondAttribute="leading" constant="20" id="maE-DS-S46"/>
+                                                <constraint firstAttribute="trailing" secondItem="pJ2-ap-BAy" secondAttribute="trailing" id="qk0-Fs-CvA"/>
+                                                <constraint firstItem="YW0-Zg-hYN" firstAttribute="width" secondItem="QPW-Kc-9kN" secondAttribute="width" id="uIg-OI-OMl"/>
+                                                <constraint firstItem="YW0-Zg-hYN" firstAttribute="height" secondItem="QPW-Kc-9kN" secondAttribute="height" id="zbt-mY-TZh"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
                                         <connections>
-                                            <action selector="appleMapsPressed:" destination="gM9-IO-ocS" eventType="touchUpInside" id="cB4-HB-sOk"/>
+                                            <outlet property="callButton" destination="YW0-Zg-hYN" id="Rpa-Hy-T7a"/>
+                                            <outlet property="mainInstructionLabel" destination="GUk-7d-Sxg" id="3Jc-xo-YCc"/>
+                                            <outlet property="navigateButton" destination="QPW-Kc-9kN" id="wsh-du-Vju"/>
+                                            <outlet property="pullView" destination="pJ2-ap-BAy" id="EPL-f2-nRT"/>
+                                            <outlet property="subInstructionLabel" destination="SFM-92-WS3" id="aQ3-9h-Y44"/>
                                         </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YW0-Zg-hYN" customClass="RaisedButton" customModule="Material">
-                                        <rect key="frame" x="25.000000000000004" y="25.000000000000004" width="45.333333333333343" height="45.333333333333343"/>
-                                        <color key="backgroundColor" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" secondItem="YW0-Zg-hYN" secondAttribute="height" multiplier="1:1" id="Gw9-TR-GyI"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
-                                        <state key="normal">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="pulseColor">
-                                                <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
-                                                <color key="value" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
-                                                <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="callButton:" destination="gM9-IO-ocS" eventType="touchUpInside" id="s3W-J9-Og9"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fAZ-is-Mbx" customClass="RaisedButton" customModule="Material">
-                                        <rect key="frame" x="163" y="25.333333333333314" width="49.333333333333343" height="45"/>
-                                        <color key="backgroundColor" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                        <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
-                                        <state key="normal">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="pulseColor">
-                                                <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
-                                                <color key="value" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
-                                                <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="noShowPressed:" destination="gM9-IO-ocS" eventType="touchUpInside" id="Y0q-Z7-W0M"/>
-                                        </connections>
-                                    </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Subinstructions" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SFM-92-WS3">
-                                        <rect key="frame" x="25" y="137.33333333333331" width="120.33333333333331" height="21"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" relation="lessThanOrEqual" constant="270" id="OEz-WM-2Q8"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
-                                        <color key="textColor" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZEq-Ag-zws" customClass="RaisedButton" customModule="Material">
-                                        <rect key="frame" x="41.333333333333343" y="171" width="331.33333333333326" height="57"/>
-                                        <color key="backgroundColor" red="0.079774440459999998" green="0.78299492390000003" blue="0.15149520429999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                        <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
-                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <state key="normal" title="Done">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="pulseColor">
-                                                <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
-                                                <color key="value" red="0.079774440459999998" green="0.78299492390000003" blue="0.15149520429999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="title" value="Done"/>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
-                                                <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="checkMarkPressed:" destination="gM9-IO-ocS" eventType="touchUpInside" id="PVZ-OV-AcI"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstItem="GUk-7d-Sxg" firstAttribute="leading" secondItem="JbZ-ue-lJb" secondAttribute="leading" constant="25" id="295-Pl-DrG"/>
-                                    <constraint firstItem="QPW-Kc-9kN" firstAttribute="height" secondItem="fAZ-is-Mbx" secondAttribute="height" id="3My-R6-BLN"/>
-                                    <constraint firstItem="YW0-Zg-hYN" firstAttribute="top" secondItem="JbZ-ue-lJb" secondAttribute="top" constant="25" id="6gS-cE-EJ8"/>
-                                    <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="GUk-7d-Sxg" secondAttribute="trailing" constant="25" id="7Ik-5I-0Sq"/>
-                                    <constraint firstItem="SFM-92-WS3" firstAttribute="top" secondItem="GUk-7d-Sxg" secondAttribute="bottom" constant="20" id="7hL-Qg-Bud"/>
-                                    <constraint firstItem="QPW-Kc-9kN" firstAttribute="width" secondItem="fAZ-is-Mbx" secondAttribute="width" id="A0G-yM-u05"/>
-                                    <constraint firstItem="SFM-92-WS3" firstAttribute="leading" secondItem="GUk-7d-Sxg" secondAttribute="leading" id="Bgr-Ae-7bI"/>
-                                    <constraint firstItem="YW0-Zg-hYN" firstAttribute="leading" secondItem="JbZ-ue-lJb" secondAttribute="leading" constant="25" id="Dsb-MF-8QO"/>
-                                    <constraint firstItem="ZEq-Ag-zws" firstAttribute="width" secondItem="JbZ-ue-lJb" secondAttribute="width" multiplier="0.8" id="H1P-2s-yvS"/>
-                                    <constraint firstItem="fAZ-is-Mbx" firstAttribute="width" secondItem="YW0-Zg-hYN" secondAttribute="width" id="J0A-NZ-fad"/>
-                                    <constraint firstAttribute="bottom" secondItem="ZEq-Ag-zws" secondAttribute="bottom" constant="20" id="L6z-8d-fuf"/>
-                                    <constraint firstItem="QPW-Kc-9kN" firstAttribute="centerY" secondItem="fAZ-is-Mbx" secondAttribute="centerY" id="TwU-f2-tZA"/>
-                                    <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="SFM-92-WS3" secondAttribute="trailing" constant="25" id="UCf-NT-AGb"/>
-                                    <constraint firstItem="QPW-Kc-9kN" firstAttribute="trailing" secondItem="JbZ-ue-lJb" secondAttribute="trailing" constant="25" id="UYt-jN-cTr"/>
-                                    <constraint firstItem="fAZ-is-Mbx" firstAttribute="centerY" secondItem="YW0-Zg-hYN" secondAttribute="centerY" id="V20-rE-CC3"/>
-                                    <constraint firstItem="ZEq-Ag-zws" firstAttribute="centerX" secondItem="JbZ-ue-lJb" secondAttribute="centerX" id="YAK-q3-wxx"/>
-                                    <constraint firstItem="GUk-7d-Sxg" firstAttribute="top" secondItem="YW0-Zg-hYN" secondAttribute="bottom" constant="20" id="gxr-Ti-BuH"/>
-                                    <constraint firstItem="fAZ-is-Mbx" firstAttribute="height" secondItem="YW0-Zg-hYN" secondAttribute="height" id="j30-hL-5R1"/>
-                                    <constraint firstItem="ZEq-Ag-zws" firstAttribute="height" secondItem="JbZ-ue-lJb" secondAttribute="height" multiplier="0.07" id="xRG-Ke-egC"/>
-                                </constraints>
-                            </scrollView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="gM9-IO-ocS" id="gM7-oT-Xa1"/>
+                                    <outlet property="delegate" destination="gM9-IO-ocS" id="VvU-fM-mBX"/>
+                                </connections>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="JbZ-ue-lJb" firstAttribute="height" secondItem="2U6-TE-CdR" secondAttribute="height" multiplier="0.5" id="4Dk-6V-XJy"/>
-                            <constraint firstItem="JbZ-ue-lJb" firstAttribute="top" secondItem="s8Y-2b-JU9" secondAttribute="bottom" id="9KO-SW-plT"/>
-                            <constraint firstItem="JbZ-ue-lJb" firstAttribute="width" secondItem="2U6-TE-CdR" secondAttribute="width" id="J9j-7H-3ky"/>
+                            <constraint firstItem="xzT-Lk-3PR" firstAttribute="trailing" secondItem="SkJ-fE-MMA" secondAttribute="trailing" id="4ob-fh-Tt8"/>
+                            <constraint firstItem="xzT-Lk-3PR" firstAttribute="leading" secondItem="SkJ-fE-MMA" secondAttribute="leading" id="DMk-ao-LAe"/>
+                            <constraint firstItem="xzT-Lk-3PR" firstAttribute="top" secondItem="rdI-hz-Nb0" secondAttribute="bottom" id="Hei-Sq-XeO"/>
                             <constraint firstItem="rdI-hz-Nb0" firstAttribute="width" secondItem="2U6-TE-CdR" secondAttribute="width" id="JlH-HL-pd9"/>
-                            <constraint firstItem="SkJ-fE-MMA" firstAttribute="trailing" secondItem="JbZ-ue-lJb" secondAttribute="trailing" id="KUH-fA-r6U"/>
-                            <constraint firstItem="SkJ-fE-MMA" firstAttribute="bottom" secondItem="JbZ-ue-lJb" secondAttribute="bottom" id="Kzw-dE-FCq"/>
                             <constraint firstItem="rdI-hz-Nb0" firstAttribute="centerX" secondItem="SkJ-fE-MMA" secondAttribute="centerX" id="LeF-1M-VKM"/>
-                            <constraint firstItem="YW0-Zg-hYN" firstAttribute="height" secondItem="2U6-TE-CdR" secondAttribute="height" multiplier="50/812" id="VLd-SU-qUc"/>
-                            <constraint firstItem="Z1L-z0-POq" firstAttribute="centerX" secondItem="SkJ-fE-MMA" secondAttribute="centerX" id="ca7-cI-Ndo"/>
                             <constraint firstItem="rdI-hz-Nb0" firstAttribute="height" secondItem="2U6-TE-CdR" secondAttribute="height" multiplier="0.5" id="hkQ-hu-cxB"/>
-                            <constraint firstItem="JbZ-ue-lJb" firstAttribute="leading" secondItem="SkJ-fE-MMA" secondAttribute="leading" id="jpv-2x-IQ3"/>
-                            <constraint firstItem="JbZ-ue-lJb" firstAttribute="top" secondItem="Z1L-z0-POq" secondAttribute="bottom" constant="10" id="qQK-vr-uWq"/>
                             <constraint firstItem="rdI-hz-Nb0" firstAttribute="top" secondItem="2U6-TE-CdR" secondAttribute="top" id="uL0-iR-m0v"/>
-                            <constraint firstItem="JbZ-ue-lJb" firstAttribute="centerX" secondItem="SkJ-fE-MMA" secondAttribute="centerX" id="vN6-mL-0MA"/>
+                            <constraint firstItem="xzT-Lk-3PR" firstAttribute="bottom" secondItem="SkJ-fE-MMA" secondAttribute="bottom" id="y9w-gJ-vZn"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="SkJ-fE-MMA"/>
                     </view>
                     <connections>
-                        <outlet property="callButton" destination="YW0-Zg-hYN" id="uoS-V2-EGB"/>
-                        <outlet property="doneButton" destination="ZEq-Ag-zws" id="Mr7-CM-G3V"/>
-                        <outlet property="mainInsructionLabel" destination="GUk-7d-Sxg" id="t33-IZ-tQy"/>
                         <outlet property="map" destination="s8Y-2b-JU9" id="Twf-gU-q4c"/>
-                        <outlet property="navigateButton" destination="QPW-Kc-9kN" id="0No-Dy-Zcb"/>
-                        <outlet property="noShowButton" destination="fAZ-is-Mbx" id="W6E-og-Yn7"/>
-                        <outlet property="pageControl" destination="Z1L-z0-POq" id="DZc-zY-wK1"/>
-                        <outlet property="subInstructionLabel" destination="SFM-92-WS3" id="cOx-aW-Zz1"/>
+                        <outlet property="waypointTableView" destination="xzT-Lk-3PR" id="Rfh-ie-dG2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JJp-CF-9Ei" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1316,7 +1271,7 @@
                                 </connections>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign up" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sMj-Ub-gch">
-                                <rect key="frame" x="150.33333333333334" y="35" width="114.00000000000003" height="39.333333333333343"/>
+                                <rect key="frame" x="150" y="35" width="114" height="39.333333333333343"/>
                                 <fontDescription key="fontDescription" name="CenturyGothic-Bold" family="Century Gothic" pointSize="32"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>

@@ -484,21 +484,37 @@ class ServiceCalls{
     }
     
     
-    func checkIncompleteJobs(myLocation: CLLocationCoordinate2D, completion: @escaping (Bool, Job?)->()){
+    func checkIncompleteJobs(completion: @escaping (Bool)->()){
         userRef.child(emailHash).child("givenJob").observeSingleEvent(of: .value) { (snapshot) in
             if snapshot.exists(){
                 print(snapshot)
                 if snapshot.key == "givenJob"{
                     if let jobID = snapshot.value as? [String: AnyObject]{
-//                        let j = Job(snapshot: snapshot.childSnapshot(forPath: jobID.keys.first!), type: "delivery")
-                        let j = Job(snapshot: snapshot, type: "delivery")
-                        j?.locList.insert(myLocation, at: 0)
-                        completion(true, j)
+                        completion(true)
                     }
                 }
                 
             }else{
-                completion(false,nil)
+                completion(false)
+            }
+        }
+    }
+    
+    func getUnfinishedJobs(myLocation: CLLocationCoordinate2D, completion: @escaping (Job?)->()){
+        userRef.child(emailHash).child("givenJob").observeSingleEvent(of: .value) { (snapshot) in
+            if snapshot.exists(){
+                print(snapshot)
+                if snapshot.key == "givenJob"{
+                    if let jobID = snapshot.value as? [String: AnyObject]{
+                        
+                        let j = Job(snapshot: snapshot, type: "delivery")
+                        j?.locList.insert(myLocation, at: 0)
+                        completion(j)
+                    }
+                }
+                
+            }else{
+                completion(nil)
             }
         }
     }

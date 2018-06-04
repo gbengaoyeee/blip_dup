@@ -326,19 +326,26 @@
 			<key>orderHint</key>
 			<integer>47</integer>
 		</dict>
-		<key>Turf.xcscheme</key>
+		<key>SwipeCellKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
 			<integer>49</integer>
 		</dict>
-		<key>UIImageViewModeScaleAspect.xcscheme</key>
+		<key>Turf.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
 			<integer>50</integer>
+		</dict>
+		<key>UIImageViewModeScaleAspect.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+			<key>orderHint</key>
+			<integer>51</integer>
 		</dict>
 		<key>leveldb-library.xcscheme</key>
 		<dict>
