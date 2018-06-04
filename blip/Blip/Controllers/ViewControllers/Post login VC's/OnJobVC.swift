@@ -14,6 +14,7 @@ import Mapbox
 import Material
 import MapboxDirections
 import MapboxCoreNavigation
+import CHIPageControl
 
 class OnJobVC: UIViewController {
 
@@ -24,8 +25,7 @@ class OnJobVC: UIViewController {
     @IBOutlet weak var noShowButton: RaisedButton!
     @IBOutlet weak var navigateButton: RaisedButton!
     @IBOutlet weak var doneButton: RaisedButton!
-    
-    @IBOutlet weak var doneToBottom: NSLayoutConstraint!
+    @IBOutlet weak var pageControl: CHIPageControlFresno!
     
     let service = ServiceCalls.instance
     var waypoints:[BlipWaypoint]!
