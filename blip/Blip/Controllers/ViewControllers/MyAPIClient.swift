@@ -61,8 +61,10 @@ class MyAPIClient: NSObject {
                         let route = routeData![0]
                         completion(waypointData, route, nil)
                     }
+                    break
                 case .failure(let error):
                     completion(nil, nil, error)
+                    break
                 }
         }
     }
@@ -94,12 +96,33 @@ class MyAPIClient: NSObject {
                     case .success:
                         print("Successful verification")
                         completion(nil, nil)
+                        break
                     case .failure:
                         print(response.result.value)
                         completion(nil, response.result.value)
+                        break
                     }
                 }
             }
+        }
+    }
+    
+    func sendSms(phoneNumber:String, message:String){
+        let url = self.baseURL.appendingPathComponent("sendSms")
+        let param = [
+            "phoneNumber":phoneNumber,
+            "message":message
+        ]
+        Alamofire.request(url, method: .post, parameters: param, headers: nil).validate(statusCode: 200...200)
+            .responseString { (response) in
+                switch response.result {
+                case .success:
+                    print("Message sent successfully")
+                    break
+                case .failure:
+                    print("Error sending message to the user")
+                    break
+                }
         }
     }
     
@@ -117,9 +140,11 @@ class MyAPIClient: NSObject {
                     if let response = resp.result.value{
                         completion(response)
                     }
+                    break
                 case .failure:
                     print(resp.result.value)
                     completion(nil)
+                    break
                 }
         }
     }
