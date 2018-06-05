@@ -123,7 +123,7 @@ class InstructionVC: UIViewController {
         let popup = PopupDialog(title: "Confirm", message: "Please make sure you have successfully completed the delivery before pressing confirm. Failure to do so may result in the suspension of your account. Alternatively, press the No Show button if the delivery cannot be completed successfully")
         let confirmButton = PopupDialogButton(title: "Confirm") {
             
-            self.service.completedJob(deliveryID: self.delivery.identifier, storeID: self.delivery.store.storeID, type: self.type)
+            self.service.completedJob(delivery: self.delivery, type: self.type)
             
             if !self.isLastWaypoint{
                 self.navViewController?.routeController.routeProgress.legIndex += 1
