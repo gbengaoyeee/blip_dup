@@ -28,7 +28,6 @@ class SearchForJobVC: UIViewController {
     @IBOutlet weak var testJobPost: UIButton!
     @IBOutlet weak var menu: Floaty!
     @IBOutlet weak var earningsLoader: UIView!
-    @IBOutlet weak var menuTop: NSLayoutConstraint!
     
     let pulsator = Pulsator()
     var gradient: CAGradientLayer!
@@ -37,6 +36,7 @@ class SearchForJobVC: UIViewController {
     var service = ServiceCalls.instance
     let userDefaults = UserDefaults.standard
     var foundJob: Job!
+    var unfinishedJob: Bool!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -130,7 +130,6 @@ class SearchForJobVC: UIViewController {
     
     func showUnfinishedBanner(){
         let banner = NotificationBanner(title: "Unfinished delivery", subtitle: "Tap go to complete your unfinished delivery",style: .info)
-
         banner.autoDismiss = true
         banner.dismissOnTap = true
         banner.dismissOnSwipeUp = true
@@ -156,6 +155,7 @@ class SearchForJobVC: UIViewController {
         if segue.identifier == "foundJob"{
             let dest = segue.destination as! FoundJobVC
             dest.job = foundJob
+            dest.unfinishedJob = self.unfinishedJob
         }
     }
     
@@ -209,11 +209,14 @@ class SearchForJobVC: UIViewController {
         }
         self.service.getUnfinishedJobs(myLocation: self.currentLocation) { (job) in
             if let job = job{
+                self.unfinishedJob = true
                 self.foundJob = job
                 self.performSegue(withIdentifier: "foundJob", sender: self)
+                self.goButton.isUserInteractionEnabled = true
+                return
             }
             else{
-                self.goButton.isUserInteractionEnabled = false
+                self.unfinishedJob = false
                 let leftImageView = UIView()
                 let loading = LOTAnimationView(name: "loading")
                 loading.loopAnimation = true
@@ -237,6 +240,7 @@ class SearchForJobVC: UIViewController {
                                 newBanner.dismissOnSwipeUp = true
                                 newBanner.dismissOnTap = true
                                 print("Not verified")
+                                self.goButton.isUserInteractionEnabled = true
                                 return
                             }
                             else if errorCode == 500{
@@ -248,6 +252,7 @@ class SearchForJobVC: UIViewController {
                                 newBanner.dismissOnSwipeUp = true
                                 newBanner.dismissOnTap = true
                                 print("Flagged")
+                                self.goButton.isUserInteractionEnabled = true
                                 return
                             }else{
                                 // No job Found
@@ -257,6 +262,7 @@ class SearchForJobVC: UIViewController {
                                 newBanner.dismissOnSwipeUp = true
                                 newBanner.dismissOnTap = true
                                 print("No job Found")
+                                self.goButton.isUserInteractionEnabled = true
                                 return
                             }
                         }
@@ -265,8 +271,8 @@ class SearchForJobVC: UIViewController {
                             return
                         }
                         self.foundJob = job
-                        self.goButton.isUserInteractionEnabled = true
                         self.performSegue(withIdentifier: "foundJob", sender: self)
+                        self.goButton.isUserInteractionEnabled = true
                     })
                 }
             }
@@ -325,15 +331,11 @@ extension SearchForJobVC: CLLocationManagerDelegate{
 extension SearchForJobVC: FloatyDelegate{
     
     func floatyWillOpen(_ floaty: Floaty) {
-        UIView.animate(withDuration: 0.8, delay: 0, options: .curveLinear, animations: {
-            self.menuTop.constant += 100
-        }, completion: nil)
+
     }
     
     func floatyWillClose(_ floaty: Floaty) {
-        UIView.animate(withDuration: 0.8, delay: 0, options: .curveLinear, animations: {
-            self.menuTop.constant = 25
-        }, completion: nil)
+
     }
     
     fileprivate func prepareAndReturnLogout() -> FloatyItem{

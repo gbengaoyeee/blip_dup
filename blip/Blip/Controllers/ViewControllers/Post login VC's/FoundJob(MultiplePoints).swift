@@ -32,7 +32,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     var waypoints: [BlipWaypoint]!
     var timer = Timer()
     var mglSource: MGLShapeSource!
-    
+    var unfinishedJob: Bool!
     var currentType: String!
     var currentSubInstruction: String!
     var currentMainInstruction: String!
@@ -53,7 +53,9 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
                 self.preparePopupForErrors()
             }
         }
-        setupTimer()
+        if !unfinishedJob{
+            setupTimer()
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -63,7 +65,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     
     override func viewDidLayoutSubviews() {
         prepareCenterView()
-        prepareMap()
+        prepareMapViews()
     }
     
     override func didReceiveMemoryWarning() {
@@ -93,10 +95,12 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     }
     
     func preparePopupForErrors(){
-        let popup = PopupDialog(title: "Error", message: "An error occured when parsing job data")
+        let popup = PopupDialog(title: "Error", message: "An error occured when parsing job data", gestureDismissal: false)
         let okButton = PopupDialogButton(title: "Continue") {
             popup.dismiss()
             self.navigationController?.popToRootViewController(animated: true)
+            self.service.putBackJobs()
+            self.timer.invalidate()
         }
         popup.addButton(okButton)
     }
@@ -139,8 +143,6 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     }
     
     func prepareMap(){
-        map.delegate = self
-        map.makeCircular()
         for delivery in job.deliveries{
             let annotation = MGLPointAnnotation()
             annotation.coordinate = delivery.origin
@@ -149,12 +151,20 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
         if let annotations = map.annotations{
             if annotations.count == 1{
                 self.map.centerCoordinate = annotations.first!.coordinate
-                self.map.setZoomLevel(10, animated: true)
+                let camera = MGLMapCamera(lookingAtCenter: map.centerCoordinate, fromDistance: 4500, pitch: 15, heading: 0)
+                
+                // Animate the camera movement over 5 seconds.
+                map.setCamera(camera, withDuration: 3, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn))
             }
             else{
                 map.showAnnotations(annotations, animated: true)
             }
         }
+    }
+    
+    func prepareMapViews(){
+        map.delegate = self
+        map.makeCircular()
     }
     
     func prepareCenterView(){
@@ -172,9 +182,17 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     
     @IBAction func acceptJobPressed(_ sender: Any) {
         timer.invalidate()
-        self.service.setIsTakenOnGivenJobsAndStore(waypointList: self.waypoints)
-        countDownView.start(beginingValue: 30)
-        self.performSegue(withIdentifier: "beginJob", sender: self)
+        service.checkGivenJjobReference { (progress) in
+            if progress{
+                self.service.setIsTakenOnGivenJobsAndStore(waypointList: self.waypoints)
+                self.countDownView.start(beginingValue: 30)
+                self.performSegue(withIdentifier: "beginJob", sender: self)
+            }
+            else{
+                self.preparePopupForErrors()
+            }
+        }
+        
     }
 }
 
@@ -187,6 +205,10 @@ extension FoundJobVC: MGLMapViewDelegate{
             return MGLAnnotationImage(image: delivery.resizeImage(targetSize: CGSize(size: 40)), reuseIdentifier: "delivery")
         }
         return nil
+    }
+    
+    func mapViewDidFinishLoadingMap(_ mapView: MGLMapView) {
+        prepareMap()
     }
 }
 

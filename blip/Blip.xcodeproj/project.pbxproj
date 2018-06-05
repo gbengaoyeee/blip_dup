@@ -423,8 +423,8 @@
 		F39BE63720B32DE200A4228C /* Post login VC's */ = {
 			isa = PBXGroup;
 			children = (
-				F39BE63920B32E1400A4228C /* FoundJob(MultiplePoints).swift */,
 				F39BE63820B32E1400A4228C /* SearchForJobVC.swift */,
+				F39BE63920B32E1400A4228C /* FoundJob(MultiplePoints).swift */,
 				F3EC0E69209FDD5400E08668 /* SettingsVC.swift */,
 				F3D21EE7208AE39500832544 /* InstructionVC.swift */,
 				3BB974E720C3181C00761E0A /* OnJobVC.swift */,

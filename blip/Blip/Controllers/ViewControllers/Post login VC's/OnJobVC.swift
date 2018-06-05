@@ -27,7 +27,7 @@ class OnJobVC: UIViewController {
     var type:String!
     let locationManager = CLLocationManager()
     var currentLocation:CLLocationCoordinate2D!
-    var distance = 50
+    var distance = 10000
     var distanceToEvent: Double!
     var gradient: CAGradientLayer!
     
@@ -151,33 +151,72 @@ extension OnJobVC: MGLMapViewDelegate{
     }
     
     func completeJob(forCellAt: IndexPath){
-        let popup = PopupDialog(title: "Confirm", message: "Please make sure you have successfully completed the delivery before pressing confirm. Failure to do so may result in the suspension of your account. Alternatively, press the No Show button if the delivery cannot be completed successfully")
+        
+        var message: String!
+        
+        if type == "Pickup"{
+            message = "Please make sure you have picked up the correct order. Double check the order number with the instruction, and press confirm when completed"
+        }
+        else{
+            message = "Please select the person to whom the delivery was made. Your account may be banned or suspended for deliberately selecting a false option"
+        }
+        let popup = PopupDialog(title: "Confirm", message: message)
+        
+        let toReciever = PopupDialogButton(title: "Delivered to \(self.delivery.recieverName!)") {
+            self.completeJobButtonAction(forCellAt: forCellAt, deliveredTo: "reciever")
+            popup.dismiss()
+        }
+        
+        let toFriend = PopupDialogButton(title: "Delivered to a friend") {
+            self.completeJobButtonAction(forCellAt: forCellAt, deliveredTo: "friend")
+            popup.dismiss()
+        }
+        
+        let toSecurity = PopupDialogButton(title: "Delivered to security") {
+            self.completeJobButtonAction(forCellAt: forCellAt, deliveredTo: "security")
+            popup.dismiss()
+        }
+        
+        let other = PopupDialogButton(title: "Other") {
+            self.completeJobButtonAction(forCellAt: forCellAt, deliveredTo: "other")
+            popup.dismiss()
+        }
+        
         let confirmButton = PopupDialogButton(title: "Confirm") {
             //Sets appropriate fields in the database when a pickup/delivery is completed successfully
-            self.service.completedJob(delivery: self.delivery, type: self.type)
-            self.waypoints.remove(at: forCellAt.row)
-            self.waypointTableView.deleteRows(at: [forCellAt], with: .left)
-            if self.waypoints.count != self.legIndex{
-                
-                self.type = self.waypoints[self.legIndex].name!
-                self.delivery = self.waypoints[self.legIndex].delivery
-                if let currentType = self.waypoints[self.legIndex].name, let currentDelivery = self.waypoints[self.legIndex].delivery{
-                    self.prepareMap(type: currentType, delivery: currentDelivery)
-                }
-                popup.dismiss()
-            }
-            else{
-                popup.dismiss()
-                self.navigationController?.popToRootViewController(animated: true)
-            }
+            self.completeJobButtonAction(forCellAt: forCellAt, deliveredTo: nil)
+            popup.dismiss()
         }
-        popup.addButton(confirmButton)
+        
+        if self.type == "Pickup"{
+           popup.addButton(confirmButton)
+        }
+        else{
+            popup.addButtons([toReciever, toFriend, toSecurity, other])
+        }
         
         if Int(distanceToEvent) > distance{
             self.displayCompletionError()
         }
         else{
             self.present(popup, animated: true, completion: nil)
+        }
+    }
+    
+    fileprivate func completeJobButtonAction(forCellAt: IndexPath, deliveredTo: String?){
+        self.service.completedJob(delivery: self.delivery, type: self.type, deliveredTo: deliveredTo)
+        self.waypoints.remove(at: forCellAt.row)
+        self.waypointTableView.deleteRows(at: [forCellAt], with: .left)
+        if self.waypoints.count != self.legIndex{
+            
+            self.type = self.waypoints[self.legIndex].name!
+            self.delivery = self.waypoints[self.legIndex].delivery
+            if let currentType = self.waypoints[self.legIndex].name, let currentDelivery = self.waypoints[self.legIndex].delivery{
+                self.prepareMap(type: currentType, delivery: currentDelivery)
+            }
+        }
+        else{
+            self.navigationController?.popToRootViewController(animated: true)
         }
     }
 }
