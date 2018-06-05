@@ -207,7 +207,8 @@
                                 <rect key="frame" x="152" y="45" width="110" height="35"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8eP-3M-9Oo" customClass="RaisedButton" customModule="Material">
-                                        <rect key="frame" x="0.0" y="-0.3333333333333357" width="110" height="35"/>
+                                        <rect key="frame" x="0.0" y="-0.33333333333337123" width="110" height="35"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                         <state key="normal" title="Button"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="color" keyPath="pulseColor">
@@ -226,8 +227,6 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="8eP-3M-9Oo" firstAttribute="width" secondItem="Nfe-Vv-4qP" secondAttribute="width" id="2NI-EH-qi1"/>
-                                    <constraint firstAttribute="width" constant="110" id="M4P-f9-YuV"/>
-                                    <constraint firstAttribute="height" constant="35" id="N3L-Cf-63v"/>
                                     <constraint firstItem="8eP-3M-9Oo" firstAttribute="centerY" secondItem="Nfe-Vv-4qP" secondAttribute="centerY" id="WVD-LM-6l8"/>
                                     <constraint firstItem="8eP-3M-9Oo" firstAttribute="height" secondItem="Nfe-Vv-4qP" secondAttribute="height" id="j3y-eP-0DE"/>
                                     <constraint firstItem="8eP-3M-9Oo" firstAttribute="centerX" secondItem="Nfe-Vv-4qP" secondAttribute="centerX" id="xjK-UY-hjn"/>
@@ -247,13 +246,15 @@
                             <constraint firstItem="JZz-UL-eYA" firstAttribute="leading" secondItem="xni-lE-of8" secondAttribute="leading" constant="20" id="2cw-uO-4Iv"/>
                             <constraint firstItem="F1g-OS-zCz" firstAttribute="centerY" secondItem="Yjo-Ea-HG0" secondAttribute="centerY" id="8kh-9J-Wlz"/>
                             <constraint firstItem="JZz-UL-eYA" firstAttribute="top" secondItem="xni-lE-of8" secondAttribute="top" constant="20" id="AOG-0n-c2L"/>
+                            <constraint firstItem="Nfe-Vv-4qP" firstAttribute="height" secondItem="k1b-e6-YiJ" secondAttribute="height" multiplier="55/736" id="CTi-Yp-kVe"/>
                             <constraint firstItem="xni-lE-of8" firstAttribute="trailing" secondItem="naf-xm-kCo" secondAttribute="trailing" constant="25" id="Hih-VS-xmw"/>
+                            <constraint firstItem="Nfe-Vv-4qP" firstAttribute="width" secondItem="k1b-e6-YiJ" secondAttribute="width" multiplier="150/414" id="Smu-Cq-fy4"/>
                             <constraint firstItem="Nfe-Vv-4qP" firstAttribute="top" secondItem="xni-lE-of8" secondAttribute="top" constant="25" id="T2a-SY-0PW"/>
                             <constraint firstItem="Yjo-Ea-HG0" firstAttribute="centerX" secondItem="xni-lE-of8" secondAttribute="centerX" id="Ty3-cK-aGJ"/>
                             <constraint firstItem="F1g-OS-zCz" firstAttribute="centerX" secondItem="Yjo-Ea-HG0" secondAttribute="centerX" id="Ujn-nK-BDD"/>
+                            <constraint firstItem="naf-xm-kCo" firstAttribute="centerY" secondItem="8eP-3M-9Oo" secondAttribute="centerY" id="YJF-Id-VRr"/>
                             <constraint firstItem="Nfe-Vv-4qP" firstAttribute="centerX" secondItem="xni-lE-of8" secondAttribute="centerX" id="aX8-4x-H78"/>
-                            <constraint firstItem="naf-xm-kCo" firstAttribute="top" secondItem="xni-lE-of8" secondAttribute="top" constant="25" id="dyi-EA-oWH"/>
-                            <constraint firstItem="Yjo-Ea-HG0" firstAttribute="height" secondItem="k1b-e6-YiJ" secondAttribute="height" multiplier="70/812" id="f19-MX-MmL"/>
+                            <constraint firstItem="Yjo-Ea-HG0" firstAttribute="height" secondItem="k1b-e6-YiJ" secondAttribute="height" multiplier="80/812" id="f19-MX-MmL"/>
                             <constraint firstItem="xni-lE-of8" firstAttribute="bottom" secondItem="Yjo-Ea-HG0" secondAttribute="bottom" constant="60" id="tNb-cB-eQ6"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="xni-lE-of8"/>
@@ -275,7 +276,6 @@
                         <outlet property="goButtonPulseAnimation" destination="F1g-OS-zCz" id="hVu-7L-nHF"/>
                         <outlet property="map" destination="k1b-e6-YiJ" id="IyO-MK-efC"/>
                         <outlet property="menu" destination="naf-xm-kCo" id="zye-h5-jGJ"/>
-                        <outlet property="menuTop" destination="dyi-EA-oWH" id="c6y-qy-vkh"/>
                         <outlet property="testJobPost" destination="JZz-UL-eYA" id="oh4-wq-mEe"/>
                         <segue destination="H07-W2-WS5" kind="show" identifier="foundJob" id="pBq-Ls-F0d"/>
                     </connections>
@@ -448,10 +448,13 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rdI-hz-Nb0">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="368"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s8Y-2b-JU9">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s8Y-2b-JU9" customClass="MGLMapView">
                                         <rect key="frame" x="0.0" y="-0.66666666666665719" width="414" height="368.33333333333326"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="string" keyPath="styleURL__" value="mapbox://styles/srikanthsrnvs/cjd6ciwwm54my2rms3052j5us"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="heroID" value="map"/>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabledForSubviews" value="YES"/>
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                 </subviews>

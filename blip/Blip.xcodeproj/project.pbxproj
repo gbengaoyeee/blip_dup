@@ -56,6 +56,7 @@
 		3BF9F1272096F2D400BD7E6B /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF9F1262096F2D300BD7E6B /* Store.swift */; };
 		5F33377820332B0B00B83E01 /* RatingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F33377720332B0B00B83E01 /* RatingViewController.xib */; };
 		5F33377A20332B4600B83E01 /* RatingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F33377920332B4600B83E01 /* RatingViewController.swift */; };
+		5FC65BB220C6CF0B000DECFC /* notification.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5FC65BB120C6CF0B000DECFC /* notification.mp3 */; };
 		9386003A7F4DF664CFE4B273 /* Pods_BlipTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0955C2EBB0480CDAC21F69EA /* Pods_BlipTests.framework */; };
 		D2AFD91630288F27B050C92C /* Pods_Blip.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F17503340FF2DF7A45CD03F1 /* Pods_Blip.framework */; };
 		DD72AAE625CF15AC4CF40392 /* Pods_BlipUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1E4C90BBD8A603818B54420 /* Pods_BlipUITests.framework */; };
@@ -158,6 +159,7 @@
 		5B61F37AD2E9BDE0191F14EA /* Pods-Blip.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Blip.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Blip/Pods-Blip.debug.xcconfig"; sourceTree = "<group>"; };
 		5F33377720332B0B00B83E01 /* RatingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RatingViewController.xib; sourceTree = "<group>"; };
 		5F33377920332B4600B83E01 /* RatingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingViewController.swift; sourceTree = "<group>"; };
+		5FC65BB120C6CF0B000DECFC /* notification.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = notification.mp3; sourceTree = "<group>"; };
 		7882D3387DF72D6C89FCBAF9 /* Pods-BlipUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlipUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BlipUITests/Pods-BlipUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		A283DE755C308C685D319AA9 /* Pods-BlipTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlipTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BlipTests/Pods-BlipTests.release.xcconfig"; sourceTree = "<group>"; };
 		C1E4C90BBD8A603818B54420 /* Pods_BlipUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BlipUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -235,6 +237,7 @@
 		3B5372F6202EB4320020F3B1 /* Blip */ = {
 			isa = PBXGroup;
 			children = (
+				5FC65BB020C6CEF0000DECFC /* Sounds */,
 				F3F508212032085600252E65 /* Blip-Bridging-Header.h */,
 				3B14B534202ED43000B1C015 /* Blip.entitlements */,
 				3B537337202EBB850020F3B1 /* Connectivity */,
@@ -358,6 +361,14 @@
 				5FDEF880206B5ED700F33733 /* CustomXIB */,
 			);
 			path = CustomFiles;
+			sourceTree = "<group>";
+		};
+		5FC65BB020C6CEF0000DECFC /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				5FC65BB120C6CF0B000DECFC /* notification.mp3 */,
+			);
+			path = Sounds;
 			sourceTree = "<group>";
 		};
 		5FDEF880206B5ED700F33733 /* CustomXIB */ = {
@@ -570,6 +581,7 @@
 				F39868F320C3114300C6037B /* earningsLoaderBlue.json in Resources */,
 				5F33377820332B0B00B83E01 /* RatingViewController.xib in Resources */,
 				F3F508202031F78C00252E65 /* lgsu.mp4 in Resources */,
+				5FC65BB220C6CF0B000DECFC /* notification.mp3 in Resources */,
 				3B53735A202EBE310020F3B1 /* check.json in Resources */,
 				F3F5081F2031F78300252E65 /* CenturyGothicBold.ttf in Resources */,
 				3B14B533202ED1EA00B1C015 /* GoogleService-Info.plist in Resources */,

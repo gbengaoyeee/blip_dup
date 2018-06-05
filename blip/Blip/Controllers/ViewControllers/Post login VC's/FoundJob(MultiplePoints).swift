@@ -10,6 +10,7 @@ import Pulsator
 import PopupDialog
 import NotificationBannerSwift
 import Material
+import AVFoundation
 
 class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     
@@ -21,6 +22,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     @IBOutlet weak var countDownView: SRCountdownTimer!
     @IBOutlet weak var acceptJob: RaisedButton!
     
+    var player: AVAudioPlayer?
     var fromIndex = 0
     var toIndex = 1
     var job: Job!
@@ -81,6 +83,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     
     fileprivate func setupTimer(){
         timer = Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(handleTimer), userInfo: nil, repeats: false)
+        countDownView.start(beginingValue: 30)
     }
     
     @objc fileprivate func handleTimer(){
@@ -165,12 +168,12 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
         pulseAnimationView.layer.addSublayer(pulsator)
         countDownView.makeCircular()
         countDownView.clipsToBounds = true
-        countDownView.start(beginingValue: 30)
     }
     
     @IBAction func acceptJobPressed(_ sender: Any) {
         timer.invalidate()
         self.service.setIsTakenOnGivenJobsAndStore(waypointList: self.waypoints)
+        countDownView.start(beginingValue: 30)
         self.performSegue(withIdentifier: "beginJob", sender: self)
     }
 }
@@ -290,6 +293,34 @@ extension FoundJobVC{
         jobDistance.text = "\(distanceInKm) km"
         let earningsText = String(format: "%.2f", arguments: [job.earnings])
         jobEarnings.text = "$ \(earningsText)"
+    }
+}
+
+extension FoundJobVC{
+    
+    func playNotificationSound() {
+        guard let url = Bundle.main.url(forResource: "notification", withExtension: "mp3") else { return }
+        
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            try AVAudioSession.sharedInstance().setActive(true)
+            
+            
+            
+            /* The following line is required for the player to work on iOS 11. Change the file type accordingly*/
+            player = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.mp3.rawValue)
+            
+            /* iOS 10 and earlier require the following line:
+             player = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileTypeMPEGLayer3) */
+            
+            guard let player = player else { return }
+            
+            player.play()
+            player.numberOfLoops = -1
+            
+        } catch let error {
+            print(error.localizedDescription)
+        }
     }
 }
 

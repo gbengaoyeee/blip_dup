@@ -43,14 +43,13 @@ class SearchForJobVC: UIViewController {
         self.navigationController?.navigationBar.isHidden = true
         locationManager.delegate = self
         locationManager.startUpdatingLocation()
-        prepareBlur()
         prepareMenuButton()
+        goButton.isUserInteractionEnabled = false
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         prepareMap()
-        prepareGoButton()
         getBalance()
     }
     
@@ -60,19 +59,27 @@ class SearchForJobVC: UIViewController {
         checkForUnfinishedJobs()
     }
     
-    func getBalance(){
+    override func viewWillLayoutSubviews() {
+        prepareGoButton()
+        prepareBalanceLabel()
+    }
+    
+    func prepareBalanceLabel(){
         earningsLoader.borderColor = UIColor.clear
         earningsLoader.layer.borderWidth = 2.5
-        earningsLoader.layer.cornerRadius = 15
+        earningsLoader.layer.cornerRadius = earningsLoader.frame.size.height/2
         earningsLoader.backgroundColor = UIColor.clear
+        earningsLabel.borderColor = UIColor.white
+        earningsLabel.layer.borderWidth = 2.5
+        earningsLabel.layer.cornerRadius = earningsLabel.frame.size.height/2
+    }
+    
+    func getBalance(){
+        earningsLabel.isHidden = true
         let loader = LOTAnimationView(name: "earningsLoaderBlue")
         earningsLoader.handledAnimation(Animation: loader, width: 1, height: 1)
         loader.play()
         loader.loopAnimation = true
-        earningsLabel.borderColor = UIColor.white
-        earningsLabel.layer.borderWidth = 2.5
-        earningsLabel.layer.cornerRadius = 15
-        earningsLabel.isHidden = true
         MyAPIClient.sharedClient.getAccountBalance(emailHash: self.service.emailHash) { (balance) in
             if let balance = balance{
                 let accountBalance = Double(balance)!/100
@@ -152,16 +159,11 @@ class SearchForJobVC: UIViewController {
         }
     }
     
-    func prepareBlur(){
-        
-    }
-    
     func prepareGoButton(){
         pulsator.backgroundColor = #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1)
         goButton.makeCircular()
         goButton.borderColor = UIColor.white
         goButton.layer.borderWidth = 2.5
-        goButton.isUserInteractionEnabled = false
     }
     
     func startButtonPulse(){
