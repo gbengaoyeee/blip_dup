@@ -14,7 +14,28 @@ const geo = require('geolib');
 const stripe = require('stripe')("sk_test_4I0ubK7NduuV6dhJouhEAqtu"),
     currency = "CAD";
 const cors = require('cors')({ origin: true });
+const Nexmo = require('nexmo');
+const nexmo = new Nexmo({
+    apiKey: '95edf8df',
+    apiSecret: 'x1JhAApGI5OXgVAZ'
+},{debug: true});
 
+exports.sendSms = functions.https.onRequest((req, res) => {
+    const phoneNumber = req.body.phoneNumber
+    const message = req.body.message
+
+    nexmo.message.sendSms(
+        '12046615913', phoneNumber, message, {type: 'unicode'},
+        (error, responseData) => {
+            if(error){
+                console.log('Error sending sms',error);
+            } else{
+                console.dir(responseData);
+                res.status(200).send();
+            }
+        }
+    )
+});
 
 exports.ephemeral_keys = functions.https.onRequest((req, res) => {
     const stripe_version = req.body.api_version;
