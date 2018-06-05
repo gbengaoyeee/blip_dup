@@ -28,7 +28,6 @@ class SearchForJobVC: UIViewController {
     @IBOutlet weak var testJobPost: UIButton!
     @IBOutlet weak var menu: Floaty!
     @IBOutlet weak var earningsLoader: UIView!
-    
     @IBOutlet weak var menuTop: NSLayoutConstraint!
     
     let pulsator = Pulsator()
@@ -87,11 +86,22 @@ class SearchForJobVC: UIViewController {
     }
     
     func prepareMenuButton(){
-        menu.addItem("Test", icon: UIImage(icon: .googleMaterialDesign(.verifiedUser), size: CGSize(size: 25), textColor: UIColor.white, backgroundColor: UIColor.blue)) { (item) in
-            print("Hi")
+        menu.addItem("Verification", icon: UIImage(icon: .googleMaterialDesign(.accountBox), size: CGSize(size: 25), textColor: UIColor.white, backgroundColor: UIColor.blue)) { (item) in
+            let sb = UIStoryboard(name: "main", bundle: nil)
+            sb.instantiateViewController(withIdentifier: "settingsVC")
         }
+        menu.addItem("Logout", icon: UIImage(icon: .googleMaterialDesign(.close), size: CGSize(size: 25), textColor: UIColor.white, backgroundColor: UIColor.blue)) { (item) in
+            do {
+                try Auth.auth().signOut()
+                print("Logged out")
+            } catch let signOutError as NSError {
+                let signOutErrorPopup = PopupDialog(title: "Error", message: "Error signing you out, try again later" + signOutError.localizedDescription )
+                self.present(signOutErrorPopup, animated: true, completion: nil)
+                print ("Error signing out: %@", signOutError)
+            }
+        }
+        menu.plusColor = UIColor.white
         menu.fabDelegate = self
-        menu.addItem(title: "hello")
         menu.openAnimationType = .slideLeft
     }
     
@@ -183,8 +193,8 @@ class SearchForJobVC: UIViewController {
     
     @IBAction func postTestJob(_ sender: Any) {
         service.getCurrentUserInfo { (user) in
-            let deliveryLocation = self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 100, max: 400)
-            let pickupLocation = self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 100, max: 500)
+            let deliveryLocation = self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 300, max: 500)
+            let pickupLocation = self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 300, max: 500)
             MyAPIClient.sharedClient.makeDeliveryRequest(storeID: "-LDCTqOOk7e1GNlpQcGR", deliveryLat: deliveryLocation.latitude, deliveryLong: deliveryLocation.longitude, deliveryMainInstruction: "Deliver to Srikanth Srinivas", deliverySubInstruction: "Go to main entrace, and buzz code 2003", originLat: pickupLocation.latitude, originLong: pickupLocation.longitude, pickupMainInstruction: "Pickup from xyz", pickupSubInstruction: "Go to front entrance of xyz, order number 110021 is waiting for you", recieverName: "Srikanth Srinivas", recieverNumber: "6478229867", pickupNumber: "6479839837")
         }
     }

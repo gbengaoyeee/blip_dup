@@ -27,8 +27,9 @@ class OnJobVC: UIViewController {
     var type:String!
     let locationManager = CLLocationManager()
     var currentLocation:CLLocationCoordinate2D!
-    var distance = 1000
+    var distance = 50
     var distanceToEvent: Double!
+    var gradient: CAGradientLayer!
     
     override func viewDidLoad() {
 
@@ -36,6 +37,7 @@ class OnJobVC: UIViewController {
         prepareWaypointData()
         prepareLocationUsage()
         prepareTableView()
+        prepareBlur()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -47,6 +49,14 @@ class OnJobVC: UIViewController {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    func prepareBlur(){
+        gradient = CAGradientLayer()
+        gradient.frame = map.bounds
+        gradient.colors = [UIColor.clear.cgColor, UIColor.black.cgColor, UIColor.black.cgColor, UIColor.clear.cgColor]
+        gradient.locations = [0, 0.2, 0.8, 1]
+        map.layer.mask = gradient
     }
     
     func prepareWaypointData(){

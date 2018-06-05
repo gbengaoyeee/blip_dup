@@ -73,14 +73,9 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "presentInstructions"{
-            let dest = segue.destination as! InstructionVC
-            dest.delivery = self.currentDelivery
-            dest.subInstruction = self.currentSubInstruction
-            dest.mainInstruction = self.currentMainInstruction
-            dest.type = self.currentType
-            dest.isLastWaypoint = self.isLastWaypoint
-            dest.navViewController = self.navViewController
+        if segue.identifier == "beginJob"{
+            let dest = segue.destination as! OnJobVC
+            dest.waypoints = self.waypoints
         }
     }
     
@@ -141,6 +136,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     }
     
     func prepareMap(){
+        map.delegate = self
         map.makeCircular()
         for delivery in job.deliveries{
             let annotation = MGLPointAnnotation()
@@ -148,7 +144,13 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
             map.addAnnotation(annotation)
         }
         if let annotations = map.annotations{
-            map.showAnnotations(annotations, animated: true)
+            if annotations.count == 1{
+                self.map.centerCoordinate = annotations.first!.coordinate
+                self.map.setZoomLevel(10, animated: true)
+            }
+            else{
+                map.showAnnotations(annotations, animated: true)
+            }
         }
     }
     
@@ -168,12 +170,8 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     
     @IBAction func acceptJobPressed(_ sender: Any) {
         timer.invalidate()
-//        calculateAndPresentNavigation(waypointList: self.waypoints, present: true)
-        let sb = UIStoryboard(name: "Main", bundle: nil)
-        let onJobVC:OnJobVC = sb.instantiateViewController(withIdentifier: "onJobVC") as! OnJobVC
-        onJobVC.waypoints = self.waypoints
-        //Push the controller
-        self.navigationController?.pushViewController(onJobVC, animated: true)
+        self.service.setIsTakenOnGivenJobsAndStore(waypointList: self.waypoints)
+        self.performSegue(withIdentifier: "beginJob", sender: self)
     }
 }
 
@@ -186,108 +184,6 @@ extension FoundJobVC: MGLMapViewDelegate{
             return MGLAnnotationImage(image: delivery.resizeImage(targetSize: CGSize(size: 40)), reuseIdentifier: "delivery")
         }
         return nil
-    }
-}
-
-extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
-    
-    func navigationViewController(_ viewController: NavigationViewController, didSend feedbackId: String, feedbackType: FeedbackType) {
-        if feedbackType == .mapIssue{
-            let error = PopupDialog(title: "We want to know whats wrong", message: "Get in touch with us right now at 647-983-9837, and mention your email address")
-            let callButton = PopupDialogButton(title: "Call") {
-                if let url:URL = URL(string: "tel://6479839837"), UIApplication.shared.canOpenURL(url){
-                    if #available(iOS 10, *) {
-                        UIApplication.shared.open(url)
-                    } else {
-                        UIApplication.shared.openURL(url)
-                    }
-                }
-            }
-            error.addButton(callButton)
-            self.present(error, animated: true)
-        }
-    }
-    
-    func navigationViewController(_ navigationViewController: NavigationViewController, didArriveAt waypoint: Waypoint) -> Bool {
-        
-        self.navViewController = navigationViewController
-        navigationViewController.routeController.suspendLocationUpdates()
-        for way in self.waypoints{
-            if waypoint.coordinate == way.coordinate{
-                self.isLastWaypoint = (self.waypoints.last?.coordinate == way.coordinate)
-                self.currentDelivery = way.delivery
-                if let name = way.name{
-                    if name == "Pickup"{
-                        self.currentType = "Pickup"
-                        self.currentMainInstruction = way.delivery.pickupMainInstruction
-                        self.currentSubInstruction = way.delivery.pickupSubInstruction
-                    }
-                    else if name == "Delivery"{
-                        self.currentType = "Delivery"
-                        self.currentMainInstruction = way.delivery.deliveryMainInstruction
-                        self.currentSubInstruction = way.delivery.deliverySubInstruction
-                    }
-                }
-                self.performSegue(withIdentifier: "presentInstructions", sender: self)
-            }
-        }
-        return false
-    }
-    
-    func navigationMapView(_ mapView: NavigationMapView, shapeFor waypoints: [Waypoint]) -> MGLShape? {
-        
-        var features = [MGLPointFeature]()
-        for waypoint in waypoints {
-            let feature = MGLPointFeature()
-            feature.coordinate = waypoint.coordinate
-            if let name = waypoint.name{
-                if name == "Pickup" || name == "Delivery"{
-                    feature.attributes = ["type": name.lowercased()]
-                    features.append(feature)
-                }
-            }
-        }
-        return MGLShapeCollectionFeature(shapes: features)
-    }
-    
-    func navigationMapView(_ mapView: NavigationMapView, waypointSymbolStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer? {
-
-        let deliveryImage = UIImage(named: "delivery")
-        let pickupImage = UIImage(named: "pickup")
-        mapView.style?.setImage(deliveryImage!.resizeImage(targetSize: CGSize(size: 40)), forName: "delivery")
-        mapView.style?.setImage(pickupImage!.resizeImage(targetSize: CGSize(size: 40)), forName: "pickup")
-        let x = MGLSymbolStyleLayer(identifier: identifier, source: source)
-        x.iconImageName = NSExpression(forKeyPath: "type")
-        x.iconAllowsOverlap = NSExpression(forConstantValue: true)
-        x.iconIgnoresPlacement = NSExpression(forConstantValue: true)
-
-        return x
-    }
-    
-    func navigationMapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
-        
-        let delivery = UIImage(named: "delivery")
-        if let delivery = delivery{
-            return MGLAnnotationImage(image: delivery.resizeImage(targetSize: CGSize(size: 40)), reuseIdentifier: "delivery")
-        }
-        return nil
-    }
-    
-    func navigationViewControllerDidEndNavigation(_ navigationViewController: NavigationViewController, cancelled: Bool) {
-        let alertPopup = PopupDialog(title: "Warning", message: "Are you sure you wish to cancel the job you are currently on? Taking a job and cancelling midway may result in a suspension of your account.")
-        let yesButton = PopupDialogButton(title: "Yes") {
-            alertPopup.dismiss()
-            self.service.userCancelledJob(completion: {
-                navigationViewController.navigationController?.popToRootViewController(animated: true)
-            })
-            
-        }
-        let noButton = PopupDialogButton(title: "No") {
-            alertPopup.dismiss()
-            navigationViewController.routeController.resume()
-        }
-        alertPopup.addButtons([yesButton, noButton])
-        navigationViewController.present(alertPopup, animated: true, completion: nil)
     }
 }
 
@@ -353,28 +249,6 @@ extension FoundJobVC{
         return self.waypoints[index]
     }
     
-    func calculateAndPresentNavigation(waypointList: [BlipWaypoint], present: Bool){
-        
-        let options = NavigationRouteOptions(waypoints: waypointList, profileIdentifier: .automobile)
-        _ = Directions.shared.calculate(options, completionHandler: { (waypoints, routes, error) in
-            if error == nil{
-                if present{
-                    let navigation = NavigationViewController(for: (routes?.first)!)
-                    navigation.mapView?.styleURL = URL(string:"mapbox://styles/srikanthsrnvs/cjd6ciwwm54my2rms3052j5us")
-                    let x = SimulatedLocationManager(route: (routes?.first)!)
-                    x.speedMultiplier = 3.0
-                    navigation.routeController.locationManager = x
-                    navigation.delegate = self
-                    navigation.showsEndOfRouteFeedback = false
-                    self.service.setIsTakenOnGivenJobsAndStore(waypointList: waypointList)
-                    self.navigationController?.pushViewController(navigation, animated: true)
-                }
-            }
-            else{
-                print(error!)
-            }
-        })
-    }
     
     func getDeliveryFor(waypoint: Waypoint) -> Delivery?{
         var dist: Double! = 20000
