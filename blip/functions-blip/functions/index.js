@@ -538,6 +538,21 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
                 newPostKey = admin.database().ref().child('AllJobs').push().key,
                 chargeAmount = getChargeAmount(deliveryLat, deliveryLong, originLat, originLong);
 
+            if (!verifyCoordinates([req.body.deliveryLat, req.body.deliveryLong, req.body.originLat, req.body.originLong])){
+                console.log("Coordinates bad");
+                res.status(400).send("Bad Coordinates");
+                return
+            }
+            if (!verifyFieldsForNull([req.body.deliveryMainInstruction, req.body.deliverySubInstruction, req.body.pickupMainInstruction, req.body.pickupSubInstruction, req.body.recieverName])){
+                console.log("Bad fields");
+                res.status(400).send("Check all parameters");
+                return
+            }
+            if (!verifyNumbers(req.body.recieverNumber) || !verifyNumbers(req.body.pickupNumber)){
+                console.log("Numbers must begin with a +1");
+                res.status(400).send("Phon no. must begin with a +1");
+                return
+            }
             if (snapshot.child(`/customer`).val() == null) {
                 console.log("Cannot create a delivery. No customer returned by stripe");
                 res.status(400).end(); // NO CUSTOMER ERROR
@@ -885,7 +900,36 @@ function userFacingMessage(error) {
 }
 
 
+//VERIFICATION FUNCTIONS
 
+function verifyCoordinates([coordinates]){
+
+    for (coordinate in coordinates){
+        if ((coordinate > 180) || (coordinate < -180)){
+            return false
+        }
+    }
+    return true
+}
+
+function verifyFieldsForNull([fields]){
+    for(field in fields){
+        if (field == null){
+            return false
+        }
+    }
+    return true
+}
+
+function verifyNumbers(number){
+    if (!number.startsWith("+1")){
+        return false
+    }
+    if (number.length != 11){
+        return false
+    }
+    return true
+}
 
 
 //API STARTS HERE
