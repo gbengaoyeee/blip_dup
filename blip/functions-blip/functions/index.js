@@ -66,11 +66,20 @@ function putBackJobs(emailHash) {
 //This function handles countdown of time
 function jobCountDown(emailHash) {
     var maxTime = 30
+    admin.database().ref(`/Couriers/${emailHash}/givenJob`).on("child_changed", function(snapshot){
+        var key = snapshot.hasChild("jobTaker");
+        console.log("Accepted job:", key);
+        if (key){
+            clearInterval(startTime);
+            console.log("Timer killed");
+            return
+        }
+    })
     var startTime = setInterval(function () {
         if (maxTime != 0) {
             console.log(maxTime, "sec");
             //stop Timer when accept pressed
-            //idk maybe might wanna put the oncreate here
+            
             maxTime = maxTime - 1;//Decrease timer
         } else {
             //Timer has reached 0
@@ -555,7 +564,6 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
     var storeID = req.body.storeID;
     admin.database().ref(`/stores/${storeID}`).once("value", function (snapshot) {
         if (snapshot.exists) {
-            console.log(storeID);
             var deliveryLat = req.body.deliveryLat,
                 deliveryLong = req.body.deliveryLong,
                 deliveryMainInstruction = req.body.deliveryMainInstruction,
@@ -570,6 +578,21 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
                 newPostKey = admin.database().ref().child('AllJobs').push().key,
                 chargeAmount = getChargeAmount(deliveryLat, deliveryLong, originLat, originLong);
 
+            if (!verifyCoordinates([req.body.deliveryLat, req.body.deliveryLong, req.body.originLat, req.body.originLong])){
+                console.log("Coordinates bad");
+                res.status(400).send("Bad Coordinates");
+                return
+            }
+            if (!verifyFieldsForNull([req.body.deliveryMainInstruction, req.body.deliverySubInstruction, req.body.pickupMainInstruction, req.body.pickupSubInstruction, req.body.recieverName])){
+                console.log("Bad fields");
+                res.status(400).send("Check all parameters");
+                return
+            }
+            if (!verifyNumbers(req.body.recieverNumber) || !verifyNumbers(req.body.pickupNumber)){
+                console.log("Numbers error");
+                res.status(400).send("Phone no. must begin with a +1 and have 9 numbers after it");
+                return
+            }
             if (snapshot.child(`/customer`).val() == null) {
                 console.log("Cannot create a delivery. No customer returned by stripe");
                 res.status(400).end(); // NO CUSTOMER ERROR
@@ -721,7 +744,7 @@ exports.getBestJob = functions.https.onRequest((req, res) => {
                         if (allJobsValues != null) {
                             for (const jobId in allJobsValues) {//looping thru all the jobs in the Alljobs reference
                                 //check to see if the number of jobs found is greater than 6
-                                if (Object.keys(jobBundle).length === 6) {
+                                if (Object.keys(jobBundle).length === 3) {
                                     break;// Break out of the loop if there are 6 jobs already found
                                 }
                                 if (jobId != closestJobId) { //So skip if it sees the same job as the closest it already found
@@ -919,7 +942,39 @@ function userFacingMessage(error) {
 }
 
 
+//VERIFICATION FUNCTIONS
 
+function verifyCoordinates([coordinates]){
+
+    var i;
+    for (i = 0; i < coordinates.length -1; i++){
+        if ((coordinates[i] > 180) || (coordinates[i] < -180)){
+            return false
+        }
+    }
+    return true
+}
+
+function verifyFieldsForNull([fields]){
+    var field;
+    for(field in fields){
+        if (field == null){
+            return false
+        }
+    }
+    return true
+}
+
+function verifyNumbers(number){
+    if (!number.startsWith("+1")){
+        return false
+    }
+    if (number.length != 12){
+        console.log(number.length);
+        return false
+    }
+    return true
+}
 
 
 //API STARTS HERE
