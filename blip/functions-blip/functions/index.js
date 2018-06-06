@@ -40,6 +40,19 @@ exports.sendSms = functions.https.onRequest((req, res) => {
 	});
 });
 
+exports.jobCountDown = functions.https.onRequest((req, res) =>{
+    var maxTime = req.body.maxTime
+    var startTime = setInterval(function(){
+        if (maxTime != 0){
+            maxTime = maxTime - 1;//Decrese timer
+        }else{
+            //Timer has reached 0
+            //Do extra stuff here before clearinterval
+            clearInterval(startTime);
+        }
+    }, 1000);
+});
+
 exports.ephemeral_keys = functions.https.onRequest((req, res) => {
     const stripe_version = req.body.api_version;
     console.log(req);
