@@ -10,6 +10,7 @@ import Pulsator
 import PopupDialog
 import NotificationBannerSwift
 import Material
+import AVFoundation
 
 class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     
@@ -21,6 +22,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     @IBOutlet weak var countDownView: SRCountdownTimer!
     @IBOutlet weak var acceptJob: RaisedButton!
     
+    var player: AVAudioPlayer?
     var fromIndex = 0
     var toIndex = 1
     var job: Job!
@@ -30,7 +32,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     var waypoints: [BlipWaypoint]!
     var timer = Timer()
     var mglSource: MGLShapeSource!
-    
+    var unfinishedJob: Bool!
     var currentType: String!
     var currentSubInstruction: String!
     var currentMainInstruction: String!
@@ -51,7 +53,9 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
                 self.preparePopupForErrors()
             }
         }
-        setupTimer()
+        if !unfinishedJob{
+            setupTimer()
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -61,7 +65,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     
     override func viewDidLayoutSubviews() {
         prepareCenterView()
-        prepareMap()
+        prepareMapViews()
     }
     
     override func didReceiveMemoryWarning() {
@@ -81,6 +85,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     
     fileprivate func setupTimer(){
         timer = Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(handleTimer), userInfo: nil, repeats: false)
+        countDownView.start(beginingValue: 30)
     }
     
     @objc fileprivate func handleTimer(){
@@ -90,10 +95,12 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     }
     
     func preparePopupForErrors(){
-        let popup = PopupDialog(title: "Error", message: "An error occured when parsing job data")
+        let popup = PopupDialog(title: "Error", message: "An error occured when parsing job data", gestureDismissal: false)
         let okButton = PopupDialogButton(title: "Continue") {
             popup.dismiss()
             self.navigationController?.popToRootViewController(animated: true)
+            self.service.putBackJobs()
+            self.timer.invalidate()
         }
         popup.addButton(okButton)
     }
@@ -136,8 +143,6 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     }
     
     func prepareMap(){
-        map.delegate = self
-        map.makeCircular()
         for delivery in job.deliveries{
             let annotation = MGLPointAnnotation()
             annotation.coordinate = delivery.origin
@@ -146,12 +151,20 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
         if let annotations = map.annotations{
             if annotations.count == 1{
                 self.map.centerCoordinate = annotations.first!.coordinate
-                self.map.setZoomLevel(10, animated: true)
+                let camera = MGLMapCamera(lookingAtCenter: map.centerCoordinate, fromDistance: 4500, pitch: 15, heading: 0)
+                
+                // Animate the camera movement over 5 seconds.
+                map.setCamera(camera, withDuration: 3, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn))
             }
             else{
                 map.showAnnotations(annotations, animated: true)
             }
         }
+    }
+    
+    func prepareMapViews(){
+        map.delegate = self
+        map.makeCircular()
     }
     
     func prepareCenterView(){
@@ -165,13 +178,21 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
         pulseAnimationView.layer.addSublayer(pulsator)
         countDownView.makeCircular()
         countDownView.clipsToBounds = true
-        countDownView.start(beginingValue: 30)
     }
     
     @IBAction func acceptJobPressed(_ sender: Any) {
         timer.invalidate()
-        self.service.setIsTakenOnGivenJobsAndStore(waypointList: self.waypoints)
-        self.performSegue(withIdentifier: "beginJob", sender: self)
+        service.checkGivenJjobReference { (progress) in
+            if progress{
+                self.service.setIsTakenOnGivenJobsAndStore(waypointList: self.waypoints)
+                self.countDownView.start(beginingValue: 30)
+                self.performSegue(withIdentifier: "beginJob", sender: self)
+            }
+            else{
+                self.preparePopupForErrors()
+            }
+        }
+        
     }
 }
 
@@ -184,6 +205,10 @@ extension FoundJobVC: MGLMapViewDelegate{
             return MGLAnnotationImage(image: delivery.resizeImage(targetSize: CGSize(size: 40)), reuseIdentifier: "delivery")
         }
         return nil
+    }
+    
+    func mapViewDidFinishLoadingMap(_ mapView: MGLMapView) {
+        prepareMap()
     }
 }
 
@@ -290,6 +315,34 @@ extension FoundJobVC{
         jobDistance.text = "\(distanceInKm) km"
         let earningsText = String(format: "%.2f", arguments: [job.earnings])
         jobEarnings.text = "$ \(earningsText)"
+    }
+}
+
+extension FoundJobVC{
+    
+    func playNotificationSound() {
+        guard let url = Bundle.main.url(forResource: "notification", withExtension: "mp3") else { return }
+        
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            try AVAudioSession.sharedInstance().setActive(true)
+            
+            
+            
+            /* The following line is required for the player to work on iOS 11. Change the file type accordingly*/
+            player = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.mp3.rawValue)
+            
+            /* iOS 10 and earlier require the following line:
+             player = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileTypeMPEGLayer3) */
+            
+            guard let player = player else { return }
+            
+            player.play()
+            player.numberOfLoops = -1
+            
+        } catch let error {
+            print(error.localizedDescription)
+        }
     }
 }
 
