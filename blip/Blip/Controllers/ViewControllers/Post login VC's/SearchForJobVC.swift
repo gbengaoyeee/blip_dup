@@ -194,11 +194,12 @@ class SearchForJobVC: UIViewController {
     }
     
     @IBAction func postTestJob(_ sender: Any) {
-        service.getCurrentUserInfo { (user) in
-            let deliveryLocation = self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 300, max: 500)
-            let pickupLocation = self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 300, max: 500)
-            MyAPIClient.sharedClient.makeDeliveryRequest(storeID: "-LDCTqOOk7e1GNlpQcGR", deliveryLat: deliveryLocation.latitude, deliveryLong: deliveryLocation.longitude, deliveryMainInstruction: "Deliver to Srikanth Srinivas", deliverySubInstruction: "Go to main entrace, and buzz code 2003", originLat: pickupLocation.latitude, originLong: pickupLocation.longitude, pickupMainInstruction: "Pickup from xyz", pickupSubInstruction: "Go to front entrance of xyz, order number 110021 is waiting for you", recieverName: "Srikanth Srinivas", recieverNumber: "6478229867", pickupNumber: "6479839837")
-        }
+        MyAPIClient.sharedClient.sendSms(phoneNumber: "+16475514681", message: "Whats up from twilio")
+//        service.getCurrentUserInfo { (user) in
+//            let deliveryLocation = self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 300, max: 500)
+//            let pickupLocation = self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 300, max: 500)
+//            MyAPIClient.sharedClient.makeDeliveryRequest(storeID: "-LDCTqOOk7e1GNlpQcGR", deliveryLat: deliveryLocation.latitude, deliveryLong: deliveryLocation.longitude, deliveryMainInstruction: "Deliver to Srikanth Srinivas", deliverySubInstruction: "Go to main entrace, and buzz code 2003", originLat: pickupLocation.latitude, originLong: pickupLocation.longitude, pickupMainInstruction: "Pickup from xyz", pickupSubInstruction: "Go to front entrance of xyz, order number 110021 is waiting for you", recieverName: "Srikanth Srinivas", recieverNumber: "6478229867", pickupNumber: "6479839837")
+//        }
     }
     
     @IBAction func searchForJob(_ sender: Any) {

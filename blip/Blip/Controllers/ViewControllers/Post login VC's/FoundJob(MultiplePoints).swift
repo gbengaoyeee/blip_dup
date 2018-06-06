@@ -89,7 +89,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     }
     
     @objc fileprivate func handleTimer(){
-        service.putBackJobs()
+//        service.putBackJobs()
         timer.invalidate()
         self.navigationController?.popViewController(animated: true)
     }
