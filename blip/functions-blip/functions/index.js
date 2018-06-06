@@ -14,27 +14,30 @@ const geo = require('geolib');
 const stripe = require('stripe')("sk_test_4I0ubK7NduuV6dhJouhEAqtu"),
     currency = "CAD";
 const cors = require('cors')({ origin: true });
-const Nexmo = require('nexmo');
-const nexmo = new Nexmo({
-    apiKey: '95edf8df',
-    apiSecret: 'x1JhAApGI5OXgVAZ'
-},{debug: true});
+var accountSid = 'AC18aeb2de01f508ef1b69f628882dba00'; // Your Account SID from www.twilio.com/console
+var authToken = '15be9e2249e74a6029b975c679fcfbb0';   // Your Auth Token from www.twilio.com/console
+var twilio = require('twilio');
+var client = new twilio(accountSid, authToken);
 
 exports.sendSms = functions.https.onRequest((req, res) => {
     const phoneNumber = req.body.phoneNumber
     const message = req.body.message
 
-    nexmo.message.sendSms(
-        '12046615913', phoneNumber, message, {type: 'unicode'},
-        (error, responseData) => {
-            if(error){
-                console.log('Error sending sms',error);
-            } else{
-                console.dir(responseData);
-                res.status(200).send();
-            }
+    client.messages.create({
+		from: "+16479332974",
+		to: phoneNumber,
+		body: message
+	}, function(err, result) {
+        if (err){
+            console.log(err);
+            res.status(400).end();
         }
-    )
+        else{
+            console.log('Created message using callback');
+            console.log(result);
+            res.status(200).end();
+        }
+	});
 });
 
 exports.ephemeral_keys = functions.https.onRequest((req, res) => {
