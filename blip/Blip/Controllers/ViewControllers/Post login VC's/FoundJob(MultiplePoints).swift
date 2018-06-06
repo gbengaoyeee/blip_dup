@@ -84,12 +84,10 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     }
     
     fileprivate func setupTimer(){
-        timer = Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(handleTimer), userInfo: nil, repeats: false)
-        countDownView.start(beginingValue: 30)
+        countDownView.start(beginingValue: 28)
     }
     
     @objc fileprivate func handleTimer(){
-        service.putBackJobs()
         timer.invalidate()
         self.navigationController?.popViewController(animated: true)
     }

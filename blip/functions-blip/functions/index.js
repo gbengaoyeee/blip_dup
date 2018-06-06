@@ -66,11 +66,20 @@ function putBackJobs(emailHash) {
 //This function handles countdown of time
 function jobCountDown(emailHash) {
     var maxTime = 30
+    admin.database().ref(`/Couriers/${emailHash}/givenJob`).on("child_changed", function(snapshot){
+        var key = snapshot.hasChild("jobTaker");
+        console.log("Accepted job:", key);
+        if (key){
+            clearInterval(startTime);
+            console.log("Timer killed");
+            return
+        }
+    })
     var startTime = setInterval(function () {
         if (maxTime != 0) {
             console.log(maxTime, "sec");
             //stop Timer when accept pressed
-            //idk maybe might wanna put the oncreate here
+            
             maxTime = maxTime - 1;//Decrease timer
         } else {
             //Timer has reached 0
@@ -555,7 +564,6 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
     var storeID = req.body.storeID;
     admin.database().ref(`/stores/${storeID}`).once("value", function (snapshot) {
         if (snapshot.exists) {
-            console.log(storeID);
             var deliveryLat = req.body.deliveryLat,
                 deliveryLong = req.body.deliveryLong,
                 deliveryMainInstruction = req.body.deliveryMainInstruction,
@@ -581,8 +589,8 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
                 return
             }
             if (!verifyNumbers(req.body.recieverNumber) || !verifyNumbers(req.body.pickupNumber)){
-                console.log("Numbers must begin with a +1");
-                res.status(400).send("Phon no. must begin with a +1");
+                console.log("Numbers error");
+                res.status(400).send("Phone no. must begin with a +1 and have 9 numbers after it");
                 return
             }
             if (snapshot.child(`/customer`).val() == null) {
@@ -736,7 +744,7 @@ exports.getBestJob = functions.https.onRequest((req, res) => {
                         if (allJobsValues != null) {
                             for (const jobId in allJobsValues) {//looping thru all the jobs in the Alljobs reference
                                 //check to see if the number of jobs found is greater than 6
-                                if (Object.keys(jobBundle).length === 6) {
+                                if (Object.keys(jobBundle).length === 3) {
                                     break;// Break out of the loop if there are 6 jobs already found
                                 }
                                 if (jobId != closestJobId) { //So skip if it sees the same job as the closest it already found
@@ -938,8 +946,9 @@ function userFacingMessage(error) {
 
 function verifyCoordinates([coordinates]){
 
-    for (coordinate in coordinates){
-        if ((coordinate > 180) || (coordinate < -180)){
+    var i;
+    for (i = 0; i < coordinates.length -1; i++){
+        if ((coordinates[i] > 180) || (coordinates[i] < -180)){
             return false
         }
     }
@@ -947,6 +956,7 @@ function verifyCoordinates([coordinates]){
 }
 
 function verifyFieldsForNull([fields]){
+    var field;
     for(field in fields){
         if (field == null){
             return false
@@ -959,7 +969,8 @@ function verifyNumbers(number){
     if (!number.startsWith("+1")){
         return false
     }
-    if (number.length != 11){
+    if (number.length != 12){
+        console.log(number.length);
         return false
     }
     return true
