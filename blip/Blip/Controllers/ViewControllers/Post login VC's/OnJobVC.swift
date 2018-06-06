@@ -27,7 +27,7 @@ class OnJobVC: UIViewController {
     var type:String!
     let locationManager = CLLocationManager()
     var currentLocation:CLLocationCoordinate2D!
-    var distance = 10000
+    var distance = 50
     var distanceToEvent: Double!
     var gradient: CAGradientLayer!
     
@@ -256,8 +256,9 @@ extension OnJobVC: UITableViewDelegate, UITableViewDataSource, SwipeTableViewCel
                 self.completeJob(forCellAt: index)
             }
             doneAction.backgroundColor = #colorLiteral(red: 0, green: 0.7973585725, blue: 0, alpha: 1)
-            doneAction.title = "Complete"
-            doneAction.image = UIImage(icon: .googleMaterialDesign(.done), size: CGSize(size: 40), textColor: UIColor.white, backgroundColor: UIColor.clear)
+            doneAction.title = "Complete \(self.type!)"
+            doneAction.font = UIFont(name: "CenturyGothicBold", size: 18)
+            doneAction.image = UIImage(icon: .googleMaterialDesign(.checkCircle), size: CGSize(size: 40), textColor: UIColor.white, backgroundColor: UIColor.clear)
             return [doneAction]
         }
         else{
