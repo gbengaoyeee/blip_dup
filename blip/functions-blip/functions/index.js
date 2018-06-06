@@ -14,6 +14,7 @@ const geo = require('geolib');
 const stripe = require('stripe')("sk_test_4I0ubK7NduuV6dhJouhEAqtu"),
     currency = "CAD";
 const cors = require('cors')({ origin: true });
+
 var accountSid = 'AC18aeb2de01f508ef1b69f628882dba00'; // Your Account SID from www.twilio.com/console
 var authToken = '15be9e2249e74a6029b975c679fcfbb0';   // Your Auth Token from www.twilio.com/console
 var twilio = require('twilio');
@@ -22,7 +23,6 @@ var client = new twilio(accountSid, authToken);
 exports.sendSms = functions.https.onRequest((req, res) => {
     const phoneNumber = req.body.phoneNumber
     const message = req.body.message
-
     client.messages.create({
 		from: "+16479332974",
 		to: phoneNumber,
@@ -40,18 +40,50 @@ exports.sendSms = functions.https.onRequest((req, res) => {
 	});
 });
 
-exports.jobCountDown = functions.https.onRequest((req, res) =>{
-    var maxTime = req.body.maxTime
-    var startTime = setInterval(function(){
-        if (maxTime != 0){
-            maxTime = maxTime - 1;//Decrese timer
-        }else{
+//Need this extra helper or else there will be unhandled rejection error in firebase
+function putBackJobs(emailHash) {
+    return admin.database().ref(`Couriers/${emailHash}/givenJob/`).once('value')
+        .then(function (snapshot) {
+            const givenJobs = snapshot.val();
+            //this actually returns the job(s) back to all jobs
+            return admin.database().ref(`AllJobs`).update(givenJobs).then(function (fulfilled) {
+                console.log("Puts job(s) successfully.");
+                //this deletes the job from the user's alljobs reference
+                return admin.database().ref(`Couriers/${emailHash}/givenJob/`).remove()
+                    .then(function(removed){
+                        console.log("Removed from user's ref givenJobs");
+                    }, function(error){
+                        console.log("Error deleting job from givenjobs",error);
+                    });
+            }, function (err) {
+                console.log(err);
+            });
+        }, function (error) {
+            console.log(error);
+        });
+}
+
+//This function handles countdown of time
+function jobCountDown(emailHash) {
+    var maxTime = 30
+    var startTime = setInterval(function () {
+        if (maxTime != 0) {
+            console.log(maxTime, "sec");
+            //stop Timer when accept pressed
+            //idk maybe might wanna put the oncreate here
+            maxTime = maxTime - 1;//Decrease timer
+        } else {
             //Timer has reached 0
-            //Do extra stuff here before clearinterval
             clearInterval(startTime);
+            //Return job back into alljobs and remove from user's reference
+            putBackJobs(emailHash).then(function(updated){
+                console.log('UPDATED');
+            },function(err){
+                console.log("ERROR IS",err);
+            });
         }
     }, 1000);
-});
+}
 
 exports.ephemeral_keys = functions.https.onRequest((req, res) => {
     const stripe_version = req.body.api_version;
@@ -244,14 +276,14 @@ function checkPasswordMatch(password1, password2) {
 }
 ///Checks if firstName, lastName and photoURL is not empty(photoURL not necessary but why not)
 ///Returns false if empty else true
-function checkFirstLastPhotoAndPhone(firstName, lastName, photoURL, phoneNumber){
+function checkFirstLastPhotoAndPhone(firstName, lastName, photoURL, phoneNumber) {
     return (firstName != "" && lastName != "" && photoURL != "" && phoneNumber != "");
 }
 ///Adds the successfully created user to the database
 function addCourierToDatabase(uid, firstName, lastName, email, emailHash, photoURL, phoneNumber) {
     const dict = {
         "uid": uid, "firstName": firstName, "lastName": lastName, "photoURL": photoURL,
-        "email": email, "rating": 5.0, "currentDevice": "", "verified": false, "phoneNumber":phoneNumber
+        "email": email, "rating": 5.0, "currentDevice": "", "verified": false, "phoneNumber": phoneNumber
     };
     return new Promise(function (resolve, reject) {
         admin.database().ref('Couriers/' + emailHash).update(dict).then(() => {
@@ -284,11 +316,11 @@ exports.createCourier = functions.https.onRequest((req, res) => {
         console.log("Created user succesfully with uid:", user.uid);
         console.log("photo", user.photoURL);
         addCourierToDatabase(user.uid, firstName, lastName, email, emailHash, photoURL, phoneNumber).then(function (resolve) {
-            createCourierStripeAccount(email, emailHash, firstName, lastName).then(function(account){
+            createCourierStripeAccount(email, emailHash, firstName, lastName).then(function (account) {
                 console.log(account);
                 res.status(200).end();
-            }, function(error){
-                console.log("Error creating stripe after adding user to db",error);
+            }, function (error) {
+                console.log("Error creating stripe after adding user to db", error);
                 res.status(402).end();
             });
         }, function (error) {
@@ -392,7 +424,7 @@ exports.updateStripeAccount = functions.https.onRequest((req, res) => {
                 "postal_code": postal_code,
                 "state": state
             },
-            "dob":{
+            "dob": {
                 "day": dob_day,
                 "month": dob_month,
                 "year": dob_year
@@ -450,10 +482,10 @@ exports.createNewStripeAccount = functions.https.onRequest((req, res) => {
     const emailHash = crypto.createHash('md5').update(email).digest('hex');
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;
-    createCourierStripeAccount(email, emailHash, firstName, lastName).then(function(account){
+    createCourierStripeAccount(email, emailHash, firstName, lastName).then(function (account) {
         console.log(account);
         res.status(200).end();
-    }, function(error){
+    }, function (error) {
         console.log(error);
         res.status(400).end();
     });
@@ -616,17 +648,17 @@ exports.payOnDelivery = functions.database.ref('/CompletedJobs/{id}').onCreate((
         return false
     }
     console.log("Checking userRef", emailHash, amountAfterCut, chargeID);
-    return admin.database().ref(`Couriers/${emailHash}`).once("value").then(function(userSnapshot) {
+    return admin.database().ref(`Couriers/${emailHash}`).once("value").then(function (userSnapshot) {
         var accountID = userSnapshot.child("stripeAccount/id").val();
         stripe.transfers.create({
             amount: amountAfterCut,
             currency: "cad",
             source_transaction: chargeID,
             destination: accountID
-        }, function(err, transfer) {
-            if (err){
+        }, function (err, transfer) {
+            if (err) {
                 console.log(err);
-            }else{
+            } else {
                 console.log("Transfer made", transfer);
             }
         })
@@ -671,7 +703,7 @@ exports.getBestJob = functions.https.onRequest((req, res) => {
         currentDist = 0,
         jobKey;
 
-    checkUserVerifiedOrFlagged(emailHash, function(error, checked) {
+    checkUserVerifiedOrFlagged(emailHash, function (error, checked) {
         if (error) {
             console.log(error.message, req.body);
             if (error.message === "User needs to verify their background check") {
@@ -683,7 +715,7 @@ exports.getBestJob = functions.https.onRequest((req, res) => {
             }
 
         } else {
-            getClosestJobIdAndDistance(lat, long, function(err, data) {
+            getClosestJobIdAndDistance(lat, long, function (err, data) {
                 if (err) {
                     console.log("Found an Error");
                     res.status(404).send(err);
@@ -699,12 +731,12 @@ exports.getBestJob = functions.https.onRequest((req, res) => {
                     maxDist = maxDist - totalDistance;
 
                     var allJobsref = admin.database().ref('AllJobs');
-                    allJobsref.once('value', function(snapshot) {
+                    allJobsref.once('value', function (snapshot) {
                         var allJobsValues = snapshot.val();
                         if (allJobsValues != null) {
                             for (const jobId in allJobsValues) {//looping thru all the jobs in the Alljobs reference
                                 //check to see if the number of jobs found is greater than 6
-                                if (Object.keys(jobBundle).length === 6){
+                                if (Object.keys(jobBundle).length === 6) {
                                     break;// Break out of the loop if there are 6 jobs already found
                                 }
                                 if (jobId != closestJobId) { //So skip if it sees the same job as the closest it already found
@@ -716,23 +748,23 @@ exports.getBestJob = functions.https.onRequest((req, res) => {
                                         latitude: pickupLat,
                                         longitude: pickupLong
                                     }, {
-                                        latitude: lat,
-                                        longitude: long
-                                    });
+                                            latitude: lat,
+                                            longitude: long
+                                        });
                                     var y = geo.getDistance({
                                         latitude: pickupLat,
                                         longitude: pickupLong
                                     }, {
-                                        latitude: closestJobIdDict[closestJobId].originLat,
-                                        longitude: closestJobIdDict[closestJobId].originLong
-                                    });
+                                            latitude: closestJobIdDict[closestJobId].originLat,
+                                            longitude: closestJobIdDict[closestJobId].originLong
+                                        });
                                     var m = geo.getDistance({
                                         latitude: pickupLat,
                                         longitude: pickupLong
                                     }, {
-                                        latitude: deliveryLat,
-                                        longitude: deliveryLong
-                                    });
+                                            latitude: deliveryLat,
+                                            longitude: deliveryLong
+                                        });
                                     var n = Math.min(...[x, y]);
 
                                     if (maxDist >= (m + n)) {
@@ -758,12 +790,14 @@ exports.getBestJob = functions.https.onRequest((req, res) => {
 
                             admin.database().ref('Couriers/' + emailHash + '/givenJob').update(jobBundle).then(() => {
                                 console.log('Update succeeded!');
+                                jobCountDown(emailHash);
                                 res.status(200).send("OK It Gave Back Jobs");
                             });
                         } else {
                             //No more jobs in the AllJobs Reference, so put the closestJob found in helper in user's reference
                             admin.database().ref('Couriers/' + emailHash + '/givenJob').update(jobBundle).then(() => {
                                 console.log('Update succeeded!');
+                                jobCountDown(emailHash);
                                 res.status(200).send("OK It Gave Back Jobs");
                             });
                         }
