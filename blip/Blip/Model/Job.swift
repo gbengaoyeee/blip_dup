@@ -15,7 +15,8 @@ import Kingfisher
 
 class Job{
     
-    var deliveries = [Delivery]()
+    var deliveries = [Delivery?]()
+    var pickups = [Delivery?]()
     var ref: DatabaseReference!
     var locList = [CLLocationCoordinate2D]()
     var unfinishedLocList = [CLLocationCoordinate2D]()
@@ -52,6 +53,7 @@ class Job{
                         self.locList.append(delivery.deliveryLocation)
                     }
                     self.deliveries.append(delivery)
+                    self.pickups.append(delivery)
                 }
             }
             for location in unfinishedLocList{
@@ -83,8 +85,8 @@ class Job{
         
         var unfinishedDeliveries = [Delivery]()
         for delivery in self.deliveries{
-            if delivery.state != nil{
-                unfinishedDeliveries.append(delivery)
+            if delivery?.state != nil{
+                unfinishedDeliveries.append(delivery!)
             }
         }
         return unfinishedDeliveries

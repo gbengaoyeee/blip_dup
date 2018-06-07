@@ -96,8 +96,8 @@ class SearchForJobVC: UIViewController {
     
     func prepareMenuButton(){
         menu.makeCircular()
-        menu.ApplyOuterShadowToButton()
         menu.setIcon(icon: .googleMaterialDesign(.accountBox), iconSize: 30, color: UIColor.white, backgroundColor: #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1), forState: .normal)
+        menu.ApplyOuterShadowToButton()
     }
     
     func checkLocationServices() -> Bool{
@@ -185,8 +185,8 @@ class SearchForJobVC: UIViewController {
     
     @IBAction func postTestJob(_ sender: Any) {
         service.getCurrentUserInfo { (user) in
-            let deliveryLocation = self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 300, max: 500)
-            let pickupLocation = self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 300, max: 500)
+            let deliveryLocation = self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 2000)
+            let pickupLocation = self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 500, max: 1200)
             MyAPIClient.sharedClient.makeDeliveryRequest(storeID: "-LDCTqOOk7e1GNlpQcGR", deliveryLat: deliveryLocation.latitude, deliveryLong: deliveryLocation.longitude, deliveryMainInstruction: "Deliver to Srikanth Srinivas", deliverySubInstruction: "Go to main entrace, and buzz code 2003", originLat: pickupLocation.latitude, originLong: pickupLocation.longitude, pickupMainInstruction: "Pickup from xyz", pickupSubInstruction: "Go to front entrance of xyz, order number 110021 is waiting for you", recieverName: "Srikanth Srinivas", recieverNumber: "+16478229867", pickupNumber: "+16479839837")
         }
     }

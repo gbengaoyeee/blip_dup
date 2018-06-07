@@ -96,9 +96,12 @@ class ServiceCalls{
                 print("CHILD ADDED GOT TRIGGERD")
                 if let jobID = snap.value as? [String: AnyObject]{
                     let j = Job(snapshot: snap, type: "delivery")
+                    for loc in (j?.locList)!{
+                        print("ORIGINAL",loc.latitude)
+                    }
                     j?.locList.insert(myLocation, at: 0)
+                    self.userRef.removeObserver(withHandle: self.userRefHandle)
                     completion(nil, j)
-                    self.userRef.removeAllObservers()
                 }
             }
         })
@@ -204,9 +207,9 @@ class ServiceCalls{
         }
     }
     
-    func checkGivenJjobReference(completion: @escaping(Bool) -> ()){
-        userRef.child(emailHash).child("givenJob").observeSingleEvent(of: .value) { (snapshot) in
-            if let values = snapshot.value{
+    func checkGivenJobReference(completion: @escaping(Bool) -> ()){
+        userRef.child(emailHash).observeSingleEvent(of: .value) { (snapshot) in
+            if snapshot.hasChild("givenJob"){
                 completion(true)
             }
             else{
@@ -219,9 +222,9 @@ class ServiceCalls{
         let ref = Database.database().reference(withPath: "Couriers/\(self.emailHash!)/givenJob")
         let storesRef = Database.database().reference(withPath: "stores")
         for way in waypointList{
-            print("CHILDADDED WILL GET TRIGGERED")
-            ref.child(way.delivery.identifier).updateChildValues(["isTaken":true, "jobTaker":self.emailHash!])
-            storesRef.child("\(way.delivery.store.storeID)/deliveries/\(way.delivery.identifier!)").updateChildValues(["isTaken":true, "jobTaker":self.emailHash!])
+            let time = Int(NSDate().timeIntervalSince1970.rounded())
+            ref.child(way.delivery.identifier).updateChildValues(["isTaken":true, "jobTaker":self.emailHash!, "timeTaken": time])
+            storesRef.child("\(way.delivery.store.storeID)/deliveries/\(way.delivery.identifier!)").updateChildValues(["isTaken":true, "jobTaker":self.emailHash!, "timeTaken": time])
         }
     }
     

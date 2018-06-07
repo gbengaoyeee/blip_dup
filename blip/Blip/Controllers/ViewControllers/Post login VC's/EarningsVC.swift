@@ -50,7 +50,9 @@ class EarningsVC: UIViewController {
     }
     
     func prepareLabels(){
-        earningsLabel.text = "$ \(job.earnings)"
+        let earnings = Double(job.earnings)
+        let text = String(format: "%.2f", arguments: [earnings])
+        earningsLabel.text = "$ \(text)"
         depositDateLabel.text = "7 Days"
     }
 

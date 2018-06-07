@@ -63,7 +63,6 @@ class OnJobVC: UIViewController {
     }
     
     func prepareWaypointData(){
-        waypoints.remove(at: 0)
         self.delivery = waypoints[legIndex].delivery
         self.type = waypoints[legIndex].name!
     }

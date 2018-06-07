@@ -8,21 +8,21 @@ PODS:
   - Cosmos (16.0.0)
   - DynamicBlurView (2.0.2)
   - Eureka (4.1.1)
-  - Firebase/Auth (5.1.0):
+  - Firebase/Auth (5.2.0):
     - Firebase/CoreOnly
-    - FirebaseAuth (= 5.0.0)
-  - Firebase/Core (5.1.0):
+    - FirebaseAuth (= 5.0.1)
+  - Firebase/Core (5.2.0):
     - Firebase/CoreOnly
     - FirebaseAnalytics (= 5.0.1)
-  - Firebase/CoreOnly (5.1.0):
-    - FirebaseCore (= 5.0.2)
-  - Firebase/Database (5.1.0):
+  - Firebase/CoreOnly (5.2.0):
+    - FirebaseCore (= 5.0.3)
+  - Firebase/Database (5.2.0):
     - Firebase/CoreOnly
     - FirebaseDatabase (= 5.0.1)
-  - Firebase/Messaging (5.1.0):
+  - Firebase/Messaging (5.2.0):
     - Firebase/CoreOnly
-    - FirebaseMessaging (= 3.0.1)
-  - Firebase/Storage (5.1.0):
+    - FirebaseMessaging (= 3.0.2)
+  - Firebase/Storage (5.2.0):
     - Firebase/CoreOnly
     - FirebaseStorage (= 3.0.0)
   - FirebaseAnalytics (5.0.1):
@@ -30,17 +30,17 @@ PODS:
     - FirebaseInstanceID (~> 3.0)
     - GoogleToolboxForMac/NSData+zlib (~> 2.1)
     - nanopb (~> 0.3)
-  - FirebaseAuth (5.0.0):
+  - FirebaseAuth (5.0.1):
     - FirebaseCore (~> 5.0)
     - GTMSessionFetcher/Core (~> 1.1)
-  - FirebaseCore (5.0.2):
+  - FirebaseCore (5.0.3):
     - GoogleToolboxForMac/NSData+zlib (~> 2.1)
   - FirebaseDatabase (5.0.1):
     - FirebaseCore (~> 5.0)
     - leveldb-library (~> 1.18)
-  - FirebaseInstanceID (3.0.0):
+  - FirebaseInstanceID (3.1.0):
     - FirebaseCore (~> 5.0)
-  - FirebaseMessaging (3.0.1):
+  - FirebaseMessaging (3.0.2):
     - FirebaseCore (~> 5.0)
     - FirebaseInstanceID (~> 3.0)
     - GoogleToolboxForMac/Logger (~> 2.1)
@@ -60,20 +60,20 @@ PODS:
   - leveldb-library (1.20)
   - lottie-ios (2.5.0)
   - Mapbox-iOS-SDK (4.0.2)
-  - MapboxCoreNavigation (0.17.0):
-    - MapboxDirections.swift (~> 0.20.0)
+  - MapboxCoreNavigation (0.18.0):
+    - MapboxDirections.swift (~> 0.21.0)
     - MapboxMobileEvents (~> 0.4)
     - Turf (~> 0.1)
-  - MapboxDirections.swift (0.20.0):
+  - MapboxDirections.swift (0.21.0):
     - Polyline (~> 4.2)
   - MapboxMobileEvents (0.4.0)
-  - MapboxNavigation (0.17.0):
+  - MapboxNavigation (0.18.0):
     - Mapbox-iOS-SDK (~> 4.0)
-    - MapboxCoreNavigation (= 0.17.0)
+    - MapboxCoreNavigation (= 0.18.0)
     - MapboxSpeech (~> 0.0.1)
     - Solar (~> 2.1)
   - MapboxSpeech (0.0.1)
-  - MarqueeLabel/Swift (3.1.4)
+  - MarqueeLabel/Swift (3.1.5)
   - Material (2.15.0):
     - Material/Core (= 2.15.0)
   - Material/Core (2.15.0):
@@ -93,7 +93,7 @@ PODS:
   - Polyline (4.2.0)
   - PopupDialog (0.7.1):
     - DynamicBlurView (~> 2.0)
-  - Protobuf (3.5.0)
+  - Protobuf (3.6.0)
   - Pulley (2.4.2)
   - Pulsator (0.5.1)
   - RevealingSplashView (0.5.0)
@@ -102,7 +102,7 @@ PODS:
   - SRCountdownTimer (1.1)
   - Stripe (13.0.2)
   - SwiftIcons (2.0.1)
-  - SwipeCellKit (2.4.1)
+  - SwipeCellKit (2.4.2)
   - Turf (0.1.1)
   - UIImageViewModeScaleAspect (1.5)
 
@@ -144,13 +144,13 @@ SPEC CHECKSUMS:
   Cosmos: 7bcee0fa858a9355a214f2a181be5dffcee42c81
   DynamicBlurView: aa6db4defc6e537eb86fc5e58dd3991666178399
   Eureka: b88fb930e42c79f8c03c373d0fcdc28c1d6c50ed
-  Firebase: e08fb0795f35707aeb1d8a715c731c45bdf6fd56
+  Firebase: 25ed0412036d7d008568d1fb4d2e9d81ea8a0a2c
   FirebaseAnalytics: b3628aea54c50464c32c393fb2ea032566e7ecc2
-  FirebaseAuth: acbeef02fe7c3a26624e309849f3fe30c84115af
-  FirebaseCore: b81044df1044c0857a0737c6324678b72d4f7f00
+  FirebaseAuth: 463b8ce33bd5d05f706dcd4615499e3212b4132b
+  FirebaseCore: a3c87242451633fff8490183898075ce77d168d2
   FirebaseDatabase: 482bad9c2abd422bb2321194fb8c937e67426a89
-  FirebaseInstanceID: 83e0040351565df711a5db3d8ebe5ea21aca998a
-  FirebaseMessaging: ec6fde5a77824c6da0218f9ca220feb251aa17d5
+  FirebaseInstanceID: 05d779cbb97bd5bd5c51a38a903fc9cfe1b2454a
+  FirebaseMessaging: 6894b8fe0a0cf26c3b13dad729f1131654ae0bdb
   FirebaseStorage: 7ca4bb7b58a25fa647b04f524033fc7cb7eb272b
   Floaty: 82854e1a5ef4fa208281ebd4da2f3d1e51ba67a6
   GoogleToolboxForMac: 91c824d21e85b31c2aae9bb011c5027c9b4e738f
@@ -160,12 +160,12 @@ SPEC CHECKSUMS:
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   lottie-ios: d699fdee68d7b63e721d949388b015fef1aaa4ac
   Mapbox-iOS-SDK: 02b15b70167d54b45fdc059737672a3a68cd780f
-  MapboxCoreNavigation: 729666a164ceacb789b63047406a5c95ca965bbd
-  MapboxDirections.swift: 9a46ca0f0608c76393f392ae793459cc30aa846f
+  MapboxCoreNavigation: 1b953ad76fc7e7d5fd33073f42674269b53682e8
+  MapboxDirections.swift: 14d32d1601834e15c930cbab4201e57b0f7a2218
   MapboxMobileEvents: e71cf788a95fa0c01ad6ce17fd5efd13140af5ff
-  MapboxNavigation: afe18c9de475aefc1387100daa3a46cc8f95a5de
+  MapboxNavigation: 1d15b9a2e69df0278718d9f71a6a0215f4c6839b
   MapboxSpeech: 6cc9b3d53adc2988af3ebc704dd17907b84a3f9f
-  MarqueeLabel: bf768455fe88d427f71476ebb23f9092b660f40b
+  MarqueeLabel: e8403a0d6eff498ab8580f58a0088c1903d90120
   Material: 00e32bb5e61b3f749044897b2d93acd8bf33faa4
   Motion: 9f74d115d7f72bb5380a8e3cde2f8a1fc898ac36
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
@@ -173,7 +173,7 @@ SPEC CHECKSUMS:
   Pastel: 7fa5e26123b3dbe11f7ed255654bf37100b199a5
   Polyline: 3d69f75bb136357e27291d439d0436c6ebda57a4
   PopupDialog: 39598b7d41719f5c025b4b70e62728bae7734fef
-  Protobuf: 8a9838fba8dae3389230e1b7f8c104aa32389c03
+  Protobuf: 0fc0ad8bec688b2a3017a139953e01374fedbd5f
   Pulley: d3d144a0323b65b8aa1dd601d515d08481103034
   Pulsator: f465ca37212d826523fe8c79b07c1a4c1a941f5e
   RevealingSplashView: 0794eecad3a8983ac11a1fe474e9a9b51b926780
@@ -182,10 +182,10 @@ SPEC CHECKSUMS:
   SRCountdownTimer: 9c92e444b5403c92f01dd6610299b8c634bc8562
   Stripe: f52f60e948fbc111c26b83227f7d802adfc64c5e
   SwiftIcons: e475a56ae2c2da40672dbf16061ca5dd5cee7dbb
-  SwipeCellKit: 189dab685734056ce3c803842759b73b8d6aa65f
+  SwipeCellKit: a01c587d6786f514a44eed54261e24eaa9fb4de6
   Turf: 4ace207379c8d58a8e45842755de821dac3fae72
   UIImageViewModeScaleAspect: 11a790a0b9d248a13dc63e3a78991f1463b6d84e
 
-PODFILE CHECKSUM: 6d1f7c7056e9048b9c8513f6122cd6a77d53b80d
+PODFILE CHECKSUM: 426be69ad9472815675b1f04ce20a8308db35a78
 
 COCOAPODS: 1.4.0

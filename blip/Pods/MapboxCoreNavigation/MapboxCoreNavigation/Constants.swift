@@ -82,11 +82,6 @@ public var RouteControllerProactiveReroutingInterval: TimeInterval = 120
 
 let FasterRouteFoundEvent = "navigation.fasterRoute"
 
-/**
- The number of seconds remaining on the final step of a leg before the user is considered "arrived".
- */
-public var RouteControllerDurationRemainingWaypointArrival: TimeInterval = 3
-
 //MARK: - Route Snapping (CLLocation)
 /**
  Accepted deviation excluding horizontal accuracy before the user is considered to be off route.
@@ -122,3 +117,8 @@ public var RouteControllerMinimumDistanceToTunnelEntrance: CLLocationDistance = 
  Minimum speed (mps) as the user enters the minimum radius of the tunnel entrance on the route.
  */
 public var RouteControllerMinimumSpeedAtTunnelEntranceRadius: CLLocationSpeed = 5
+
+/**
+ When calculating the user's snapped location, this constant will be used for deciding upon which step coordinates to include in the calculation.
+ */
+public var RouteControllerMaximumSpeedForUsingCurrentStep: CLLocationSpeed = 1

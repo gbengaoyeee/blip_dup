@@ -29,8 +29,7 @@ class RouteMapViewController: UIViewController {
         let controller = FeedbackViewController()
         
         controller.sections = [
-            [.turnNotAllowed, .closure, .reportTraffic],
-            [.confusingInstructions, .generalMapError, .badRoute]
+            [.turnNotAllowed, .closure, .reportTraffic, .confusingInstructions, .generalMapError, .badRoute]
         ]
         
         controller.modalPresentationStyle = .custom
@@ -42,7 +41,6 @@ class RouteMapViewController: UIViewController {
         static let overview: Selector = #selector(RouteMapViewController.toggleOverview(_:))
         static let mute: Selector = #selector(RouteMapViewController.toggleMute(_:))
         static let feedback: Selector = #selector(RouteMapViewController.feedback(_:))
-        static let rerouteFeedback: Selector = #selector(RouteMapViewController.rerouteFeedback(_:))
         static let recenter: Selector = #selector(RouteMapViewController.recenter(_:))
     }
 
@@ -62,6 +60,7 @@ class RouteMapViewController: UIViewController {
         }
         return parent.pendingCamera
     }
+    
     var tiltedCamera: MGLMapCamera {
         get {
             let camera = mapView.camera
@@ -138,7 +137,6 @@ class RouteMapViewController: UIViewController {
         navigationView.overviewButton.addTarget(self, action: Actions.overview, for: .touchUpInside)
         navigationView.muteButton.addTarget(self, action: Actions.mute, for: .touchUpInside)
         navigationView.reportButton.addTarget(self, action: Actions.feedback, for: .touchUpInside)
-        navigationView.rerouteReportButton.addTarget(self, action: Actions.rerouteFeedback, for: .touchUpInside)
         navigationView.resumeButton.addTarget(self, action: Actions.recenter, for: .touchUpInside)
         resumeNotifications()
         notifyUserAboutLowVolume()
@@ -245,12 +243,6 @@ class RouteMapViewController: UIViewController {
         NavigationSettings.shared.voiceMuted = muted
     }
     
-    @objc func rerouteFeedback(_ sender: Any) {
-        showFeedback(source: .reroute)
-        navigationView.rerouteReportButton.slideUp(constraint: navigationView.rerouteFeedbackTopConstraint)
-        delegate?.mapViewControllerDidOpenFeedback(self)
-    }
-    
     @objc func feedback(_ sender: Any) {
         showFeedback()
         delegate?.mapViewControllerDidOpenFeedback(self)
@@ -290,7 +282,8 @@ class RouteMapViewController: UIViewController {
         
         mapView.addArrow(route: routeController.routeProgress.route, legIndex: routeController.routeProgress.legIndex, stepIndex: routeController.routeProgress.currentLegProgress.stepIndex + 1)
         mapView.showRoutes([routeController.routeProgress.route], legIndex: routeController.routeProgress.legIndex)
-        
+        mapView.showWaypoints(routeController.routeProgress.route)
+
         if annotatesSpokenInstructions {
             mapView.showVoiceInstructionsOnMap(route: routeController.routeProgress.route)
         }
@@ -341,12 +334,6 @@ class RouteMapViewController: UIViewController {
         
         if !(routeController.locationManager is SimulatedLocationManager) {
             statusView.hide(delay: 2, animated: true)
-            
-            if !navigationView.reportButton.isHidden {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
-                    self.navigationView.rerouteReportButton.slideDown(constraint: self.navigationView.rerouteFeedbackTopConstraint, interval: 5)
-                })
-            }
         }
         
         if notification.userInfo![RouteControllerNotificationUserInfoKey.isProactiveKey] as! Bool {
@@ -490,7 +477,7 @@ func defaultFeedbackHandlers(source: FeedbackSource = .user) -> (send: FeedbackV
         endOfRoute.removeFromParentViewController()
     }
     
-    func showEndOfRoute(duration: TimeInterval = 0.3, completion: ((Bool) -> Void)? = nil) {
+    func showEndOfRoute(duration: TimeInterval = 1.0, completion: ((Bool) -> Void)? = nil) {
         embedEndOfRoute()
         endOfRouteViewController.destination = destination
         navigationView.endOfRouteView?.isHidden = false
@@ -512,10 +499,22 @@ func defaultFeedbackHandlers(source: FeedbackSource = .user) -> (send: FeedbackV
         let noAnimation = { animate(); completion?(true) }
 
         guard duration > 0.0 else { return noAnimation() }
+        
+        navigationView.mapView.tracksUserCourse = false
         UIView.animate(withDuration: duration, delay: 0.0, options: [.curveLinear], animations: animate, completion: completion)
         
-        // Prevent the user puck from floating around.
-        mapView.updateCourseTracking(location: routeController.location, animated: false)
+        guard let height = navigationView.endOfRouteHeightConstraint?.constant else { return }
+        let insets = UIEdgeInsets(top: navigationView.instructionsBannerView.bounds.height, left: 20, bottom: height + 20, right: 20)
+        
+        if let coordinates = routeController.routeProgress.route.coordinates, let userLocation = routeController.locationManager.location?.coordinate {
+            let slicedLine = Polyline(coordinates).sliced(from: userLocation).coordinates
+            let line = MGLPolyline(coordinates: slicedLine, count: UInt(slicedLine.count))
+            
+            let camera = navigationView.mapView.cameraThatFitsShape(line, direction: navigationView.mapView.camera.heading, edgePadding: insets)
+            camera.pitch = 0
+            camera.altitude = navigationView.mapView.camera.altitude
+            navigationView.mapView.setCamera(camera, animated: true)
+        }
     }
     
     func hideEndOfRoute(duration: TimeInterval = 0.3, completion: ((Bool) -> Void)? = nil) {
@@ -671,8 +670,8 @@ extension RouteMapViewController: NavigationViewDelegate {
         return delegate?.navigationMapView?(mapView, shapeFor: waypoints, legIndex: legIndex)
     }
 
-    func navigationMapView(_ mapView: NavigationMapView, shapeFor route: Route) -> MGLShape? {
-        return delegate?.navigationMapView?(mapView, shapeFor: route)
+    func navigationMapView(_ mapView: NavigationMapView, shapeFor routes: [Route]) -> MGLShape? {
+        return delegate?.navigationMapView?(mapView, shapeFor: routes)
     }
     
     func navigationMapView(_ mapView: NavigationMapView, didSelect route: Route) {
@@ -915,6 +914,7 @@ extension RouteMapViewController {
         NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
     }
     @objc fileprivate func keyboardWillShow(notification: NSNotification) {
+        guard navigationView.endOfRouteView != nil else { return }
         guard let userInfo = notification.userInfo else { return }
         let curve = UIViewAnimationCurve(rawValue: userInfo[UIKeyboardAnimationCurveUserInfoKey] as! Int)
         let options = (duration: userInfo[UIKeyboardAnimationDurationUserInfoKey] as! Double,
@@ -932,13 +932,14 @@ extension RouteMapViewController {
     }
     
     @objc fileprivate func keyboardWillHide(notification: NSNotification) {
+        guard navigationView.endOfRouteView != nil else { return }
         guard let userInfo = notification.userInfo else { return }
         let curve = UIViewAnimationCurve(rawValue: userInfo[UIKeyboardAnimationCurveUserInfoKey] as! Int)
         let options = (duration: userInfo[UIKeyboardAnimationDurationUserInfoKey] as! Double,
                        curve: UIViewAnimationOptions(curve: curve!))
         
         navigationView.endOfRouteShowConstraint?.constant = 0
-
+        
         UIView.animate(withDuration: options.duration, delay: 0, options: options.curve, animations: view.layoutIfNeeded, completion: nil)
     }
 }
