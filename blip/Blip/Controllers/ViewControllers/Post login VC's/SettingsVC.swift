@@ -53,7 +53,7 @@ class SettingsVC: FormViewController {
             <<< TextRow(){ row in
                 row.tag = "address"
                 row.title = "Street"
-                row.placeholder = "Enter your Street address"
+                row.placeholder = "eg. 123 Abc road"
             }
             <<< TextRow(){ row in
                 row.tag = "city"
@@ -81,14 +81,14 @@ class SettingsVC: FormViewController {
             <<< TextRow(){ row in
                 row.tag = "sin"
                 row.title = "SIN no."
-                row.placeholder = "9 digit SIN number"
+                row.placeholder = "eg. XXXXXXXXX"
             }
         
         form +++ Section("Bank account deposits")
             <<< TextRow(){ row in
                 row.tag = "routingNumber"
                 row.title = "Routing number"
-                row.placeholder = " eg. 0AAABBBBB"
+                row.placeholder = " eg. XXXXX-XXX"
             }
             <<< TextRow(){ row in
                 row.tag = "accountNumber"

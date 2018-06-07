@@ -26,7 +26,7 @@ class SearchForJobVC: UIViewController {
     @IBOutlet weak var goButton: RaisedButton!
     @IBOutlet var map: MGLMapView!
     @IBOutlet weak var testJobPost: UIButton!
-    @IBOutlet weak var menu: Floaty!
+    @IBOutlet weak var menu: RaisedButton!
     @IBOutlet weak var earningsLoader: UIView!
     
     let pulsator = Pulsator()
@@ -43,7 +43,6 @@ class SearchForJobVC: UIViewController {
         self.navigationController?.navigationBar.isHidden = true
         locationManager.delegate = self
         locationManager.startUpdatingLocation()
-        prepareMenuButton()
         goButton.isUserInteractionEnabled = false
     }
     
@@ -62,6 +61,7 @@ class SearchForJobVC: UIViewController {
     override func viewWillLayoutSubviews() {
         prepareGoButton()
         prepareBalanceLabel()
+        prepareMenuButton()
     }
     
     func prepareBalanceLabel(){
@@ -95,23 +95,9 @@ class SearchForJobVC: UIViewController {
     }
     
     func prepareMenuButton(){
-        menu.addItem("Verification", icon: UIImage(icon: .googleMaterialDesign(.accountBox), size: CGSize(size: 25), textColor: UIColor.white, backgroundColor: UIColor.blue)) { (item) in
-            let sb = UIStoryboard(name: "main", bundle: nil)
-            sb.instantiateViewController(withIdentifier: "settingsVC")
-        }
-        menu.addItem("Logout", icon: UIImage(icon: .googleMaterialDesign(.close), size: CGSize(size: 25), textColor: UIColor.white, backgroundColor: UIColor.blue)) { (item) in
-            do {
-                try Auth.auth().signOut()
-                print("Logged out")
-            } catch let signOutError as NSError {
-                let signOutErrorPopup = PopupDialog(title: "Error", message: "Error signing you out, try again later" + signOutError.localizedDescription )
-                self.present(signOutErrorPopup, animated: true, completion: nil)
-                print ("Error signing out: %@", signOutError)
-            }
-        }
-        menu.plusColor = UIColor.white
-        menu.fabDelegate = self
-        menu.openAnimationType = .slideLeft
+        menu.makeCircular()
+        menu.ApplyOuterShadowToButton()
+        menu.setIcon(icon: .googleMaterialDesign(.accountBox), iconSize: 30, color: UIColor.white, backgroundColor: #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1), forState: .normal)
     }
     
     func checkLocationServices() -> Bool{
@@ -166,6 +152,7 @@ class SearchForJobVC: UIViewController {
         goButton.makeCircular()
         goButton.borderColor = UIColor.white
         goButton.layer.borderWidth = 2.5
+        goButton.ApplyOuterShadowToButton()
     }
     
     func startButtonPulse(){
@@ -190,9 +177,10 @@ class SearchForJobVC: UIViewController {
         }
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-//        gradient.frame = map.bounds
+    @IBAction func menuPressed(_ sender: Any) {
+        let sb = UIStoryboard(name: "Main", bundle: nil)
+        let vc = sb.instantiateViewController(withIdentifier: "settingsVC")
+        self.present(vc, animated: true, completion: nil)
     }
     
     @IBAction func postTestJob(_ sender: Any) {

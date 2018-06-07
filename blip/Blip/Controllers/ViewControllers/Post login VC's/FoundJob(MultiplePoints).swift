@@ -133,7 +133,13 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
             MyAPIClient.sharedClient.optimizeRoute(locations: job.locList, distributions: distributions) { (waypointData, routeData, error) in
                 if error == nil{
                     if let waypointData = waypointData{
-                        self.waypoints = self.parseDataFromOptimization(waypointData: waypointData)
+                        if let waypoints = self.parseDataFromOptimization(waypointData: waypointData){
+                            self.waypoints = waypoints
+                        }
+                        else{
+                            self.preparePopupForErrors()
+                            return
+                        }
                     }
                     if let routeData = routeData{
                         self.parseRouteData(routeData: routeData)
@@ -224,7 +230,7 @@ extension FoundJobVC: MGLMapViewDelegate{
 
 extension FoundJobVC{
     
-    func parseDataFromOptimization(waypointData: [[String: AnyObject]]) -> [BlipWaypoint]{
+    func parseDataFromOptimization(waypointData: [[String: AnyObject]]) -> [BlipWaypoint]?{
         var waypointList = [BlipWaypoint]()
         var i = 0
         while waypointList.count < (waypointData.count){
@@ -236,6 +242,13 @@ extension FoundJobVC{
                     waypointList.append(way)
                     i += 1
                 }
+            }
+        }
+        
+        let counts = waypointList.reduce(into: [:]) { counts, word in counts[word, default: 0] += 1 }
+        for key in counts.keys{
+            if counts[key]! > 1{
+                return nil
             }
         }
         for way in waypointList{

@@ -63,6 +63,7 @@
 		DD72AAE625CF15AC4CF40392 /* Pods_BlipUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1E4C90BBD8A603818B54420 /* Pods_BlipUITests.framework */; };
 		F30D60CB207B19930022F90D /* Delivery.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30D60CA207B19930022F90D /* Delivery.swift */; };
 		F30DBE2B20C580A6001C9686 /* WaypointCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30DBE2A20C580A6001C9686 /* WaypointCell.swift */; };
+		F3225D0120C8C13700EF00D6 /* checkmark.json in Resources */ = {isa = PBXBuildFile; fileRef = F3225D0020C8C13700EF00D6 /* checkmark.json */; };
 		F39868F320C3114300C6037B /* earningsLoaderBlue.json in Resources */ = {isa = PBXBuildFile; fileRef = F39868F220C3114200C6037B /* earningsLoaderBlue.json */; };
 		F39BE63A20B32E1400A4228C /* SearchForJobVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39BE63820B32E1400A4228C /* SearchForJobVC.swift */; };
 		F39BE63B20B32E1400A4228C /* FoundJob(MultiplePoints).swift in Sources */ = {isa = PBXBuildFile; fileRef = F39BE63920B32E1400A4228C /* FoundJob(MultiplePoints).swift */; };
@@ -169,6 +170,7 @@
 		F17503340FF2DF7A45CD03F1 /* Pods_Blip.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Blip.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F30D60CA207B19930022F90D /* Delivery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Delivery.swift; sourceTree = "<group>"; };
 		F30DBE2A20C580A6001C9686 /* WaypointCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaypointCell.swift; sourceTree = "<group>"; };
+		F3225D0020C8C13700EF00D6 /* checkmark.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = checkmark.json; sourceTree = "<group>"; };
 		F39868F220C3114200C6037B /* earningsLoaderBlue.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = earningsLoaderBlue.json; sourceTree = "<group>"; };
 		F39BE63820B32E1400A4228C /* SearchForJobVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchForJobVC.swift; sourceTree = "<group>"; };
 		F39BE63920B32E1400A4228C /* FoundJob(MultiplePoints).swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FoundJob(MultiplePoints).swift"; sourceTree = "<group>"; };
@@ -320,6 +322,7 @@
 		3B537339202EBBBE0020F3B1 /* Animations */ = {
 			isa = PBXGroup;
 			children = (
+				F3225D0020C8C13700EF00D6 /* checkmark.json */,
 				F39868F220C3114200C6037B /* earningsLoaderBlue.json */,
 				F3E330B32075A38000F19CF8 /* camera.json */,
 				3B537347202EBE2F0020F3B1 /* 5_stars.json */,
@@ -584,6 +587,7 @@
 				F39868F320C3114300C6037B /* earningsLoaderBlue.json in Resources */,
 				5F33377820332B0B00B83E01 /* RatingViewController.xib in Resources */,
 				F3F508202031F78C00252E65 /* lgsu.mp4 in Resources */,
+				F3225D0120C8C13700EF00D6 /* checkmark.json in Resources */,
 				5FC65BB220C6CF0B000DECFC /* notification.mp3 in Resources */,
 				3B53735A202EBE310020F3B1 /* check.json in Resources */,
 				F3F5081F2031F78300252E65 /* CenturyGothicBold.ttf in Resources */,
