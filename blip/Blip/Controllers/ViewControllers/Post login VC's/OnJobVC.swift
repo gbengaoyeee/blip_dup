@@ -20,6 +20,8 @@ class OnJobVC: UIViewController {
     @IBOutlet weak var map: MGLMapView!
     @IBOutlet weak var waypointTableView: UITableView!
     
+    var i = 1
+    var job: Job!
     let service = ServiceCalls.instance
     var waypoints:[BlipWaypoint]!
     var legIndex = 0
@@ -27,13 +29,14 @@ class OnJobVC: UIViewController {
     var type:String!
     let locationManager = CLLocationManager()
     var currentLocation:CLLocationCoordinate2D!
-    var distance = 50
+    var distance = 5000000
     var distanceToEvent: Double!
     var gradient: CAGradientLayer!
     
     override func viewDidLoad() {
 
         super.viewDidLoad()
+        prepareHeroAnimations()
         prepareWaypointData()
         prepareLocationUsage()
         prepareTableView()
@@ -55,7 +58,7 @@ class OnJobVC: UIViewController {
         gradient = CAGradientLayer()
         gradient.frame = map.bounds
         gradient.colors = [UIColor.clear.cgColor, UIColor.black.cgColor, UIColor.black.cgColor, UIColor.clear.cgColor]
-        gradient.locations = [0, 0.2, 0.8, 1]
+        gradient.locations = [0, 0.2, 0.9, 1]
         map.layer.mask = gradient
     }
     
@@ -78,6 +81,18 @@ class OnJobVC: UIViewController {
             locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
             locationManager.startUpdatingLocation()
         }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showEarnings"{
+            let dest = segue.destination as! EarningsVC
+            dest.job = self.job
+        }
+    }
+    
+    func prepareHeroAnimations(){
+        self.waypointTableView.hero.isEnabled = true
+        self.waypointTableView.hero.modifiers = [.cascade(delta: 2.0, direction: .topToBottom, delayMatchedViews: true)]
     }
     
 //    @IBAction func noShowPressed(_ sender: Any) {
@@ -216,7 +231,7 @@ extension OnJobVC: MGLMapViewDelegate{
             }
         }
         else{
-            self.navigationController?.popToRootViewController(animated: true)
+            self.performSegue(withIdentifier: "showEarnings", sender: self)
         }
     }
 }
@@ -289,6 +304,9 @@ extension OnJobVC: UITableViewDelegate, UITableViewDataSource, SwipeTableViewCel
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = waypointTableView.dequeueReusableCell(withIdentifier: "waypointCell") as! WaypointCell
         cell.delegate = self
+        cell.hero.isEnabled = true
+        cell.hero.modifiers = [.duration(0.5 * Double(i)),.translate(CGPoint.init(x: 120, y: 120))]
+        i += 1
         cell.type = waypoints[indexPath.row].name
         cell.delivery = waypoints[indexPath.row].delivery
         cell.prepareCell()

@@ -57,6 +57,7 @@
 		5F33377820332B0B00B83E01 /* RatingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F33377720332B0B00B83E01 /* RatingViewController.xib */; };
 		5F33377A20332B4600B83E01 /* RatingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F33377920332B4600B83E01 /* RatingViewController.swift */; };
 		5FC65BB220C6CF0B000DECFC /* notification.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5FC65BB120C6CF0B000DECFC /* notification.mp3 */; };
+		5FC65BB420C890F3000DECFC /* EarningsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC65BB320C890F3000DECFC /* EarningsVC.swift */; };
 		9386003A7F4DF664CFE4B273 /* Pods_BlipTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0955C2EBB0480CDAC21F69EA /* Pods_BlipTests.framework */; };
 		D2AFD91630288F27B050C92C /* Pods_Blip.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F17503340FF2DF7A45CD03F1 /* Pods_Blip.framework */; };
 		DD72AAE625CF15AC4CF40392 /* Pods_BlipUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1E4C90BBD8A603818B54420 /* Pods_BlipUITests.framework */; };
@@ -160,6 +161,7 @@
 		5F33377720332B0B00B83E01 /* RatingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RatingViewController.xib; sourceTree = "<group>"; };
 		5F33377920332B4600B83E01 /* RatingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingViewController.swift; sourceTree = "<group>"; };
 		5FC65BB120C6CF0B000DECFC /* notification.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = notification.mp3; sourceTree = "<group>"; };
+		5FC65BB320C890F3000DECFC /* EarningsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarningsVC.swift; sourceTree = "<group>"; };
 		7882D3387DF72D6C89FCBAF9 /* Pods-BlipUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlipUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BlipUITests/Pods-BlipUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		A283DE755C308C685D319AA9 /* Pods-BlipTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlipTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BlipTests/Pods-BlipTests.release.xcconfig"; sourceTree = "<group>"; };
 		C1E4C90BBD8A603818B54420 /* Pods_BlipUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BlipUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -428,6 +430,7 @@
 				F3EC0E69209FDD5400E08668 /* SettingsVC.swift */,
 				F3D21EE7208AE39500832544 /* InstructionVC.swift */,
 				3BB974E720C3181C00761E0A /* OnJobVC.swift */,
+				5FC65BB320C890F3000DECFC /* EarningsVC.swift */,
 			);
 			path = "Post login VC's";
 			sourceTree = "<group>";
@@ -863,6 +866,7 @@
 				3BCD8444207416E70079B4D4 /* NewSignUpVC.swift in Sources */,
 				3B53739D202EC2210020F3B1 /* BlipAnnotation.swift in Sources */,
 				3B53733D202EBD0F0020F3B1 /* Connectivity.swift in Sources */,
+				5FC65BB420C890F3000DECFC /* EarningsVC.swift in Sources */,
 				3B5372F8202EB4320020F3B1 /* AppDelegate.swift in Sources */,
 				F3D21EE420857E2100832544 /* BlipWaypoint.swift in Sources */,
 				3B537330202EBA6B0020F3B1 /* AppError.swift in Sources */,

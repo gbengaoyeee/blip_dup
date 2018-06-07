@@ -72,6 +72,8 @@ class SearchForJobVC: UIViewController {
         earningsLabel.borderColor = UIColor.white
         earningsLabel.layer.borderWidth = 2.5
         earningsLabel.layer.cornerRadius = earningsLabel.frame.size.height/2
+        earningsLabel.ApplyOuterShadowToButton()
+        earningsLoader.ApplyOuterShadowToView()
     }
     
     func getBalance(){

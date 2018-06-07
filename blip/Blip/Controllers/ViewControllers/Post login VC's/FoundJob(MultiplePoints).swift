@@ -80,6 +80,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
         if segue.identifier == "beginJob"{
             let dest = segue.destination as! OnJobVC
             dest.waypoints = self.waypoints
+            dest.job = self.job
         }
     }
     
@@ -180,8 +181,8 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     
     @IBAction func acceptJobPressed(_ sender: Any) {
         timer.invalidate()
-        service.checkGivenJjobReference { (progress) in
-            if progress{
+        service.checkGivenJjobReference { (shouldSegue) in
+            if shouldSegue{
                 self.service.setIsTakenOnGivenJobsAndStore(waypointList: self.waypoints)
                 self.countDownView.start(beginingValue: 30)
                 self.performSegue(withIdentifier: "beginJob", sender: self)
@@ -190,7 +191,6 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
                 self.preparePopupForErrors()
             }
         }
-        
     }
 }
 
