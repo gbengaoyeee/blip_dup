@@ -35,6 +35,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
+        let dialogAppearance = PopupDialogDefaultView.appearance()
+        
+        dialogAppearance.backgroundColor      = #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1)
+        dialogAppearance.titleFont            = .boldSystemFont(ofSize: 24)
+        dialogAppearance.titleColor           = UIColor.white
+        dialogAppearance.titleTextAlignment   = .center
+        dialogAppearance.messageFont          = .systemFont(ofSize: 18)
+        dialogAppearance.messageColor         = UIColor.white
+        dialogAppearance.messageTextAlignment = .center
+        
+        let db = DefaultButton.appearance()
+        db.titleFont      = UIFont(name: "CenturyGothic", size: 18)!
+        db.titleColor     = #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1)
+        db.buttonColor    = UIColor.white
+        db.separatorColor = #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1)
+        
         FirebaseApp.configure()
         isLaunched = true
         
@@ -102,7 +118,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     fileprivate func goHome(){
         window = UIWindow(frame: Screen.bounds)
-        window!.rootViewController = AppFABMenuController(rootViewController: UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "rootAfterLogin"))
+        window!.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "rootAfterLogin")
         window?.makeKeyAndVisible()
     }
     

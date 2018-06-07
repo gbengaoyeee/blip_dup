@@ -29,8 +29,6 @@ class SearchForJobVC: UIViewController {
     @IBOutlet weak var menu: Floaty!
     @IBOutlet weak var earningsLoader: UIView!
     
-    @IBOutlet weak var menuTop: NSLayoutConstraint!
-    
     let pulsator = Pulsator()
     var gradient: CAGradientLayer!
     var locationManager = CLLocationManager()
@@ -38,20 +36,20 @@ class SearchForJobVC: UIViewController {
     var service = ServiceCalls.instance
     let userDefaults = UserDefaults.standard
     var foundJob: Job!
+    var unfinishedJob: Bool!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isHidden = true
         locationManager.delegate = self
         locationManager.startUpdatingLocation()
-        prepareBlur()
         prepareMenuButton()
+        goButton.isUserInteractionEnabled = false
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         prepareMap()
-        prepareGoButton()
         getBalance()
     }
     
@@ -61,19 +59,29 @@ class SearchForJobVC: UIViewController {
         checkForUnfinishedJobs()
     }
     
-    func getBalance(){
+    override func viewWillLayoutSubviews() {
+        prepareGoButton()
+        prepareBalanceLabel()
+    }
+    
+    func prepareBalanceLabel(){
         earningsLoader.borderColor = UIColor.clear
         earningsLoader.layer.borderWidth = 2.5
-        earningsLoader.layer.cornerRadius = 15
+        earningsLoader.layer.cornerRadius = earningsLoader.frame.size.height/2
         earningsLoader.backgroundColor = UIColor.clear
+        earningsLabel.borderColor = UIColor.white
+        earningsLabel.layer.borderWidth = 2.5
+        earningsLabel.layer.cornerRadius = earningsLabel.frame.size.height/2
+        earningsLabel.ApplyOuterShadowToButton()
+        earningsLoader.ApplyOuterShadowToView()
+    }
+    
+    func getBalance(){
+        earningsLabel.isHidden = true
         let loader = LOTAnimationView(name: "earningsLoaderBlue")
         earningsLoader.handledAnimation(Animation: loader, width: 1, height: 1)
         loader.play()
         loader.loopAnimation = true
-        earningsLabel.borderColor = UIColor.white
-        earningsLabel.layer.borderWidth = 2.5
-        earningsLabel.layer.cornerRadius = 15
-        earningsLabel.isHidden = true
         MyAPIClient.sharedClient.getAccountBalance(emailHash: self.service.emailHash) { (balance) in
             if let balance = balance{
                 let accountBalance = Double(balance)!/100
@@ -87,11 +95,22 @@ class SearchForJobVC: UIViewController {
     }
     
     func prepareMenuButton(){
-        menu.addItem("Test", icon: UIImage(icon: .googleMaterialDesign(.verifiedUser), size: CGSize(size: 25), textColor: UIColor.white, backgroundColor: UIColor.blue)) { (item) in
-            print("Hi")
+        menu.addItem("Verification", icon: UIImage(icon: .googleMaterialDesign(.accountBox), size: CGSize(size: 25), textColor: UIColor.white, backgroundColor: UIColor.blue)) { (item) in
+            let sb = UIStoryboard(name: "main", bundle: nil)
+            sb.instantiateViewController(withIdentifier: "settingsVC")
         }
+        menu.addItem("Logout", icon: UIImage(icon: .googleMaterialDesign(.close), size: CGSize(size: 25), textColor: UIColor.white, backgroundColor: UIColor.blue)) { (item) in
+            do {
+                try Auth.auth().signOut()
+                print("Logged out")
+            } catch let signOutError as NSError {
+                let signOutErrorPopup = PopupDialog(title: "Error", message: "Error signing you out, try again later" + signOutError.localizedDescription )
+                self.present(signOutErrorPopup, animated: true, completion: nil)
+                print ("Error signing out: %@", signOutError)
+            }
+        }
+        menu.plusColor = UIColor.white
         menu.fabDelegate = self
-        menu.addItem(title: "hello")
         menu.openAnimationType = .slideLeft
     }
     
@@ -113,7 +132,6 @@ class SearchForJobVC: UIViewController {
     
     func showUnfinishedBanner(){
         let banner = NotificationBanner(title: "Unfinished delivery", subtitle: "Tap go to complete your unfinished delivery",style: .info)
-
         banner.autoDismiss = true
         banner.dismissOnTap = true
         banner.dismissOnSwipeUp = true
@@ -139,11 +157,8 @@ class SearchForJobVC: UIViewController {
         if segue.identifier == "foundJob"{
             let dest = segue.destination as! FoundJobVC
             dest.job = foundJob
+            dest.unfinishedJob = self.unfinishedJob
         }
-    }
-    
-    func prepareBlur(){
-        
     }
     
     func prepareGoButton(){
@@ -151,7 +166,6 @@ class SearchForJobVC: UIViewController {
         goButton.makeCircular()
         goButton.borderColor = UIColor.white
         goButton.layer.borderWidth = 2.5
-        goButton.isUserInteractionEnabled = false
     }
     
     func startButtonPulse(){
@@ -183,9 +197,9 @@ class SearchForJobVC: UIViewController {
     
     @IBAction func postTestJob(_ sender: Any) {
         service.getCurrentUserInfo { (user) in
-            let deliveryLocation = self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 100, max: 400)
-            let pickupLocation = self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 100, max: 500)
-            MyAPIClient.sharedClient.makeDeliveryRequest(storeID: "-LDCTqOOk7e1GNlpQcGR", deliveryLat: deliveryLocation.latitude, deliveryLong: deliveryLocation.longitude, deliveryMainInstruction: "Deliver to Srikanth Srinivas", deliverySubInstruction: "Go to main entrace, and buzz code 2003", originLat: pickupLocation.latitude, originLong: pickupLocation.longitude, pickupMainInstruction: "Pickup from xyz", pickupSubInstruction: "Go to front entrance of xyz, order number 110021 is waiting for you", recieverName: "Srikanth Srinivas", recieverNumber: "6478229867", pickupNumber: "6479839837")
+            let deliveryLocation = self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 300, max: 500)
+            let pickupLocation = self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 300, max: 500)
+            MyAPIClient.sharedClient.makeDeliveryRequest(storeID: "-LDCTqOOk7e1GNlpQcGR", deliveryLat: deliveryLocation.latitude, deliveryLong: deliveryLocation.longitude, deliveryMainInstruction: "Deliver to Srikanth Srinivas", deliverySubInstruction: "Go to main entrace, and buzz code 2003", originLat: pickupLocation.latitude, originLong: pickupLocation.longitude, pickupMainInstruction: "Pickup from xyz", pickupSubInstruction: "Go to front entrance of xyz, order number 110021 is waiting for you", recieverName: "Srikanth Srinivas", recieverNumber: "+16478229867", pickupNumber: "+16479839837")
         }
     }
     
@@ -197,11 +211,14 @@ class SearchForJobVC: UIViewController {
         }
         self.service.getUnfinishedJobs(myLocation: self.currentLocation) { (job) in
             if let job = job{
+                self.unfinishedJob = true
                 self.foundJob = job
                 self.performSegue(withIdentifier: "foundJob", sender: self)
+                self.goButton.isUserInteractionEnabled = true
+                return
             }
             else{
-                self.goButton.isUserInteractionEnabled = false
+                self.unfinishedJob = false
                 let leftImageView = UIView()
                 let loading = LOTAnimationView(name: "loading")
                 loading.loopAnimation = true
@@ -225,6 +242,7 @@ class SearchForJobVC: UIViewController {
                                 newBanner.dismissOnSwipeUp = true
                                 newBanner.dismissOnTap = true
                                 print("Not verified")
+                                self.goButton.isUserInteractionEnabled = true
                                 return
                             }
                             else if errorCode == 500{
@@ -236,6 +254,7 @@ class SearchForJobVC: UIViewController {
                                 newBanner.dismissOnSwipeUp = true
                                 newBanner.dismissOnTap = true
                                 print("Flagged")
+                                self.goButton.isUserInteractionEnabled = true
                                 return
                             }else{
                                 // No job Found
@@ -245,6 +264,7 @@ class SearchForJobVC: UIViewController {
                                 newBanner.dismissOnSwipeUp = true
                                 newBanner.dismissOnTap = true
                                 print("No job Found")
+                                self.goButton.isUserInteractionEnabled = true
                                 return
                             }
                         }
@@ -253,8 +273,8 @@ class SearchForJobVC: UIViewController {
                             return
                         }
                         self.foundJob = job
-                        self.goButton.isUserInteractionEnabled = true
                         self.performSegue(withIdentifier: "foundJob", sender: self)
+                        self.goButton.isUserInteractionEnabled = true
                     })
                 }
             }
@@ -313,15 +333,11 @@ extension SearchForJobVC: CLLocationManagerDelegate{
 extension SearchForJobVC: FloatyDelegate{
     
     func floatyWillOpen(_ floaty: Floaty) {
-        UIView.animate(withDuration: 0.8, delay: 0, options: .curveLinear, animations: {
-            self.menuTop.constant += 100
-        }, completion: nil)
+
     }
     
     func floatyWillClose(_ floaty: Floaty) {
-        UIView.animate(withDuration: 0.8, delay: 0, options: .curveLinear, animations: {
-            self.menuTop.constant = 25
-        }, completion: nil)
+
     }
     
     fileprivate func prepareAndReturnLogout() -> FloatyItem{

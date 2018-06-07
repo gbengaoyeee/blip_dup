@@ -20,6 +20,8 @@ class OnJobVC: UIViewController {
     @IBOutlet weak var map: MGLMapView!
     @IBOutlet weak var waypointTableView: UITableView!
     
+    var i = 1
+    var job: Job!
     let service = ServiceCalls.instance
     var waypoints:[BlipWaypoint]!
     var legIndex = 0
@@ -27,15 +29,18 @@ class OnJobVC: UIViewController {
     var type:String!
     let locationManager = CLLocationManager()
     var currentLocation:CLLocationCoordinate2D!
-    var distance = 1000
+    var distance = 5000000
     var distanceToEvent: Double!
+    var gradient: CAGradientLayer!
     
     override func viewDidLoad() {
 
         super.viewDidLoad()
+        prepareHeroAnimations()
         prepareWaypointData()
         prepareLocationUsage()
         prepareTableView()
+        prepareBlur()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -47,6 +52,14 @@ class OnJobVC: UIViewController {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    func prepareBlur(){
+        gradient = CAGradientLayer()
+        gradient.frame = map.bounds
+        gradient.colors = [UIColor.clear.cgColor, UIColor.black.cgColor, UIColor.black.cgColor, UIColor.clear.cgColor]
+        gradient.locations = [0, 0.2, 0.9, 1]
+        map.layer.mask = gradient
     }
     
     func prepareWaypointData(){
@@ -68,6 +81,18 @@ class OnJobVC: UIViewController {
             locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
             locationManager.startUpdatingLocation()
         }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showEarnings"{
+            let dest = segue.destination as! EarningsVC
+            dest.job = self.job
+        }
+    }
+    
+    func prepareHeroAnimations(){
+        self.waypointTableView.hero.isEnabled = true
+        self.waypointTableView.hero.modifiers = [.cascade(delta: 2.0, direction: .topToBottom, delayMatchedViews: true)]
     }
     
 //    @IBAction func noShowPressed(_ sender: Any) {
@@ -141,33 +166,72 @@ extension OnJobVC: MGLMapViewDelegate{
     }
     
     func completeJob(forCellAt: IndexPath){
-        let popup = PopupDialog(title: "Confirm", message: "Please make sure you have successfully completed the delivery before pressing confirm. Failure to do so may result in the suspension of your account. Alternatively, press the No Show button if the delivery cannot be completed successfully")
-        let confirmButton = PopupDialogButton(title: "Confirm") {
-            
-            self.service.completedJob(deliveryID: self.delivery.identifier, storeID: self.delivery.store.storeID, type: self.type)
-            self.waypoints.remove(at: forCellAt.row)
-            self.waypointTableView.deleteRows(at: [forCellAt], with: .left)
-            if self.waypoints.count != self.legIndex{
-                
-                self.type = self.waypoints[self.legIndex].name!
-                self.delivery = self.waypoints[self.legIndex].delivery
-                if let currentType = self.waypoints[self.legIndex].name, let currentDelivery = self.waypoints[self.legIndex].delivery{
-                    self.prepareMap(type: currentType, delivery: currentDelivery)
-                }
-                popup.dismiss()
-            }
-            else{
-                popup.dismiss()
-                self.navigationController?.popToRootViewController(animated: true)
-            }
+        
+        var message: String!
+        
+        if type == "Pickup"{
+            message = "Please make sure you have picked up the correct order. Double check the order number with the instruction, and press confirm when completed"
         }
-        popup.addButton(confirmButton)
+        else{
+            message = "Please select the person to whom the delivery was made. Your account may be banned or suspended for deliberately selecting a false option"
+        }
+        let popup = PopupDialog(title: "Confirm", message: message)
+        
+        let toReciever = PopupDialogButton(title: "Delivered to \(self.delivery.recieverName!)") {
+            self.completeJobButtonAction(forCellAt: forCellAt, deliveredTo: "reciever")
+            popup.dismiss()
+        }
+        
+        let toFriend = PopupDialogButton(title: "Delivered to a friend") {
+            self.completeJobButtonAction(forCellAt: forCellAt, deliveredTo: "friend")
+            popup.dismiss()
+        }
+        
+        let toSecurity = PopupDialogButton(title: "Delivered to security") {
+            self.completeJobButtonAction(forCellAt: forCellAt, deliveredTo: "security")
+            popup.dismiss()
+        }
+        
+        let other = PopupDialogButton(title: "Other") {
+            self.completeJobButtonAction(forCellAt: forCellAt, deliveredTo: "other")
+            popup.dismiss()
+        }
+        
+        let confirmButton = PopupDialogButton(title: "Confirm") {
+            //Sets appropriate fields in the database when a pickup/delivery is completed successfully
+            self.completeJobButtonAction(forCellAt: forCellAt, deliveredTo: nil)
+            popup.dismiss()
+        }
+        
+        if self.type == "Pickup"{
+           popup.addButton(confirmButton)
+        }
+        else{
+            popup.addButtons([toReciever, toFriend, toSecurity, other])
+        }
         
         if Int(distanceToEvent) > distance{
             self.displayCompletionError()
         }
         else{
             self.present(popup, animated: true, completion: nil)
+        }
+    }
+    
+    fileprivate func completeJobButtonAction(forCellAt: IndexPath, deliveredTo: String?){
+        self.service.completedJob(delivery: self.delivery, type: self.type, deliveredTo: deliveredTo)
+        self.waypoints.remove(at: forCellAt.row)
+        self.waypointTableView.deleteRows(at: [forCellAt], with: .left)
+        if self.waypoints.count != self.legIndex{
+            
+            self.type = self.waypoints[self.legIndex].name!
+            self.delivery = self.waypoints[self.legIndex].delivery
+            if let currentType = self.waypoints[self.legIndex].name, let currentDelivery = self.waypoints[self.legIndex].delivery{
+                self.prepareMap(type: currentType, delivery: currentDelivery)
+            }
+        }
+        else{
+            self.performSegue(withIdentifier: "showEarnings", sender: self)
         }
     }
 }
@@ -207,8 +271,9 @@ extension OnJobVC: UITableViewDelegate, UITableViewDataSource, SwipeTableViewCel
                 self.completeJob(forCellAt: index)
             }
             doneAction.backgroundColor = #colorLiteral(red: 0, green: 0.7973585725, blue: 0, alpha: 1)
-            doneAction.title = "Complete"
-            doneAction.image = UIImage(icon: .googleMaterialDesign(.done), size: CGSize(size: 40), textColor: UIColor.white, backgroundColor: UIColor.clear)
+            doneAction.title = "Complete \(self.type!)"
+            doneAction.font = UIFont(name: "CenturyGothicBold", size: 18)
+            doneAction.image = UIImage(icon: .googleMaterialDesign(.checkCircle), size: CGSize(size: 40), textColor: UIColor.white, backgroundColor: UIColor.clear)
             return [doneAction]
         }
         else{
@@ -239,6 +304,9 @@ extension OnJobVC: UITableViewDelegate, UITableViewDataSource, SwipeTableViewCel
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = waypointTableView.dequeueReusableCell(withIdentifier: "waypointCell") as! WaypointCell
         cell.delegate = self
+        cell.hero.isEnabled = true
+        cell.hero.modifiers = [.duration(0.5 * Double(i)),.translate(CGPoint.init(x: 120, y: 120))]
+        i += 1
         cell.type = waypoints[indexPath.row].name
         cell.delivery = waypoints[indexPath.row].delivery
         cell.prepareCell()

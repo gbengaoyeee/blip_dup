@@ -96,27 +96,32 @@
 		<key>FirebaseAuth.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>51</integer>
+			<integer>49</integer>
 		</dict>
 		<key>FirebaseCore.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>52</integer>
+			<integer>50</integer>
 		</dict>
 		<key>FirebaseDatabase.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>53</integer>
+			<integer>51</integer>
 		</dict>
 		<key>FirebaseMessaging.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>54</integer>
+			<integer>52</integer>
 		</dict>
 		<key>FirebaseStorage.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>55</integer>
+			<integer>53</integer>
+		</dict>
+		<key>Floaty.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>54</integer>
 		</dict>
 		<key>GTMSessionFetcher.xcscheme</key>
 		<dict>
@@ -279,6 +284,11 @@
 			<key>orderHint</key>
 			<integer>37</integer>
 		</dict>
+		<key>Pulley.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>55</integer>
+		</dict>
 		<key>Pulsator.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -341,6 +351,11 @@
 			<false/>
 			<key>orderHint</key>
 			<integer>45</integer>
+		</dict>
+		<key>SwipeCellKit.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>56</integer>
 		</dict>
 		<key>Turf.xcscheme</key>
 		<dict>

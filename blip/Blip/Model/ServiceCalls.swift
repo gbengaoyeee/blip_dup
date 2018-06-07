@@ -172,12 +172,19 @@ class ServiceCalls{
         }
     }
     
-    func completedJob(deliveryID:String, storeID:String, type:String){
+    func completedJob(delivery:Delivery, type:String, deliveredTo: String? = nil){
+        let deliveryID = delivery.identifier!
+        let storeID = delivery.store.storeID
         if type == "Pickup"{
             let ref = Database.database().reference(withPath: "/Couriers/\(self.emailHash!)/givenJob/\(deliveryID)")
             let storeRef = Database.database().reference(withPath: "/stores/\(storeID)/deliveries/\(deliveryID)")
             ref.updateChildValues(["state":"pickup"])
             storeRef.updateChildValues(["state":"pickup"])
+            //Text the receiver as soon as the pickup is complete
+            let name = Auth.auth().currentUser!.displayName!
+            let number = delivery.receiverPhoneNumber!
+            let message = "\(name) has just picked up your parcel and is on their way to you. They will wait for up to 5 minutes before leaving"
+            MyAPIClient.sharedClient.sendSms(phoneNumber: number, message: message)
             return
         }
         userRef.child(emailHash).child("givenJob").child(deliveryID).observeSingleEvent(of: .value) { (snapshot) in
@@ -185,7 +192,7 @@ class ServiceCalls{
                 print("Couldn't get values")
                 return
             }
-            
+            values["deliveredTo"] = deliveredTo!
             values["isCompleted"] = true
             values["state"] = "delivery"
             let ref = Database.database().reference(withPath: "/Couriers/\(self.emailHash!)/givenJob/\(deliveryID)")
@@ -194,6 +201,17 @@ class ServiceCalls{
             self.completedJobsRef.child(deliveryID).updateChildValues(values)
             self.userRef.child(self.emailHash).child("completedDeliveries/\(deliveryID)").updateChildValues(values)
             ref.removeValue()
+        }
+    }
+    
+    func checkGivenJjobReference(completion: @escaping(Bool) -> ()){
+        userRef.child(emailHash).child("givenJob").observeSingleEvent(of: .value) { (snapshot) in
+            if let values = snapshot.value{
+                completion(true)
+            }
+            else{
+                completion(false)
+            }
         }
     }
     

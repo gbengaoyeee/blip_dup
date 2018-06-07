@@ -11,6 +11,7 @@ import SwipeCellKit
 import Material
 import MapKit
 import PopupDialog
+import CoreLocation
 
 class WaypointCell: SwipeTableViewCell{
     
@@ -85,7 +86,16 @@ class WaypointCell: SwipeTableViewCell{
         let placemark = MKPlacemark(coordinate: location!)
         let mapItem = MKMapItem(placemark: placemark)
         //Set mapItem name here which is also name of location
-        mapItem.openInMaps(launchOptions: options)
+        let geocoder = CLGeocoder()
+        geocoder.reverseGeocodeLocation(CLLocation(latitude: location.latitude, longitude: location.longitude), completionHandler: { (placemarks, error) in
+            if(error == nil){
+                let clplaceMark = placemarks?[0]
+                mapItem.name = self.parseAddress(placemark: clplaceMark!)
+                mapItem.openInMaps(launchOptions: options)
+            }
+        })
+        
+        
     }
     
     @IBAction func callButton(_ sender: Any) {
@@ -109,5 +119,35 @@ class WaypointCell: SwipeTableViewCell{
                 calls += 1
             }
         }
+    }
+    
+    ///Parses a CLPlacemark to a human readable address
+    func parseAddress(placemark: CLPlacemark)->String{
+        // put a space between "4" and "Melrose Place"
+        let firstSpace = (placemark.subThoroughfare != nil && placemark.thoroughfare != nil) ? " " : ""
+        // put a comma between street and city/state
+        let comma = (placemark.subThoroughfare != nil || placemark.thoroughfare != nil) && (placemark.subAdministrativeArea != nil || placemark.administrativeArea != nil) ? ", " : ""
+        // put a space between "Washington" and "DC"
+        let secondSpace = (placemark.subAdministrativeArea != nil && placemark.administrativeArea != nil) ? " " : ""
+        let thirdspace = (placemark.postalCode != nil) ? " " : ""
+        
+        let addressLine = String(
+            format:"%@%@%@%@%@%@%@%@%@",
+            // street number
+            placemark.subThoroughfare ?? "",
+            firstSpace,
+            // street name
+            placemark.thoroughfare ?? "",
+            comma,
+            // city
+            placemark.locality ?? "",
+            secondSpace,
+            // state
+            placemark.administrativeArea ?? "",
+            thirdspace,
+            //postalcode
+            placemark.postalCode ?? ""
+        )
+        return addressLine
     }
 }

@@ -21,11 +21,6 @@ class BlipWaypoint: Waypoint{
         super.init(location: location, heading: heading, name: name)
     }
     
-//    override init(coordinate: CLLocationCoordinate2D, coordinateAccuracy: CLLocationAccuracy, name: String?) {
-//        super.init(coordinate: coordinate)
-//        super.name = name
-//    }
-    
     required init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
     }

@@ -10,6 +10,7 @@ import Pulsator
 import PopupDialog
 import NotificationBannerSwift
 import Material
+import AVFoundation
 
 class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     
@@ -21,6 +22,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     @IBOutlet weak var countDownView: SRCountdownTimer!
     @IBOutlet weak var acceptJob: RaisedButton!
     
+    var player: AVAudioPlayer?
     var fromIndex = 0
     var toIndex = 1
     var job: Job!
@@ -30,13 +32,14 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     var waypoints: [BlipWaypoint]!
     var timer = Timer()
     var mglSource: MGLShapeSource!
-    
+    var unfinishedJob: Bool!
     var currentType: String!
     var currentSubInstruction: String!
     var currentMainInstruction: String!
     var currentDelivery: Delivery!
     var isLastWaypoint: Bool!
     var navViewController: NavigationViewController!
+    var handle:DatabaseHandle!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +47,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         acceptJob.isUserInteractionEnabled = false
+        observeForRemoved()
         prepareDataForNavigation { (bool) in
             if bool{
                 self.acceptJob.isUserInteractionEnabled = true
@@ -51,17 +55,21 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
                 self.preparePopupForErrors()
             }
         }
-        setupTimer()
+        if !unfinishedJob{
+            setupTimer()
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         service.removeFirebaseObservers()
+        //Remove the child removed observer handle
+        Database.database().reference(withPath: "Couriers/\(self.service.emailHash!)/").removeAllObservers()
     }
     
     override func viewDidLayoutSubviews() {
         prepareCenterView()
-        prepareMap()
+        prepareMapViews()
     }
     
     override func didReceiveMemoryWarning() {
@@ -73,32 +81,37 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "presentInstructions"{
-            let dest = segue.destination as! InstructionVC
-            dest.delivery = self.currentDelivery
-            dest.subInstruction = self.currentSubInstruction
-            dest.mainInstruction = self.currentMainInstruction
-            dest.type = self.currentType
-            dest.isLastWaypoint = self.isLastWaypoint
-            dest.navViewController = self.navViewController
+        if segue.identifier == "beginJob"{
+            let dest = segue.destination as! OnJobVC
+            dest.waypoints = self.waypoints
+            dest.job = self.job
         }
     }
     
     fileprivate func setupTimer(){
-        timer = Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(handleTimer), userInfo: nil, repeats: false)
+        countDownView.start(beginingValue: 28)
     }
     
     @objc fileprivate func handleTimer(){
-        service.putBackJobs()
+        //Do we still need this timer here?
         timer.invalidate()
         self.navigationController?.popViewController(animated: true)
     }
     
+    fileprivate func observeForRemoved(){
+        let ref = Database.database().reference(withPath: "Couriers/\(self.service.emailHash!)/")
+        self.handle = ref.observe(.childRemoved, with: { (snapshot) in
+            self.navigationController?.popViewController(animated: true)
+        })
+    }
+    
     func preparePopupForErrors(){
-        let popup = PopupDialog(title: "Error", message: "An error occured when parsing job data")
+        let popup = PopupDialog(title: "Error", message: "An error occured when parsing job data", gestureDismissal: false)
         let okButton = PopupDialogButton(title: "Continue") {
             popup.dismiss()
             self.navigationController?.popToRootViewController(animated: true)
+            self.service.putBackJobs()
+            self.timer.invalidate()
         }
         popup.addButton(okButton)
     }
@@ -141,15 +154,28 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     }
     
     func prepareMap(){
-        map.makeCircular()
         for delivery in job.deliveries{
             let annotation = MGLPointAnnotation()
             annotation.coordinate = delivery.origin
             map.addAnnotation(annotation)
         }
         if let annotations = map.annotations{
-            map.showAnnotations(annotations, animated: true)
+            if annotations.count == 1{
+                self.map.centerCoordinate = annotations.first!.coordinate
+                let camera = MGLMapCamera(lookingAtCenter: map.centerCoordinate, fromDistance: 4500, pitch: 15, heading: 0)
+                
+                // Animate the camera movement over 5 seconds.
+                map.setCamera(camera, withDuration: 3, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn))
+            }
+            else{
+                map.showAnnotations(annotations, animated: true)
+            }
         }
+    }
+    
+    func prepareMapViews(){
+        map.delegate = self
+        map.makeCircular()
     }
     
     func prepareCenterView(){
@@ -163,17 +189,20 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
         pulseAnimationView.layer.addSublayer(pulsator)
         countDownView.makeCircular()
         countDownView.clipsToBounds = true
-        countDownView.start(beginingValue: 30)
     }
     
     @IBAction func acceptJobPressed(_ sender: Any) {
         timer.invalidate()
-//        calculateAndPresentNavigation(waypointList: self.waypoints, present: true)
-        let sb = UIStoryboard(name: "Main", bundle: nil)
-        let onJobVC:OnJobVC = sb.instantiateViewController(withIdentifier: "onJobVC") as! OnJobVC
-        onJobVC.waypoints = self.waypoints
-        //Push the controller
-        self.navigationController?.pushViewController(onJobVC, animated: true)
+        service.checkGivenJjobReference { (shouldSegue) in
+            if shouldSegue{
+                self.service.setIsTakenOnGivenJobsAndStore(waypointList: self.waypoints)
+                self.countDownView.start(beginingValue: 30)
+                self.performSegue(withIdentifier: "beginJob", sender: self)
+            }
+            else{
+                self.preparePopupForErrors()
+            }
+        }
     }
 }
 
@@ -187,107 +216,9 @@ extension FoundJobVC: MGLMapViewDelegate{
         }
         return nil
     }
-}
-
-extension FoundJobVC: NavigationViewControllerDelegate, VoiceControllerDelegate{
     
-    func navigationViewController(_ viewController: NavigationViewController, didSend feedbackId: String, feedbackType: FeedbackType) {
-        if feedbackType == .mapIssue{
-            let error = PopupDialog(title: "We want to know whats wrong", message: "Get in touch with us right now at 647-983-9837, and mention your email address")
-            let callButton = PopupDialogButton(title: "Call") {
-                if let url:URL = URL(string: "tel://6479839837"), UIApplication.shared.canOpenURL(url){
-                    if #available(iOS 10, *) {
-                        UIApplication.shared.open(url)
-                    } else {
-                        UIApplication.shared.openURL(url)
-                    }
-                }
-            }
-            error.addButton(callButton)
-            self.present(error, animated: true)
-        }
-    }
-    
-    func navigationViewController(_ navigationViewController: NavigationViewController, didArriveAt waypoint: Waypoint) -> Bool {
-        
-        self.navViewController = navigationViewController
-        navigationViewController.routeController.suspendLocationUpdates()
-        for way in self.waypoints{
-            if waypoint.coordinate == way.coordinate{
-                self.isLastWaypoint = (self.waypoints.last?.coordinate == way.coordinate)
-                self.currentDelivery = way.delivery
-                if let name = way.name{
-                    if name == "Pickup"{
-                        self.currentType = "Pickup"
-                        self.currentMainInstruction = way.delivery.pickupMainInstruction
-                        self.currentSubInstruction = way.delivery.pickupSubInstruction
-                    }
-                    else if name == "Delivery"{
-                        self.currentType = "Delivery"
-                        self.currentMainInstruction = way.delivery.deliveryMainInstruction
-                        self.currentSubInstruction = way.delivery.deliverySubInstruction
-                    }
-                }
-                self.performSegue(withIdentifier: "presentInstructions", sender: self)
-            }
-        }
-        return false
-    }
-    
-    func navigationMapView(_ mapView: NavigationMapView, shapeFor waypoints: [Waypoint]) -> MGLShape? {
-        
-        var features = [MGLPointFeature]()
-        for waypoint in waypoints {
-            let feature = MGLPointFeature()
-            feature.coordinate = waypoint.coordinate
-            if let name = waypoint.name{
-                if name == "Pickup" || name == "Delivery"{
-                    feature.attributes = ["type": name.lowercased()]
-                    features.append(feature)
-                }
-            }
-        }
-        return MGLShapeCollectionFeature(shapes: features)
-    }
-    
-    func navigationMapView(_ mapView: NavigationMapView, waypointSymbolStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer? {
-
-        let deliveryImage = UIImage(named: "delivery")
-        let pickupImage = UIImage(named: "pickup")
-        mapView.style?.setImage(deliveryImage!.resizeImage(targetSize: CGSize(size: 40)), forName: "delivery")
-        mapView.style?.setImage(pickupImage!.resizeImage(targetSize: CGSize(size: 40)), forName: "pickup")
-        let x = MGLSymbolStyleLayer(identifier: identifier, source: source)
-        x.iconImageName = NSExpression(forKeyPath: "type")
-        x.iconAllowsOverlap = NSExpression(forConstantValue: true)
-        x.iconIgnoresPlacement = NSExpression(forConstantValue: true)
-
-        return x
-    }
-    
-    func navigationMapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
-        
-        let delivery = UIImage(named: "delivery")
-        if let delivery = delivery{
-            return MGLAnnotationImage(image: delivery.resizeImage(targetSize: CGSize(size: 40)), reuseIdentifier: "delivery")
-        }
-        return nil
-    }
-    
-    func navigationViewControllerDidEndNavigation(_ navigationViewController: NavigationViewController, cancelled: Bool) {
-        let alertPopup = PopupDialog(title: "Warning", message: "Are you sure you wish to cancel the job you are currently on? Taking a job and cancelling midway may result in a suspension of your account.")
-        let yesButton = PopupDialogButton(title: "Yes") {
-            alertPopup.dismiss()
-            self.service.userCancelledJob(completion: {
-                navigationViewController.navigationController?.popToRootViewController(animated: true)
-            })
-            
-        }
-        let noButton = PopupDialogButton(title: "No") {
-            alertPopup.dismiss()
-            navigationViewController.routeController.resume()
-        }
-        alertPopup.addButtons([yesButton, noButton])
-        navigationViewController.present(alertPopup, animated: true, completion: nil)
+    func mapViewDidFinishLoadingMap(_ mapView: MGLMapView) {
+        prepareMap()
     }
 }
 
@@ -353,28 +284,6 @@ extension FoundJobVC{
         return self.waypoints[index]
     }
     
-    func calculateAndPresentNavigation(waypointList: [BlipWaypoint], present: Bool){
-        
-        let options = NavigationRouteOptions(waypoints: waypointList, profileIdentifier: .automobile)
-        _ = Directions.shared.calculate(options, completionHandler: { (waypoints, routes, error) in
-            if error == nil{
-                if present{
-                    let navigation = NavigationViewController(for: (routes?.first)!)
-                    navigation.mapView?.styleURL = URL(string:"mapbox://styles/srikanthsrnvs/cjd6ciwwm54my2rms3052j5us")
-                    let x = SimulatedLocationManager(route: (routes?.first)!)
-                    x.speedMultiplier = 3.0
-                    navigation.routeController.locationManager = x
-                    navigation.delegate = self
-                    navigation.showsEndOfRouteFeedback = false
-                    self.service.setIsTakenOnGivenJobsAndStore(waypointList: waypointList)
-                    self.navigationController?.pushViewController(navigation, animated: true)
-                }
-            }
-            else{
-                print(error!)
-            }
-        })
-    }
     
     func getDeliveryFor(waypoint: Waypoint) -> Delivery?{
         var dist: Double! = 20000
@@ -416,6 +325,34 @@ extension FoundJobVC{
         jobDistance.text = "\(distanceInKm) km"
         let earningsText = String(format: "%.2f", arguments: [job.earnings])
         jobEarnings.text = "$ \(earningsText)"
+    }
+}
+
+extension FoundJobVC{
+    
+    func playNotificationSound() {
+        guard let url = Bundle.main.url(forResource: "notification", withExtension: "mp3") else { return }
+        
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            try AVAudioSession.sharedInstance().setActive(true)
+            
+            
+            
+            /* The following line is required for the player to work on iOS 11. Change the file type accordingly*/
+            player = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.mp3.rawValue)
+            
+            /* iOS 10 and earlier require the following line:
+             player = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileTypeMPEGLayer3) */
+            
+            guard let player = player else { return }
+            
+            player.play()
+            player.numberOfLoops = -1
+            
+        } catch let error {
+            print(error.localizedDescription)
+        }
     }
 }
 
