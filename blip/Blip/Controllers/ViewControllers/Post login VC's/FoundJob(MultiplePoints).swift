@@ -39,6 +39,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     var currentDelivery: Delivery!
     var isLastWaypoint: Bool!
     var navViewController: NavigationViewController!
+    var handle:DatabaseHandle!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,6 +47,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         acceptJob.isUserInteractionEnabled = false
+        observeForRemoved()
         prepareDataForNavigation { (bool) in
             if bool{
                 self.acceptJob.isUserInteractionEnabled = true
@@ -61,6 +63,8 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         service.removeFirebaseObservers()
+        //Remove the child removed observer handle
+        Database.database().reference(withPath: "Couriers/\(self.service.emailHash!)/").removeAllObservers()
     }
     
     override func viewDidLayoutSubviews() {
@@ -89,8 +93,16 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     }
     
     @objc fileprivate func handleTimer(){
+        //Do we still need this timer here?
         timer.invalidate()
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    fileprivate func observeForRemoved(){
+        let ref = Database.database().reference(withPath: "Couriers/\(self.service.emailHash!)/")
+        self.handle = ref.observe(.childRemoved, with: { (snapshot) in
+            self.navigationController?.popViewController(animated: true)
+        })
     }
     
     func preparePopupForErrors(){
