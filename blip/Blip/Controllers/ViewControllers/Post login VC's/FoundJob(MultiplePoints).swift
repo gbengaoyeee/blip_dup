@@ -135,7 +135,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
             MyAPIClient.sharedClient.optimizeRoute(locations: job.locList, distributions: distributions) { (waypointData, routeData, error) in
                 if error == nil{
                     if let waypointData = waypointData{
-                        if let waypoints = self.parseDataFromOptimization(waypointData: waypointData){
+                        if let waypoints = self.parseDataFromOptimization(waypointData: waypointData, distributionCount: 2*(job.deliveries.count - job.getUnfinishedDeliveries().count)){
                             self.waypoints = waypoints
                         }
                         else{
@@ -203,6 +203,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
         timer.invalidate()
         service.checkGivenJobReference { (shouldSegue) in
             if shouldSegue{
+                print(self.waypoints)
                 self.service.setIsTakenOnGivenJobsAndStore(waypointList: self.waypoints)
                 self.countDownView.start(beginingValue: 30)
                 self.performSegue(withIdentifier: "beginJob", sender: self)
@@ -228,7 +229,7 @@ extension FoundJobVC: MGLMapViewDelegate{
 
 extension FoundJobVC{
     
-    func parseDataFromOptimization(waypointData: [[String: AnyObject]]) -> [BlipWaypoint]?{
+    func parseDataFromOptimization(waypointData: [[String: AnyObject]], distributionCount: Int) -> [BlipWaypoint]?{
         var waypointList = [BlipWaypoint]()
         var i = 1
         self.job.locList.remove(at: 0)
@@ -256,23 +257,24 @@ extension FoundJobVC{
                     index = job.locList.index(of: loc)
                 }
             }
-            if index%2 == 1{
-                way.delivery = getDeliveryFor(waypoint: way, type: "Delivery")
+            if index < distributionCount{
+                if index%2 == 1{
+                    way.delivery = getDeliveryFor(waypoint: way, type: "Delivery")
+                    way.name = "Delivery"
+                }
+                else{
+                    way.delivery = getDeliveryFor(waypoint: way, type: "Pickup")
+                    way.name = "Pickup"
+                }
             }
             else{
-                way.delivery = getDeliveryFor(waypoint: way, type: "Pickup")
+                way.delivery = getDeliveryFor(waypoint: way, type: "Delivery")
+                way.name = "Delivery"
             }
             if way.delivery.state != nil{
                 way.name = "Delivery"
             }
-            else{
-                if index%2 == 1{
-                    way.name = "Delivery"
-                }
-                else{
-                    way.name = "Pickup"
-                }
-            }
+
             tempLocList[index] = CLLocationCoordinate2D(latitude: 180, longitude: 180)
         }
         return waypointList

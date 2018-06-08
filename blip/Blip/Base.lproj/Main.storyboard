@@ -232,22 +232,10 @@
                                     <constraint firstItem="8eP-3M-9Oo" firstAttribute="centerX" secondItem="Nfe-Vv-4qP" secondAttribute="centerX" id="xjK-UY-hjn"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OPO-Rc-0jc" customClass="RaisedButton" customModule="Material">
-                                <rect key="frame" x="339" y="47.333333333333343" width="50" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="ExV-4M-Y6s"/>
-                                    <constraint firstAttribute="width" constant="50" id="lAO-C7-qO0"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
-                                <connections>
-                                    <action selector="menuPressed:" destination="TKO-X2-gMW" eventType="touchUpInside" id="mIq-JC-aEQ"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="JZz-UL-eYA" firstAttribute="leading" secondItem="xni-lE-of8" secondAttribute="leading" constant="20" id="2cw-uO-4Iv"/>
-                            <constraint firstItem="OPO-Rc-0jc" firstAttribute="centerY" secondItem="8eP-3M-9Oo" secondAttribute="centerY" id="66v-WP-RVO"/>
                             <constraint firstItem="F1g-OS-zCz" firstAttribute="centerY" secondItem="Yjo-Ea-HG0" secondAttribute="centerY" id="8kh-9J-Wlz"/>
                             <constraint firstItem="JZz-UL-eYA" firstAttribute="top" secondItem="xni-lE-of8" secondAttribute="top" constant="20" id="AOG-0n-c2L"/>
                             <constraint firstItem="Nfe-Vv-4qP" firstAttribute="height" secondItem="k1b-e6-YiJ" secondAttribute="height" multiplier="55/736" id="CTi-Yp-kVe"/>
@@ -257,7 +245,6 @@
                             <constraint firstItem="F1g-OS-zCz" firstAttribute="centerX" secondItem="Yjo-Ea-HG0" secondAttribute="centerX" id="Ujn-nK-BDD"/>
                             <constraint firstItem="Nfe-Vv-4qP" firstAttribute="centerX" secondItem="xni-lE-of8" secondAttribute="centerX" id="aX8-4x-H78"/>
                             <constraint firstItem="Yjo-Ea-HG0" firstAttribute="height" secondItem="k1b-e6-YiJ" secondAttribute="height" multiplier="80/812" id="f19-MX-MmL"/>
-                            <constraint firstItem="xni-lE-of8" firstAttribute="trailing" secondItem="OPO-Rc-0jc" secondAttribute="trailing" constant="25" id="pri-IZ-gbC"/>
                             <constraint firstItem="xni-lE-of8" firstAttribute="bottom" secondItem="Yjo-Ea-HG0" secondAttribute="bottom" constant="60" id="tNb-cB-eQ6"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="xni-lE-of8"/>
@@ -281,7 +268,6 @@
                         <outlet property="goButton" destination="Yjo-Ea-HG0" id="6OC-wQ-sUX"/>
                         <outlet property="goButtonPulseAnimation" destination="F1g-OS-zCz" id="hVu-7L-nHF"/>
                         <outlet property="map" destination="k1b-e6-YiJ" id="IyO-MK-efC"/>
-                        <outlet property="menu" destination="OPO-Rc-0jc" id="iPK-gB-OlS"/>
                         <outlet property="testJobPost" destination="JZz-UL-eYA" id="oh4-wq-mEe"/>
                         <segue destination="H07-W2-WS5" kind="show" identifier="foundJob" id="pBq-Ls-F0d"/>
                     </connections>
