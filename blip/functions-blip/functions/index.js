@@ -6,7 +6,6 @@ var crypto = require('crypto');
 admin.initializeApp(functions.config().firebase);
 var express = require('express');
 var bodyParser = require('body-parser');
-var walmart = require('walmart')("qeq7xghhtkb8ate7x59px7yk");
 const app = express();
 const geo = require('geolib');
 const stripe = require('stripe')("sk_test_4I0ubK7NduuV6dhJouhEAqtu"),
