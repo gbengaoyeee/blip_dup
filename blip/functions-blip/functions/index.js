@@ -173,6 +173,14 @@ exports.createCourier = functions.https.onRequest((req, res) => {
     const phoneNumber = req.body.phoneNumber;
     const photoURL = req.body.photoURL;
 
+    if(!verifyFieldsForNull([req.body.firstName, req.body.lastName, req.body.email, req.body.password, req.body.confirmPassword, req.body.photoURL])){
+        console.log("Some fields are null");
+        res.status(400).send("Null fields");
+    }
+    if (!verifyNumbers(req.body. phoneNumber)){
+        console.log("Error with phone number");
+        res.status(400).send("Number error");
+    }
     const emailHash = crypto.createHash('md5').update(email).digest('hex');
     return admin.auth().createUser({//can also add photourl later on
         email: email,
