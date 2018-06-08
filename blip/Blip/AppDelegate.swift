@@ -115,13 +115,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             }
         }
     }
-    
-    fileprivate func goHome(){
-        window = UIWindow(frame: Screen.bounds)
-        window!.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "rootAfterLogin")
-        window?.makeKeyAndVisible()
-    }
-    
+
     func setLogoutAsRoot(){
         if sessionTimer != nil{
             self.sessionTimer.invalidate()
@@ -141,7 +135,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         options.duration = 0
         options.style = .easeIn
         self.window = UIWindow(frame: Screen.bounds)
-        self.window!.setRootViewController(UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "rootAfterLogin"), options: options)
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let root = storyboard.instantiateViewController(withIdentifier: "rootAfterLogin")
+        self.window!.setRootViewController(AppFABMenuController(rootViewController: root), options: options)
         self.window?.makeKeyAndVisible()
     }
     

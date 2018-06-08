@@ -58,6 +58,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
         if !unfinishedJob{
             setupTimer()
         }
+        prepareMap()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -114,6 +115,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
             self.timer.invalidate()
         }
         popup.addButton(okButton)
+        self.present(popup, animated: true, completion: nil)
     }
     
     func prepareDataForNavigation(completion: @escaping(Bool) -> ()){
@@ -133,7 +135,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
             MyAPIClient.sharedClient.optimizeRoute(locations: job.locList, distributions: distributions) { (waypointData, routeData, error) in
                 if error == nil{
                     if let waypointData = waypointData{
-                        if let waypoints = self.parseDataFromOptimization(waypointData: waypointData){
+                        if let waypoints = self.parseDataFromOptimization(waypointData: waypointData, distributionCount: 2*(job.deliveries.count - job.getUnfinishedDeliveries().count)){
                             self.waypoints = waypoints
                         }
                         else{
@@ -162,7 +164,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     func prepareMap(){
         for delivery in job.deliveries{
             let annotation = MGLPointAnnotation()
-            annotation.coordinate = delivery.origin
+            annotation.coordinate = delivery!.origin
             map.addAnnotation(annotation)
         }
         if let annotations = map.annotations{
@@ -186,7 +188,7 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     
     func prepareCenterView(){
         let pulsator = Pulsator()
-        pulsator.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
+        pulsator.backgroundColor = #colorLiteral(red: 0.1764705926, green: 0.4980392158, blue: 0.7568627596, alpha: 1)
         pulsator.numPulse = 4
         pulsator.animationDuration = 4
         pulsator.radius = 400
@@ -199,8 +201,9 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     
     @IBAction func acceptJobPressed(_ sender: Any) {
         timer.invalidate()
-        service.checkGivenJjobReference { (shouldSegue) in
+        service.checkGivenJobReference { (shouldSegue) in
             if shouldSegue{
+                print(self.waypoints)
                 self.service.setIsTakenOnGivenJobsAndStore(waypointList: self.waypoints)
                 self.countDownView.start(beginingValue: 30)
                 self.performSegue(withIdentifier: "beginJob", sender: self)
@@ -222,18 +225,15 @@ extension FoundJobVC: MGLMapViewDelegate{
         }
         return nil
     }
-    
-    func mapViewDidFinishLoadingMap(_ mapView: MGLMapView) {
-        prepareMap()
-    }
 }
 
 extension FoundJobVC{
     
-    func parseDataFromOptimization(waypointData: [[String: AnyObject]]) -> [BlipWaypoint]?{
+    func parseDataFromOptimization(waypointData: [[String: AnyObject]], distributionCount: Int) -> [BlipWaypoint]?{
         var waypointList = [BlipWaypoint]()
-        var i = 0
-        while waypointList.count < (waypointData.count){
+        var i = 1
+        self.job.locList.remove(at: 0)
+        while waypointList.count < (waypointData.count - 1){
             for element in waypointData{
                 
                 let loc = CLLocation(latitude: (element["location"]! as! [Double])[1], longitude: (element["location"]! as! [Double])[0])
@@ -244,43 +244,41 @@ extension FoundJobVC{
                 }
             }
         }
-        
-        let counts = waypointList.reduce(into: [:]) { counts, word in counts[word, default: 0] += 1 }
-        for key in counts.keys{
-            if counts[key]! > 1{
-                return nil
-            }
-        }
+
         for way in waypointList{
             
-            var dist: Double! = 20000
+            var dist: Double! = 12000
             var index: Int!
-            for loc in job.locList{
-                
+            var tempLocList = job.locList
+            for loc in tempLocList{
+
                 if dist > loc.distance(to: way.coordinate){
                     dist = loc.distance(to: way.coordinate)
                     index = job.locList.index(of: loc)
                 }
             }
-            way.delivery = getDeliveryFor(waypoint: way)
-            if way.delivery.state != nil{
-                way.name = "Delivery"
-            }
-            else{
-                if index == 0{
-                    way.name = "Origin"
-                }
-                else if index%2 == 0{
+            if index < distributionCount{
+                if index%2 == 1{
+                    way.delivery = getDeliveryFor(waypoint: way, type: "Delivery")
                     way.name = "Delivery"
                 }
                 else{
+                    way.delivery = getDeliveryFor(waypoint: way, type: "Pickup")
                     way.name = "Pickup"
                 }
             }
+            else{
+                way.delivery = getDeliveryFor(waypoint: way, type: "Delivery")
+                way.name = "Delivery"
+            }
+            if way.delivery.state != nil{
+                way.name = "Delivery"
+            }
+
+            tempLocList[index] = CLLocationCoordinate2D(latitude: 180, longitude: 180)
         }
         return waypointList
     }
-    
     
     func getWaypointFor(coordinate: CLLocationCoordinate2D) -> BlipWaypoint{
         
@@ -297,37 +295,45 @@ extension FoundJobVC{
         return self.waypoints[index]
     }
     
-    
-    func getDeliveryFor(waypoint: Waypoint) -> Delivery?{
-        var dist: Double! = 20000
+    func getDeliveryFor(waypoint: Waypoint, type: String) -> Delivery?{
+        var dist: Double! = 12000
         var index: Int!
         var i = 0
-        for delivery in job.deliveries{
-            
-            if dist > min(delivery.origin.distance(to: waypoint.coordinate), (delivery.origin.distance(to: waypoint.coordinate))){
-                dist = min(delivery.origin.distance(to: waypoint.coordinate), (delivery.origin.distance(to: waypoint.coordinate)))
-                index = i
-            }
-            i += 1
-        }
-        if let index = index{
-            return job.deliveries[index]
-        }
-        return nil
-    }
-    
-    func instructionsUponArrivalAt(waypoint: Waypoint) -> [String]?{
-        if let delivery = getDeliveryFor(waypoint: waypoint){
-            if let name = waypoint.name{
-                if name == "Pickup"{
-                    return [delivery.pickupMainInstruction, delivery.pickupSubInstruction]
+        switch type {
+        case "Delivery":
+            for delivery in job.deliveries{
+                if delivery == nil{
+                    i += 1
+                    continue
                 }
-                else if name == "Delivery"{
-                    return [delivery.deliveryMainInstruction, delivery.deliverySubInstruction]
+                if dist > min(delivery!.origin.distance(to: waypoint.coordinate), (delivery!.origin.distance(to: waypoint.coordinate))){
+                    dist = min(delivery!.origin.distance(to: waypoint.coordinate), (delivery!.origin.distance(to: waypoint.coordinate)))
+                    index = i
                 }
+                i += 1
             }
+            let delivery = job.deliveries[index]
+            job.deliveries[index] = nil
+            return delivery
+        case "Pickup":
+            for pickup in job.pickups{
+                if pickup == nil{
+                    i += 1
+                    continue
+                }
+                if dist > min(pickup!.origin.distance(to: waypoint.coordinate), (pickup!.origin.distance(to: waypoint.coordinate))){
+                    dist = min(pickup!.origin.distance(to: waypoint.coordinate), (pickup!.origin.distance(to: waypoint.coordinate)))
+                    index = i
+                }
+                i += 1
+            }
+            let pickup = job.pickups[index]
+            job.pickups[index] = nil
+            return pickup
+        default:
+            return nil
         }
-        return nil
+        
     }
     
     func parseRouteData(routeData: [String: AnyObject]){

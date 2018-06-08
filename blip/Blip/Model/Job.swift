@@ -15,7 +15,8 @@ import Kingfisher
 
 class Job{
     
-    var deliveries = [Delivery]()
+    var deliveries = [Delivery?]()
+    var pickups = [Delivery?]()
     var ref: DatabaseReference!
     var locList = [CLLocationCoordinate2D]()
     var unfinishedLocList = [CLLocationCoordinate2D]()
@@ -27,6 +28,11 @@ class Job{
     var jobImages = [UIImage]()
     var otherJobID: String!
     
+    /// <#Description#>
+    ///
+    /// - Parameters:
+    ///   - snapshot: <#snapshot description#>
+    ///   - type: <#type description#>
     init?(snapshot: DataSnapshot, type: String) {
         guard type == "delivery" || type == "other" else {
             return nil
@@ -50,6 +56,7 @@ class Job{
                     else{
                         self.locList.append(delivery.origin)
                         self.locList.append(delivery.deliveryLocation)
+                        self.pickups.append(delivery)
                     }
                     self.deliveries.append(delivery)
                 }
@@ -79,12 +86,15 @@ class Job{
         self.ref = snapshot.ref
     }
     
+    /// Returns unfinished deliveries in a list
+    ///
+    /// - Returns: Array of delivery objects
     func getUnfinishedDeliveries() -> [Delivery]{
         
         var unfinishedDeliveries = [Delivery]()
         for delivery in self.deliveries{
-            if delivery.state != nil{
-                unfinishedDeliveries.append(delivery)
+            if delivery?.state != nil{
+                unfinishedDeliveries.append(delivery!)
             }
         }
         return unfinishedDeliveries

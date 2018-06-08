@@ -29,6 +29,21 @@ class Delivery{
     var pickupNumber: String!
     var state: String?
     
+    /// <#Description#>
+    ///
+    /// - Parameters:
+    ///   - deliveryLocation: <#deliveryLocation description#>
+    ///   - identifier: <#identifier description#>
+    ///   - origin: <#origin description#>
+    ///   - recieverName: <#recieverName description#>
+    ///   - recieverNumber: <#recieverNumber description#>
+    ///   - pickupNumber: <#pickupNumber description#>
+    ///   - pickupMainInstruction: <#pickupMainInstruction description#>
+    ///   - pickupSubInstruction: <#pickupSubInstruction description#>
+    ///   - deliveryMainInstruction: <#deliveryMainInstruction description#>
+    ///   - deliverySubInstruction: <#deliverySubInstruction description#>
+    ///   - storeID: <#storeID description#>
+    ///   - earnings: <#earnings description#>
     init(deliveryLocation: CLLocationCoordinate2D, identifier: String, origin: CLLocationCoordinate2D, recieverName: String, recieverNumber: String, pickupNumber: String, pickupMainInstruction: String, pickupSubInstruction: String, deliveryMainInstruction: String, deliverySubInstruction: String, storeID:String, earnings: Float) {
         self.deliveryLocation = deliveryLocation
         self.identifier = identifier
@@ -67,6 +82,9 @@ class Delivery{
         })
     }
     
+    /// <#Description#>
+    ///
+    /// - Parameter snapshot: <#snapshot description#>
     init?(snapshot: DataSnapshot) {
         guard !snapshot.key.isEmpty else {
             return nil
@@ -121,6 +139,10 @@ class Delivery{
         })
     }
     
+    /// <#Description#>
+    ///
+    /// - Parameter placemark: <#placemark description#>
+    /// - Returns: <#return value description#>
     func parseAddress(placemark: CLPlacemark)->String{
         // put a space between "4" and "Melrose Place"
         let firstSpace = (placemark.subThoroughfare != nil && placemark.thoroughfare != nil) ? " " : ""

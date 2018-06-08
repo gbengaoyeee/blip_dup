@@ -26,7 +26,6 @@ class SearchForJobVC: UIViewController {
     @IBOutlet weak var goButton: RaisedButton!
     @IBOutlet var map: MGLMapView!
     @IBOutlet weak var testJobPost: UIButton!
-    @IBOutlet weak var menu: RaisedButton!
     @IBOutlet weak var earningsLoader: UIView!
     
     let pulsator = Pulsator()
@@ -61,7 +60,6 @@ class SearchForJobVC: UIViewController {
     override func viewWillLayoutSubviews() {
         prepareGoButton()
         prepareBalanceLabel()
-        prepareMenuButton()
     }
     
     func prepareBalanceLabel(){
@@ -92,12 +90,6 @@ class SearchForJobVC: UIViewController {
                 self.earningsLabel.isHidden = false
             }
         }
-    }
-    
-    func prepareMenuButton(){
-        menu.makeCircular()
-        menu.ApplyOuterShadowToButton()
-        menu.setIcon(icon: .googleMaterialDesign(.accountBox), iconSize: 30, color: UIColor.white, backgroundColor: #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1), forState: .normal)
     }
     
     func checkLocationServices() -> Bool{
@@ -177,16 +169,10 @@ class SearchForJobVC: UIViewController {
         }
     }
     
-    @IBAction func menuPressed(_ sender: Any) {
-        let sb = UIStoryboard(name: "Main", bundle: nil)
-        let vc = sb.instantiateViewController(withIdentifier: "settingsVC")
-        self.present(vc, animated: true, completion: nil)
-    }
-    
     @IBAction func postTestJob(_ sender: Any) {
         service.getCurrentUserInfo { (user) in
-            let deliveryLocation = self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 300, max: 500)
-            let pickupLocation = self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 300, max: 500)
+            let deliveryLocation = self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 2000)
+            let pickupLocation = self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 500, max: 1200)
             MyAPIClient.sharedClient.makeDeliveryRequest(storeID: "-LDCTqOOk7e1GNlpQcGR", deliveryLat: deliveryLocation.latitude, deliveryLong: deliveryLocation.longitude, deliveryMainInstruction: "Deliver to Srikanth Srinivas", deliverySubInstruction: "Go to main entrace, and buzz code 2003", originLat: pickupLocation.latitude, originLong: pickupLocation.longitude, pickupMainInstruction: "Pickup from xyz", pickupSubInstruction: "Go to front entrance of xyz, order number 110021 is waiting for you", recieverName: "Srikanth Srinivas", recieverNumber: "+16478229867", pickupNumber: "+16479839837")
         }
     }
