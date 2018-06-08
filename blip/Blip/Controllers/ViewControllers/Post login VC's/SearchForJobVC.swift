@@ -26,7 +26,6 @@ class SearchForJobVC: UIViewController {
     @IBOutlet weak var goButton: RaisedButton!
     @IBOutlet var map: MGLMapView!
     @IBOutlet weak var testJobPost: UIButton!
-    @IBOutlet weak var menu: RaisedButton!
     @IBOutlet weak var earningsLoader: UIView!
     
     let pulsator = Pulsator()
@@ -61,7 +60,6 @@ class SearchForJobVC: UIViewController {
     override func viewWillLayoutSubviews() {
         prepareGoButton()
         prepareBalanceLabel()
-        prepareMenuButton()
     }
     
     func prepareBalanceLabel(){
@@ -92,12 +90,6 @@ class SearchForJobVC: UIViewController {
                 self.earningsLabel.isHidden = false
             }
         }
-    }
-    
-    func prepareMenuButton(){
-        menu.makeCircular()
-        menu.setIcon(icon: .googleMaterialDesign(.accountBox), iconSize: 30, color: UIColor.white, backgroundColor: #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1), forState: .normal)
-        menu.ApplyOuterShadowToButton()
     }
     
     func checkLocationServices() -> Bool{
@@ -175,12 +167,6 @@ class SearchForJobVC: UIViewController {
                 self.startButtonPulse()
             }
         }
-    }
-    
-    @IBAction func menuPressed(_ sender: Any) {
-        let sb = UIStoryboard(name: "Main", bundle: nil)
-        let vc = sb.instantiateViewController(withIdentifier: "settingsVC")
-        self.present(vc, animated: true, completion: nil)
     }
     
     @IBAction func postTestJob(_ sender: Any) {

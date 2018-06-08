@@ -22,7 +22,6 @@
 		3B537318202EB4320020F3B1 /* BlipUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537317202EB4320020F3B1 /* BlipUITests.swift */; };
 		3B53732E202EBA6B0020F3B1 /* ServiceCalls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537326202EBA690020F3B1 /* ServiceCalls.swift */; };
 		3B53732F202EBA6B0020F3B1 /* Job.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537327202EBA6A0020F3B1 /* Job.swift */; };
-		3B537330202EBA6B0020F3B1 /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537328202EBA6A0020F3B1 /* AppError.swift */; };
 		3B537331202EBA6B0020F3B1 /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B537329202EBA6A0020F3B1 /* HelperFunctions.swift */; };
 		3B537334202EBA6B0020F3B1 /* BlipUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53732C202EBA6A0020F3B1 /* BlipUser.swift */; };
 		3B537335202EBA6B0020F3B1 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53732D202EBA6B0020F3B1 /* LocationManager.swift */; };
@@ -123,7 +122,6 @@
 		3B537319202EB4320020F3B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3B537326202EBA690020F3B1 /* ServiceCalls.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceCalls.swift; sourceTree = "<group>"; };
 		3B537327202EBA6A0020F3B1 /* Job.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Job.swift; sourceTree = "<group>"; };
-		3B537328202EBA6A0020F3B1 /* AppError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppError.swift; sourceTree = "<group>"; };
 		3B537329202EBA6A0020F3B1 /* HelperFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelperFunctions.swift; sourceTree = "<group>"; };
 		3B53732C202EBA6A0020F3B1 /* BlipUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlipUser.swift; sourceTree = "<group>"; };
 		3B53732D202EBA6B0020F3B1 /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
@@ -280,7 +278,6 @@
 		3B537325202EBA480020F3B1 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				3B537328202EBA6A0020F3B1 /* AppError.swift */,
 				3B53732C202EBA6A0020F3B1 /* BlipUser.swift */,
 				3B537329202EBA6A0020F3B1 /* HelperFunctions.swift */,
 				3B537327202EBA6A0020F3B1 /* Job.swift */,
@@ -873,7 +870,6 @@
 				5FC65BB420C890F3000DECFC /* EarningsVC.swift in Sources */,
 				3B5372F8202EB4320020F3B1 /* AppDelegate.swift in Sources */,
 				F3D21EE420857E2100832544 /* BlipWaypoint.swift in Sources */,
-				3B537330202EBA6B0020F3B1 /* AppError.swift in Sources */,
 				3B537381202EC0DC0020F3B1 /* ProfilePicture.swift in Sources */,
 				F30D60CB207B19930022F90D /* Delivery.swift in Sources */,
 				3B537397202EC2210020F3B1 /* Extensions.swift in Sources */,

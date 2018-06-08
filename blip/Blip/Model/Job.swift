@@ -28,6 +28,11 @@ class Job{
     var jobImages = [UIImage]()
     var otherJobID: String!
     
+    /// <#Description#>
+    ///
+    /// - Parameters:
+    ///   - snapshot: <#snapshot description#>
+    ///   - type: <#type description#>
     init?(snapshot: DataSnapshot, type: String) {
         guard type == "delivery" || type == "other" else {
             return nil
@@ -51,9 +56,9 @@ class Job{
                     else{
                         self.locList.append(delivery.origin)
                         self.locList.append(delivery.deliveryLocation)
+                        self.pickups.append(delivery)
                     }
                     self.deliveries.append(delivery)
-                    self.pickups.append(delivery)
                 }
             }
             for location in unfinishedLocList{
@@ -81,6 +86,9 @@ class Job{
         self.ref = snapshot.ref
     }
     
+    /// Returns unfinished deliveries in a list
+    ///
+    /// - Returns: Array of delivery objects
     func getUnfinishedDeliveries() -> [Delivery]{
         
         var unfinishedDeliveries = [Delivery]()

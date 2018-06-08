@@ -71,7 +71,7 @@ class LoginVC: UIViewController {
         }
         connectivity?.whenUnreachable = {_ in
             DispatchQueue.main.async {
-                print("NO INTERNET WHEN I STARTED")
+                print("Connection error")
             }
         }
         NotificationCenter.default.addObserver(self, selector: #selector(connectivityChanged), name: Notification.Name.reachabilityChanged, object: connectivity)
@@ -86,7 +86,7 @@ class LoginVC: UIViewController {
         let connectivity = notification.object as! Connectivity
         if (connectivity.connection == .wifi || connectivity.connection == .cellular){
             self.internet = true
-            print("REGAINED CONNECTION")
+            print("Regained Connection")
         }else{
             self.internet = false
             print("Connection Gone")
