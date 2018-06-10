@@ -28,6 +28,7 @@ class AppFABMenuController: FABMenuController{
         prepareFABButton()
         prepareLogoutFabMenuItem()
         prepareProfilePageFabMenuItem()
+        preparePrivacy()
         prepareFABMenu()
     }
 }
