@@ -30,8 +30,8 @@ target 'Blip' do
   pod 'SRCountdownTimer'
   pod 'Pulsator'
   pod 'Eureka'
-  pod "Floaty"
-  pod "MapboxNavigation"
+  pod 'Floaty'
+  pod 'MapboxNavigation'
   pod 'Pulley'
   pod 'SwipeCellKit'
 

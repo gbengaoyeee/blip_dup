@@ -22,6 +22,7 @@
 #import "MMEEventLogReportViewController.h"
 #import "MMEEventsConfiguration.h"
 #import "MMEEventsManager.h"
+#import "MMEEventsService.h"
 #import "MMELocationManager.h"
 #import "MMENSDateWrapper.h"
 #import "MMENSURLSessionWrapper.h"
