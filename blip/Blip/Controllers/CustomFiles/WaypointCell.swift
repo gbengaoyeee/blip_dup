@@ -80,7 +80,7 @@ class WaypointCell: SwipeTableViewCell{
         else{
             location = self.delivery.deliveryLocation
         }
-        let regionDistance:CLLocationDistance = 1000
+        let regionDistance:CLLocationDistance = 50
         let regionSpan = MKCoordinateRegionMakeWithDistance(location!, regionDistance, regionDistance)
         let options = [MKLaunchOptionsMapCenterKey: NSValue(mkCoordinate: regionSpan.center), MKLaunchOptionsMapSpanKey: NSValue(mkCoordinateSpan: regionSpan.span) ]
         let placemark = MKPlacemark(coordinate: location!)
