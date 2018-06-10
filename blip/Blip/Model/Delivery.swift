@@ -29,7 +29,7 @@ class Delivery{
     var pickupNumber: String!
     var state: String?
     
-    /// <#Description#>
+    /// Constructs a delivery object
     ///
     /// - Parameters:
     ///   - deliveryLocation: <#deliveryLocation description#>
@@ -82,9 +82,9 @@ class Delivery{
         })
     }
     
-    /// <#Description#>
+    /// Creates a delivery object frmo a firebase snapshot
     ///
-    /// - Parameter snapshot: <#snapshot description#>
+    /// - Parameter snapshot: A FIRDataSnapshot object with the dleivery values
     init?(snapshot: DataSnapshot) {
         guard !snapshot.key.isEmpty else {
             return nil
@@ -97,7 +97,7 @@ class Delivery{
         let originLong = Double(deliveryValues!["originLong"] as! String)!
         self.deliveryLocation = CLLocationCoordinate2D(latitude: deliveryLat, longitude: deliveryLong)
         let deliveryEarnings = deliveryValues!["chargeAmount"] as! NSNumber
-        self.earnings = (deliveryEarnings.floatValue/100)
+        self.earnings = (deliveryEarnings.floatValue/100)*0.9
         self.identifier = snapshot.key
         if let state = deliveryValues!["state"] as? String{
             self.state = state
@@ -139,10 +139,10 @@ class Delivery{
         })
     }
     
-    /// <#Description#>
+    /// Parses an address from a CLPlacemark
     ///
-    /// - Parameter placemark: <#placemark description#>
-    /// - Returns: <#return value description#>
+    /// - Parameter placemark: A CLPlacemark object to parse
+    /// - Returns: Returns a human readable address
     func parseAddress(placemark: CLPlacemark)->String{
         // put a space between "4" and "Melrose Place"
         let firstSpace = (placemark.subThoroughfare != nil && placemark.thoroughfare != nil) ? " " : ""

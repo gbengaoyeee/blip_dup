@@ -173,7 +173,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         print("applicationWillTerminate")
     }
 
-    func messaging(_ messaging: Messaging, didRefreshRegistrationToken fcmToken: String) {
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
         guard let newToken = InstanceID.instanceID().token() else{return}
         AppDelegate.DEVICEID = newToken
         connectToFCM()
