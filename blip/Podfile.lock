@@ -65,14 +65,14 @@ PODS:
     - Turf (~> 0.1)
   - MapboxDirections.swift (0.21.0):
     - Polyline (~> 4.2)
-  - MapboxMobileEvents (0.4.0)
+  - MapboxMobileEvents (0.4.1)
   - MapboxNavigation (0.18.0):
     - Mapbox-iOS-SDK (~> 4.0)
     - MapboxCoreNavigation (= 0.18.0)
     - MapboxSpeech (~> 0.0.1)
     - Solar (~> 2.1)
   - MapboxSpeech (0.0.1)
-  - MarqueeLabel/Swift (3.1.5)
+  - MarqueeLabel/Swift (3.1.6)
   - Material (2.15.0):
     - Material/Core (= 2.15.0)
   - Material/Core (2.15.0):
@@ -159,10 +159,10 @@ SPEC CHECKSUMS:
   Mapbox-iOS-SDK: 02b15b70167d54b45fdc059737672a3a68cd780f
   MapboxCoreNavigation: 1b953ad76fc7e7d5fd33073f42674269b53682e8
   MapboxDirections.swift: 14d32d1601834e15c930cbab4201e57b0f7a2218
-  MapboxMobileEvents: e71cf788a95fa0c01ad6ce17fd5efd13140af5ff
+  MapboxMobileEvents: c198687e2ce67b1a98bd504c260aef35ace78ae2
   MapboxNavigation: 1d15b9a2e69df0278718d9f71a6a0215f4c6839b
   MapboxSpeech: 6cc9b3d53adc2988af3ebc704dd17907b84a3f9f
-  MarqueeLabel: e8403a0d6eff498ab8580f58a0088c1903d90120
+  MarqueeLabel: 0c41f08ef5773e29c0f71064a8fa788a2fd8b365
   Material: 00e32bb5e61b3f749044897b2d93acd8bf33faa4
   Motion: 9f74d115d7f72bb5380a8e3cde2f8a1fc898ac36
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3

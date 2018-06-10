@@ -14,6 +14,7 @@ class AppFABMenuController: FABMenuController{
     fileprivate var logoutItem: FABMenuItem!
     fileprivate var unconfirmedItem: FABMenuItem!
     fileprivate var profilePageItem: FABMenuItem!
+    fileprivate var privacyPolicy: FABMenuItem!
 
     var currUser: BlipUser?
     let service = ServiceCalls.instance
@@ -67,7 +68,17 @@ extension AppFABMenuController {
         logoutItem.fabButton.backgroundColor = UIColor.red
         logoutItem.fabButton.addTarget(self, action: #selector(handleLogout(button:)), for: .touchUpInside)
     }
-
+    
+    fileprivate func preparePrivacy(){
+        privacyPolicy = FABMenuItem()
+        privacyPolicy.title = "Privacy Policy"
+        privacyPolicy.fabButton.image = Icon.cm.clear
+        privacyPolicy.fabButton.tintColor = .white
+        privacyPolicy.fabButton.pulseColor = .white
+        privacyPolicy.fabButton.backgroundColor = UIColor.red
+        privacyPolicy.fabButton.addTarget(self, action: #selector(handlePrivacy(button:)), for: .touchUpInside)
+    }
+    
     fileprivate func prepareProfilePageFabMenuItem(){
         profilePageItem = FABMenuItem()
         profilePageItem.title = "Verify Account"
@@ -81,7 +92,7 @@ extension AppFABMenuController {
 
     fileprivate func prepareFABMenu() {
         fabMenu.fabButton = fabButton
-        fabMenu.fabMenuItems = [logoutItem, profilePageItem]
+        fabMenu.fabMenuItems = [logoutItem, profilePageItem, privacyPolicy]
         fabMenuBacking = .none
         fabMenu.fabMenuDirection = .down
         view.layout(fabMenu)
@@ -100,6 +111,18 @@ extension AppFABMenuController {
         self.present(settingsPage, animated: true, completion: nil)
     }
 
+    @objc fileprivate func handlePrivacy(button: UIButton){
+        fabMenu.fabButton?.animate(.rotate(0))
+        fabMenu.close()
+        guard let url = URL(string: "https://www.blip.delivery/privacy-policy") else {
+            return
+        }
+        if #available(iOS 10.0, *) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        } else {
+            UIApplication.shared.openURL(url)
+        }
+    }
     @objc fileprivate func handleLogout(button: UIButton) {
         fabMenu.close()
         fabMenu.fabButton?.animate(.rotate(0))
