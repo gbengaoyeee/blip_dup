@@ -114,7 +114,7 @@ extension AppFABMenuController {
     @objc fileprivate func handlePrivacy(button: UIButton){
         fabMenu.fabButton?.animate(.rotate(0))
         fabMenu.close()
-        guard let url = URL(string: "http://www.blip.delivery") else {
+        guard let url = URL(string: "https://www.blip.delivery/privacy-policy") else {
             return
         }
         if #available(iOS 10.0, *) {
