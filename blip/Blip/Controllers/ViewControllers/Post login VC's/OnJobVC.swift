@@ -29,16 +29,17 @@ class OnJobVC: UIViewController {
     var type:String!
     let locationManager = CLLocationManager()
     var currentLocation:CLLocationCoordinate2D!
-    var distance = 5000000
+    var distance = 50
     var distanceToEvent: Double!
     var gradient: CAGradientLayer!
     
     override func viewDidLoad() {
-
         super.viewDidLoad()
+        NotificationCenter.default.addObserver(self, selector:#selector(prepareLocationUsage), name:
+            NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+        prepareLocationUsage()
         prepareHeroAnimations()
         prepareWaypointData()
-        prepareLocationUsage()
         prepareTableView()
         prepareBlur()
     }
@@ -58,7 +59,7 @@ class OnJobVC: UIViewController {
         gradient = CAGradientLayer()
         gradient.frame = map.bounds
         gradient.colors = [UIColor.clear.cgColor, UIColor.black.cgColor, UIColor.black.cgColor, UIColor.clear.cgColor]
-        gradient.locations = [0, 0.2, 0.9, 1]
+        gradient.locations = [0, 0.2, 0.95, 1]
         map.layer.mask = gradient
     }
     
@@ -67,18 +68,28 @@ class OnJobVC: UIViewController {
         self.type = waypoints[legIndex].name!
     }
     
-    func prepareLocationUsage(){
+    @objc func prepareLocationUsage(){
         
+        let errorPopup = PopupDialog(title: "Error", message: "We cannot determine your location. Please go to settings -> privacy -> enable location services for blip, to resume your current job", gestureDismissal: false)
         // Ask for Authorisation from the User.
         self.locationManager.requestAlwaysAuthorization()
-        
         // For use in foreground
         self.locationManager.requestWhenInUseAuthorization()
         
         if CLLocationManager.locationServicesEnabled() {
+            switch CLLocationManager.authorizationStatus(){
+
+            case .restricted, .denied, .notDetermined:
+                present(errorPopup, animated: true, completion: nil)
+            case .authorizedAlways, .authorizedWhenInUse:
+                self.presentedViewController?.dismiss(animated: true, completion: nil)
+            }
             locationManager.delegate = self
             locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
             locationManager.startUpdatingLocation()
+        }
+        else{
+            present(errorPopup, animated: true, completion: nil)
         }
     }
     
@@ -248,7 +259,7 @@ extension OnJobVC:CLLocationManagerDelegate{
                 self.distanceToEvent = self.delivery.deliveryLocation.distance(to: currentLocation.coordinate)
             }
         }
-        guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
+        guard let _: CLLocationCoordinate2D = manager.location?.coordinate else { return }
         self.currentLocation = locations.first?.coordinate
     }
 }

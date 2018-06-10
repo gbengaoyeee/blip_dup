@@ -135,7 +135,6 @@ class InstructionVC: UIViewController {
             }
             else{
                 popup.dismiss()
-                print(self.navViewController.navigationController)
                 self.dismiss(animated: true, completion: {
                     self.navViewController.navigationController?.popToRootViewController(animated: true)
                 })

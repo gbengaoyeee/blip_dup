@@ -98,7 +98,6 @@ class MyAPIClient: NSObject {
                         completion(nil, nil)
                         break
                     case .failure:
-                        print(response.result.value)
                         completion(nil, response.result.value)
                         break
                     }
@@ -142,7 +141,6 @@ class MyAPIClient: NSObject {
                     }
                     break
                 case .failure:
-                    print(resp.result.value)
                     completion(nil)
                     break
                 }
@@ -180,13 +178,9 @@ class MyAPIClient: NSObject {
                 .responseString { (resp) in
                     switch resp.result{
                     case .success:
-                        print("Result:", resp.result.value)
-                        print("Result:", resp.response?.statusCode)
                         completion(nil, true)
                         break
-                    case .failure(let error):
-                        print("Result:",resp.result)
-                        print("Result:",resp.response?.statusCode)
+                    case .failure( _):
                         completion(resp.response?.statusCode, nil)
                         break
                     }

@@ -67,13 +67,6 @@ function jobCountDown(emailHash) {
         if (key){
             clearInterval(startTime);
             console.log("Timer killed");
-            var time = Math.floor(new Date() / 1000);
-            snapshot.forEach(function(childSnapshot){
-                console.log("Updating time", childSnapshot);
-                childSnapshot.ref.update({
-                    "takenAt": time
-                })
-            })
             return
         }
     })

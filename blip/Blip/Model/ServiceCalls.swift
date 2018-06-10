@@ -100,7 +100,7 @@ class ServiceCalls{
     func findJob(myLocation: CLLocationCoordinate2D, userHash: String, completion: @escaping(Int?, Job?) -> ()){
         self.userRefHandle = userRef.child(emailHash).observe(.childAdded, with: { (snap) in
             if snap.key == "givenJob"{
-                if let jobID = snap.value as? [String: AnyObject]{
+                if (snap.value as? [String: AnyObject]) != nil{
                     let j = Job(snapshot: snap, type: "delivery")
                     j?.locList.insert(myLocation, at: 0)
                     self.userRef.removeObserver(withHandle: self.userRefHandle)
@@ -163,11 +163,12 @@ class ServiceCalls{
     func completedJob(delivery:Delivery, type:String, deliveredTo: String? = nil){
         let deliveryID = delivery.identifier!
         let storeID = delivery.store.storeID
+        let time = Int(NSDate().timeIntervalSince1970.rounded())
         if type == "Pickup"{
             let ref = Database.database().reference(withPath: "/Couriers/\(self.emailHash!)/givenJob/\(deliveryID)")
             let storeRef = Database.database().reference(withPath: "/stores/\(storeID)/deliveries/\(deliveryID)")
-            ref.updateChildValues(["state":"pickup"])
-            storeRef.updateChildValues(["state":"pickup"])
+            ref.updateChildValues(["state":"pickup", "timePickedUp": time])
+            storeRef.updateChildValues(["state":"pickup", "timePickedUp": time])
             //Text the receiver as soon as the pickup is complete
             let name = Auth.auth().currentUser!.displayName!
             let number = delivery.receiverPhoneNumber!
@@ -183,6 +184,7 @@ class ServiceCalls{
             values["deliveredTo"] = deliveredTo!
             values["isCompleted"] = true
             values["state"] = "delivery"
+            values["timeDelivered"] = time
             let ref = Database.database().reference(withPath: "/Couriers/\(self.emailHash!)/givenJob/\(deliveryID)")
             let storeRef = Database.database().reference(withPath: "/stores/\(storeID)/deliveries/\(deliveryID)")
             storeRef.updateChildValues(values)
@@ -332,8 +334,8 @@ class ServiceCalls{
         let profileImgRef = storageRef.child("profile_image").child(emailHash)
         
         if let image = image, let imageData = UIImageJPEGRepresentation(image, 0.1){
-            let uploadTask = profileImgRef.putData(imageData, metadata: nil) { (metadata, error) in
-                guard let metadata = metadata else {
+            _ = profileImgRef.putData(imageData, metadata: nil) { (metadata, error) in
+                guard metadata != nil else {
                     // Uh-oh, an error occurred!
                     print("MetaUh-oh, an error occurred!")
                     return
@@ -373,7 +375,6 @@ class ServiceCalls{
     func updateCurrentDeviceToken(){
         if let credentials = self.userDefaults.dictionary(forKey: "loginCredentials"){
             if let device = credentials["currentDevice"] as? String{
-                print("TOKEN", device)
                 let token = ["currentDevice": device]
                 userRef.child(emailHash).updateChildValues(token)
             }
@@ -446,11 +447,10 @@ class ServiceCalls{
         userRef.child(emailHash).child("givenJob").observeSingleEvent(of: .value) { (snapshot) in
             if snapshot.exists(){
                 if snapshot.key == "givenJob"{
-                    if let jobID = snapshot.value as? [String: AnyObject]{
+                    if (snapshot.value as? [String: AnyObject]) != nil{
                         completion(true)
                     }
                 }
-                
             }else{
                 completion(false)
             }
@@ -466,7 +466,7 @@ class ServiceCalls{
         userRef.child(emailHash).child("givenJob").observeSingleEvent(of: .value) { (snapshot) in
             if snapshot.exists(){
                 if snapshot.key == "givenJob"{
-                    if let jobID = snapshot.value as? [String: AnyObject]{
+                    if (snapshot.value as? [String: AnyObject]) != nil{
                         
                         let j = Job(snapshot: snapshot, type: "delivery")
                         j?.locList.insert(myLocation, at: 0)

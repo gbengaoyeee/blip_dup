@@ -187,7 +187,6 @@ class SettingsVC: FormViewController {
         else{
             return false
         }
-        return false
     }
     
     ///* Validates a Account Number

@@ -118,7 +118,7 @@ class ProfilePicture: UIViewController, UIImagePickerControllerDelegate, UINavig
             return
         }
         
-        let storageRef = Storage.storage().reference(forURL: "gs://blip-c1e83.appspot.com/").child("profile_image").child(helper.MD5(string: (Auth.auth().currentUser?.email)!))
+        _ = Storage.storage().reference(forURL: "gs://blip-c1e83.appspot.com/").child("profile_image").child(helper.MD5(string: (Auth.auth().currentUser?.email)!))
         
         if !userUploadedPicture{
             let errorPopup = PopupDialog(title: "Error", message: "Please upload a profile picture")

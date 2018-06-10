@@ -10,12 +10,10 @@ import UIKit
 import Mapbox
 import CoreLocation
 import Material
-import Floaty
 import Pulsator
 import NotificationBannerSwift
 import Lottie
 import Kingfisher
-//REMOVE ALL BELOW
 import PopupDialog
 import Firebase
 
@@ -40,9 +38,10 @@ class SearchForJobVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isHidden = true
-        locationManager.delegate = self
-        locationManager.startUpdatingLocation()
         goButton.isUserInteractionEnabled = false
+        prepareLocationServices()
+        NotificationCenter.default.addObserver(self, selector:#selector(prepareLocationServices), name:
+            NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -60,6 +59,31 @@ class SearchForJobVC: UIViewController {
     override func viewWillLayoutSubviews() {
         prepareGoButton()
         prepareBalanceLabel()
+    }
+    
+    @objc func prepareLocationServices(){
+        
+        let errorPopup = PopupDialog(title: "Error", message: "We cannot determine your location. Please go to settings -> privacy -> enable location services for blip, to resume your current job", gestureDismissal: false)
+        // Ask for Authorisation from the User.
+        self.locationManager.requestAlwaysAuthorization()
+        // For use in foreground
+        self.locationManager.requestWhenInUseAuthorization()
+        
+        if CLLocationManager.locationServicesEnabled() {
+            switch CLLocationManager.authorizationStatus(){
+                
+            case .restricted, .denied, .notDetermined:
+                present(errorPopup, animated: true, completion: nil)
+            case .authorizedAlways, .authorizedWhenInUse:
+                self.presentedViewController?.dismiss(animated: true, completion: nil)
+            }
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+            locationManager.startUpdatingLocation()
+        }
+        else{
+            present(errorPopup, animated: true, completion: nil)
+        }
     }
     
     func prepareBalanceLabel(){
@@ -166,14 +190,6 @@ class SearchForJobVC: UIViewController {
             else{
                 self.startButtonPulse()
             }
-        }
-    }
-    
-    @IBAction func postTestJob(_ sender: Any) {
-        service.getCurrentUserInfo { (user) in
-            let deliveryLocation = self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 1000, max: 2000)
-            let pickupLocation = self.generateRandomCoordinates(currentLoc: self.currentLocation, min: 500, max: 1200)
-            MyAPIClient.sharedClient.makeDeliveryRequest(storeID: "-LDCTqOOk7e1GNlpQcGR", deliveryLat: deliveryLocation.latitude, deliveryLong: deliveryLocation.longitude, deliveryMainInstruction: "Deliver to Srikanth Srinivas", deliverySubInstruction: "Go to main entrace, and buzz code 2003", originLat: pickupLocation.latitude, originLong: pickupLocation.longitude, pickupMainInstruction: "Pickup from xyz", pickupSubInstruction: "Go to front entrance of xyz, order number 110021 is waiting for you", recieverName: "Srikanth Srinivas", recieverNumber: "+16478229867", pickupNumber: "+16479839837")
         }
     }
     
@@ -303,52 +319,4 @@ extension SearchForJobVC: CLLocationManagerDelegate{
         
     }
 }
-
-extension SearchForJobVC: FloatyDelegate{
-    
-    func floatyWillOpen(_ floaty: Floaty) {
-
-    }
-    
-    func floatyWillClose(_ floaty: Floaty) {
-
-    }
-    
-    fileprivate func prepareAndReturnLogout() -> FloatyItem{
-        
-        let item = FloatyItem()
-        item.buttonColor = UIColor.white
-        item.icon = UIImage(icon: .icofont(.logout), size: CGSize(size: 25), textColor: #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1), backgroundColor: UIColor.white)
-        item.title = "Logout"
-        item.titleColor = UIColor.darkText
-        item.handler = { item in
-            do{
-                try Auth.auth().signOut()
-                print("Logged out")
-            } catch let signOutError as NSError{
-                let signOutErrorPopup = PopupDialog(title: "Error", message: "Error signing you out, try again later" + signOutError.localizedDescription )
-                self.present(signOutErrorPopup, animated: true, completion: nil)
-                print ("Error signing out: %@", signOutError)
-            }
-        }
-        return item
-    }
-    
-    fileprivate func prepareAndReturnSettings() -> FloatyItem{
-        
-        let item = FloatyItem()
-        item.buttonColor = UIColor.white
-        item.icon = UIImage(icon: .icofont(.verificationCheck), size: CGSize(size: 25), textColor: #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1), backgroundColor: UIColor.white)
-        item.title = "Update Account"
-        item.titleColor = UIColor.darkText
-        let sb = UIStoryboard.init(name: "Main", bundle: nil)
-        let settingsPage = sb.instantiateViewController(withIdentifier: "settings") as! SettingsVC
-        self.present(settingsPage, animated: true, completion: nil)
-        item.handler = { item in
-            self.present(settingsPage, animated: true, completion: nil)
-        }
-        return item
-    }
-}
-
 
