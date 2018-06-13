@@ -29,7 +29,7 @@
                         <viewControllerLayoutGuide type="top" id="rNL-Jd-a3I"/>
                         <viewControllerLayoutGuide type="bottom" id="K1G-g3-tI5"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="fZY-5S-p5t">
+                    <view key="view" contentMode="scaleToFill" id="fZY-5S-p5t" customClass="PastelView">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
