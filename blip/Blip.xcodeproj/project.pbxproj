@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3B0FA90720D174010075BFA3 /* WebSignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0FA90620D174010075BFA3 /* WebSignUpVC.swift */; };
+		3B0FA90920D18CDE0075BFA3 /* WebPrivacyPolicyVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0FA90820D18CDD0075BFA3 /* WebPrivacyPolicyVC.swift */; };
 		3B14B533202ED1EA00B1C015 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B14B532202ED1EA00B1C015 /* GoogleService-Info.plist */; };
 		3B14B536202ED43800B1C015 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B14B535202ED43800B1C015 /* MapKit.framework */; };
 		3B14B538202ED67500B1C015 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B14B537202ED67400B1C015 /* SystemConfiguration.framework */; };
@@ -99,6 +100,7 @@
 		0955C2EBB0480CDAC21F69EA /* Pods_BlipTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BlipTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D8353DEBAEA5D3C47B139F5 /* Pods-BlipTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlipTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BlipTests/Pods-BlipTests.debug.xcconfig"; sourceTree = "<group>"; };
 		3B0FA90620D174010075BFA3 /* WebSignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSignUpVC.swift; sourceTree = "<group>"; };
+		3B0FA90820D18CDD0075BFA3 /* WebPrivacyPolicyVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebPrivacyPolicyVC.swift; sourceTree = "<group>"; };
 		3B14B532202ED1EA00B1C015 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3B14B534202ED43000B1C015 /* Blip.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Blip.entitlements; sourceTree = "<group>"; };
 		3B14B535202ED43800B1C015 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -434,6 +436,7 @@
 				F3D21EE7208AE39500832544 /* InstructionVC.swift */,
 				3BB974E720C3181C00761E0A /* OnJobVC.swift */,
 				5FC65BB320C890F3000DECFC /* EarningsVC.swift */,
+				3B0FA90820D18CDD0075BFA3 /* WebPrivacyPolicyVC.swift */,
 			);
 			path = "Post login VC's";
 			sourceTree = "<group>";
@@ -893,6 +896,7 @@
 				3B53739B202EC2210020F3B1 /* CustomAnnotationView.swift in Sources */,
 				3BF9F1272096F2D400BD7E6B /* Store.swift in Sources */,
 				3B537387202EC0DC0020F3B1 /* SplashViewController.swift in Sources */,
+				3B0FA90920D18CDE0075BFA3 /* WebPrivacyPolicyVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
