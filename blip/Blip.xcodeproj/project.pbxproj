@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3B0FA90720D174010075BFA3 /* WebSignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0FA90620D174010075BFA3 /* WebSignUpVC.swift */; };
 		3B14B533202ED1EA00B1C015 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B14B532202ED1EA00B1C015 /* GoogleService-Info.plist */; };
 		3B14B536202ED43800B1C015 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B14B535202ED43800B1C015 /* MapKit.framework */; };
 		3B14B538202ED67500B1C015 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B14B537202ED67400B1C015 /* SystemConfiguration.framework */; };
@@ -97,6 +98,7 @@
 /* Begin PBXFileReference section */
 		0955C2EBB0480CDAC21F69EA /* Pods_BlipTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BlipTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D8353DEBAEA5D3C47B139F5 /* Pods-BlipTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlipTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BlipTests/Pods-BlipTests.debug.xcconfig"; sourceTree = "<group>"; };
+		3B0FA90620D174010075BFA3 /* WebSignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSignUpVC.swift; sourceTree = "<group>"; };
 		3B14B532202ED1EA00B1C015 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3B14B534202ED43000B1C015 /* Blip.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Blip.entitlements; sourceTree = "<group>"; };
 		3B14B535202ED43800B1C015 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -407,6 +409,7 @@
 				3B53736A202EC0DA0020F3B1 /* ProfilePicture.swift */,
 				3BCD8443207416E70079B4D4 /* NewSignUpVC.swift */,
 				3BCD844520747C130079B4D4 /* ChoosePictureVC.swift */,
+				3B0FA90620D174010075BFA3 /* WebSignUpVC.swift */,
 			);
 			path = "Login & Sign up";
 			sourceTree = "<group>";
@@ -863,6 +866,7 @@
 				3B537376202EC0DC0020F3B1 /* CustomAPIAdapter.swift in Sources */,
 				3BCD844620747C130079B4D4 /* ChoosePictureVC.swift in Sources */,
 				3BCD8444207416E70079B4D4 /* NewSignUpVC.swift in Sources */,
+				3B0FA90720D174010075BFA3 /* WebSignUpVC.swift in Sources */,
 				3B53739D202EC2210020F3B1 /* BlipAnnotation.swift in Sources */,
 				3B53733D202EBD0F0020F3B1 /* Connectivity.swift in Sources */,
 				5FC65BB420C890F3000DECFC /* EarningsVC.swift in Sources */,

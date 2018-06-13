@@ -45,14 +45,9 @@ class Lgsupage: UIViewController {
     }
     
     @IBAction func signUpPressed(_ sender: Any) {
-        guard let url = URL(string: "http://www.blip.delivery") else {
-            return
-        }
-        if #available(iOS 10.0, *) {
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
-        } else {
-            UIApplication.shared.openURL(url)
-        }
+        let sb = UIStoryboard.init(name: "Main", bundle: nil)
+        let webVc = sb.instantiateViewController(withIdentifier: "webSignUpVc")
+        self.present(webVc, animated: true, completion: nil)
     }
     
     fileprivate func playBackgroundVideo(){

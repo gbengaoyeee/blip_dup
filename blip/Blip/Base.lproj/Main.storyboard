@@ -1144,6 +1144,49 @@
             </objects>
             <point key="canvasLocation" x="-3930.4000000000001" y="-101.19940029985008"/>
         </scene>
+        <!--Web Sign UpVC-->
+        <scene sceneID="dsB-g3-XeT">
+            <objects>
+                <viewController storyboardIdentifier="webSignUpVc" id="pn1-jV-U94" customClass="WebSignUpVC" customModule="Blip" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="3op-qM-E2K">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e8A-Uo-W67">
+                                <rect key="frame" x="0.0" y="64" width="414" height="672"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KHV-Wt-4hJ">
+                                <rect key="frame" x="353" y="26" width="37" height="30"/>
+                                <state key="normal" title="Done"/>
+                                <connections>
+                                    <action selector="donePressed:" destination="pn1-jV-U94" eventType="touchUpInside" id="QwY-Cf-lBy"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="iEQ-nU-IX9" firstAttribute="trailing" secondItem="KHV-Wt-4hJ" secondAttribute="trailing" constant="24" id="9xj-hI-Gfj"/>
+                            <constraint firstItem="e8A-Uo-W67" firstAttribute="leading" secondItem="iEQ-nU-IX9" secondAttribute="leading" id="TIc-77-KIU"/>
+                            <constraint firstItem="iEQ-nU-IX9" firstAttribute="trailing" secondItem="e8A-Uo-W67" secondAttribute="trailing" id="dMo-Vi-ADN"/>
+                            <constraint firstItem="KHV-Wt-4hJ" firstAttribute="top" secondItem="iEQ-nU-IX9" secondAttribute="top" constant="6" id="jkO-iW-ZNE"/>
+                            <constraint firstItem="e8A-Uo-W67" firstAttribute="top" secondItem="iEQ-nU-IX9" secondAttribute="top" constant="44" id="kiY-RV-TAq"/>
+                            <constraint firstItem="iEQ-nU-IX9" firstAttribute="bottom" secondItem="e8A-Uo-W67" secondAttribute="bottom" id="oT2-L8-8r6"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="iEQ-nU-IX9"/>
+                    </view>
+                    <connections>
+                        <outlet property="webView" destination="e8A-Uo-W67" id="B9N-jv-Aoz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7os-82-1MS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3930.434782608696" y="617.11956521739137"/>
+        </scene>
         <!--New Sign UpVC-->
         <scene sceneID="JUR-Lc-RYa">
             <objects>
