@@ -113,14 +113,9 @@ extension AppFABMenuController {
     @objc fileprivate func handlePrivacy(button: UIButton){
         fabMenu.fabButton?.animate(.rotate(0))
         fabMenu.close()
-        guard let url = URL(string: "https://www.blip.delivery/privacy-policy") else {
-            return
-        }
-        if #available(iOS 10.0, *) {
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
-        } else {
-            UIApplication.shared.openURL(url)
-        }
+        let sb = UIStoryboard.init(name: "Main", bundle: nil)
+        let webVc = sb.instantiateViewController(withIdentifier: "webPrivacyPolicyVc")
+        self.present(webVc, animated: true, completion: nil)
     }
     @objc fileprivate func handleLogout(button: UIButton) {
         fabMenu.close()
