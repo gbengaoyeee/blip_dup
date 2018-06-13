@@ -2,7 +2,6 @@
 import UIKit
 import Firebase
 import Mapbox
-import MapboxNavigation
 import MapboxCoreNavigation
 import MapboxDirections
 import SRCountdownTimer
@@ -38,7 +37,6 @@ class FoundJobVC: UIViewController, SRCountdownTimerDelegate {
     var currentMainInstruction: String!
     var currentDelivery: Delivery!
     var isLastWaypoint: Bool!
-    var navViewController: NavigationViewController!
     var handle:DatabaseHandle!
     
     override func viewDidLoad() {
@@ -221,7 +219,7 @@ extension FoundJobVC: MGLMapViewDelegate{
         
         let delivery = UIImage(named: "delivery")
         if let delivery = delivery{
-            return MGLAnnotationImage(image: delivery.resizeImage(targetSize: CGSize(size: 40)), reuseIdentifier: "delivery")
+            return MGLAnnotationImage(image: delivery.resizeImage(targetSize: CGSize(width: 40, height: 40)), reuseIdentifier: "delivery")
         }
         return nil
     }

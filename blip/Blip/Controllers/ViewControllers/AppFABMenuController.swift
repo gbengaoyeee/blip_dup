@@ -12,7 +12,6 @@ class AppFABMenuController: FABMenuController{
 
     fileprivate var fabButton: FABButton!
     fileprivate var logoutItem: FABMenuItem!
-    fileprivate var unconfirmedItem: FABMenuItem!
     fileprivate var profilePageItem: FABMenuItem!
     fileprivate var privacyPolicy: FABMenuItem!
 
@@ -41,7 +40,6 @@ extension AppFABMenuController {
         fabButton.backgroundColor = #colorLiteral(red: 0.9372549057, green: 0.3490196168, blue: 0.1921568662, alpha: 1)
         fabButton.imageView?.makeCircular()
         fabButton.makeCircular()
-        fabButton.setIcon(icon: .googleMaterialDesign(.settings), color: UIColor.white, forState: .normal)
         self.setImageToButton()
 
     }
@@ -73,7 +71,7 @@ extension AppFABMenuController {
     fileprivate func preparePrivacy(){
         privacyPolicy = FABMenuItem()
         privacyPolicy.title = "Privacy Policy"
-        privacyPolicy.fabButton.image = Icon.cm.clear
+        privacyPolicy.fabButton.image = UIImage(icon: .googleMaterialDesign(.lock), size: CGSize(width: 40, height: 40), textColor: UIColor.white, backgroundColor: UIColor.clear)
         privacyPolicy.fabButton.tintColor = .white
         privacyPolicy.fabButton.pulseColor = .white
         privacyPolicy.fabButton.backgroundColor = UIColor.red
@@ -83,7 +81,7 @@ extension AppFABMenuController {
     fileprivate func prepareProfilePageFabMenuItem(){
         profilePageItem = FABMenuItem()
         profilePageItem.title = "Verify Account"
-        profilePageItem.fabButton.image = UIImage(icon: .googleMaterialDesign(.checkCircle), size: (logoutItem.fabButton.image?.size)!, textColor: UIColor.white, backgroundColor: UIColor.clear)
+        profilePageItem.fabButton.image = UIImage(icon: .googleMaterialDesign(.checkCircle), size: CGSize(width: 40, height: 40), textColor: UIColor.white, backgroundColor: UIColor.clear)
         profilePageItem.fabButton.tintColor = .white
         profilePageItem.fabButton.pulseColor = .white
         profilePageItem.fabButton.backgroundColor = UIColor.red

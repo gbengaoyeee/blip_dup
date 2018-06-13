@@ -23,7 +23,6 @@ class SearchForJobVC: UIViewController {
     @IBOutlet weak var goButtonPulseAnimation: UIView!
     @IBOutlet weak var goButton: RaisedButton!
     @IBOutlet var map: MGLMapView!
-    @IBOutlet weak var testJobPost: UIButton!
     @IBOutlet weak var earningsLoader: UIView!
     
     let pulsator = Pulsator()
@@ -59,6 +58,15 @@ class SearchForJobVC: UIViewController {
     override func viewWillLayoutSubviews() {
         prepareGoButton()
         prepareBalanceLabel()
+        prepareBlur()
+    }
+    
+    func prepareBlur(){
+        gradient = CAGradientLayer()
+        gradient.frame = map.bounds
+        gradient.colors = [UIColor.clear.cgColor, UIColor.black.cgColor, UIColor.black.cgColor, UIColor.clear.cgColor]
+        gradient.locations = [0, 0.07, 0.9, 1]
+        map.layer.mask = gradient
     }
     
     @objc func prepareLocationServices(){
@@ -302,7 +310,7 @@ extension SearchForJobVC: MGLMapViewDelegate{
         
         let delivery = UIImage(named: "delivery")
         if let delivery = delivery{
-            return MGLAnnotationImage(image: delivery.resizeImage(targetSize: CGSize(size: 40)), reuseIdentifier: "delivery")
+            return MGLAnnotationImage(image: delivery.resizeImage(targetSize: CGSize(width: 40, height: 40)), reuseIdentifier: "delivery")
         }
         return nil
     }

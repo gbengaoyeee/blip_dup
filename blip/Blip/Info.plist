@@ -39,7 +39,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>3</string>
 	<key>FacebookAppID</key>
 	<string>953817054772370</string>
 	<key>FacebookDisplayName</key>
@@ -58,14 +58,8 @@
 	<key>MKDirectionsApplicationSupportedModes</key>
 	<array>
 		<string>MKDirectionsModeBike</string>
-		<string>MKDirectionsModeBus</string>
 		<string>MKDirectionsModeCar</string>
-		<string>MKDirectionsModeOther</string>
 		<string>MKDirectionsModePedestrian</string>
-		<string>MKDirectionsModeRideShare</string>
-		<string>MKDirectionsModeStreetCar</string>
-		<string>MKDirectionsModeSubway</string>
-		<string>MKDirectionsModeTrain</string>
 	</array>
 	<key>NSCameraUsageDescription</key>
 	<string>We require a profile picture to verify your identity</string>

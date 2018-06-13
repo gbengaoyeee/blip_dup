@@ -41,7 +41,6 @@ class OnJobVC: UIViewController {
         prepareHeroAnimations()
         prepareWaypointData()
         prepareTableView()
-        prepareBlur()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -55,11 +54,15 @@ class OnJobVC: UIViewController {
         super.didReceiveMemoryWarning()
     }
     
+    override func viewWillLayoutSubviews() {
+        prepareBlur()
+    }
+    
     func prepareBlur(){
         gradient = CAGradientLayer()
         gradient.frame = map.bounds
         gradient.colors = [UIColor.clear.cgColor, UIColor.black.cgColor, UIColor.black.cgColor, UIColor.clear.cgColor]
-        gradient.locations = [0, 0.2, 0.95, 1]
+        gradient.locations = [0, 0.2, 0.85, 1]
         map.layer.mask = gradient
     }
     
@@ -283,7 +286,7 @@ extension OnJobVC: UITableViewDelegate, UITableViewDataSource, SwipeTableViewCel
             doneAction.backgroundColor = #colorLiteral(red: 0, green: 0.7973585725, blue: 0, alpha: 1)
             doneAction.title = "Complete \(self.type!)"
             doneAction.font = UIFont(name: "CenturyGothicBold", size: 18)
-            doneAction.image = UIImage(icon: .googleMaterialDesign(.checkCircle), size: CGSize(size: 40), textColor: UIColor.white, backgroundColor: UIColor.clear)
+            doneAction.image = UIImage(icon: .googleMaterialDesign(.checkCircle), size: CGSize(width: 40, height: 40), textColor: UIColor.white, backgroundColor: UIColor.clear)
             return [doneAction]
         }
         else{

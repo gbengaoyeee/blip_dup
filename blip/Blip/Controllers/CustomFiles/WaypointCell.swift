@@ -50,7 +50,7 @@ class WaypointCell: SwipeTableViewCell{
         self.mainInstructionLabel.textColor = buttonAndTextColor
         self.subInstructionLabel.textColor = buttonAndTextColor
         self.contentView.backgroundColor = iconAndBackgroundColor
-        pullView.setIcon(icon: .googleMaterialDesign(.keyboardArrowLeft), textColor: buttonAndTextColor, backgroundColor: UIColor.clear, size: CGSize(size: 60))
+        pullView.setIcon(icon: .googleMaterialDesign(.keyboardArrowLeft), textColor: buttonAndTextColor, backgroundColor: UIColor.clear, size: CGSize(width: 60, height: 60))
     }
     
     func prepareButtons(){

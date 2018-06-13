@@ -22,7 +22,7 @@ class OnboardingVC: UIViewController, UIScrollViewDelegate {
 
     var locationManager = CLLocationManager()
     let serviceAnimation = LOTAnimationView(name: "onboarding")
-    let serviceArray = ["Welcome to Blip, the worlds first marketplace for free time","Take delivery jobs from around your location","Choose the type of delivery you'd be willing to make","Get paid instantaneously, turning your free time into cash","Hit get started to begin with a free account"]
+    let serviceArray = ["Turn your time into money with blip.delivery","Take delivery jobs from around your location","Choose the type of delivery you'd be willing to make","Get paid instantaneously, turning your free time into cash","Hit get started to begin with a free account"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,7 +47,7 @@ class OnboardingVC: UIViewController, UIScrollViewDelegate {
         scrollView.contentSize = CGSize(width: self.view.frame.size.width * 5, height: scrollView.frame.size.height)
         scrollView.showsHorizontalScrollIndicator = false
         for stage in 0...4{
-            let label = UILabel(frame: CGRect(x: scrollView.center.x + CGFloat(stage) * self.view.frame.size.width - 125 , y: 0, width: 250, height: self.scrollView.frame.size.height))
+            let label = UILabel(frame: CGRect(x: view.center.x + CGFloat(stage) * self.view.frame.size.width - 125 , y: 0, width: 250, height: self.scrollView.frame.size.height))
             label.font = UIFont(name: "CenturyGothic", size: 20)
             label.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
             label.textAlignment = .center
