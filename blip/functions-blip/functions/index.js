@@ -16,6 +16,15 @@ var accountSid = 'AC18aeb2de01f508ef1b69f628882dba00'; // Your Account SID from 
 var authToken = '15be9e2249e74a6029b975c679fcfbb0';   // Your Auth Token from www.twilio.com/console
 var twilio = require('twilio');
 var client = new twilio(accountSid, authToken);
+var NodeGeocoder = require('node-geocoder');
+var options = {
+  provider: 'google',
+  httpAdapter: 'https', // Default
+  apiKey: 'AIzaSyBYEApuPKkxeMCL4PR8oBe7KsQr0xrMfWw', // for Mapquest, OpenCage, Google Premier
+  formatter: null         // 'gpx', 'string', ...
+};
+var geocoder = NodeGeocoder(options);
+
 
 exports.sendSms = functions.https.onRequest((req, res) => {
     const phoneNumber = req.body.phoneNumber
@@ -72,9 +81,6 @@ function jobCountDown(emailHash) {
     })
     var startTime = setInterval(function () {
         if (maxTime != 0) {
-            console.log(maxTime, "sec");
-            //stop Timer when accept pressed
-            
             maxTime = maxTime - 1;//Decrease timer
         } else {
             //Timer has reached 0
@@ -797,25 +803,21 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
     var storeID = req.body.storeID;
     admin.database().ref(`/stores/${storeID}`).once("value", function (snapshot) {
         if (snapshot.exists) {
-            var deliveryLat = req.body.deliveryLat,
-                deliveryLong = req.body.deliveryLong,
+            var deliveryLat,
+                deliveryLong,
+                deliveryAddress = req.body.deliveryAddress,
                 deliveryMainInstruction = req.body.deliveryMainInstruction,
                 deliverySubInstruction = req.body.deliverySubInstruction,
-                originLat = req.body.originLat,
-                originLong = req.body.originLong,
+                originLat,
+                originLong,
+                pickupAddress = req.body.pickupAddress,
                 pickupMainInstruction = req.body.pickupMainInstruction,
                 pickupSubInstruction = req.body.pickupSubInstruction,
                 recieverName = req.body.recieverName,
                 recieverNumber = req.body.recieverNumber,
                 pickupNumber = req.body.pickupNumber,
-                newPostKey = admin.database().ref().child('AllJobs').push().key,
-                chargeAmount = getChargeAmount(deliveryLat, deliveryLong, originLat, originLong);
+                newPostKey = admin.database().ref().child('AllJobs').push().key
 
-            if (!verifyCoordinates([req.body.deliveryLat, req.body.deliveryLong, req.body.originLat, req.body.originLong])){
-                console.log("Coordinates bad");
-                res.status(400).send("Bad Coordinates");
-                return
-            }
             if (!verifyFieldsForNull([req.body.deliveryMainInstruction, req.body.deliverySubInstruction, req.body.pickupMainInstruction, req.body.pickupSubInstruction, req.body.recieverName])){
                 console.log("Bad fields");
                 res.status(400).send("Check all parameters");
@@ -823,7 +825,7 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
             }
             if (!verifyNumbers(req.body.recieverNumber) || !verifyNumbers(req.body.pickupNumber)){
                 console.log("Numbers error");
-                res.status(400).send("Phone no. must begin with a +1 and have 9 numbers after it");
+                res.status(400).send("Phone no. must begin with a +1 and have 10 numbers after it");
                 return
             }
             if (snapshot.child(`/customer`).val() == null) {
@@ -831,46 +833,63 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
                 res.status(400).end(); // NO CUSTOMER ERROR
                 return
             }
-            stripe.charges.create({
-                amount: chargeAmount + 100,
-                currency: "cad",
-                description: "Delivery; " + newPostKey + " By store; " + storeID,
-                customer: snapshot.child(`/customer/id`).val()
-            }, function (err, charge) {
-                if (err) {
-                    console.log(err);
-                    res.status(450).end // CANNOT CHARGE ERROR
-                } else {
-                    var deliveryDetails = {
-                        storeID,
-                        deliveryLat,
-                        deliveryLong,
-                        deliveryMainInstruction,
-                        deliverySubInstruction,
-                        originLat,
-                        originLong,
-                        pickupMainInstruction,
-                        pickupSubInstruction,
-                        recieverName,
-                        recieverNumber,
-                        pickupNumber,
-                        chargeAmount
-                    };
-                    deliveryDetails.isTaken = false;
-                    deliveryDetails.isCompleted = false;
-                    deliveryDetails.chargeID = charge;
-                    console.log("Charge succeeded", deliveryDetails);
-                    admin.database().ref('stores/' + storeID + '/deliveries/' + newPostKey).update(deliveryDetails).then(() => {
-                        console.log('Update succeeded: stores')
-                    });
-                    admin.database().ref('AllJobs/' + newPostKey).update(deliveryDetails).then(() => {
-                        console.log('Update succeeded: alljobs');
-                        cors(req, res, () => {
-                            res.status(200).send(newPostKey);
-                        }) // OK
-                    });
+            geocoder.geocode(deliveryAddress, function(err, data){
+                if (err){
+                    res.status(400).send("Could not parse address");
+                }else{
+                    deliveryLat = data[0].latitude;
+                    deliveryLong = data[0].longitude;
+                    geocoder.geocode(pickupAddress, function(err, pickupData){
+                        if (err){
+                            res.status(400).send("Could not parse pickup data");
+                        }else{
+                            originLat = data[0].latitude;
+                            originLong = data[0].longitude;
+                            chargeAmount = getChargeAmount(deliveryLat, deliveryLong, originLat, originLong);
+                            stripe.charges.create({
+                                amount: chargeAmount + 100,
+                                currency: "cad",
+                                description: "Delivery; " + newPostKey + " By store; " + storeID,
+                                customer: snapshot.child(`/customer/id`).val()
+                            }, function (err, charge) {
+                                if (err) {
+                                    console.log(err);
+                                    res.status(450).end // CANNOT CHARGE ERROR
+                                } else {
+                                    var deliveryDetails = {
+                                        storeID,
+                                        deliveryLat,
+                                        deliveryLong,
+                                        deliveryMainInstruction,
+                                        deliverySubInstruction,
+                                        originLat,
+                                        originLong,
+                                        pickupMainInstruction,
+                                        pickupSubInstruction,
+                                        recieverName,
+                                        recieverNumber,
+                                        pickupNumber,
+                                        chargeAmount
+                                    };
+                                    deliveryDetails.isTaken = false;
+                                    deliveryDetails.isCompleted = false;
+                                    deliveryDetails.chargeID = charge;
+                                    console.log("Charge succeeded", deliveryDetails);
+                                    admin.database().ref('stores/' + storeID + '/deliveries/' + newPostKey).update(deliveryDetails).then(() => {
+                                        console.log('Update succeeded: stores')
+                                    });
+                                    admin.database().ref('AllJobs/' + newPostKey).update(deliveryDetails).then(() => {
+                                        console.log('Update succeeded: alljobs');
+                                        cors(req, res, () => {
+                                            res.status(200).send(newPostKey);
+                                        }) // OK
+                                    });
+                                }
+                            });
+                        }
+                    })
                 }
-            });
+            })
         } else {
             console.log("No such storeID");
             res.status(500).end(); // INCORRECT STOREID ERROR

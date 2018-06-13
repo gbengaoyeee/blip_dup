@@ -231,6 +231,7 @@ extension FoundJobVC{
         var waypointList = [BlipWaypoint]()
         var i = 1
         self.job.locList.remove(at: 0)
+        var tempLocList = [CLLocationCoordinate2D?]()
         while waypointList.count < (waypointData.count - 1){
             for element in waypointData{
                 
@@ -242,19 +243,31 @@ extension FoundJobVC{
                 }
             }
         }
-
+        
+        for loc in job.locList{
+            tempLocList.append(loc)
+        }
+        
         for way in waypointList{
             
             var dist: Double! = 12000
             var index: Int!
-            var tempLocList = job.locList
+            
             for loc in tempLocList{
 
-                if dist > loc.distance(to: way.coordinate){
-                    dist = loc.distance(to: way.coordinate)
-                    index = job.locList.index(of: loc)
+                if loc == nil{
+                    continue
+                }
+                
+                if dist > loc!.distance(to: way.coordinate){
+                    dist = loc!.distance(to: way.coordinate)
+                    index = job.locList.index(of: loc!)
                 }
             }
+            if index == nil{
+                continue
+            }
+
             if index < distributionCount{
                 if index%2 == 1{
                     way.delivery = getDeliveryFor(waypoint: way, type: "Delivery")
@@ -273,7 +286,7 @@ extension FoundJobVC{
                 way.name = "Delivery"
             }
 
-            tempLocList[index] = CLLocationCoordinate2D(latitude: 180, longitude: 180)
+            tempLocList[index] = nil
         }
         return waypointList
     }
