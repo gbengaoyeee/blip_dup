@@ -1187,6 +1187,49 @@
             </objects>
             <point key="canvasLocation" x="-3930.434782608696" y="617.11956521739137"/>
         </scene>
+        <!--Web Privacy PolicyVC-->
+        <scene sceneID="0ii-EP-gPk">
+            <objects>
+                <viewController storyboardIdentifier="webPrivacyPolicyVc" id="117-76-zja" customClass="WebPrivacyPolicyVC" customModule="Blip" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Hpp-p2-NJU">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OUc-oM-Ljc">
+                                <rect key="frame" x="0.0" y="64" width="414" height="672"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h4s-MB-h7h">
+                                <rect key="frame" x="357" y="32" width="37" height="30"/>
+                                <state key="normal" title="Done"/>
+                                <connections>
+                                    <action selector="donePressed:" destination="117-76-zja" eventType="touchUpInside" id="64K-80-oPe"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="6Sa-DA-eGJ" firstAttribute="trailing" secondItem="OUc-oM-Ljc" secondAttribute="trailing" id="0hU-XR-afN"/>
+                            <constraint firstItem="h4s-MB-h7h" firstAttribute="top" secondItem="6Sa-DA-eGJ" secondAttribute="top" constant="12" id="5Ve-4d-bDp"/>
+                            <constraint firstItem="6Sa-DA-eGJ" firstAttribute="bottom" secondItem="OUc-oM-Ljc" secondAttribute="bottom" id="Dvc-23-P9h"/>
+                            <constraint firstItem="OUc-oM-Ljc" firstAttribute="leading" secondItem="6Sa-DA-eGJ" secondAttribute="leading" id="cOg-ta-Ltu"/>
+                            <constraint firstItem="6Sa-DA-eGJ" firstAttribute="trailing" secondItem="h4s-MB-h7h" secondAttribute="trailing" constant="20" id="qVx-aX-XGk"/>
+                            <constraint firstItem="OUc-oM-Ljc" firstAttribute="top" secondItem="6Sa-DA-eGJ" secondAttribute="top" constant="44" id="sNZ-3f-PWw"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Sa-DA-eGJ"/>
+                    </view>
+                    <connections>
+                        <outlet property="webView" destination="OUc-oM-Ljc" id="IvC-sd-ooS"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zRw-P0-iKR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3052" y="618"/>
+        </scene>
         <!--New Sign UpVC-->
         <scene sceneID="JUR-Lc-RYa">
             <objects>
