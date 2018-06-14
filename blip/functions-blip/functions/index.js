@@ -69,7 +69,7 @@ function putBackJobs(emailHash) {
 
 //This function handles countdown of time
 function jobCountDown(emailHash) {
-    var maxTime = 30
+    var maxTime = 28
     admin.database().ref(`/Couriers/${emailHash}/givenJob`).on("child_changed", function(snapshot){
         var key = snapshot.hasChild("jobTaker");
         console.log("Accepted job:", key);

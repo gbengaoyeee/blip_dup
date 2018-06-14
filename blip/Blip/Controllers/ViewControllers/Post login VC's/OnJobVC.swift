@@ -73,25 +73,23 @@ class OnJobVC: UIViewController {
     
     @objc func prepareLocationUsage(){
         
-        let errorPopup = PopupDialog(title: "Error", message: "We cannot determine your location. Please go to settings -> privacy -> enable location services for blip, to resume your current job", gestureDismissal: false)
-        // Ask for Authorisation from the User.
-        self.locationManager.requestAlwaysAuthorization()
-        // For use in foreground
-        self.locationManager.requestWhenInUseAuthorization()
-        
         if CLLocationManager.locationServicesEnabled() {
             switch CLLocationManager.authorizationStatus(){
-
-            case .restricted, .denied, .notDetermined:
-                present(errorPopup, animated: true, completion: nil)
+            case .notDetermined:
+                self.locationManager.requestAlwaysAuthorization()
+                self.locationManager.requestWhenInUseAuthorization()
+            case .restricted, .denied:
+                let locationError = PopupDialog(title: "Location permission denied", message: "blip needs permission to access your location information, or we cannot match you with jobs around your area. Please go to settings; Privacy; Location services; and turn on location services for blip", gestureDismissal: false)
+                present(locationError, animated: true, completion: nil)
             case .authorizedAlways, .authorizedWhenInUse:
                 self.presentedViewController?.dismiss(animated: true, completion: nil)
+                locationManager.delegate = self
+                locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+                locationManager.startUpdatingLocation()
             }
-            locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
-            locationManager.startUpdatingLocation()
         }
         else{
+            let errorPopup = PopupDialog(title: "Error", message: "We cannot determine your location. Please go to settings, and re-enable location services", gestureDismissal: false)
             present(errorPopup, animated: true, completion: nil)
         }
     }
