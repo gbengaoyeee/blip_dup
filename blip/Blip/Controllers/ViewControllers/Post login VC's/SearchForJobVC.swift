@@ -53,6 +53,7 @@ class SearchForJobVC: UIViewController {
         super.viewDidAppear(animated)
         updateCurrentDevice()
         checkForUnfinishedJobs()
+        MyAPIClient.sharedClient.makeDeliveryRequest(storeID: "-LF3S6W7kZ8VtKC60JRh", deliveryAddress: "156 enfield place", deliveryMainInstruction: "TEST", deliverySubInstruction: "TEST", pickupAddress: "200 burnhamthorpe road west", pickupMainInstruction: "TEST", pickupSubInstruction: "TEST", recieverName: "TEST", recieverNumber: "+16479839837", pickupNumber: "+16479839837")
     }
     
     override func viewWillLayoutSubviews() {

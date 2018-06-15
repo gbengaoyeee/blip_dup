@@ -91,10 +91,10 @@ class Delivery{
         }
         self.identifier = snapshot.key
         let deliveryValues = snapshot.value as? [String: AnyObject]
-        let deliveryLat = Double(deliveryValues!["deliveryLat"] as! String)!
-        let deliveryLong = Double(deliveryValues!["deliveryLong"] as! String)!
-        let originLat = Double(deliveryValues!["originLat"] as! String)!
-        let originLong = Double(deliveryValues!["originLong"] as! String)!
+        let deliveryLat = Double(truncating: deliveryValues!["deliveryLat"] as! NSNumber)
+        let deliveryLong = Double(truncating: deliveryValues!["deliveryLong"] as! NSNumber)
+        let originLat = Double(truncating: deliveryValues!["originLat"] as! NSNumber)
+        let originLong = Double(truncating: deliveryValues!["originLong"] as! NSNumber)
         self.deliveryLocation = CLLocationCoordinate2D(latitude: deliveryLat, longitude: deliveryLong)
         let deliveryEarnings = deliveryValues!["chargeAmount"] as! NSNumber
         self.earnings = (deliveryEarnings.floatValue/100)*0.9

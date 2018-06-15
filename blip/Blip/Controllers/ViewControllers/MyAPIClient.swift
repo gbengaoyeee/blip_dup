@@ -234,17 +234,15 @@ class MyAPIClient: NSObject {
     }
     
     
-    func makeDeliveryRequest(storeID:String, deliveryLat:Double, deliveryLong:Double, deliveryMainInstruction:String, deliverySubInstruction:String, originLat:Double, originLong:Double, pickupMainInstruction:String, pickupSubInstruction:String, recieverName:String, recieverNumber:String, pickupNumber:String){
+    func makeDeliveryRequest(storeID:String, deliveryAddress: String, deliveryMainInstruction:String, deliverySubInstruction:String, pickupAddress:String, pickupMainInstruction:String, pickupSubInstruction:String, recieverName:String, recieverNumber:String, pickupNumber:String){
         
         let url = self.baseURL.appendingPathComponent("makeDeliveryRequest")
         let params:[String:Any] = [
             "storeID":storeID,
-            "deliveryLat":deliveryLat,
-            "deliveryLong":deliveryLong,
+            "deliveryAddress":deliveryAddress,
+            "pickupAddress":pickupAddress,
             "deliveryMainInstruction":deliveryMainInstruction,
             "deliverySubInstruction":deliverySubInstruction,
-            "originLat":originLat,
-            "originLong":originLong,
             "pickupMainInstruction":pickupMainInstruction,
             "pickupSubInstruction":pickupSubInstruction,
             "recieverName":recieverName,

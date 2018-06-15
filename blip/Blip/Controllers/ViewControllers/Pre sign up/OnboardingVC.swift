@@ -36,6 +36,8 @@ class OnboardingVC: UIViewController, UIScrollViewDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         gradientView.startAnimation()
+        self.locationManager.requestAlwaysAuthorization()
+        self.locationManager.requestWhenInUseAuthorization()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -92,6 +94,10 @@ extension OnboardingVC: CLLocationManagerDelegate{
                 self.locationManager.requestWhenInUseAuthorization()
             case .restricted, .denied:
                 let locationError = PopupDialog(title: "Location permission denied", message: "blip needs permission to access your location information, or we cannot match you with jobs around your area. Please go to settings; Privacy; Location services; and turn on location services for blip")
+                let continueButton = PopupDialogButton(title: "Enable later") {
+                    self.performSegue(withIdentifier: "goToLGSU", sender: self)
+                }
+                locationError.addButton(continueButton)
                 self.present(locationError, animated: true, completion: nil)
             case .authorizedAlways, .authorizedWhenInUse:
                 locationManager.delegate = self
@@ -101,6 +107,10 @@ extension OnboardingVC: CLLocationManagerDelegate{
         }
         else{
             let locationPopup = PopupDialog(title: "Error", message: "Please enable location services")
+            let continueButton = PopupDialogButton(title: "Enable later") {
+                self.performSegue(withIdentifier: "goToLGSU", sender: self)
+            }
+            locationPopup.addButton(continueButton)
             self.present(locationPopup, animated: true, completion: nil)
         }
     }
