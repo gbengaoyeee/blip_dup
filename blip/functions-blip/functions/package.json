@@ -2,7 +2,8 @@
   "name": "functions",
   "description": "Cloud Functions for Firebase",
   "scripts": {
-    "shell": "firebase experimental:functions:shell",
+    "serve": "firebase serve --only functions",
+    "shell": "firebase functions:shell",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log"
@@ -17,6 +18,7 @@
     "firebase-functions": "^1.0.2",
     "geolib": "^2.0.24",
     "mailgun-js": "^0.18.0",
+    "node-geocoder": "^3.22.0",
     "npm": "^6.1.0",
     "request": "^2.86.0",
     "stripe": "^6.0.0",
