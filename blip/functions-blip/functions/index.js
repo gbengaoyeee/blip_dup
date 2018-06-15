@@ -18,10 +18,10 @@ var twilio = require('twilio');
 var client = new twilio(accountSid, authToken);
 var NodeGeocoder = require('node-geocoder');
 var options = {
-  provider: 'google',
-  httpAdapter: 'https', // Default
-  apiKey: 'AIzaSyBYEApuPKkxeMCL4PR8oBe7KsQr0xrMfWw', // for Mapquest, OpenCage, Google Premier
-  formatter: null         // 'gpx', 'string', ...
+    provider: 'google',
+    httpAdapter: 'https', // Default
+    apiKey: 'AIzaSyBYEApuPKkxeMCL4PR8oBe7KsQr0xrMfWw', // for Mapquest, OpenCage, Google Premier
+    formatter: null         // 'gpx', 'string', ...
 };
 var geocoder = NodeGeocoder(options);
 
@@ -30,19 +30,19 @@ exports.sendSms = functions.https.onRequest((req, res) => {
     const phoneNumber = req.body.phoneNumber
     const message = req.body.message
     client.messages.create({
-		from: "+16479332974",
-		to: phoneNumber,
-		body: message
-	}, function(err, result) {
-        if (err){
+        from: "+16479332974",
+        to: phoneNumber,
+        body: message
+    }, function (err, result) {
+        if (err) {
             console.log(err);
             res.status(400).end();
         }
-        else{
+        else {
             console.log('Created message using callback');
             res.status(200).end();
         }
-	});
+    });
 });
 
 function putBackJobs(emailHash) {
@@ -54,10 +54,10 @@ function putBackJobs(emailHash) {
                 console.log("Puts job(s) successfully.");
                 //this deletes the job from the user's alljobs reference
                 return admin.database().ref(`Couriers/${emailHash}/givenJob/`).remove()
-                    .then(function(removed){
+                    .then(function (removed) {
                         console.log("Removed from user's ref givenJobs");
-                    }, function(error){
-                        console.log("Error deleting job from givenjobs",error);
+                    }, function (error) {
+                        console.log("Error deleting job from givenjobs", error);
                     });
             }, function (err) {
                 console.log(err);
@@ -70,10 +70,10 @@ function putBackJobs(emailHash) {
 //This function handles countdown of time
 function jobCountDown(emailHash) {
     var maxTime = 28
-    admin.database().ref(`/Couriers/${emailHash}/givenJob`).on("child_changed", function(snapshot){
+    admin.database().ref(`/Couriers/${emailHash}/givenJob`).on("child_changed", function (snapshot) {
         var key = snapshot.hasChild("jobTaker");
         console.log("Accepted job:", key);
-        if (key){
+        if (key) {
             clearInterval(startTime);
             console.log("Timer killed");
             return
@@ -86,10 +86,10 @@ function jobCountDown(emailHash) {
             //Timer has reached 0
             clearInterval(startTime);
             //Return job back into alljobs and remove from user's reference
-            putBackJobs(emailHash).then(function(updated){
+            putBackJobs(emailHash).then(function (updated) {
                 console.log('Updated userRef');
-            },function(err){
-                console.log("Error",err);
+            }, function (err) {
+                console.log("Error", err);
             });
         }
     }, 1000);
@@ -97,7 +97,7 @@ function jobCountDown(emailHash) {
 
 exports.getAccountBalance = functions.https.onRequest((req, res) => {
     var emailHash = req.body.emailHash;
-    if (!verifyFieldsForNull(req.body.emailHash)){
+    if (!verifyFieldsForNull(req.body.emailHash)) {
         console.log("Email Hash null");
         res.status(400).end();
     }
@@ -172,11 +172,11 @@ exports.createCourier = functions.https.onRequest((req, res) => {
     const phoneNumber = req.body.phoneNumber;
     const photoURL = req.body.photoURL;
 
-    if(!verifyFieldsForNull([req.body.firstName, req.body.lastName, req.body.email, req.body.password, req.body.confirmPassword, req.body.photoURL])){
+    if (!verifyFieldsForNull([req.body.firstName, req.body.lastName, req.body.email, req.body.password, req.body.confirmPassword, req.body.photoURL])) {
         console.log("Some fields are null");
         res.status(400).send("Null fields");
     }
-    if (!verifyNumbers(req.body. phoneNumber)){
+    if (!verifyNumbers(req.body.phoneNumber)) {
         console.log("Error with phone number");
         res.status(400).send("Number error");
     }
@@ -602,32 +602,32 @@ function userFacingMessage(error) {
 
 /////////////////////// VERIFICATION FUNCTIONS ///////////////////////////
 
-function verifyCoordinates([coordinates]){
+function verifyCoordinates([coordinates]) {
 
     var i;
-    for (i = 0; i < coordinates.length -1; i++){
-        if ((coordinates[i] > 180) || (coordinates[i] < -180)){
+    for (i = 0; i < coordinates.length - 1; i++) {
+        if ((coordinates[i] > 180) || (coordinates[i] < -180)) {
             return false
         }
     }
     return true
 }
 
-function verifyFieldsForNull([fields]){
+function verifyFieldsForNull([fields]) {
     var field;
-    for(field in fields){
-        if (field == null){
+    for (field in fields) {
+        if (field == null) {
             return false
         }
     }
     return true
 }
 
-function verifyNumbers(number){
-    if (!number.startsWith("+1")){
+function verifyNumbers(number) {
+    if (!number.startsWith("+1")) {
         return false
     }
-    if (number.length != 12){
+    if (number.length != 12) {
         console.log(number.length);
         return false
     }
@@ -818,12 +818,12 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
                 pickupNumber = req.body.pickupNumber,
                 newPostKey = admin.database().ref().child('AllJobs').push().key
 
-            if (!verifyFieldsForNull([req.body.deliveryMainInstruction, req.body.deliverySubInstruction, req.body.pickupMainInstruction, req.body.pickupSubInstruction, req.body.recieverName])){
+            if (!verifyFieldsForNull([req.body.deliveryMainInstruction, req.body.deliverySubInstruction, req.body.pickupMainInstruction, req.body.pickupSubInstruction, req.body.recieverName])) {
                 console.log("Bad fields");
                 res.status(400).send("Check all parameters");
                 return
             }
-            if (!verifyNumbers(req.body.recieverNumber) || !verifyNumbers(req.body.pickupNumber)){
+            if (!verifyNumbers(req.body.recieverNumber) || !verifyNumbers(req.body.pickupNumber)) {
                 console.log("Numbers error");
                 res.status(400).send("Phone no. must begin with a +1 and have 10 numbers after it");
                 return
@@ -833,16 +833,16 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
                 res.status(400).end(); // NO CUSTOMER ERROR
                 return
             }
-            geocoder.geocode(deliveryAddress, function(err, data){
-                if (err){
+            geocoder.geocode(deliveryAddress, function (err, data) {
+                if (err) {
                     res.status(400).send("Could not parse address");
-                }else{
+                } else {
                     deliveryLat = data[0].latitude;
                     deliveryLong = data[0].longitude;
-                    geocoder.geocode(pickupAddress, function(err, pickupData){
-                        if (err){
+                    geocoder.geocode(pickupAddress, function (err, pickupData) {
+                        if (err) {
                             res.status(400).send("Could not parse pickup data");
-                        }else{
+                        } else {
                             originLat = data[0].latitude;
                             originLong = data[0].longitude;
                             chargeAmount = getChargeAmount(deliveryLat, deliveryLong, originLat, originLong);
@@ -896,71 +896,102 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
         }
     })
 });
+exports.testGeo = functions.https.onRequest((req, res) => {
+    const address = req.body.address;
+    geocoder.geocode(address).then(function (data) {
+        console.log(data);
+    }).catch(function (err) {
+        console.log(err);
+    });
+});
 
 exports.createStore = functions.https.onRequest((req, res) => {
     var storeName = req.body.storeName;
     var storeLogo = req.body.storeLogo;
     var storeBackground = req.body.storeBackground;
-    var locationLat = req.body.locationLat;
-    var locationLong = req.body.locationLong;
-    var address_city = req.body.city;
+    // var locationLat = req.body.locationLat;
+    // var locationLong = req.body.locationLong;
+    // var address_city = req.body.city;
     var address_country = req.body.country;
+    // var address_zip = req.body.postalCode;
+    // var address_state = req.body.province;
+    var locationLat;
+    var locationLong;
     var address_line1 = req.body.line1;
-    var address_zip = req.body.postalCode;
-    var address_state = req.body.province;
     var business_name = req.body.businessName;
     var business_tax_id = req.body.businessTaxId;
     var first_name = req.body.firstName;
     var last_name = req.body.lastName;
+    var storeDescription = req.body.storeDescription;
     var date = Math.floor(new Date() / 1000);
     var email = req.body.email;
     var date = Math.floor(new Date() / 1000);
 
-    if(!verifyCoordinates([req.body.locationLat, req.body.locationLong])){
-        console.log("Error with provided coordinates");
-        res.status(400).end();
-        return
-    }
-    if(!verifyFieldsForNull([req.body.storeName, req.body.storeBackground, req.body.storeLogo, req.body.city, req.body.country, req.body.line1, req.body.postalCode, req.body.province, req.body.businessName, req.body.businessTaxId, req.body.firstName, req.body.lastName, req.body.email])){
+    
+    if (!verifyFieldsForNull([req.body.storeName, req.body.storeBackground, req.body.storeLogo, req.body.city, req.body.country, req.body.line1, req.body.postalCode, req.body.province, req.body.businessName, req.body.businessTaxId, req.body.firstName, req.body.lastName, req.body.email])) {
         console.log("Check fields. One or more empty fields");
         res.status(400).end();
         return
     }
-    stripe.customers.create({
-        "business_vat_id": business_tax_id,
-        "description": business_name,
-        "email": email,
-        "metadata": {
-            rep_first_name: first_name,
-            rep_last_name: last_name,
-            signup_date: date,
-            address_city: address_city,
-            address_country: address_country,
-            address_line1: address_line1,
-            address_zip: address_zip,
-            address_state: address_state
-        }
-    }, function (err, customer) {
+
+    const address = `${address_line1} ${address_country}`;
+    geocoder.geocode(address, function (err, data) {
         if (err) {
-            console.log(err);
-            res.status(400).end(); // COULD NOT CREATE CUSTOMER ERROR
+            res.status(400).send("Could not parse address");
         } else {
-            var storeDetails = {
-                storeName,
-                storeLogo,
-                storeBackground,
-                locationLat,
-                locationLong
-            };
-            storeDetails.creationDate = date;
-            storeDetails.customer = customer;
-            var storeID = admin.database().ref().child('stores').push().key;
-            admin.database().ref('stores/' + storeID).update(storeDetails).then(() => {
-                console.log('Created store successfully')
-                res.status(200).send(storeID); // OK
+            console.log(data);
+            locationLat = data[0].latitude;
+            locationLong = data[0].longitude;
+            if (!verifyCoordinates([locationLat, locationLong])) {
+                console.log("Error with provided coordinates");
+                res.status(400).end();
+                return;
+            }
+            if (data[0].streetNumber == null || data[0].streetName == null){
+                console.log('Incorrect address provided');
+                res.status(400).end();
+                return;
+            }
+            const realLine1 = `${data[0].streetNumber} ${data[0].streetName}`;
+            stripe.customers.create({
+                "business_vat_id": business_tax_id,
+                "description": business_name,
+                "email": email,
+                "metadata": {
+                    rep_first_name: first_name,
+                    rep_last_name: last_name,
+                    signup_date: date,
+                    address_city: data[0].city,
+                    address_country: data[0].countryCode,////this is 2 letter like CA
+                    address_line1: realLine1,
+                    address_zip: data[0].zipcode,
+                    address_state: data[0].administrativeLevels.level1short//this is 2 letter like ON
+                }
+            }, function (err, customer) {
+                if (err) {
+                    console.log(err);
+                    res.status(400).end(); // COULD NOT CREATE CUSTOMER ERROR
+                } else {
+                    var storeDetails = {
+                        storeName,
+                        storeLogo,
+                        storeBackground,
+                        locationLat,
+                        locationLong,
+                        storeDescription
+                    };
+                    storeDetails.creationDate = date;
+                    storeDetails.customer = customer;
+                    var storeID = admin.database().ref().child('stores').push().key;
+                    admin.database().ref('stores/' + storeID).update(storeDetails).then(() => {
+                        console.log('Created store successfully')
+                        res.status(200).send(storeID); // OK
+                    });
+                }
             });
         }
     });
+
 });
 
 exports.getDeliveryPrice = functions.https.onRequest((req, res) => {
@@ -968,7 +999,7 @@ exports.getDeliveryPrice = functions.https.onRequest((req, res) => {
     var deliveryLong = req.body.deliveryLong;
     var pickupLat = req.body.pickupLat;
     var pickupLong = req.body.pickupLong;
-    if(!verifyCoordinates([req.body.deliveryLat, req.body.deliveryLong, req.body.pickupLat, req.body.pickupLong])){
+    if (!verifyCoordinates([req.body.deliveryLat, req.body.deliveryLong, req.body.pickupLat, req.body.pickupLong])) {
         console.log("One or more coordinates were null");
         res.status(400).end();
     }
@@ -987,16 +1018,16 @@ exports.getDeliveryStatus = functions.https.onRequest((req, res) => {
     const storeID = req.body.storeID;
     admin.database().ref(`/stores/${storeID}/deliveries/${deliveryID}`).once("value", function (snapshot) {
         if (snapshot.exists) {
-            if (snapshot.child("isTaken").val() == true){
-                if (snapshot.child("isCompleted").val() == true){
+            if (snapshot.child("isTaken").val() == true) {
+                if (snapshot.child("isCompleted").val() == true) {
                     console.log("Job completed");
                     res.status(200).send("Completed");
-                }else{
+                } else {
                     console.log("Job in progress");
                     res.status(200).send("In progress");
                 }
             }
-            else{
+            else {
                 console.log("Job not taken");
                 res.status(200).send("Not taken");
             }
