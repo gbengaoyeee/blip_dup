@@ -843,8 +843,9 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
                         if (err) {
                             res.status(400).send("Could not parse pickup data");
                         } else {
-                            originLat = data[0].latitude;
-                            originLong = data[0].longitude;
+                            console.log(pickupData, data);
+                            originLat = pickupData[0].latitude;
+                            originLong = pickupData[0].longitude;
                             chargeAmount = getChargeAmount(deliveryLat, deliveryLong, originLat, originLong);
                             stripe.charges.create({
                                 amount: chargeAmount + 100,
@@ -895,14 +896,6 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
             res.status(500).end(); // INCORRECT STOREID ERROR
         }
     })
-});
-exports.testGeo = functions.https.onRequest((req, res) => {
-    const address = req.body.address;
-    geocoder.geocode(address).then(function (data) {
-        console.log(data);
-    }).catch(function (err) {
-        console.log(err);
-    });
 });
 
 exports.createStore = functions.https.onRequest((req, res) => {
