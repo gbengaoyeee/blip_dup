@@ -1,0 +1,30 @@
+{
+    "stripe": {
+        "STRIPE_KEY":"sk_live_jicXDtuGqenUPKV8kHiD7XHW",
+        "CURRENCY":"CAD"
+    },
+
+    "twilio": {
+        "ACCOUNT_SID":"AC18aeb2de01f508ef1b69f628882dba00",
+        "AUTH_TOKEN":"15be9e2249e74a6029b975c679fcfbb0"
+    },
+
+    "geocoder":{
+        "PROVIDER":"google",
+        "HTTP_ADAPTER":"https",
+        "API_KEY":"AIzaSyBYEApuPKkxeMCL4PR8oBe7KsQr0xrMfWw",
+        "FORMATTER":null
+    },
+
+    "nodemailer": {
+        "SERVICE":"Gmail",
+        "auth":{
+            "USER":"noreply@blip.delivery",
+            "PASS":"Noreply1"
+        },
+        "tls":{
+            "REJECT_UNAUTHORIZED":false
+        }
+    }
+
+}

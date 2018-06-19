@@ -3,27 +3,74 @@ const functions = require('firebase-functions'),
     logging = require('@google-cloud/logging'),
     request = require('request');
 var crypto = require('crypto');
+var config = require('./config/default.json');
 admin.initializeApp(functions.config().firebase);
 var express = require('express');
 var bodyParser = require('body-parser');
 const app = express();
 const geo = require('geolib');
-const stripe = require('stripe')("sk_live_jicXDtuGqenUPKV8kHiD7XHW"),
-    currency = "CAD";
+const stripe = require('stripe')(config.stripe.STRIPE_KEY),
+    currency = config.stripe.CURRENCY;
 const cors = require('cors')({ origin: true });
-var accountSid = 'AC18aeb2de01f508ef1b69f628882dba00'; // Your Account SID from www.twilio.com/console
-var authToken = '15be9e2249e74a6029b975c679fcfbb0';   // Your Auth Token from www.twilio.com/console
+var accountSid = config.twilio.ACCOUNT_SID; // Your Account SID from www.twilio.com/console
+var authToken = config.twilio.AUTH_TOKEN;   // Your Auth Token from www.twilio.com/console
 var twilio = require('twilio');
 var client = new twilio(accountSid, authToken);
 var NodeGeocoder = require('node-geocoder');
 var options = {
-    provider: 'google',
-    httpAdapter: 'https', // Default
-    apiKey: 'AIzaSyBYEApuPKkxeMCL4PR8oBe7KsQr0xrMfWw', // for Mapquest, OpenCage, Google Premier
-    formatter: null         // 'gpx', 'string', ...
+    provider: config.geocoder.PROVIDER,
+    httpAdapter: config.geocoder.HTTP_ADAPTER, // Default
+    apiKey: config.geocoder.API_KEY, // for Mapquest, OpenCage, Google Premier
+    formatter: config.geocoder.FORMATTER         // 'gpx', 'string', ...
 };
 var geocoder = NodeGeocoder(options);
+var nodemailer = require('nodemailer');
+const transport = nodemailer.createTransport({
+    service: config.nodemailer.SERVICE,
+    auth: {
+        // user:"postmaster@sandboxbc0e3c13e3844bd8a30deb8ceeff7568.mailgun.org",
+        // pass: "32f1ace8ec4ba67a3efaea00a0a20ccf-0470a1f7-1de43609"
+        user: config.nodemailer.auth.USER,
+        pass: config.nodemailer.auth.PASS
+    },
+    tls: {
+        rejectUnauthorized: config.nodemailer.tls.REJECT_UNAUTHORIZED
+    }
+});
 
+exports.sendEmail = functions.https.onRequest((req, res) => {
+    console.log(config.nodemailer.auth.USER);
+    res.status(200).send();
+});
+
+exports.verifyEmail = functions.https.onRequest((req, res) => {
+    const emailHash = req.query.hash;
+    const uid = req.query.uid;
+    //make sure u cant verify after a day has passed
+    return admin.database().ref('Couriers').once('value')
+        .then(function (snapshot) {
+            const userValues = snapshot.child(emailHash).val();
+            if (userValues == null) {
+                res.status(400).send("Could not verify this email");
+                return;
+            }
+            //Update the user's firebase acct and update its verified value
+            admin.auth().updateUser(uid, { emailVerified: true }).then(function (userRecord) {
+                return admin.database().ref(`Couriers/${emailHash}`).update({ verified: true })
+                    .then(() => {
+                        console.log('Verified successfully');
+                        res.status(200).send('<h1>Your email has been verified successfully</h1>');
+                    }).catch(function (error) {
+                        res.status(400).send("Could not verify this email");
+                    });
+            }).catch(function (error) {
+                res.status(400).send("Could not verify this email");
+            });
+
+        }).catch(function (error) {
+            res.status(400).send("Could not verify this email");
+        });
+});
 
 exports.sendSms = functions.https.onRequest((req, res) => {
     const phoneNumber = req.body.phoneNumber
@@ -171,6 +218,10 @@ exports.createCourier = functions.https.onRequest((req, res) => {
     const phoneNumber = req.body.phoneNumber;
     const photoURL = req.body.photoURL;
 
+    const fromEmail = "noreply@blip.delivery";
+    const subjectLine = "Verify your account";
+
+
     if (!verifyFieldsForNull([req.body.firstName, req.body.lastName, req.body.email, req.body.password, req.body.confirmPassword, req.body.photoURL])) {
         console.log("Some fields are null");
         res.status(400).send("Null fields");
@@ -180,6 +231,7 @@ exports.createCourier = functions.https.onRequest((req, res) => {
         res.status(400).send("Number error");
     }
     const emailHash = crypto.createHash('md5').update(email).digest('hex');
+    //create the user
     return admin.auth().createUser({//can also add photourl later on
         email: email,
         emailVerified: false,
@@ -190,21 +242,37 @@ exports.createCourier = functions.https.onRequest((req, res) => {
     }).then(function (user) {
         console.log("Created user succesfully with uid:", user.uid);
         console.log("photo", user.photoURL);
+        const link = `https://us-central1-blip-c1e83.cloudfunctions.net/verifyEmail?hash=${emailHash}&uid=${user.uid}`;
+        const htmlCode = `Thank you for choosing to drive with blip.delivery.
+                        <br>
+                        Please <a href="${link}">click to verify your account</a>
+                        `;
+        //Add the user to database
         addCourierToDatabase(user.uid, firstName, lastName, email, emailHash, photoURL, phoneNumber).then(function (resolve) {
+            //create a stripe account for the user
             createCourierStripeAccount(email, emailHash, firstName, lastName).then(function (account) {
                 console.log(account);
-                res.status(200).end();
+                //Finally send an email verification
+                transport.sendMail({ from: fromEmail, to: email, subject: subjectLine, html: htmlCode })
+                    .then(function (fulfilled) {
+                        console.log('SENT SUCCESS EMAIL');
+                        //When all succeeds, status is 200
+                        res.status(200).send();
+                    }, function (err) {
+                        console.log("ERROR HERE IS", err);
+                        res.status(403).send();
+                    });
             }, function (error) {
                 console.log("Error creating stripe after adding user to db", error);
                 res.status(402).end();
             });
         }, function (error) {
             console.log('Error Adding user to db');
-            res.status(401).send(error);//406
+            res.status(401).send(error);
         });
     }, function (error) {
         console.log("Error creating user:", error);
-        res.status(400).send(error);//405
+        res.status(400).send(error);
     });
 });
 
@@ -952,6 +1020,23 @@ exports.getDriverLocation = functions.https.onRequest((req, res) => {
     })
 })
 
+exports.createLeads = functions.https.onRequest((req, res) => {
+    const storeName = req.body.storeName;
+    const firstName = req.body.firstName;
+    const lastName = req.body.lastName;
+    const email = req.body.email;
+
+    const storeValues = { storeName, firstName, lastName, email };
+    var storeID = admin.database().ref().child('storeLeads').push().key;
+    return admin.database().ref(`storeLeads/${storeID}`).update(storeValues)
+        .then(() => {
+            res.status(200).send();
+        }).catch(function (err) {
+            console.log('Error creating Lead:', err);
+            res.status(400).end();
+        });
+});
+
 exports.createStore = functions.https.onRequest((req, res) => {
     var storeName = req.body.storeName;
     var storeLogo = req.body.storeLogo;
@@ -974,7 +1059,7 @@ exports.createStore = functions.https.onRequest((req, res) => {
     var email = req.body.email;
     var date = Math.floor(new Date() / 1000);
 
-    
+
     if (!verifyFieldsForNull([req.body.storeName, req.body.storeBackground, req.body.storeLogo, req.body.city, req.body.country, req.body.line1, req.body.postalCode, req.body.province, req.body.businessName, req.body.businessTaxId, req.body.firstName, req.body.lastName, req.body.email])) {
         console.log("Check fields. One or more empty fields");
         res.status(400).end();
@@ -994,7 +1079,7 @@ exports.createStore = functions.https.onRequest((req, res) => {
                 res.status(400).end();
                 return;
             }
-            if (data[0].streetNumber == null || data[0].streetName == null){
+            if (data[0].streetNumber == null || data[0].streetName == null) {
                 console.log('Incorrect address provided');
                 res.status(400).end();
                 return;
