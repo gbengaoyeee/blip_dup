@@ -3,60 +3,46 @@ const functions = require('firebase-functions'),
     logging = require('@google-cloud/logging'),
     request = require('request');
 var crypto = require('crypto');
+var config = require('./config/default.json');
 admin.initializeApp(functions.config().firebase);
 var express = require('express');
 var bodyParser = require('body-parser');
 const app = express();
 const geo = require('geolib');
-const stripe = require('stripe')("sk_test_4I0ubK7NduuV6dhJouhEAqtu"),
-    currency = "CAD";
+const stripe = require('stripe')(config.stripe.STRIPE_KEY),
+    currency = config.stripe.CURRENCY;
 const cors = require('cors')({ origin: true });
 
-var accountSid = 'AC18aeb2de01f508ef1b69f628882dba00'; // Your Account SID from www.twilio.com/console
-var authToken = '15be9e2249e74a6029b975c679fcfbb0';   // Your Auth Token from www.twilio.com/console
+
+var accountSid = config.twilio.ACCOUNT_SID; // Your Account SID from www.twilio.com/console
+var authToken = config.twilio.AUTH_TOKEN;   // Your Auth Token from www.twilio.com/console
 var twilio = require('twilio');
 var client = new twilio(accountSid, authToken);
 var NodeGeocoder = require('node-geocoder');
 var options = {
-    provider: 'google',
-    httpAdapter: 'https', // Default
-    apiKey: 'AIzaSyBYEApuPKkxeMCL4PR8oBe7KsQr0xrMfWw', // for Mapquest, OpenCage, Google Premier
-    formatter: null         // 'gpx', 'string', ...
+    provider: config.geocoder.PROVIDER,
+    httpAdapter: config.geocoder.HTTP_ADAPTER, // Default
+    apiKey: config.geocoder.API_KEY, // for Mapquest, OpenCage, Google Premier
+    formatter: config.geocoder.FORMATTER         // 'gpx', 'string', ...
 };
 var geocoder = NodeGeocoder(options);
 var nodemailer = require('nodemailer');
 const transport = nodemailer.createTransport({
-    service: 'Gmail',
+    service: config.nodemailer.SERVICE,
     auth: {
         // user:"postmaster@sandboxbc0e3c13e3844bd8a30deb8ceeff7568.mailgun.org",
         // pass: "32f1ace8ec4ba67a3efaea00a0a20ccf-0470a1f7-1de43609"
-        user: "noreply@blip.delivery",
-        pass: "Noreply1"
+        user: config.nodemailer.auth.USER,
+        pass: config.nodemailer.auth.PASS
     },
     tls: {
-        rejectUnauthorized: false
+        rejectUnauthorized: config.nodemailer.tls.REJECT_UNAUTHORIZED
     }
 });
 
 exports.sendEmail = functions.https.onRequest((req, res) => {
-    const fromEmail = req.body.fromEmail;
-    const toEmail = req.body.toEmail;
-    const subjectLine = req.body.subjectLine;
-    const emailHash = crypto.createHash('md5').update(toEmail).digest('hex');
-    const link = `https://us-central1-blip-c1e83.cloudfunctions.net/verifyEmail?hash=${emailHash}&email=${toem}`;
-    const htmlCode = `Thank you for choosing to drive with blip.delivery.
-    <br>
-    Please <a href="${link}">click to verify your account</a>
-    `;
-
-    transport.sendMail({ from: fromEmail, to: toEmail, subject: subjectLine, html: htmlCode })
-        .then(function (fulfilled) {
-            console.log('SENT SUCCESS EMAIL');
-            res.status(200).send();
-        }, function (err) {
-            console.log("ERROR HERE IS", err);
-            res.status(400).send();
-        });
+    console.log(config.nodemailer.auth.USER);
+    res.status(200).send();
 });
 
 exports.verifyEmail = functions.https.onRequest((req, res) => {
