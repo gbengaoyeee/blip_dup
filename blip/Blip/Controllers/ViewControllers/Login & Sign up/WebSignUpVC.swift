@@ -26,7 +26,7 @@ class WebSignUpVC: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        let urlString: String = "http://www.blip.delivery"
+        let urlString: String = "http://www.blip.delivery/drive"
         let url: URL = URL(string: urlString)!
         let request:URLRequest = URLRequest(url: url)
         self.webView.load(request)
