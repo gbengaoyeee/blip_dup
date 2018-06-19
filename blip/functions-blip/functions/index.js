@@ -12,8 +12,6 @@ const geo = require('geolib');
 const stripe = require('stripe')(config.stripe.STRIPE_KEY),
     currency = config.stripe.CURRENCY;
 const cors = require('cors')({ origin: true });
-
-
 var accountSid = config.twilio.ACCOUNT_SID; // Your Account SID from www.twilio.com/console
 var authToken = config.twilio.AUTH_TOKEN;   // Your Auth Token from www.twilio.com/console
 var twilio = require('twilio');
@@ -924,7 +922,7 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
                             }, function (err, charge) {
                                 if (err) {
                                     console.log(err);
-                                    res.status(450).end // CANNOT CHARGE ERROR
+                                    res.status(400).end() // CANNOT CHARGE ERROR
                                 } else {
                                     var deliveryDetails = {
                                         storeID,
@@ -967,6 +965,60 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
     })
 });
 
+exports.cancelDelivery = functions.https.onRequest((req, res) => {
+    var deliveryID = req.body.deliveryID;
+    var storeID = req.body.storeID;
+    admin.database().ref(`/AllJobs/${deliveryID}`).once("value", function(snapshot){
+        if (snapshot.exists()){
+            const chargeID = snapshot.child("chargeID").child("id").val();
+            const chargeAmount = snapshot.child("chargeAmount").val();
+            stripe.refunds.create({
+                charge: chargeID,
+                amount: chargeAmount
+            }, function(err, refund){
+                if (err){
+                    console.log(err);
+                    res.status(400).send("Unable to cancel delivery, try again later");
+                }else{
+                    console.log(refund);
+                    res.status(200).end();
+                }
+            })
+        }else{
+            admin.database().ref(`/stores/${storeID}`).once("value", function(snapshot){
+                if (!snapshot.exists()){
+                    res.status(400).send("No such deliveryID");
+                }else if (snapshot.child('isTaken').val() == true){
+                    res.status(400).send("Unable to cancel delivery, courier is on his way");
+                }else{
+                    res.status(400).send("An error occured, contact blip");
+                }
+            })
+        }
+    })
+})
+
+exports.getDriverLocation = functions.https.onRequest((req, res) => {
+    var deliveryID = req.body.deliveryID;
+    var storeID = req.body.storeID;
+    admin.database().ref(`/stores/${storeID}/${deliveryID}/jobTaker`).once("value", function(snapshot){
+        if (!snapshot.exists){
+            console.log("Job not taken");
+            res.status(200).send("Job not taken");
+        }else{
+            let driverHash = snapshot.val();
+            admin.database().ref(`Courier/${driverHash}`).once("value", function(driverSnapshot){
+                if (!driverSnapshot.exists){
+                    res.status(400).send("An error occured, contact blip");
+                }else{
+                    var lat = driverSnapshot.child("currentLatitude").val();
+                    var long = driverSnapshot.child("currentLongitude").val();
+                    res.status(200).send(lat, long);
+                }
+            })
+        }
+    })
+})
 
 exports.createLeads = functions.https.onRequest((req, res) => {
     const storeName = req.body.storeName;
@@ -1071,7 +1123,6 @@ exports.createStore = functions.https.onRequest((req, res) => {
             });
         }
     });
-
 });
 
 exports.getDeliveryPrice = functions.https.onRequest((req, res) => {
@@ -1139,8 +1190,9 @@ exports.createTestStore = functions.https.onRequest((req, res) => {
     var last_name = "Your last name";
     var date = Math.floor(new Date() / 1000);
     var email = "test@grr.la";
-
-    stripe.customers.create({
+    const stripe2 = require('stripe')("sk_test_4I0ubK7NduuV6dhJouhEAqtu"),
+        currency = "CAD";
+    stripe2.customers.create({
         "business_vat_id": business_tax_id,
         "description": business_name,
         "email": email,
