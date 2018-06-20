@@ -56,13 +56,8 @@ exports.verifyEmail = functions.https.onRequest((req, res) => {
             }
             //Update the user's firebase acct and update its verified value
             admin.auth().updateUser(uid, { emailVerified: true }).then(function (userRecord) {
-                return admin.database().ref(`Couriers/${emailHash}`).update({ verified: true })
-                    .then(() => {
-                        console.log('Verified successfully');
-                        res.status(200).send('<h1>Your email has been verified successfully</h1>');
-                    }).catch(function (error) {
-                        res.status(400).send("Could not verify this email");
-                    });
+                console.log('Verified successfully');
+                res.status(200).send('<h1>Your email has been verified successfully</h1>');
             }).catch(function (error) {
                 res.status(400).send("Could not verify this email");
             });
@@ -218,7 +213,7 @@ exports.createCourier = functions.https.onRequest((req, res) => {
     const phoneNumber = req.body.phoneNumber;
     const photoURL = req.body.photoURL;
 
-    const fromEmail = "noreply@blip.delivery";
+    const fromEmail = config.nodemailer.auth.USER;
     const subjectLine = "Verify your account";
 
 
@@ -897,18 +892,18 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
             }
             if (snapshot.child(`/customer`).val() == null) {
                 console.log("Cannot create a delivery. No customer returned by stripe");
-                res.status(400).end(); // NO CUSTOMER ERROR
+                res.status(404).send("Customer not found"); // NO CUSTOMER ERROR
                 return
             }
             geocoder.geocode(deliveryAddress, function (err, data) {
                 if (err) {
-                    res.status(400).send("Could not parse address");
+                    res.status(403).send("Could not parse address");
                 } else {
                     deliveryLat = data[0].latitude;
                     deliveryLong = data[0].longitude;
                     geocoder.geocode(pickupAddress, function (err, pickupData) {
                         if (err) {
-                            res.status(400).send("Could not parse pickup data");
+                            res.status(403).send("Could not parse pickup address");
                         } else {
                             console.log(pickupData, data);
                             originLat = pickupData[0].latitude;
@@ -922,7 +917,8 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
                             }, function (err, charge) {
                                 if (err) {
                                     console.log(err);
-                                    res.status(400).end() // CANNOT CHARGE ERROR
+                                    res.status(403).send("Could not make the delivery request"); // CANNOT CHARGE ERROR
+                                    return;
                                 } else {
                                     var deliveryDetails = {
                                         storeID,
@@ -960,57 +956,73 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
             })
         } else {
             console.log("No such storeID");
-            res.status(500).end(); // INCORRECT STOREID ERROR
+            res.status(404).send("Store ID not found"); // INCORRECT STOREID ERROR
         }
     })
 });
 
+
 exports.cancelDelivery = functions.https.onRequest((req, res) => {
     var deliveryID = req.body.deliveryID;
     var storeID = req.body.storeID;
-    admin.database().ref(`/AllJobs/${deliveryID}`).once("value", function(snapshot){
-        if (snapshot.exists()){
-            const chargeID = snapshot.child("chargeID").child("id").val();
-            const chargeAmount = snapshot.child("chargeAmount").val();
-            stripe.refunds.create({
-                charge: chargeID,
-                amount: chargeAmount
-            }, function(err, refund){
-                if (err){
-                    console.log(err);
-                    res.status(400).send("Unable to cancel delivery, try again later");
-                }else{
-                    console.log(refund);
-                    res.status(200).end();
-                }
-            })
-        }else{
-            admin.database().ref(`/stores/${storeID}`).once("value", function(snapshot){
-                if (!snapshot.exists()){
-                    res.status(400).send("No such deliveryID");
-                }else if (snapshot.child('isTaken').val() == true){
-                    res.status(400).send("Unable to cancel delivery, courier is on his way");
-                }else{
-                    res.status(400).send("An error occured, contact blip");
-                }
-            })
-        }
-    })
+    return admin.database().ref(`/AllJobs/${deliveryID}`).once('value')
+        .then(function (snapshot) {
+            if (snapshot.exists()) {
+                const chargeID = snapshot.child("chargeID").child("id").val();
+                const chargeAmount = snapshot.child("chargeAmount").val();
+                stripe.refunds.create({
+                    charge: chargeID,
+                    amount: chargeAmount
+                }, function (err, refund) {
+                    if (err) {
+                        console.log(err);
+                        res.status(400).send("Unable to cancel delivery, try again later");
+                    } else {
+                        console.log(refund);
+                        admin.database().ref(`/AllJobs/${deliveryID}`).remove().then(()=>{
+                            admin.database().ref(`/stores/${storeID}/deliveries/${deliveryID}`).remove().then(()=>{
+                                res.status(200).send('Delivery cancelled successfully');
+                            }).catch(function(error){
+                                res.status(400).send(error + "\nAn error occured, contact blip");
+                            });
+                        }).catch(function(error){
+                            res.status(400).send(error + "\nAn error occured, contact blip");
+                        });
+                        
+                    }
+                })
+            } else {//Delivery object not in alljobs; could already be in a courier's ref or it doesnt exist at all
+                return admin.database().ref(`/stores/${storeID}/deliveries/${deliveryID}`).once('value')
+                    .then(function (storeSnapshot) {
+                        if (!storeSnapshot.exists()) {//If at this point, delivery still doesnt exist, then deliveryid provided is invalid
+                            res.status(404).send("No such Delivery ID");
+                        } else if (storeSnapshot.child('isTaken').val() == true) {//Delivery has already been taken, therefore cannot refund it
+                            res.status(406).send("Unable to cancel delivery, courier is already on their way");
+                        } else {
+                            res.status(400).send("An error occured, contact blip");
+                        }
+                    }).catch(function (error) {
+                        res.status(400).send(error + "\nAn error occured, contact blip");
+                    });
+            }
+        }).catch(function(error){
+            res.status(400).send(error + "\nAn error occured, contact blip");
+        })
 })
 
 exports.getDriverLocation = functions.https.onRequest((req, res) => {
     var deliveryID = req.body.deliveryID;
     var storeID = req.body.storeID;
-    admin.database().ref(`/stores/${storeID}/${deliveryID}/jobTaker`).once("value", function(snapshot){
-        if (!snapshot.exists){
+    return admin.database().ref(`/stores/${storeID}/${deliveryID}/jobTaker`).once("value", function (snapshot) {
+        if (!snapshot.exists) {
             console.log("Job not taken");
             res.status(200).send("Job not taken");
-        }else{
+        } else {
             let driverHash = snapshot.val();
-            admin.database().ref(`Courier/${driverHash}`).once("value", function(driverSnapshot){
-                if (!driverSnapshot.exists){
+            return admin.database().ref(`Couriers/${driverHash}`).once("value", function (driverSnapshot) {
+                if (!driverSnapshot.exists) {
                     res.status(400).send("An error occured, contact blip");
-                }else{
+                } else {
                     var lat = driverSnapshot.child("currentLatitude").val();
                     var long = driverSnapshot.child("currentLongitude").val();
                     res.status(200).send(lat, long);
@@ -1165,7 +1177,7 @@ exports.getDeliveryStatus = functions.https.onRequest((req, res) => {
         }
         else {
             console.log("Job does not exist in storeID provided");
-            res.status(400).end("Does not exist");
+            res.status(400).send("Does not exist");
         }
     })
 })
