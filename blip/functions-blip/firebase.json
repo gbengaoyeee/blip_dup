@@ -2,5 +2,34 @@
   "functions": {
     "predeploy": [],
     "source": "functions"
+  },
+  "hosting": {
+    "public": "public",
+    "rewrites":[{
+      "source":"/createTestStore", "function":"createTestStore"
+    },
+    {
+      "source":"/getDeliveryStatus", "function":"getDeliveryStatus"
+    },
+    {
+      "source":"/makeDeliveryRequest", "function":"makeDeliveryRequest"
+    },
+    {
+      "source":"/cancelDelivery", "function":"cancelDelivery"
+    },
+    {
+      "source":"/getDriverLocation", "function":"getDriverLocation"
+    },
+    {
+      "source":"/getDeliveryPrice", "function":"getDeliveryPrice"
+    },
+    {
+      "source":"getDeliveryStatus", "function":"getDeliveryStatus"
+    }],
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
   }
 }
