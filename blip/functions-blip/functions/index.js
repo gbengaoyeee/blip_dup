@@ -1011,9 +1011,10 @@ exports.getDriverLocation = functions.https.onRequest((req, res) => {
                 if (!driverSnapshot.exists){
                     res.status(400).send("An error occured, contact blip");
                 }else{
-                    var lat = driverSnapshot.child("currentLatitude").val();
-                    var long = driverSnapshot.child("currentLongitude").val();
-                    res.status(200).send(lat, long);
+                    var latitude = driverSnapshot.child("currentLatitude").val();
+                    var longitude = driverSnapshot.child("currentLongitude").val();
+                    let location = {latitude, longitude};
+                    res.status(200).send(location);
                 }
             })
         }
