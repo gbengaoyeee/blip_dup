@@ -19,6 +19,7 @@
     "firebase-admin": "^5.12.1",
     "firebase-functions": "^1.0.2",
     "geolib": "^2.0.24",
+    "google-distance-matrix": "^1.1.1",
     "mailgun-js": "^0.18.0",
     "node-geocoder": "^3.22.0",
     "nodemailer": "^4.6.7",
