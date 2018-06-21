@@ -1160,7 +1160,7 @@ exports.getDeliveryPrice = functions.https.onRequest((req, res) => {
         console.log("Missing field");
         res.status(400).send("Missing address");
     }
-    const price = getChargeAmount(deliveryAddress, pickupAddress, function(price){
+    getChargeAmount(deliveryAddress, pickupAddress, function(price){
         if (price !== undefined || price != null || price != "0") {
             console.log("Cost of delivery is;", price);
             res.status(200).send({price});
