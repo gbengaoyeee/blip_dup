@@ -689,7 +689,7 @@ function verifyCoordinates([coordinates]) {
 function verifyFieldsForNull([fields]) {
     var field;
     for (field in fields) {
-        if (field == null || field === undefined) {
+        if (field === null || field === undefined) {
             return false
         }
     }
@@ -1161,7 +1161,7 @@ exports.getDeliveryPrice = functions.https.onRequest((req, res) => {
         res.status(400).send("Missing address");
     }
     getChargeAmount(deliveryAddress, pickupAddress, function(price){
-        if (price !== undefined || price != null || price != "0") {
+        if (price !== undefined || price != null || price !== "0") {
             console.log("Cost of delivery is;", price);
             res.status(200).send({price});
         } else {
