@@ -689,7 +689,6 @@ function verifyCoordinates([coordinates]) {
 function verifyFieldsForNull([fields]) {
     var field;
     for (field in fields) {
-        console.log("THIS IS THE FIELD",field);
         if (field == null || field === undefined) {
             return false
         }
@@ -1157,7 +1156,7 @@ exports.getDeliveryPrice = functions.https.onRequest((req, res) => {
     var deliveryLong;
     var pickupLat;
     var pickupLong;
-    if(!verifyFieldsForNull([req.body.deliveryAddress, req.body.pickupAddress])){
+    if(!verifyFieldsForNull([deliveryAddress, pickupAddress])){
         console.log("Missing field");
         res.status(400).send("Missing address");
     }
@@ -1175,8 +1174,7 @@ exports.getDeliveryPrice = functions.https.onRequest((req, res) => {
 exports.getDeliveryStatus = functions.https.onRequest((req, res) => {
     const deliveryID = req.body.deliveryID;
     const storeID = req.body.storeID;
-    console.log("TEST", verifyFieldsForNull([req.body.deliveryID, req.body.storeID], req.body));
-    if (!verifyFieldsForNull([req.body.storeID, req.body.deliveryID])){
+    if (!verifyFieldsForNull([storeID, deliveryID])){
         res.status(400).end();
     }else{
         admin.database().ref(`/stores/${storeID}/deliveries/${deliveryID}`).once("value", function (snapshot) {
