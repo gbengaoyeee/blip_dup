@@ -17,6 +17,8 @@ var authToken = config.twilio.AUTH_TOKEN;   // Your Auth Token from www.twilio.c
 var twilio = require('twilio');
 var client = new twilio(accountSid, authToken);
 var NodeGeocoder = require('node-geocoder');
+var distance = require('google-distance-matrix');
+distance.key = config.googleDistance.key;
 var options = {
     provider: config.geocoder.PROVIDER,
     httpAdapter: config.geocoder.HTTP_ADAPTER, // Default
@@ -384,16 +386,25 @@ function checkUserVerifiedOrFlagged(emailHash, callback) {
     });
 }
 
-function getChargeAmount(deliveryLat, deliveryLong, pickupLat, pickupLong) {
-    const distanceBtw = geo.getDistance({
-        latitude: deliveryLat,
-        longitude: deliveryLong
-    }, {
-            latitude: pickupLat,
-            longitude: pickupLong
-        });
-    const price = Math.floor((distanceBtw / 1000) + 4.50); // 4.50 for successfull delivery.
-    return price * 100;
+function getChargeAmount(deliveryAddress, pickupAddress, callback) {
+    let origin = [deliveryAddress];
+    let destination = [pickupAddress];
+    distance.matrix(origin, destination, function(err, distances){
+        if (err){
+            console.log(err);
+            callback("0");
+        }else{
+            console.log(distances);
+            if (distances.status != "OK"){
+                console.log(distances);
+                callback("0");
+            }else{
+                console.log("Distance is: ",distances.rows[0].elements[0].distance.value);
+                const price = (distances.rows[0].elements[0].distance.value / 1000) + 4.50;
+                callback(`${price * 100}`);
+            }
+        }
+    })
 }
 
 exports.payOnDelivery = functions.database.ref('/CompletedJobs/{id}').onCreate((snapshot, context) => {
@@ -678,7 +689,7 @@ function verifyCoordinates([coordinates]) {
 function verifyFieldsForNull([fields]) {
     var field;
     for (field in fields) {
-        if (field == null) {
+        if (field === null || field === undefined) {
             return false
         }
     }
@@ -1022,10 +1033,11 @@ exports.getDriverLocation = functions.https.onRequest((req, res) => {
             return admin.database().ref(`Couriers/${driverHash}`).once("value", function (driverSnapshot) {
                 if (!driverSnapshot.exists) {
                     res.status(400).send("An error occured, contact blip");
-                } else {
-                    var lat = driverSnapshot.child("currentLatitude").val();
-                    var long = driverSnapshot.child("currentLongitude").val();
-                    res.status(200).send(lat, long);
+                }else{
+                    var latitude = driverSnapshot.child("currentLatitude").val();
+                    var longitude = driverSnapshot.child("currentLongitude").val();
+                    let location = {latitude, longitude};
+                    res.status(200).send(location);
                 }
             })
         }
@@ -1138,48 +1150,55 @@ exports.createStore = functions.https.onRequest((req, res) => {
 });
 
 exports.getDeliveryPrice = functions.https.onRequest((req, res) => {
-    var deliveryLat = req.body.deliveryLat;
-    var deliveryLong = req.body.deliveryLong;
-    var pickupLat = req.body.pickupLat;
-    var pickupLong = req.body.pickupLong;
-    if (!verifyCoordinates([req.body.deliveryLat, req.body.deliveryLong, req.body.pickupLat, req.body.pickupLong])) {
-        console.log("One or more coordinates were null");
-        res.status(400).end();
+    var deliveryAddress = req.body.deliveryAddress;
+    var pickupAddress = req.body.pickupAddress;
+    var deliveryLat;
+    var deliveryLong;
+    var pickupLat;
+    var pickupLong;
+    if(!verifyFieldsForNull([deliveryAddress, pickupAddress])){
+        console.log("Missing field");
+        res.status(400).send("Missing address");
     }
-    const price = getChargeAmount(deliveryLat, deliveryLong, pickupLat, pickupLong);
-    if (price !== undefined || price != null) {
-        console.log("Cost of delivery is;", price);
-        res.status(200).send(price);
-    } else {
-        console.log("A field is empty");
-        res.status(400).end();
-    }
+    getChargeAmount(deliveryAddress, pickupAddress, function(price){
+        if (price !== undefined || price != null || price !== "0") {
+            console.log("Cost of delivery is;", price);
+            res.status(200).send({price});
+        } else {
+            console.log("An error occured");
+            res.status(400).send("An error occured, contact blip");
+        }
+    });
 })
 
 exports.getDeliveryStatus = functions.https.onRequest((req, res) => {
     const deliveryID = req.body.deliveryID;
     const storeID = req.body.storeID;
-    admin.database().ref(`/stores/${storeID}/deliveries/${deliveryID}`).once("value", function (snapshot) {
-        if (snapshot.exists) {
-            if (snapshot.child("isTaken").val() == true) {
-                if (snapshot.child("isCompleted").val() == true) {
-                    console.log("Job completed");
-                    res.status(200).send("Completed");
-                } else {
-                    console.log("Job in progress");
-                    res.status(200).send("In progress");
+    if (!verifyFieldsForNull([storeID, deliveryID])){
+        res.status(400).end();
+    }else{
+        admin.database().ref(`/stores/${storeID}/deliveries/${deliveryID}`).once("value", function (snapshot) {
+            if (snapshot.val()) {
+                if (snapshot.child("isTaken").val() == true) {
+                    if (snapshot.child("isCompleted").val() == true) {
+                        console.log("Job completed");
+                        res.status(200).send("Completed");
+                    } else {
+                        console.log("Job in progress");
+                        res.status(200).send("In progress");
+                    }
+                }
+                else {
+                    console.log("Job not taken");
+                    res.status(200).send("Not taken");
                 }
             }
             else {
-                console.log("Job not taken");
-                res.status(200).send("Not taken");
+                console.log("Job does not exist in storeID provided");
+                res.status(400).send("Does not exist");
             }
-        }
-        else {
-            console.log("Job does not exist in storeID provided");
-            res.status(400).send("Does not exist");
-        }
-    })
+        })
+    }
 })
 
 //////////////////////////// TEST FUNCTIONS /////////////////////////////////////////
