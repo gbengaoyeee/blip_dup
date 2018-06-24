@@ -875,7 +875,7 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
     //storeName, deliveryLat, deliveryLong, deliveryMainInstruction, deliverySubInstruction, originLat, originLong, pickupMainInstruction, pickupSubInstruction, recieverName, recieverNumber, pickupNumber  
     var storeID = req.body.storeID;
     admin.database().ref(`/stores/${storeID}`).once("value", function (snapshot) {
-        if (snapshot.exists) {
+        if (snapshot.val()) {
             var deliveryLat,
                 deliveryLong,
                 deliveryAddress = req.body.deliveryAddress,
@@ -891,11 +891,6 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
                 pickupNumber = req.body.pickupNumber,
                 newPostKey = admin.database().ref().child('AllJobs').push().key
 
-            if (!verifyFieldsForNull([req.body.deliveryMainInstruction, req.body.deliverySubInstruction, req.body.pickupMainInstruction, req.body.pickupSubInstruction, req.body.recieverName])) {
-                console.log("Bad fields");
-                res.status(400).send("Check all parameters");
-                return
-            }
             if (!verifyNumbers(req.body.recieverNumber) || !verifyNumbers(req.body.pickupNumber)) {
                 console.log("Numbers error");
                 res.status(400).send("Phone no. must begin with a +1 and have 10 numbers after it");
@@ -976,9 +971,15 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
 exports.cancelDelivery = functions.https.onRequest((req, res) => {
     var deliveryID = req.body.deliveryID;
     var storeID = req.body.storeID;
+    if (deliveryID === undefined){
+        res.status(400).send("Missing deliveryID");
+    }
+    if (storeID === undefined){
+        res.status(400).send("Missing storeID");
+    }
     return admin.database().ref(`/AllJobs/${deliveryID}`).once('value')
         .then(function (snapshot) {
-            if (snapshot.exists()) {
+            if (snapshot.val()) {
                 const chargeID = snapshot.child("chargeID").child("id").val();
                 const chargeAmount = snapshot.child("chargeAmount").val();
                 stripe.refunds.create({
@@ -1005,7 +1006,7 @@ exports.cancelDelivery = functions.https.onRequest((req, res) => {
             } else {//Delivery object not in alljobs; could already be in a courier's ref or it doesnt exist at all
                 return admin.database().ref(`/stores/${storeID}/deliveries/${deliveryID}`).once('value')
                     .then(function (storeSnapshot) {
-                        if (!storeSnapshot.exists()) {//If at this point, delivery still doesnt exist, then deliveryid provided is invalid
+                        if (!storeSnapshot.val()) {//If at this point, delivery still doesnt exist, then deliveryid provided is invalid
                             res.status(404).send("No such Delivery ID");
                         } else if (storeSnapshot.child('isTaken').val() == true) {//Delivery has already been taken, therefore cannot refund it
                             res.status(406).send("Unable to cancel delivery, courier is already on their way");
@@ -1024,14 +1025,22 @@ exports.cancelDelivery = functions.https.onRequest((req, res) => {
 exports.getDriverLocation = functions.https.onRequest((req, res) => {
     var deliveryID = req.body.deliveryID;
     var storeID = req.body.storeID;
-    return admin.database().ref(`/stores/${storeID}/${deliveryID}/jobTaker`).once("value", function (snapshot) {
-        if (!snapshot.exists) {
-            console.log("Job not taken");
-            res.status(200).send("Job not taken");
+    if (deliveryID === undefined){
+        res.status(400).send("Missing deliveryID");
+    }
+    if (storeID === undefined){
+        res.status(400).send("Missing storeID");
+    }
+    return admin.database().ref(`/stores/${storeID}/${deliveryID}`).once("value", function (snapshot) {
+        if (!snapshot.val()) {
+            res.status(400).send("Delivery does not exist");
         } else {
-            let driverHash = snapshot.val();
+            let driverHash = snapshot.child("jobTaker").val();
+            if (!driverHash){
+                res.status(200).send("Delivery not taken");
+            }
             return admin.database().ref(`Couriers/${driverHash}`).once("value", function (driverSnapshot) {
-                if (!driverSnapshot.exists) {
+                if (!driverSnapshot.val()) {
                     res.status(400).send("An error occured, contact blip");
                 }else{
                     var latitude = driverSnapshot.child("currentLatitude").val();
@@ -1083,13 +1092,39 @@ exports.createStore = functions.https.onRequest((req, res) => {
     var email = req.body.email;
     var date = Math.floor(new Date() / 1000);
 
-
-    if (!verifyFieldsForNull([req.body.storeName, req.body.storeBackground, req.body.storeLogo, req.body.city, req.body.country, req.body.line1, req.body.postalCode, req.body.province, req.body.businessName, req.body.businessTaxId, req.body.firstName, req.body.lastName, req.body.email])) {
-        console.log("Check fields. One or more empty fields");
-        res.status(400).end();
-        return
+    if (storeName === undefined) {
+        res.status(400).send("Missing storeName");
     }
-
+    if (storeLogo === undefined){
+        res.status(400).send("Missing storeLogo");
+    }
+    if (storeBackground === undefined){
+        res.status(400).send("Missing storeBackground");
+    }
+    if (address_country === undefined){
+        res.status(400).send("Missing address_country");
+    }
+    if (address_line1 === undefined){
+        res.status(400).send("Missing address_line1");
+    }
+    if (business_name === undefined){
+        res.status(400).send("Missing business_name");
+    }
+    if (business_tax_id === undefined){
+        res.status(400).send("Missing business_tax_id");
+    }
+    if (first_name === undefined){
+        res.status(400).send("Missing first_name");
+    }
+    if (last_name === undefined){
+        res.status(400).send("Missing last_name");
+    }
+    if (storeDescription === undefined){
+        res.status(400).send("Missing storeDescription");
+    }
+    if (email === undefined){
+        res.status(400).send("Missing email");
+    }
     const address = `${address_line1} ${address_country}`;
     geocoder.geocode(address, function (err, data) {
         if (err) {
@@ -1156,12 +1191,14 @@ exports.getDeliveryPrice = functions.https.onRequest((req, res) => {
     var deliveryLong;
     var pickupLat;
     var pickupLong;
-    if(!verifyFieldsForNull([deliveryAddress, pickupAddress])){
-        console.log("Missing field");
-        res.status(400).send("Missing address");
+    if(deliveryAddress === undefined){
+        res.status(400).send("Missing deliveryAddress");
+    }
+    if(pickupAddress === undefined){
+        res.status(400).send("Missing pickupAddress");
     }
     getChargeAmount(deliveryAddress, pickupAddress, function(price){
-        if (price !== undefined || price != null || price !== "0") {
+        if (price != "0") {
             console.log("Cost of delivery is;", price);
             res.status(200).send({price});
         } else {
@@ -1174,31 +1211,33 @@ exports.getDeliveryPrice = functions.https.onRequest((req, res) => {
 exports.getDeliveryStatus = functions.https.onRequest((req, res) => {
     const deliveryID = req.body.deliveryID;
     const storeID = req.body.storeID;
-    if (!verifyFieldsForNull([storeID, deliveryID])){
-        res.status(400).end();
-    }else{
-        admin.database().ref(`/stores/${storeID}/deliveries/${deliveryID}`).once("value", function (snapshot) {
-            if (snapshot.val()) {
-                if (snapshot.child("isTaken").val() == true) {
-                    if (snapshot.child("isCompleted").val() == true) {
-                        console.log("Job completed");
-                        res.status(200).send("Completed");
-                    } else {
-                        console.log("Job in progress");
-                        res.status(200).send("In progress");
-                    }
-                }
-                else {
-                    console.log("Job not taken");
-                    res.status(200).send("Not taken");
+    if (deliveryID === undefined){
+        res.status(400).send("Missing deliveryID");
+    }
+    if (storeID === undefined){
+        res.status(400).send("Missing storeID");
+    }
+    admin.database().ref(`/stores/${storeID}/deliveries/${deliveryID}`).once("value", function (snapshot) {
+        if (snapshot.val()) {
+            if (snapshot.child("isTaken").val() == true) {
+                if (snapshot.child("isCompleted").val() == true) {
+                    console.log("Job completed");
+                    res.status(200).send("Completed");
+                } else {
+                    console.log("Job in progress");
+                    res.status(200).send("In progress");
                 }
             }
             else {
-                console.log("Job does not exist in storeID provided");
-                res.status(400).send("Does not exist");
+                console.log("Job not taken");
+                res.status(200).send("Not taken");
             }
-        })
-    }
+        }
+        else {
+            console.log("Job does not exist in storeID provided");
+            res.status(400).send("Does not exist");
+        }
+    })
 })
 
 //////////////////////////// TEST FUNCTIONS /////////////////////////////////////////
