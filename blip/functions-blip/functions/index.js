@@ -874,6 +874,7 @@ exports.captureCharge = functions.https.onRequest((req, res) => {
 exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
     //storeName, deliveryLat, deliveryLong, deliveryMainInstruction, deliverySubInstruction, originLat, originLong, pickupMainInstruction, pickupSubInstruction, recieverName, recieverNumber, pickupNumber  
     var storeID = req.body.storeID;
+    const items = req.body.items;
     admin.database().ref(`/stores/${storeID}`).once("value", function (snapshot) {
         if (snapshot.val()) {
             var deliveryLat,
@@ -891,7 +892,7 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
                 pickupNumber = req.body.pickupNumber,
                 newPostKey = admin.database().ref().child('AllJobs').push().key
 
-            if (!verifyNumbers(req.body.recieverNumber) || !verifyNumbers(req.body.pickupNumber)) {
+            if (!verifyNumbers(req.body.recieverNumber) || !verifyNumbers(req.body.pickupNumber) || items == null) {
                 console.log("Numbers error");
                 res.status(400).send("Phone no. must begin with a +1 and have 10 numbers after it");
                 return
