@@ -232,10 +232,10 @@ exports.createCourier = functions.https.onRequest((req, res) => {
     return admin.auth().createUser({//can also add photourl later on
         email: email,
         emailVerified: false,
-        password: password,
         displayName: "" + firstName + " " + lastName,
         photoURL: photoURL,
-        disabled: false
+        disabled: false,
+        password:confirmPassword
     }).then(function (user) {
         console.log("Created user succesfully with uid:", user.uid);
         console.log("photo", user.photoURL);
@@ -874,7 +874,6 @@ exports.captureCharge = functions.https.onRequest((req, res) => {
 exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
     //storeName, deliveryLat, deliveryLong, deliveryMainInstruction, deliverySubInstruction, originLat, originLong, pickupMainInstruction, pickupSubInstruction, recieverName, recieverNumber, pickupNumber  
     var storeID = req.body.storeID;
-    const items = req.body.items;
     admin.database().ref(`/stores/${storeID}`).once("value", function (snapshot) {
         if (snapshot.val()) {
             var deliveryLat,
@@ -892,7 +891,7 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
                 pickupNumber = req.body.pickupNumber,
                 newPostKey = admin.database().ref().child('AllJobs').push().key
 
-            if (!verifyNumbers(req.body.recieverNumber) || !verifyNumbers(req.body.pickupNumber) || items == null) {
+            if (!verifyNumbers(req.body.recieverNumber) || !verifyNumbers(req.body.pickupNumber)) {
                 console.log("Numbers error");
                 res.status(400).send("Phone no. must begin with a +1 and have 10 numbers after it");
                 return
