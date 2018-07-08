@@ -212,13 +212,16 @@ exports.createCourier = functions.https.onRequest((req, res) => {
     const email = req.body.email;
     const password = req.body.password;
     const confirmPassword = req.body.confirmPassword;
-    const phoneNumber = req.body.phoneNumber;
+    const phoneNumber = validatePhoneNumber(req.body.phoneNumber);
     const photoURL = req.body.photoURL;
 
     const fromEmail = config.nodemailer.auth.USER;
     const subjectLine = "Verify your account";
 
-
+    if (phoneNumber == 400){
+        console.log("Wrong phone number format")
+        res.status(400).send("Wrong phone number format. Use format: +1XXXXXXXXXX");
+    }
     if (!verifyFieldsForNull([req.body.firstName, req.body.lastName, req.body.email, req.body.password, req.body.confirmPassword, req.body.photoURL])) {
         console.log("Some fields are null");
         res.status(400).send("Null fields");
@@ -706,6 +709,22 @@ function verifyNumbers(number) {
     }
     return true
 }
+
+function validatePhoneNumber(number){
+    var regex = /^(\+1)?\(?\d{3}\)?\d{3}\d{4}$/
+    var newNum = ""+number;
+    if (regex.test(number)){
+      if (number.length == 10){
+        newNum = "+1"+number
+        console.log(newNum);
+        return newNum
+      }else{
+        console.log(newNum)
+        return newNum
+      }
+    }
+    return 400
+  }
 
 ///Validate the email provided
 function validateEmail(email) {
