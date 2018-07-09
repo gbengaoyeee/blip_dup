@@ -608,7 +608,7 @@ class ServiceCalls{
     }
  
     func updateJobAccepterLocation(location: CLLocationCoordinate2D){
-        userRef.child(self.emailHash).updateChildValues(["currentLatitude": location.latitude, "currentLongitude": location.longitude])
+        userRef.child(self.emailHash).updateChildValues(["currentLocation":["latitude": location.latitude, "longitude": location.longitude]])
         
     }
     
