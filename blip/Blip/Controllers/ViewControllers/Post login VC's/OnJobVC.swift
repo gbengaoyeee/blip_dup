@@ -260,6 +260,7 @@ extension OnJobVC:CLLocationManagerDelegate{
                 self.distanceToEvent = self.delivery.deliveryLocation.distance(to: currentLocation.coordinate)
             }
         }
+        print("Updated")
         guard let _: CLLocationCoordinate2D = manager.location?.coordinate else { return }
         self.currentLocation = locations.first?.coordinate
     }

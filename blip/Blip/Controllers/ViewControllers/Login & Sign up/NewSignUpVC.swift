@@ -14,19 +14,13 @@ import SwiftIcons
 
 class NewSignUpVC: UIViewController {
 
-    @IBOutlet weak var signUpInfoLabel: UILabel!
-    @IBOutlet weak var passwordLeading: NSLayoutConstraint!
-    @IBOutlet weak var emailLeading: NSLayoutConstraint!
-    @IBOutlet weak var lastnameLeadingConstraint: NSLayoutConstraint!
-    @IBOutlet weak var firstnameLeadingConstraint: NSLayoutConstraint!
-    @IBOutlet weak var goButton: RaisedButton!
-    @IBOutlet weak var passwordTF: TextField!
-    @IBOutlet weak var emailTF: TextField!
-    @IBOutlet weak var lastNameTF: TextField!
-    @IBOutlet weak var firstNameTF: TextField!
     @IBOutlet var gradientView: PastelView!
-    var correctLeadingConstraint: CGFloat!
-    
+    @IBOutlet weak var firstNameTF: TextField!
+    @IBOutlet weak var lastNameTF: TextField!
+    @IBOutlet weak var emailTF: TextField!
+    @IBOutlet weak var passwordTF: TextField!
+    @IBOutlet weak var phoneNumberTf: TextField!
+    @IBOutlet weak var goButton: RaisedButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,8 +30,8 @@ class NewSignUpVC: UIViewController {
         setupTF(tf: lastNameTF, title: "Last Name")
         setupTF(tf: emailTF, title: "Email")
         setupTF(tf: passwordTF, title: "Password")
+        setupTF(tf: phoneNumberTf, title: "Phone Number")
         self.hideKeyboardWhenTappedAround()
-        setupProperConstraints()
         setupGradientView()
     }
     
@@ -50,10 +44,8 @@ class NewSignUpVC: UIViewController {
         gradientView.startAnimation()
     }
     
-    fileprivate func setupProperConstraints(){
-        firstnameLeadingConstraint.constant = (self.view.frame.size.width - 220)/2
-        correctLeadingConstraint = firstnameLeadingConstraint.constant
-        lastnameLeadingConstraint.constant = correctLeadingConstraint
+    override func viewDidLayoutSubviews() {
+        setupGoButton()
     }
     
     ///Setup TextFields
@@ -64,6 +56,7 @@ class NewSignUpVC: UIViewController {
         tf.textColor = UIColor.white
         tf.autocorrectionType = .no
         tf.textColor = Color.white
+        tf.placeholderAnimation = .hidden
         tf.placeholder = title
         tf.placeholderActiveColor = UIColor.white
         tf.placeholderNormalColor = UIColor.white
@@ -72,83 +65,68 @@ class NewSignUpVC: UIViewController {
     }
     
     fileprivate func setupGoButton(){
-        goButton.layer.cornerRadius = goButton.frame.size.height/2
         goButton.backgroundColor = UIColor.white
-        goButton.setIcon(icon: .googleMaterialDesign(.arrowForward), iconSize: 30, color: #colorLiteral(red: 0, green: 0.8495121598, blue: 0, alpha: 1), backgroundColor: UIColor.white, forState: .normal)
+        goButton.setIcon(icon: .googleMaterialDesign(.arrowForward), iconSize: 25, color: #colorLiteral(red: 0.4, green: 0.6666666667, blue: 0.8823529412, alpha: 1), backgroundColor: UIColor.white, forState: .normal)
         
         //add functionality to the button
         goButton.addTarget(self, action: #selector(handleContinueButton), for: .touchUpInside)
     }
 
     @objc fileprivate func handleContinueButton(){
-        let isTextfieldsEmpty = firstNameTF.isEmpty && lastNameTF.isEmpty && emailTF.isEmpty && passwordTF.isEmpty
+        let isTextfieldsEmpty = firstNameTF.isEmpty || lastNameTF.isEmpty || emailTF.isEmpty || passwordTF.isEmpty || phoneNumberTf.isEmpty
         
-        if (isTextfieldsEmpty){// there is empty field(s)
+        if (isTextfieldsEmpty){
             self.present(popupForEmptyField(), animated: true, completion: nil)
+            return
         }
             
-        else if firstNameTF.isEmpty || lastNameTF.isEmpty{
-            self.present(popupForEmptyField(), animated: true, completion: nil)
+        else if !validateEmail(enteredEmail: emailTF.text!){
+            self.present(popupForInvalidEmail(), animated: true, completion: nil)
         }
             
-        else if !firstNameTF.isEmpty && !lastNameTF.isEmpty && emailTF.isEmpty && passwordTF.isEmpty{
-            signUpInfoLabel.text = "We require a valid email address to verify your account. Your information will not be shared with any third party"
-            UIView.animate(withDuration: 1) {
-                self.firstnameLeadingConstraint.constant = -230
-                self.lastnameLeadingConstraint.constant = -230
-                self.emailLeading.constant = self.correctLeadingConstraint
-                self.passwordLeading.constant = self.correctLeadingConstraint
-                self.view.layoutIfNeeded()
-            }
+        else if !validatePhoneNumber(number: phoneNumberTf.text!){
+            self.present(popupForInvalidNumber(), animated: true, completion: nil)
         }
-        else if !firstNameTF.isEmpty && !lastNameTF.isEmpty && !emailTF.isEmpty && !passwordTF.isEmpty{
+            
+        else if !validatePassword(enteredPassword: passwordTF.text!){
+            self.present(popupForInvalidPassword(), animated: true, completion: nil)
+        }
+            
+        else {
+            self.prepareAndAddBlurredLoader()
             if validateEmail(enteredEmail: emailTF.text!){
-                self.performSegue(withIdentifier: "choosePicture", sender: nil)
+                MyAPIClient.sharedClient.createCourier(firstName: firstNameTF.text!, lastName: lastNameTF.text!, phoneNumber: phoneNumberTf.text!, email: emailTF.text!, password: passwordTF.text!) { (code) in
+                    self.view.viewWithTag(101)?.removeFromSuperview()
+                    self.view.viewWithTag(100)?.removeFromSuperview()
+                    if code == "200"{
+                        let finishedPopup = PopupDialog(title: "Success", message: "You have been successfully signed up, and will recieve an email soon on how to get your background check done. For now, you may log into the app using your credentials")
+                        let continueButton = PopupDialogButton(title: "Continue", action: {
+                            self.performSegue(withIdentifier: "toLoginPageFromSignUp", sender: self)
+                        })
+                        finishedPopup.addButton(continueButton)
+                        self.present(finishedPopup, animated: true, completion: nil)
+                    }
+                    else{
+                        let errorPopup = PopupDialog(title: "Error", message: "An error occurred. Please try again later")
+                        self.present(errorPopup, animated: true, completion: nil)
+                        return
+                    }
+                }
             }
             else{
                 self.present(popupForInvalidEmail(), animated: true, completion: nil)
+                return
             }
         }
     }
     
-    @IBAction func nextOnLastName(_ sender: Any) {
-        if firstNameTF.isEmpty || lastNameTF.isEmpty{
-            self.present(popupForEmptyField(), animated: true, completion: nil)
-        }
-            
-        else{
-            signUpInfoLabel.text = "We require a valid email address to verify your account. Your information will not be shared with any third party"
-            UIView.animate(withDuration: 1) {
-                self.firstnameLeadingConstraint.constant = -230
-                self.lastnameLeadingConstraint.constant = -230
-                self.emailLeading.constant = self.correctLeadingConstraint
-                self.passwordLeading.constant = self.correctLeadingConstraint
-                self.view.layoutIfNeeded()
-            }
-        }
-    }
-    
-    @IBAction func nextOnPassword(_ sender: Any) {
-        if !firstNameTF.isEmpty && !lastNameTF.isEmpty && !emailTF.isEmpty && !passwordTF.isEmpty{
-            if validateEmail(enteredEmail: emailTF.text!){
-                self.performSegue(withIdentifier: "choosePicture", sender: nil)
-            }
-            else{
-                self.present(popupForInvalidEmail(), animated: true, completion: nil)
-            }
-        }
-    }
-    
-    ///Sends the textfield information to the choose profile VC
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "choosePicture"{
-            let userInfoDict = ["name":"\(self.firstNameTF.text!) \(self.lastNameTF.text!)", "firstName":"\(self.firstNameTF.text!)", "lastName":"\(self.lastNameTF.text!)", "email":self.emailTF.text!, "password":self.passwordTF.text!]
-            let destination = segue.destination as! ChoosePictureVC
-            destination.userInfoDict = userInfoDict
-        }
+    fileprivate func validatePhoneNumber(number: String) -> Bool{
+        
+        let numberFormat = "[\\+][1][0-9]{10}"
+        let numberPredicate = NSPredicate(format:"SELF MATCHES %@", numberFormat)
+        return numberPredicate.evaluate(with: number)
     }
 
-    
     fileprivate func validateEmail(enteredEmail:String) -> Bool {
         let emailFormat = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
         let emailPredicate = NSPredicate(format:"SELF MATCHES %@", emailFormat)
@@ -156,7 +134,6 @@ class NewSignUpVC: UIViewController {
     }
     
     fileprivate func validatePassword(enteredPassword:String) ->Bool{
-//        let postalcodeFormat = "^\s*([abceghj-nprstvxyABCEGHJ-NPRSTVXY][0-9][abceghj-nprstv-zABCEGHJ-NPRSTV-Z])\s+([0-9][abceghj-nprstv-zABCEGHJ-NPRSTV-Z][0-9])\s*$"
         let passwordFormat = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z !@#$%^&*()_\\-+={}\\[\\]\\\\|'\";:?\\/.,<>`~\\d]{6,}"
         let passwordPredicate = NSPredicate(format:"SELF MATCHES %@", passwordFormat)
         return passwordPredicate.evaluate(with: enteredPassword)
@@ -165,33 +142,28 @@ class NewSignUpVC: UIViewController {
     fileprivate func popupForEmptyField()-> PopupDialog {
         let title = "Empty fields"
         let message = "Please enter required information inside all fields"
-        let okButton = CancelButton(title: "OK") {
-            return
-        }
         let popup = PopupDialog(title: title, message: message)
-        popup.addButton(okButton)
+        return popup
+    }
+    
+    fileprivate func popupForInvalidNumber() -> PopupDialog{
+        let title = "Phone number"
+        let message = "Please enter your phone number in the format: +1XXXXXXXXXX"
+        let popup = PopupDialog(title: title, message: message)
         return popup
     }
     
     fileprivate func popupForInvalidEmail()-> PopupDialog {
         let title = "Invalid email"
         let message = "Please enter a valid email"
-        let okButton = CancelButton(title: "OK") {
-            return
-        }
         let popup = PopupDialog(title: title, message: message)
-        popup.addButton(okButton)
         return popup
     }
     
     fileprivate func popupForInvalidPassword()-> PopupDialog {
         let title = "Invalid password"
-        let message = "Your password must be at least six characters long and must contain at least one uppercase, at least one lowercase, and at least one number"
-        let okButton = CancelButton(title: "OK") {
-            return
-        }
+        let message = "Your password must be at least six characters long and must contain at least one uppercase, at least one lowercase, one number, and one special charecter"
         let popup = PopupDialog(title: title, message: message)
-        popup.addButton(okButton)
         return popup
     }
     
