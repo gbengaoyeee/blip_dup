@@ -260,7 +260,7 @@ exports.createCourier = functions.https.onRequest((req, res) => {
                         res.status(200).send();
                     }, function (err) {
                         console.log("ERROR HERE IS", err);
-                        res.status(403).send();
+                        res.status(200).send();
                     });
             }, function (error) {
                 console.log("Error creating stripe after adding user to db", error);
@@ -403,8 +403,9 @@ function getChargeAmount(deliveryAddress, pickupAddress, callback) {
                 callback("0");
             }else{
                 console.log("Distance is: ",distances.rows[0].elements[0].distance.value);
-                const price = (distances.rows[0].elements[0].distance.value / 1000) + 4.50;
-                callback(`${price * 100}`);
+                const price = ((distances.rows[0].elements[0].distance.value / 1000) + 4.50);
+                const roundedPrice = Math.floor(price*100);
+                callback(`${roundedPrice}`);
             }
         }
     })

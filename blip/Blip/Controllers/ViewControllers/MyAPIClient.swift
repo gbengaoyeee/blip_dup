@@ -41,6 +41,32 @@ class MyAPIClient: NSObject {
         
     }
     
+    func createCourier(firstName: String, lastName: String, phoneNumber: String, email: String, password: String, completion: @escaping(String) -> ()){
+        let params = [
+            "firstName": firstName,
+            "lastName": lastName,
+            "password": password,
+            "confirmPassword": password,
+            "email": email,
+            "phoneNumber": phoneNumber,
+            "photoURL": "https://firebasestorage.googleapis.com/v0/b/blip-c1e83.appspot.com/o/profiledefault.png?alt=media&token=48d32bdd-69fe-4ca3-975a-e578ab36c9c7"
+        ]
+        let url = self.baseURL.appendingPathComponent("createCourier")
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: nil)
+            .validate(statusCode: 200..<200)
+            .response { (response) in
+                if response.response?.statusCode == 200{
+                    completion("200")
+                }
+                else if response.response?.statusCode == 400{
+                    completion("Blank Fields")
+                }
+                else{
+                    completion("default")
+                }
+        }
+    }
+    
     func optimizeRoute(locations: [CLLocationCoordinate2D], distributions: String, completion: @escaping ([[String: AnyObject]]?,[String: AnyObject]?, Error?) -> ()){
         let coords = convertLocationToString(locations: locations)
         let url = "https://api.mapbox.com/optimized-trips/v1/mapbox/driving/\(coords)?&distributions=\(distributions)&geometries=geojson&access_token=pk.eyJ1Ijoic3Jpa2FudGhzcm52cyIsImEiOiJjajY0NDI0ejYxcDljMnFtcTNlYWliajNoIn0.jDevn4Fm6WBZUx7TDtys9Q"

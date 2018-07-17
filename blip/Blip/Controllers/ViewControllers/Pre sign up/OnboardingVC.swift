@@ -25,6 +25,7 @@ class OnboardingVC: UIViewController, UIScrollViewDelegate {
     let serviceArray = ["Turn your time into money with blip.delivery","Take delivery jobs from around your location","Choose the type of delivery you'd be willing to make","Get paid instantaneously, turning your free time into cash","Hit get started to begin with a free account"]
     
     override func viewDidLoad() {
+        useCurrentLocations()
         super.viewDidLoad()
         gradientView.animationDuration = 3.0
         gradientView.prepareDefaultPastelView()

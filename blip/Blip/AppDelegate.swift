@@ -13,20 +13,22 @@ import UserNotifications
 import Stripe
 import RevealingSplashView
 import PopupDialog
+import CoreLocation
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, MessagingDelegate{
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, MessagingDelegate, CLLocationManagerDelegate{
 
     var connectivity = Connectivity()
     var lastUserHash: String!
     var dbRef:DatabaseReference!{
         return Database.database().reference()
     }
+    var currentUserHash: String!
+    var locationManager = CLLocationManager()
     var isLaunched = false
     var window: UIWindow?
     var sessionTimer: Timer!
     var isWaiting = false
-
     var counter = 60
     static let NOTIFICATION_URL = "https://fcm.googleapis.com/fcm/send"
     static var DEVICEID = String()
@@ -35,6 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
+        updateLocations()
         let dialogAppearance = PopupDialogDefaultView.appearance()
         
         dialogAppearance.backgroundColor      = #colorLiteral(red: 0.3037296832, green: 0.6713039875, blue: 0.9027997255, alpha: 1)
@@ -59,9 +62,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         _ = Auth.auth().addStateDidChangeListener { (auth, user) in
             if auth.currentUser != nil {
+                let helper = HelperFunctions()
+                self.currentUserHash = helper.MD5(string: (auth.currentUser?.email)!)
                 self.setLoginAsRoot()
             }
             else{
+                self.currentUserHash = nil
                 self.setLogoutAsRoot()
             }
         }
@@ -144,7 +150,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
         return true
     }
-    
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -153,9 +158,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        updateLocations()
         print("applicationDidEnterBackground")
+    }
+    
+    @objc func updateLocations(){
+        if CLLocationManager.locationServicesEnabled() {
+            switch CLLocationManager.authorizationStatus(){
+            case .authorizedAlways, .authorizedWhenInUse:
+                self.locationManager.delegate = self
+                self.locationManager.allowsBackgroundLocationUpdates = true
+                self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+                self.locationManager.startMonitoringSignificantLocationChanges()
+            case .notDetermined, .restricted, .denied:
+                break
+                // location not determined
+            }
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if currentUserHash != nil{
+            if let currentLocation = locations.last{
+                dbRef.child("Couriers").child(currentUserHash).updateChildValues(["currentLatitude": currentLocation.coordinate.latitude, "currentLongitude": currentLocation.coordinate.longitude])
+            }
+        }
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -220,6 +247,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             print("Connection Gone")
         }
     }
-
 }
 

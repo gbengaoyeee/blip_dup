@@ -44,12 +44,6 @@ class Lgsupage: UIViewController {
         playBackgroundVideo()
     }
     
-    @IBAction func signUpPressed(_ sender: Any) {
-        let sb = UIStoryboard.init(name: "Main", bundle: nil)
-        let webVc = sb.instantiateViewController(withIdentifier: "webSignUpVc")
-        self.present(webVc, animated: true, completion: nil)
-    }
-    
     fileprivate func playBackgroundVideo(){
         //Load video background
         let URL = Bundle.main.url(forResource: "lgsu", withExtension: "mp4")
