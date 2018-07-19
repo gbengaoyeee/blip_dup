@@ -179,8 +179,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if currentUserHash != nil{
-            if let currentLocation = locations.last{
-                dbRef.child("Couriers").child(currentUserHash).updateChildValues(["currentLatitude": currentLocation.coordinate.latitude, "currentLongitude": currentLocation.coordinate.longitude])
+            if let currentLocation = locations.first{
+                dbRef.child("Couriers").child(currentUserHash).updateChildValues(
+                    ["currentLocation":["latitude": currentLocation.coordinate.latitude, "longitude": currentLocation.coordinate.longitude]])
             }
         }
     }
