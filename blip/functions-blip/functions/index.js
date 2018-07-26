@@ -710,7 +710,8 @@ function verifyNumbers(number) {
     }
     return true
 }
-
+///Returns a phone number with +1 in front given a valid phone number,
+/// or 400 for an invalid phone number
 function validatePhoneNumber(number){
     var regex = /^(\+1)?\(?\d{3}\)?\d{3}\d{4}$/
     var newNum = ""+number;
@@ -927,6 +928,8 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
                 } else {
                     deliveryLat = data[0].latitude;
                     deliveryLong = data[0].longitude;
+                    deliveryAddress = data[0].formattedAddress;
+                    //Remember to do Pickup and Delivery address
                     geocoder.geocode(pickupAddress, function (err, pickupData) {
                         if (err) {
                             res.status(403).send("Could not parse pickup address");
@@ -934,6 +937,7 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
                             console.log(pickupData, data);
                             originLat = pickupData[0].latitude;
                             originLong = pickupData[0].longitude;
+                            pickupAddress = pickupData[0].formattedAddress
                             chargeAmount = getChargeAmount(deliveryLat, deliveryLong, originLat, originLong);
                             stripe.charges.create({
                                 amount: chargeAmount + 100,
@@ -948,6 +952,8 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
                                 } else {
                                     var deliveryDetails = {
                                         storeID,
+                                        pickupAddress,
+                                        deliveryAddress,
                                         deliveryLat,
                                         deliveryLong,
                                         deliveryMainInstruction,
