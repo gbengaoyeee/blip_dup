@@ -22,7 +22,7 @@ class PasswordReset: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         prepareTextField()
-        gradientView.animationDuration = 3.0
+//        gradientView.animationDuration = 3.0
         gradientView.prepareDefaultPastelView()
         gradientView.startAnimation()
         // Do any additional setup after loading the view.
