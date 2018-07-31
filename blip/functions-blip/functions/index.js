@@ -163,6 +163,61 @@ exports.getAccountBalance = functions.https.onRequest((req, res) => {
     })
 })
 
+exports.getCustomer = functions.https.onRequest((req,res) => {
+    stripe.customers.retrieve(req.body.customerID,
+      function(err, customer) {
+      // asynchronously called
+        if (err) {
+            console.log(err,req.body)
+            res.status(500).end()
+        } else {
+            res.status(200).json(customer)
+        }
+    });
+});
+
+exports.addPaymentSource = functions.https.onRequest((req,res) => {
+    var storeID = req.body.storeID;
+    stripe.customers.createSource(req.body.customerID,
+        {source: req.body.sourceID
+        }, function(err, source) {
+        // asynchronously called
+            if (err) {
+                console.log(err,req.body)
+                res.status(500).end()
+            }else {
+                stripe.customers.retrieve(req.body.customerID,
+                function(err, customer){
+                    if (err){
+                        console.log(err);
+                        res.status(500).end()
+                    }else{
+                        admin.database().ref(`/stores/${storeID}/customer`).update(customer);
+                        res.status(200).send()
+                    }
+                })
+            }
+        });
+    });
+
+exports.updateStripeCustomerDefaultSource = functions.https.onRequest((req,res) => {
+    var customerID = req.body.customerID,
+        source = req.body.source,
+        storeID = req.body.storeID;
+    stripe.customers.update(customerID, {
+        default_source: source
+    }, function(err, customer) {
+        if (err) {
+            console.log(err,req.body)
+            res.status(500).end()
+        } else {
+            console.log(customer)
+            admin.database().ref(`/stores/${storeID}/customer`).update(customer);
+            res.status(200).send()
+        }
+    });
+});
+
 exports.updateStorePayment = functions.https.onRequest((req, res) => {
     var storeID = req.body.storeID;
     var sourceID = req.body.sourceID;
@@ -230,7 +285,7 @@ exports.createCourier = functions.https.onRequest((req, res) => {
         console.log("Error with phone number");
         res.status(400).send("Number error");
     }
-    const emailHash = crypto.createHash('md5').update(email).digest('hex');
+    const emailHash = crypto.createHash('md5').update(email.toLowerCase()).digest('hex');
     //create the user
     return admin.auth().createUser({//can also add photourl later on
         email: email,
@@ -924,64 +979,68 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
             }
             geocoder.geocode(deliveryAddress, function (err, data) {
                 if (err) {
-                    res.status(403).send("Could not parse address");
+                    res.status(400).send("Could not parse address");
                 } else {
+                    console.log("DELIVERY", data)
                     deliveryLat = data[0].latitude;
                     deliveryLong = data[0].longitude;
                     deliveryAddress = data[0].formattedAddress;
                     //Remember to do Pickup and Delivery address
                     geocoder.geocode(pickupAddress, function (err, pickupData) {
                         if (err) {
-                            res.status(403).send("Could not parse pickup address");
+                            res.status(400).send("Could not parse pickup data");
                         } else {
-                            console.log(pickupData, data);
+                            console.log("PICKUP", pickupData);
                             originLat = pickupData[0].latitude;
                             originLong = pickupData[0].longitude;
-                            pickupAddress = pickupData[0].formattedAddress
-                            chargeAmount = getChargeAmount(deliveryLat, deliveryLong, originLat, originLong);
-                            stripe.charges.create({
-                                amount: chargeAmount + 100,
-                                currency: "cad",
-                                description: "Delivery; " + newPostKey + " By store; " + storeID,
-                                customer: snapshot.child(`/customer/id`).val()
-                            }, function (err, charge) {
-                                if (err) {
-                                    console.log(err);
-                                    res.status(403).send("Could not make the delivery request"); // CANNOT CHARGE ERROR
-                                    return;
-                                } else {
-                                    var deliveryDetails = {
-                                        storeID,
-                                        pickupAddress,
-                                        deliveryAddress,
-                                        deliveryLat,
-                                        deliveryLong,
-                                        deliveryMainInstruction,
-                                        deliverySubInstruction,
-                                        originLat,
-                                        originLong,
-                                        pickupMainInstruction,
-                                        pickupSubInstruction,
-                                        recieverName,
-                                        recieverNumber,
-                                        pickupNumber,
-                                        chargeAmount
-                                    };
-                                    deliveryDetails.isTaken = false;
-                                    deliveryDetails.isCompleted = false;
-                                    deliveryDetails.chargeID = charge;
-                                    console.log("Charge succeeded", deliveryDetails);
-                                    admin.database().ref('stores/' + storeID + '/deliveries/' + newPostKey).update(deliveryDetails).then(() => {
-                                        console.log('Update succeeded: stores')
-                                    });
-                                    admin.database().ref('AllJobs/' + newPostKey).update(deliveryDetails).then(() => {
-                                        console.log('Update succeeded: alljobs');
-                                        cors(req, res, () => {
-                                            res.status(200).send(newPostKey);
-                                        }) // OK
+                            getChargeAmount(deliveryAddress, pickupAddress, function(price){
+                                if (price == "0"){
+                                    console.log("Could not get a price");
+                                    res.status(400).send("An error occured")
+                                } else{
+                                    var chargeAmount = Number(price) + 100;
+                                    stripe.charges.create({
+                                        amount: chargeAmount,
+                                        currency: "cad",
+                                        description: "Delivery; " + newPostKey + " By store; " + storeID,
+                                        customer: snapshot.child(`/customer/id`).val()
+                                    }, function (err, charge) {
+                                        if (err) {
+                                            console.log(err);
+                                            res.status(400).end() // CANNOT CHARGE ERROR
+                                        } else {
+                                            var deliveryDetails = {
+                                                storeID,
+                                                deliveryLat,
+                                                deliveryLong,
+                                                deliveryMainInstruction,
+                                                deliverySubInstruction,
+                                                originLat,
+                                                originLong,
+                                                pickupMainInstruction,
+                                                pickupSubInstruction,
+                                                recieverName,
+                                                recieverNumber,
+                                                pickupNumber,
+                                                chargeAmount
+                                            };
+                                            deliveryDetails.isTaken = false;
+                                            deliveryDetails.isCompleted = false;
+                                            deliveryDetails.chargeID = charge;
+                                            console.log("Charge succeeded", deliveryDetails);
+                                            admin.database().ref('stores/' + storeID + '/deliveries/' + newPostKey).update(deliveryDetails).then(() => {
+                                                console.log('Update succeeded: stores')
+                                            });
+                                            admin.database().ref('AllJobs/' + newPostKey).update(deliveryDetails).then(() => {
+                                                console.log('Update succeeded: alljobs');
+                                                cors(req, res, () => {
+                                                    res.status(200).send(newPostKey);
+                                                }) // OK
+                                            });
+                                        }
                                     });
                                 }
-                            });
+                            })
                         }
                     })
                 }
