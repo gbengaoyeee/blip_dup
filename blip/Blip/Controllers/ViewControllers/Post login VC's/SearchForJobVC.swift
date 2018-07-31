@@ -25,6 +25,8 @@ class SearchForJobVC: UIViewController {
     @IBOutlet var map: MGLMapView!
     @IBOutlet weak var earningsLoader: UIView!
     
+    var totalOptimizedTime: Int!
+    var optimizationCode: Int!
     let pulsator = Pulsator()
     var gradient: CAGradientLayer!
     var locationManager = CLLocationManager()
@@ -165,7 +167,9 @@ class SearchForJobVC: UIViewController {
         if segue.identifier == "foundJob"{
             let dest = segue.destination as! FoundJobVC
             dest.job = foundJob
+            dest.optimizationCode = self.optimizationCode
             dest.unfinishedJob = self.unfinishedJob
+            dest.totalOptimizedTime = self.totalOptimizedTime
         }
     }
     
@@ -209,9 +213,17 @@ class SearchForJobVC: UIViewController {
             if let job = job{
                 self.unfinishedJob = true
                 self.foundJob = job
-                self.performSegue(withIdentifier: "foundJob", sender: self)
-                self.goButton.isUserInteractionEnabled = true
-                return
+                self.getOptimalRoute(unfinished: true, job: job, completion: { (code) in
+                    if code == 1{
+                        self.performSegue(withIdentifier: "foundJob", sender: self)
+                        self.goButton.isUserInteractionEnabled = true
+                        return
+                    }
+                    else{
+                        let error = PopupDialog(title: "Error", message: "An error occured calculating optimal route. Please contact blip")
+                        self.present(error, animated: true, completion: nil)
+                    }
+                })
             }
             else{
                 self.unfinishedJob = false
@@ -227,9 +239,9 @@ class SearchForJobVC: UIViewController {
                 self.service.findJob(myLocation: self.currentLocation, userHash: self.service.emailHash) { (errorCode, job) in
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
-                        banner.dismiss()
-                        loading.stop()
                         if errorCode != nil{
+                            banner.dismiss()
+                            loading.stop()
                             if errorCode == 400{
                                 //Not verified
                                 let newBanner = NotificationBanner(title: "Error", subtitle: "Account not verified", style: .warning)
@@ -265,13 +277,172 @@ class SearchForJobVC: UIViewController {
                             }
                         }
                         guard let job = job else{
+                            banner.dismiss()
+                            loading.stop()
                             print("Something wrong with getting job")
                             return
                         }
                         self.foundJob = job
-                        self.performSegue(withIdentifier: "foundJob", sender: self)
+                        self.getOptimalRoute(job: job, completion: { (code) in
+                            banner.dismiss()
+                            loading.stop()
+                            if code == 1{
+                                self.performSegue(withIdentifier: "foundJob", sender: self)
+                            }
+                            else{
+                                let error = PopupDialog(title: "Error", message: "An error occured calculating optimal route. Please contact blip")
+                                self.present(error, animated: true, completion: nil)
+                            }
+                        })
                         self.goButton.isUserInteractionEnabled = true
                     })
+                }
+            }
+        }
+    }
+
+    func getOptimalRoute(unfinished: Bool = false, job: Job, completion: @escaping(Int) -> ()){
+        
+        if job.deliveries.count == 2{
+            
+            let networkGroup = DispatchGroup()
+            var possiblePaths: [String: [String: Any]] = [
+                "p1p2": ["coordinates": [job.deliveries.first!!.origin, job.deliveries.last!!.origin], "time": 0],
+                "p1d1": ["coordinates": [job.deliveries.first!!.origin, job.deliveries.first!!.deliveryLocation], "time": 0],
+                "p2d1": ["coordinates": [job.deliveries.last!!.origin, job.deliveries.first!!.deliveryLocation], "time": 0],
+                "p2d2": ["coordinates": [job.deliveries.last!!.origin, job.deliveries.last!!.deliveryLocation], "time": 0],
+                "p1d2": ["coordinates": [job.deliveries.first!!.origin, job.deliveries.last!!.deliveryLocation], "time": 0],
+                "d1d2": ["coordinates": [job.deliveries.first!!.deliveryLocation, job.deliveries.last!!.deliveryLocation], "time": 0],
+                "Mp1": ["coordinates": [job.deliveries.first!!.origin, self.currentLocation], "time": 0],
+                "Mp2": ["coordinates": [job.deliveries.last!!.origin, self.currentLocation], "time": 0],
+                "Md1": ["coordinates": [job.deliveries.first!!.deliveryLocation, self.currentLocation], "time": 0],
+                "Md2": ["coordinates": [job.deliveries.last!!.deliveryLocation, self.currentLocation], "time": 0]
+            ]
+            for key in possiblePaths.keys{
+                var value = possiblePaths[key]
+                let coordinates = value!["coordinates"] as! [CLLocationCoordinate2D]
+                networkGroup.enter()
+                MyAPIClient.sharedClient.getPathTime(coordinates: coordinates) { (time) in
+                    if time == -1{
+                        completion(0)
+                        return
+                    }
+                    value!["time"] = time
+                    possiblePaths[key] = value
+                    networkGroup.leave()
+                }
+            }
+            networkGroup.notify(queue: .main) {
+                print(possiblePaths)
+                let p2d1d2 = (possiblePaths["Mp2"]!["time"] as! Int) + (possiblePaths["p2d1"]!["time"] as! Int) + (possiblePaths["d1d2"]!["time"] as! Int)
+                let p2d2d1 = (possiblePaths["Mp2"]!["time"] as! Int) + (possiblePaths["p2d2"]!["time"] as! Int) + (possiblePaths["d1d2"]!["time"] as! Int)
+                let p1d1d2 = (possiblePaths["Mp1"]!["time"] as! Int) + (possiblePaths["p1d1"]!["time"] as! Int) + (possiblePaths["d1d2"]!["time"] as! Int)
+                let p1d2d1 = (possiblePaths["Mp1"]!["time"] as! Int) + (possiblePaths["p1d2"]!["time"] as! Int) + (possiblePaths["d1d2"]!["time"] as! Int)
+                let d1d2 = (possiblePaths["Md1"]!["time"] as! Int) + (possiblePaths["d1d2"]!["time"] as! Int)
+                let d2d1 = (possiblePaths["Md2"]!["time"] as! Int) + (possiblePaths["d1d2"]!["time"] as! Int)
+                let p1p2d1d2 = (possiblePaths["Mp1"]!["time"] as! Int) + (possiblePaths["p1p2"]!["time"] as! Int) + (possiblePaths["p2d1"]!["time"] as! Int) + (possiblePaths["d1d2"]!["time"] as! Int)
+                let p1p2d2d1 = (possiblePaths["Mp1"]!["time"] as! Int) + (possiblePaths["p1p2"]!["time"] as! Int) + (possiblePaths["p2d2"]!["time"] as! Int) + (possiblePaths["d1d2"]!["time"] as! Int)
+                let p1d1p2d2 = (possiblePaths["Mp1"]!["time"] as! Int) + (possiblePaths["p1d1"]!["time"] as! Int) + (possiblePaths["p2d1"]!["time"] as! Int) + (possiblePaths["p2d2"]!["time"] as! Int)
+                let p2p1d1d2 = (possiblePaths["Mp2"]!["time"] as! Int) + (possiblePaths["p1p2"]!["time"] as! Int) + (possiblePaths["p1d1"]!["time"] as! Int) + (possiblePaths["d1d2"]!["time"] as! Int)
+                let p2p1d2d1 = (possiblePaths["Mp2"]!["time"] as! Int) + (possiblePaths["p1p2"]!["time"] as! Int) + (possiblePaths["p1d2"]!["time"] as! Int) + (possiblePaths["d1d2"]!["time"] as! Int)
+                let p2d2p1d1 = (possiblePaths["Mp2"]!["time"] as! Int) + (possiblePaths["p2d2"]!["time"] as! Int) + (possiblePaths["p1d2"]!["time"] as! Int) + (possiblePaths["p1d1"]!["time"] as! Int)
+                
+                if ((unfinished) && (job.deliveries.first!!.state != nil || job.deliveries.last!!.state != nil)){
+                    if job.getUnfinishedDeliveries().count == 2{
+                        switch min(d1d2, d2d1){
+                        case d1d2:
+                            self.optimizationCode = 8
+                            self.totalOptimizedTime = d1d2
+                        case d2d1:
+                            self.optimizationCode = 9
+                            self.totalOptimizedTime = d2d1
+                        default:
+                            self.optimizationCode = 8
+                            self.totalOptimizedTime = d1d2
+                        }
+                    }
+                    else{
+                        if job.deliveries.first!!.state != nil{
+                            switch min(p2d1d2, p2d2d1){
+                            case p2d1d2:
+                                self.optimizationCode = 10
+                                self.totalOptimizedTime = p2d1d2
+                            case p2d2d1:
+                                self.optimizationCode = 11
+                                self.totalOptimizedTime = p2d2d1
+                            default:
+                                self.optimizationCode = 10
+                                self.totalOptimizedTime = p2d1d2
+                            }
+                        }
+                        else{
+                            switch min(p1d1d2, p1d2d1){
+                            case p1d1d2:
+                                self.optimizationCode = 12
+                                self.totalOptimizedTime = p1d1d2
+                            case p1d2d1:
+                                self.optimizationCode = 13
+                                self.totalOptimizedTime = p1d2d1
+                            default:
+                                self.optimizationCode = 12
+                                self.totalOptimizedTime = p1d1d2
+                            }
+                        }
+                    }
+                    completion(1)
+                }
+                else{
+                    switch min(p1p2d1d2, p1p2d2d1, p1d1p2d2, p2p1d1d2, p2p1d2d1, p2d2p1d1){
+                        
+                    case p1p2d1d2:
+                        self.optimizationCode = 1 //p1p2d1d2
+                        self.totalOptimizedTime = p1p2d1d2
+                    case p1p2d2d1:
+                        self.optimizationCode = 2 //p1p2d2d1
+                        self.totalOptimizedTime = p1p2d2d1
+                    case p1d1p2d2:
+                        self.optimizationCode = 3 //p1d1p2d2
+                        self.totalOptimizedTime = p1d1p2d2
+                    case p2p1d1d2:
+                        self.optimizationCode = 4 //p2p1d1d2
+                        self.totalOptimizedTime = p2p1d1d2
+                    case p2p1d2d1:
+                        self.optimizationCode = 5 //p2p1d2d1
+                        self.totalOptimizedTime = p2p1d2d1
+                    case p2d2p1d1:
+                        self.optimizationCode = 6 //p2d2p1d1
+                        self.totalOptimizedTime = p2d2p1d1
+                    default:
+                        self.optimizationCode = 1
+                        self.totalOptimizedTime = p1p2d1d2
+                    }
+                    completion(1)
+                }
+            }
+        }
+        else{
+            if ((unfinished) && (job.deliveries.first!!.state != nil)){
+                MyAPIClient.sharedClient.getPathTime(coordinates: [job.deliveries.first!!.deliveryLocation, self.currentLocation]) { (time) in
+                    if time != -1{
+                        self.optimizationCode = 0
+                        self.totalOptimizedTime = time
+                        completion(1)
+                    }
+                    else{
+                        completion(0)
+                        return
+                    }
+                }
+            }
+            MyAPIClient.sharedClient.getPathTime(coordinates: [job.deliveries.first!!.deliveryLocation, job.deliveries.first!!.origin, self.currentLocation]) { (time) in
+                if time != -1{
+                    self.optimizationCode = 7
+                    self.totalOptimizedTime = time
+                    completion(1)
+                }
+                else{
+                    completion(0)
+                    return
                 }
             }
         }

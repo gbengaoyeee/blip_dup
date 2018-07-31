@@ -39,6 +39,10 @@ const transport = nodemailer.createTransport({
         rejectUnauthorized: config.nodemailer.tls.REJECT_UNAUTHORIZED
     }
 });
+const driverCut = 0.9;
+const baseFare = 2.50
+const apiFare = 1.00
+const kmFare = 1.00
 
 exports.sendEmail = functions.https.onRequest((req, res) => {
     console.log(config.nodemailer.auth.USER);
@@ -458,7 +462,7 @@ function getChargeAmount(deliveryAddress, pickupAddress, callback) {
                 callback("0");
             }else{
                 console.log("Distance is: ",distances.rows[0].elements[0].distance.value);
-                const price = ((distances.rows[0].elements[0].distance.value / 1000) + 4.50);
+                const price = (((distances.rows[0].elements[0].distance.value / 1000)*kmFare) + baseFare);
                 const roundedPrice = Math.floor(price*100);
                 callback(`${roundedPrice}`);
             }
@@ -469,8 +473,8 @@ function getChargeAmount(deliveryAddress, pickupAddress, callback) {
 exports.payOnDelivery = functions.database.ref('/CompletedJobs/{id}').onCreate((snapshot, context) => {
     console.log(snapshot.val());
     const chargeID = snapshot.child("chargeID/id").val();
-    const amount = +(snapshot.child("chargeID/amount").val());
-    const amountAfterCut = (amount - 100) * 0.75;
+    const amount = +(snapshot.child("chargeAmount").val());
+    const roundedAmount = Math.floor(amount);
     const emailHash = snapshot.child("jobTaker").val();
     if (chargeID == null || amount == null || emailHash == null) {
         console.log("Could not parse data");
@@ -480,7 +484,7 @@ exports.payOnDelivery = functions.database.ref('/CompletedJobs/{id}').onCreate((
     return admin.database().ref(`Couriers/${emailHash}`).once("value").then(function (userSnapshot) {
         var accountID = userSnapshot.child("stripeAccount/id").val();
         stripe.transfers.create({
-            amount: amountAfterCut,
+            amount: roundedAmount,
             currency: "cad",
             source_transaction: chargeID,
             destination: accountID
@@ -534,9 +538,9 @@ exports.getBestJob = functions.https.onRequest((req, res) => {
                         var allJobsValues = snapshot.val();
                         if (allJobsValues != null) {
                             for (const jobId in allJobsValues) {//looping thru all the jobs in the Alljobs reference
-                                //check to see if the number of jobs found is greater than 6
-                                if (Object.keys(jobBundle).length === 3) {
-                                    break;// Break out of the loop if there are 6 jobs already found
+                                //check to see if the number of jobs found is greater than 2
+                                if (Object.keys(jobBundle).length === 2) {
+                                    break;// Break out of the loop if there are 2 jobs already found
                                 }
                                 if (jobId != closestJobId) { //So skip if it sees the same job as the closest it already found
                                     const pickupLat = allJobsValues[jobId].originLat;
@@ -815,31 +819,6 @@ function getStore(storeID, callback) {
     });
 }
 
-function newDelivery(storeID, deliveryLat, deliveryLong, deliveryMainInstruction, deliverySubInstruction, originLat, originLong, pickupMainInstruction, pickupSubInstruction, recieverName, recieverNumber, pickupNumber) {
-
-    getStore(storeID, function (storeValues, error) {
-        if (error) {
-            alert(error.message);
-            console.log(error);
-            return 500;
-        } else {
-            var deliveryDetails = { storeID, deliveryLat, deliveryLong, deliveryMainInstruction, deliverySubInstruction, originLat, originLong, pickupMainInstruction, pickupSubInstruction, recieverName, recieverNumber, pickupNumber };
-            // deliveryDetails[storeName] = storeValues;
-            deliveryDetails.isTaken = false;
-            deliveryDetails.isCompleted = false;
-            // Get a key for a new Post.
-            var newPostKey = admin.database().ref().child('AllJobs').push().key;
-            admin.database().ref('stores/' + storeID + '/deliveries/' + newPostKey).update(deliveryDetails).then(() => {
-                console.log('Update succeeded: stores')
-            });
-
-            admin.database().ref('AllJobs/' + newPostKey).update(deliveryDetails).then(() => {
-                console.log('Update succeeded: alljobs');
-            });
-        }
-    })
-}
-
 exports.getPaidForDelivery = functions.https.onRequest((req, res) => {
     var deliveryID = req.body.deliveryID;
     var amount = req.body.amount;
@@ -944,6 +923,12 @@ exports.captureCharge = functions.https.onRequest((req, res) => {
     })
 });
 
+function getNewDeliveryNumber(length, chars){
+    var result = '';
+    for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+    return result;
+}
+
 //////////////////////// API FUNCTIONS FOR BUSINESS /////////////////////////////
 
 exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
@@ -964,7 +949,7 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
                 recieverName = req.body.recieverName,
                 recieverNumber = req.body.recieverNumber,
                 pickupNumber = req.body.pickupNumber,
-                newPostKey = admin.database().ref().child('AllJobs').push().key
+                newPostKey = getNewDeliveryNumber(7, '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ')
 
             if (!verifyNumbers(req.body.recieverNumber) || !verifyNumbers(req.body.pickupNumber)) {
                 console.log("Numbers error");
@@ -995,16 +980,17 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
                                     console.log("Could not get a price");
                                     res.status(400).send("An error occured")
                                 } else{
-                                    var chargeAmount = Number(price) + 100;
+                                    var totalAmount = Number(price) + 100
+                                    var chargeAmount = Math.floor(Number(price) * driverCut);
                                     stripe.charges.create({
-                                        amount: chargeAmount,
+                                        amount: totalAmount,
                                         currency: "cad",
                                         description: "Delivery; " + newPostKey + " By store; " + storeID,
                                         customer: snapshot.child(`/customer/id`).val()
                                     }, function (err, charge) {
                                         if (err) {
                                             console.log(err);
-                                            res.status(400).end() // CANNOT CHARGE ERROR
+                                            res.status(400).send(err) // CANNOT CHARGE ERROR
                                         } else {
                                             var deliveryDetails = {
                                                 storeID,
@@ -1025,10 +1011,10 @@ exports.makeDeliveryRequest = functions.https.onRequest((req, res) => {
                                             deliveryDetails.isCompleted = false;
                                             deliveryDetails.chargeID = charge;
                                             console.log("Charge succeeded", deliveryDetails);
-                                            admin.database().ref('stores/' + storeID + '/deliveries/' + newPostKey).update(deliveryDetails).then(() => {
+                                            admin.database().ref('stores/' + storeID + '/deliveries/').child(newPostKey).set(deliveryDetails).then(() => {
                                                 console.log('Update succeeded: stores')
                                             });
-                                            admin.database().ref('AllJobs/' + newPostKey).update(deliveryDetails).then(() => {
+                                            admin.database().ref(`/AllJobs`).child(newPostKey).set(deliveryDetails).then(() => {
                                                 console.log('Update succeeded: alljobs');
                                                 cors(req, res, () => {
                                                     res.status(200).send(newPostKey);
