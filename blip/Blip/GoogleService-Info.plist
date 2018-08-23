@@ -7,21 +7,21 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>878061201961-1bdpl8bv9tjrh91u0sbnkrbhk6qar4n2.apps.googleusercontent.com</string>
+	<string>472449430710-ho4perdiujb1fi0psh59f1m079l4510k.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.878061201961-1bdpl8bv9tjrh91u0sbnkrbhk6qar4n2</string>
+	<string>com.googleusercontent.apps.472449430710-ho4perdiujb1fi0psh59f1m079l4510k</string>
 	<key>API_KEY</key>
-	<string>AIzaSyCj4q_DdXAKPQ8fbR2sS6wslQrXZINc6ZQ</string>
+	<string>AIzaSyDugwkg8PHiXTT4X9LOsa-sjSVWdea-PFk</string>
 	<key>GCM_SENDER_ID</key>
-	<string>878061201961</string>
+	<string>472449430710</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.blip.Blip</string>
+	<string>com.blip.blipTest</string>
 	<key>PROJECT_ID</key>
-	<string>blip-c1e83</string>
+	<string>blip-test-ios</string>
 	<key>STORAGE_BUCKET</key>
-	<string>blip-c1e83.appspot.com</string>
+	<string>blip-test-ios.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<true></true>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -33,8 +33,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:878061201961:ios:7dc63a1c5812da37</string>
+	<string>1:472449430710:ios:633f4d77af1e17bd</string>
 	<key>DATABASE_URL</key>
-	<string>https://blip-c1e83.firebaseio.com</string>
+	<string>https://blip-test-ios.firebaseio.com</string>
 </dict>
 </plist>

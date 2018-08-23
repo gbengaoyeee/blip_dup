@@ -9,12 +9,12 @@
 /* Begin PBXBuildFile section */
 		3B0FA90720D174010075BFA3 /* WebSignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0FA90620D174010075BFA3 /* WebSignUpVC.swift */; };
 		3B0FA90920D18CDE0075BFA3 /* WebPrivacyPolicyVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0FA90820D18CDD0075BFA3 /* WebPrivacyPolicyVC.swift */; };
-		3B14B533202ED1EA00B1C015 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B14B532202ED1EA00B1C015 /* GoogleService-Info.plist */; };
 		3B14B536202ED43800B1C015 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B14B535202ED43800B1C015 /* MapKit.framework */; };
 		3B14B538202ED67500B1C015 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B14B537202ED67400B1C015 /* SystemConfiguration.framework */; };
 		3B14B542202F5EA100B1C015 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B14B540202F5EA000B1C015 /* AVKit.framework */; };
 		3B14B543202F5EA100B1C015 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B14B541202F5EA100B1C015 /* AVFoundation.framework */; };
 		3B14B545202F5EC300B1C015 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B14B544202F5EC300B1C015 /* CoreLocation.framework */; };
+		3B48B438211BDF1700362909 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B48B437211BDF1600362909 /* GoogleService-Info.plist */; };
 		3B4B92CA20797E030075BE98 /* PickUpAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4B92C920797E030075BE98 /* PickUpAnnotation.swift */; };
 		3B4B92CC20797EA90075BE98 /* DeliveryAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4B92CB20797EA90075BE98 /* DeliveryAnnotation.swift */; };
 		3B5372F8202EB4320020F3B1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5372F7202EB4320020F3B1 /* AppDelegate.swift */; };
@@ -101,7 +101,6 @@
 		1D8353DEBAEA5D3C47B139F5 /* Pods-BlipTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlipTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BlipTests/Pods-BlipTests.debug.xcconfig"; sourceTree = "<group>"; };
 		3B0FA90620D174010075BFA3 /* WebSignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSignUpVC.swift; sourceTree = "<group>"; };
 		3B0FA90820D18CDD0075BFA3 /* WebPrivacyPolicyVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebPrivacyPolicyVC.swift; sourceTree = "<group>"; };
-		3B14B532202ED1EA00B1C015 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3B14B534202ED43000B1C015 /* Blip.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Blip.entitlements; sourceTree = "<group>"; };
 		3B14B535202ED43800B1C015 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		3B14B537202ED67400B1C015 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -111,6 +110,7 @@
 		3B14B541202F5EA100B1C015 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		3B14B544202F5EC300B1C015 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		3B14B547202F5F1100B1C015 /* AWSCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AWSCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3B48B437211BDF1600362909 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3B4B92C920797E030075BE98 /* PickUpAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickUpAnnotation.swift; sourceTree = "<group>"; };
 		3B4B92CB20797EA90075BE98 /* DeliveryAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryAnnotation.swift; sourceTree = "<group>"; };
 		3B5372F4202EB4320020F3B1 /* Blip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Blip.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -256,7 +256,7 @@
 				F39C6555209D5430002BCCF5 /* Assets.xcassets */,
 				3B14B53F202F55E100B1C015 /* lgsu.mp4 */,
 				3B537303202EB4320020F3B1 /* Info.plist */,
-				3B14B532202ED1EA00B1C015 /* GoogleService-Info.plist */,
+				3B48B437211BDF1600362909 /* GoogleService-Info.plist */,
 			);
 			path = Blip;
 			sourceTree = "<group>";
@@ -594,7 +594,6 @@
 				5FC65BB220C6CF0B000DECFC /* notification.mp3 in Resources */,
 				3B53735A202EBE310020F3B1 /* check.json in Resources */,
 				F3F5081F2031F78300252E65 /* CenturyGothicBold.ttf in Resources */,
-				3B14B533202ED1EA00B1C015 /* GoogleService-Info.plist in Resources */,
 				3B537356202EBE310020F3B1 /* error.json in Resources */,
 				3B537302202EB4320020F3B1 /* LaunchScreen.storyboard in Resources */,
 				3B537354202EBE310020F3B1 /* 5_stars.json in Resources */,
@@ -605,6 +604,7 @@
 				F39C6556209D5430002BCCF5 /* Assets.xcassets in Resources */,
 				3B537351202EBE310020F3B1 /* onboarding.json in Resources */,
 				3B537352202EBE310020F3B1 /* clock.json in Resources */,
+				3B48B438211BDF1700362909 /* GoogleService-Info.plist in Resources */,
 				3B537350202EBE310020F3B1 /* simple_outline_lock_.json in Resources */,
 				F3E330B42075A38100F19CF8 /* camera.json in Resources */,
 				3B537359202EBE310020F3B1 /* location.json in Resources */,
@@ -1074,7 +1074,7 @@
 				DEVELOPMENT_TEAM = HK4HT64LY7;
 				INFOPLIST_FILE = Blip/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.blip.Blip;
+				PRODUCT_BUNDLE_IDENTIFIER = com.blip.blipTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Blip/Blip-Bridging-Header.h";
@@ -1096,7 +1096,7 @@
 				DEVELOPMENT_TEAM = HK4HT64LY7;
 				INFOPLIST_FILE = Blip/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.blip.Blip;
+				PRODUCT_BUNDLE_IDENTIFIER = com.blip.blipTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Blip/Blip-Bridging-Header.h";

@@ -28,11 +28,11 @@ class Job{
     var jobImages = [UIImage]()
     var otherJobID: String!
     
-    /// <#Description#>
+    /// Creates a job of bundled deliveries
     ///
     /// - Parameters:
-    ///   - snapshot: <#snapshot description#>
-    ///   - type: <#type description#>
+    ///   - snapshot: Firebase snapshot
+    ///   - type: Type of request, will always be delivery
     init?(snapshot: DataSnapshot, type: String) {
         guard type == "delivery" || type == "other" else {
             return nil

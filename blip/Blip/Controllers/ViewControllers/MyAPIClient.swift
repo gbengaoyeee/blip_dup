@@ -21,7 +21,7 @@ class MyAPIClient: NSObject {
     let service = ServiceCalls.instance
     var customer_id: String?
     static let sharedClient = MyAPIClient()
-    var baseURLString: String? = "https://us-central1-blip-c1e83.cloudfunctions.net/"
+    var baseURLString: String? = "https://us-central1-blip-test-ios.cloudfunctions.net/"
     var baseURL: URL{
         if let urlString = self.baseURLString, let url = URL(string: urlString) {
             return url
@@ -66,6 +66,70 @@ class MyAPIClient: NSObject {
                 }
         }
     }
+    
+    func getPathTime(coordinates: [CLLocationCoordinate2D], completion: @escaping(Int) -> ()){
+        var waypointString = "&waypoints="
+        var url = "https://maps.googleapis.com/maps/api/directions/json?origin=\(coordinates.first!.latitude),\(coordinates.first!.longitude)&destination=\(coordinates.last!.latitude),\(coordinates.last!.longitude)"
+        if coordinates.count > 2{
+            waypointString += "\(coordinates[1].latitude),\(coordinates[1].longitude)|"
+            waypointString += "\(coordinates[2].latitude),\(coordinates[2].longitude)"
+            url += "\(waypointString)&key=AIzaSyAOQy-AvLrLjqQlXNi533HNzWLKvEqqq-o"
+            
+        }
+        else{
+            url += "&key=AIzaSyAOQy-AvLrLjqQlXNi533HNzWLKvEqqq-o"
+        }
+        let stringURL = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        let directionsURL = URL(string: stringURL!)
+        Alamofire.request(directionsURL!, method: .post, parameters: nil, headers: nil)
+            .validate(statusCode: 200...200)
+            .responseJSON { (data) in
+                switch data.result{
+                case .success(let rawData):
+                    if let rawDict = rawData as? [String: Any]{
+                        if let routeData = rawDict["routes"] as? [Any]{
+                            if let firstRoute = routeData[0] as? [String: Any]{
+                                if let legData = firstRoute["legs"] as? [Any]{
+                                    if let firstLeg = legData[0] as? [String: Any]{
+                                        if let durationData = firstLeg["duration"] as? [String: Any]{
+                                            if let duration = durationData["value"] as? Int{
+                                                let timeInSeconds = duration
+                                                completion(timeInSeconds)
+                                            }
+                                            else{
+                                                completion(-1)
+                                            }
+                                        }
+                                        else{
+                                            completion(-1)
+                                        }
+                                    }
+                                    else{
+                                        completion(-1)
+                                    }
+                                }
+                                else{
+                                    completion(-1)
+                                }
+                            }
+                            else{
+                                completion(-1)
+                            }
+                        }
+                        else{
+                            completion(-1)
+                        }
+                    }
+                    else{
+                        completion(-1)
+                    }
+                case .failure(let error):
+                    print(error)
+                    completion(-1)
+                }
+        }
+    }
+    
     
     func optimizeRoute(locations: [CLLocationCoordinate2D], distributions: String, completion: @escaping ([[String: AnyObject]]?,[String: AnyObject]?, Error?) -> ()){
         let coords = convertLocationToString(locations: locations)
